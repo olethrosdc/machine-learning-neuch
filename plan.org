@@ -84,6 +84,24 @@ P(A_j | B) = \frac{P(B | A_j)}{\sum_{i=1}^n P(B | A_i) P(A_i)}
 - Maximise total reward
 
 ** Linear neural networks
+*** Simple linear regression
+**** Input and output
+- Data pairs $(x_t, y_t)$, $t = 1, \ldots, T$.
+- Input $x_t \in \Reals^n$
+- Output $y_t \in \Reals$.
+
+**** Parametrised function
+- Parameters $\param \in \Reals^n$
+- Function $f_\param : \Reals^n \to \Reals$, defined as
+\[
+f_\param(x_t) = \param^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
+\]
+
+**** Optimisation goal: Miniminise mean-squared error.
+\[
+\min_\param \sum_t [y_t - f_\param(x_t)]^2
+\]
+
 ** Multi-layer neural networks
 * Learning as Probabilistic Inference (4 weeks)
 ** Probabilistic Models
