@@ -70,6 +70,18 @@ P(A_j | B) = \frac{P(B | A_j)}{\sum_{i=1}^n P(B | A_i) P(A_i)}
 
 * Learning as Optimisation (4 weeks)
 ** Objective functions
+*** Supervised learning objectives
+**** Classification
+- Predict the labels correctly
+- Have an appropriate confidence level
+**** Regression
+- Predict the mean correctly
+- Have an appropriate variance around the mean
+*** Unsupervised learning objectives
+- Reconstruct the data well
+- Be able to generate data
+*** Reinforcement learning objectives
+- Maximise total reward
 
 ** Linear neural networks
 ** Multi-layer neural networks
