@@ -68,6 +68,17 @@
 *** Reinforcement learning objectives
 - Maximise total reward
 
+** $k$ Nearest Neighbours
+*** The Nearest Neighbour algorithm
+**** Pseudocode
+- Input: Data $(x_t, y_t)_{t=1}^T$, test point $x$, distance $d$
+- Find $t^* \in \argmin_{t} d(x_t, x)$:
+  - $D = \infty$, $t^* = \emptyset$.
+  - For $t \in 1, \ldots, T$:
+    - If $d(x_t) < D$: $D = d(x_t), t^* = t$.
+  - EndFor
+- Return $y^* = y_{t^*}$
+
 ** Linear neural networks
 *** Simple linear regression
 **** Input and output
