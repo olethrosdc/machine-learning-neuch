@@ -1,0 +1,2 @@
+class NearestNeighbourClassifier:
+    def __init__(

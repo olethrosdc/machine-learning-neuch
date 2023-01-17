@@ -11,7 +11,7 @@ class GaussianGenerator:
         self.covariance = np.zeros([n_classes, n_dim, n_dim])
         for c in range(n_classes):
             self.mean[c] = np.random.normal(n_dim)
-            self.covariance[c] = np.identity(n_dim)  #+ scipy.stats.wishart.rvs(1, 1, size=[n_dim, n_dim])
+            self.covariance[c] = scipy.stats.wishart.rvs(n_dim, np.identity(n_dim))
         self.n_dim = n_dim
         self.n_classes = n_classes
         self.class_prob = class_prob
