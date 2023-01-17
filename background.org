@@ -1,0 +1,124 @@
+#+TITLE: Mathematical background
+#+AUTHOR: Christos Dimitrakakis
+#+EMAIL:christos.dimitrakakis@unine.ch
+#+LaTeX_HEADER: \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
+#+LaTeX_HEADER: \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
+#+LaTeX_HEADER: \DeclareMathOperator*{\argmax}{arg\,max}
+#+LaTeX_HEADER: \DeclareMathOperator*{\argmin}{arg\,min}
+#+LaTeX_HEADER: \newcommand \defn {\mathrel{\triangleq}}
+#+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
+#+LaTeX_HEADER: \newcommand \Param {\Theta}
+#+LaTeX_HEADER: \newcommand \param {\theta}
+#+TAGS: activity advanced definition exercise homework project example theory code
+#+OPTIONS:   H:3
+* Probability background
+#+TOC: headlines [currentsection]
+** Probability facts
+*** Axioms of probability
+- $P(\Omega) = 1$
+- If $A \cap B = \emptyset$ then $P(A \cup B) = P(A) + P(B)$.
+- $P(\emptyset) = 0$.
+*** Marginalisation
+If $A_1, \ldots, A_n$ are a partition of $\Omega$
+\[
+P(B) = \sum_{i = 1}^n P(B \cap A_i).
+\]
+** Random variables and expectation
+*** Random variables
+A random variable $f : \Omega \to \Reals$ is a real-value function measurable with respect to the underlying probability measure $P$
+**** The distribution of $f$
+The probability that $f$ lies in some subset $A \subset \Reals$ is
+\[
+P_f(A) \defn P(\{\omega \in \Omega : f(\omega) \in A\}).
+\]
+
+*** Expectation
+For any random variable $f: \Omega \to \Reals$, the expectation with respect to a probability measure $P$ is
+\[
+\E_P(f) = \sum_{\omega \in \Omega} f(\omega) P(\omega).
+\]
+** Conditional probability and inference
+*** Conditional probability
+The conditional probability of an event $A$ given an event $B$ is defined as 
+\[
+P(A | B) = \frac{P(A \cap B)}{P(B)}
+\]
+*** Conditional expectation
+The conditional expectation of a random variable $f: \Omega \to \Reals$, with respect to a probability measure $P$ conditioned on some event $B$ is simply
+\[
+\E_P(f | B) = \sum_{\omega \in \Omega} f(\omega) P(\omega | B).
+\]
+
+*** The theorem of Bayes
+**** Bayes's theorem
+    :PROPERTIES:
+    :BEAMER_env: theorem
+    :END:
+\[
+P(A | B) = \frac{P(B | A)}{P(B)} 
+\]
+#+BEAMER: \pause
+
+**** The general case
+If $A_1, \ldots, A_n$ are a partition of $\Omega$, meaning that they
+are mutually exclusive events (i.e. $A_i \cap A_j = \emptyset$ for $i
+\neq j$) such that one of them must be true (i.e. $\bigcup_{i=1}^n A_i =
+\Omega$), then
+\[
+P(B) = \sum_{i=1}^n P(B | A_i) P(A_i)
+\]
+and 
+\[
+P(A_j | B) = \frac{P(B | A_j)}{\sum_{i=1}^n P(B | A_i) P(A_i)}
+\]
+
+* Linear algebra
+** Vector space
+** Linear operators and matrices
+* Calculus
+** Univariate caclulus
+*** Derivative 
+The derivative of a single-argument function is defined as:
+\[
+\frac{d}{dx} f(x) = \lim_{\epsilon \to 0} \frac{f(x + \epsilon) - f(x)}{\epsilon}.
+\]
+$f$ must be absolutely continuous at $x$ for the derivative to exist.
+
+*** Riemann integral
+If $\frac{d}{dx} F = f$ then its integral from $a$ to $b$ is:
+\[
+\int_a^b f(x) dx = F(b) - F(a),
+\]
+
+*** Fundamental theorem of calculus
+\[
+F(x) = \int_a^x f(x) dx \qquad \Rightarrow \qquad f(x) = \frac{d}{dx} F(x).
+\]
+
+** Multivariate calculus
+
+*** Multivariate functions
+Consider a function $f: \Reals^n \to \Reals$. 
+- Any $x \in \Reals^n$ is decomposed into $x = (x_1, \ldots, x_n)$, with each $x_i \in \Reals^n$.
+- We write $f(x)$ instead of $f(x_1, \ldots, x_n)$.
+
+*** Partial derivative
+The partial derivative of $f$ with respect to its \(i\)-th argument is:
+\[
+\frac{\partial}{\partial x_i} f(x)
+\]
+is the derivative of the function $f_i$ where all terms other than $x_i$ are held constant.
+
+*** Gradient
+The gradient of $f$ with respect to all its arguments is the column vector of partial derivatives
+\[
+\nabla_x f(x) = 
+\left(
+\frac{\partial}{\partial x_1} f(x)
+\cdots
+\frac{\partial}{\partial x_i} f(x)
+\cdots
+\frac{\partial}{\partial x_n} f(x)
+\right)^\top
+\]
