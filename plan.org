@@ -80,9 +80,18 @@
   - EndFor
 - Return $y^* = y_{t^*}$
 **** Classification
-$y_t  \in [m] \equiv \{1, \ldots, m\}$
+     $y_t  \in [m] \equiv \{1, \ldots, m\}$
 **** Regression
 $y_t  \in \Reals^m$
+
+*** Training and overfitting
+**** Training data
+- $D = ((x_t, y_t) : t = 1, \ldots, T)$.
+- $x_t \in X$
+- $y_t \in \Reals^m$.
+**** The wrong objective
+- What is the 
+
 
 *** Classification
 **** The classifier as a decision rule
@@ -101,7 +110,8 @@ U(\pi, P) \defn \int_X \sum_{y=1}^m dP(x, y) \sum_{a=1}^m \pi(y | x)
 U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
 \]
 
-*** Regressio 
+
+*** Regression
 
 
 
@@ -117,13 +127,6 @@ U(\pi, P) \defn - \int_X \sum_{y=1}^m dP(x, y) \sum_{a=1}^m \pi(a | x)
 
 
 
-*** Training and overfitting
-**** Training data
-- $D = ((x_t, y_t) : t = 1, \ldots, T)$.
-- $x_t \in X$
-- $y_t \in \Reals^m$.
-**** The wrong objective
-When we are optimising the decision rule on the training data $P$, we can generate $a$
 
 
 ** Linear neural networks
