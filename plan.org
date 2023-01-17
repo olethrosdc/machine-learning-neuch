@@ -13,8 +13,8 @@
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 
-* The problems of Machine Learning (2 weeks)
-#+TOC: headlines [currentsection]
+* The problems of Machine Learning (1 weeks)
+#+TOC: headlines [currentsection,hideothersubsections]
 ** Models, hypotheses
 *** Data collection
 - Why do we need data?
@@ -53,7 +53,7 @@
 
 
 * Learning as Optimisation (4 weeks)
-#+TOC: headlines [currentsection]
+#+TOC: headlines [currentsection,hideothersubsections]]
 ** Objective functions
 *** Supervised learning objectives
 **** Classification
@@ -68,6 +68,7 @@
 *** Reinforcement learning objectives
 - Maximise total reward
 
+
 ** $k$ Nearest Neighbours
 *** The Nearest Neighbour algorithm
 **** Pseudocode
@@ -78,6 +79,52 @@
     - If $d(x_t) < D$: $D = d(x_t), t^* = t$.
   - EndFor
 - Return $y^* = y_{t^*}$
+**** Classification
+$y_t  \in [m] \equiv \{1, \ldots, m\}$
+**** Regression
+$y_t  \in \Reals^m$
+
+*** Classification
+**** The classifier as a decision rule
+A decision rule $\pi(a | x)$ generates a *decision* $a \in [m]$. It is the conditional probability of $a$ given $x$.
+
+**** The accuracy of a decision rule
+If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
+under the distribution $P$ is the probability it predicts correctly
+\[
+U(\pi, P) \defn \int_X \sum_{y=1}^m dP(x, y) \sum_{a=1}^m \pi(y | x)
+\]
+
+
+**** The accuracy on the training set
+\[
+U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
+\]
+
+*** Regressio 
+
+
+
+**** The regressor as a decision rule
+A decision rule $\pi(a | x)$ generates a *decision* $a \in \Reals^m$. It is the conditional density of $a$ given $x$.
+
+**** The accuracy of a regressor
+If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
+under the distribution $P$ is the probability it predicts correctly
+\[
+U(\pi, P) \defn - \int_X \sum_{y=1}^m dP(x, y) \sum_{a=1}^m \pi(a | x)
+\]
+
+
+
+*** Training and overfitting
+**** Training data
+- $D = ((x_t, y_t) : t = 1, \ldots, T)$.
+- $x_t \in X$
+- $y_t \in \Reals^m$.
+**** The wrong objective
+When we are optimising the decision rule on the training data $P$, we can generate $a$
+
 
 ** Linear neural networks
 *** Simple linear regression
@@ -101,7 +148,7 @@ f_\param(x_t) = \param^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
 ** Multi-layer neural networks
 * Learning as Probabilistic Inference (4 weeks)
 ** Probabilistic Models
-#+TOC: headlines [currentsection]
+#+TOC: headlines [currentsection,hideothersubsections]
 * Reinforcement Learning (2 weeks)
-#+TOC: headlines [currentsection]
+#+TOC: headlines [currentsection,hideothersubsections]
 
