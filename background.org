@@ -73,9 +73,54 @@ and
 P(A_j | B) = \frac{P(B | A_j)}{\sum_{i=1}^n P(B | A_i) P(A_i)}
 \]
 
+*** Independence
+**** Independence
+$A, B$ are independent iff $P(A \cap B) = P(A) P(B)$.
+**** Conditional independence
+ $A, B$ are conditionally independent given $C$ iff $P(A \cap B | C) = P(A | C) P(B | C)$.
+**** Uncorrelated random variables
+If $x,y : \Omega \to \Reals$ are two random variables, they are *uncorrelated* under $P$ iff $\E_P[xy] = \E_P[x] \E_P[y]$.
+
 * Linear algebra
-** Vector space
+** Vectors
+*** Vector space $F$ axioms
+- $(x + y) + z = x + (y + z)$, for all $x, y, z \in F$.
+- $x + y = y + x$, for all $x, y \in F$.
+- There is a zero element $0 \in F$ such that $x + 0 = 0$ for all $x \in F$.
+- For all $x \in F$, there is an element $-x \in F$ so that $x + (-x) = 0$.
+- $a(x + y) = ax + ay$, For any $a \in \Reals$, $x, y \in F$.
+- $(a+b)x = ax + bx$, For any $a,b \in \Reals$, $x \in F$.
+*** The real vector space $F = \Reals^d$
+For $a \in \Reals$ and $x, y \in F$, 
+- $x = (x_1, \ldots, x_d)$, $y = (y_1, \ldots, y_d)$
+- $x + y = (x_1 + y_1, \ldots, x_d + y_d)$.
+- $ax = (a x_1, \ldots, a x_d)$.
+- $-x = (-1) x$.
+- $0 = (0, \ldots, 0)$
+
 ** Linear operators and matrices
+*** Linear operators
+**** Linear operator $A : F \to G$
+- $A(x + y) = Ax + Ay$
+- $(A + B)x = Ax + Bx$.
+*** Matrices in $\Reals^{n \times m}$.
+A matrix $A \in \Reals^{n \times m}$ is a tabular array
+\[
+A=
+\begin{bmatrix}
+A_{1,1} & \cdots & A_{1, m}\\
+\vdots  & \ddots & \vdots \\
+A_{n,1} & \cdots & A_{n, m}\\
+\matrix{}
+\end{bmatrix}
+\]
+
+*** Matrix-vector multiplication
+All vectors $x \in \Reals^m$ are equivalent to matrices in $\Reals^{m \times 1}$.
+\[
+Ax = \left(\sum_{j=1}^m A_{i,j} x_j : i = 1, \ldots, m \right)
+\]
+
 * Calculus
 ** Univariate caclulus
 *** Derivative 
