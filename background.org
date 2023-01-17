@@ -102,24 +102,43 @@ For $a \in \Reals$ and $x, y \in F$,
 *** Linear operators
 **** Linear operator $A : F \to G$
 - $A(x + y) = Ax + Ay$
-- $(A + B)x = Ax + Bx$.
-*** Matrices in $\Reals^{n \times m}$.
+- $A(ax) = a(Ax)$.
+**** Matrices in $\Reals^{n \times m}$.
 A matrix $A \in \Reals^{n \times m}$ is a tabular array
-\[
-A=
-\begin{bmatrix}
+\(A= \begin{bmatrix}
 A_{1,1} & \cdots & A_{1, m}\\
 \vdots  & \ddots & \vdots \\
-A_{n,1} & \cdots & A_{n, m}\\
+A_{n,1} & \cdots & A_{n, m}
 \matrix{}
-\end{bmatrix}
-\]
+\end{bmatrix}\)
+**** Matrix multiplication
+For $A \in \Reals^{n \times d}$, $B \in \Reals^{d \times m}$, the
+$ij$-th element of the result of the multiplication $AB$ is
+ \[
+ (AB)_{i,j} = \sum_{k=1}^d A_{i,k} B_{k,j}.
+ \]
 
-*** Matrix-vector multiplication
-All vectors $x \in \Reals^m$ are equivalent to matrices in $\Reals^{m \times 1}$.
+**** Matrix-vector multiplication
+A matrix $A \in \Reals^{n \to m}$ defines the following linear operator $A : \Reals^m \to \Reals^n$.
 \[
-Ax = \left(\sum_{j=1}^m A_{i,j} x_j : i = 1, \ldots, m \right)
+Ax = \left(\sum_{j=1}^m A_{i,j} x_j : i = 1, \ldots, n \right)
 \]
+All vectors $x \in \Reals^m$ are equivalent to matrices in $\Reals^{m \times 1}$.
+A matrix $A \in \Reals^{n \to m}$ defines the following linear operator
+*** Matrix inverses
+**** The identity matrix $I \in \Reals^{n \times n}$
+- For this matrix, $I_{i,i} = 1$ and $I_{i,j} = 0$.
+- $Ix = x$ and $IA = A$.
+
+**** The inverse of a matrix $A \in \Reals^{n \times n}$
+$A^{-1}$ is called the inverse of $A$ if
+- $A A^{-1} = I$.
+- or equivalently $A^{-1} A = I$.
+
+**** The pseudo-inverse of a matrix $A \in \Reals^{n \times m}$
+-$\tilde{A}^{-1}$ is called the *left pseudoinverse* of $A$ if $\tilde{A}^{-1} A = I.
+-$\tilde{A}^{-1}$ is called the *right pseudoinverse* of $A$ if $A \tilde{A}^{-1} = I.
+
 
 * Calculus
 ** Univariate caclulus
