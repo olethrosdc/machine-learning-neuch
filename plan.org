@@ -73,14 +73,29 @@
 *** The Nearest Neighbour algorithm
 **** Pseudocode
 - Input: Data $(x_t, y_t)_{t=1}^T$, test point $x$, distance $d$
-- Find $t^* \in \argmin_{t} d(x_t, x)$:
-  - $D = \infty$, $t^* = \emptyset$.
-  - For $t \in 1, \ldots, T$:
-    - If $d(x_t) < D$: $D = d(x_t), t^* = t$.
-  - EndFor
+- $t^* = \argmin_t d(x_t, x)$
 - Return $y^* = y_{t^*}$
+
 **** Classification
      $y_t  \in [m] \equiv \{1, \ldots, m\}$
+See example code
+
+**** Regression
+$y_t  \in \Reals^m$
+
+*** The k-Nearest Neighbour algorithm
+
+**** Pseudocode
+- Input: Data $(x_t, y_t)_{t=1}^T$, test point $x$, distance $d$, neighbours $k$
+- Calculate $h_t = d(x_t, x)$ for all $t$.
+- Get sorted indices $s = \texttt{argsort}(h)$ so that $d(x_{s_i}, x) \leq d(x_{s_{i+1}}, x)$ for all $i$.
+- Return $\sum_{i=1}^k y_{s_i} / k$.
+
+**** Classification
+- It is not convenient to work with discrete labels
+- We use a *one-hot encoding* vector representation $(0, \ldots, 0, 1, 0, \ldots, 0)$.
+- $y_t \in \{0,1\}^m$ with $\|y_t\|_1 = 1$, so that the class of the $t$-th example is $j$ iff $y_{t,j} = 1$.
+
 **** Regression
 $y_t  \in \Reals^m$
 
@@ -89,8 +104,20 @@ $y_t  \in \Reals^m$
 - $D = ((x_t, y_t) : t = 1, \ldots, T)$.
 - $x_t \in X$
 - $y_t \in \Reals^m$.
-**** The wrong objective
-- What is the 
+**** The optimal decision rule for $P$
+\[
+\max_\pi U(\pi, P)
+= 
+\max_\pi \int_{X \times Y} dP(x, y) \sum_a \pi(a | x) U(a,y)
+\]
+**** The optimal decision rule for $D$
+\[
+\max_\pi U(\pi, D)
+= 
+\max_\pi \sum_{(x,y) \in D)} \sum_a \pi(a | x) U(a,y)
+\]
+
+
 
 
 *** Classification

@@ -142,24 +142,37 @@ $A^{-1}$ is called the inverse of $A$ if
 
 * Calculus
 ** Univariate caclulus
-*** Derivative 
+*** Derivatives
+**** Derivative
 The derivative of a single-argument function is defined as:
 \[
 \frac{d}{dx} f(x) = \lim_{\epsilon \to 0} \frac{f(x + \epsilon) - f(x)}{\epsilon}.
 \]
 $f$ must be absolutely continuous at $x$ for the derivative to exist.
+**** Directional derivative
+**** Subdifferential
+For non-differential functions, we can sometimes define the set of all subderivatives:
+\[
+\partial{f(x)} =  [\lim_{\epsilon \to 0} \frac{f(x) - f(x - \epsilon)}{\epsilon}, \lim_{\epsilon \to 0} \frac{f(x + \epsilon) - f(x)}{\epsilon}]
+\]
 
 *** Riemann integral
-If $\frac{d}{dx} F = f$ then its integral from $a$ to $b$ is:
 \[
-\int_a^b f(x) dx = F(b) - F(a),
+\int_a^b f(x) dx = \lim_{n \to \infty} \sum_{t=1}^{n} f(x_t) \frac{b - a}{n},
+\qquad 
+x_t = a + (t-1) \cdot \frac{b - a}{n}
 \]
+
+*** Lebesgue integral
 
 *** Fundamental theorem of calculus
 \[
 F(x) = \int_a^x f(x) dx \qquad \Rightarrow \qquad f(x) = \frac{d}{dx} F(x).
 \]
-
+If $\frac{d}{dx} F = f$ then its integral from $a$ to $b$ is:
+\[
+\int_a^b f(x) dx = F(b) - F(a),
+\]
 ** Multivariate calculus
 
 *** Multivariate functions
