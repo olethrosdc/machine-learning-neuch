@@ -12,6 +12,8 @@
 #+LaTeX_HEADER: \newcommand \param {\theta}
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
+
+
 * Probability background
 #+TOC: headlines [currentsection]
 ** Probability facts
@@ -141,6 +143,16 @@ $A^{-1}$ is called the inverse of $A$ if
 
 
 * Calculus
+** Special Functions
+*** Indicator function
+\[
+\ind{A} = \begin{cases}
+1, & \textrm{$A$ is true}\\
+0, & \textrm{otherwise}
+\end{cases}
+\]
+
+
 ** Univariate caclulus
 *** Derivatives
 **** Derivative
@@ -198,4 +210,56 @@ The gradient of $f$ with respect to all its arguments is the column vector of pa
 \cdots
 \frac{\partial}{\partial x_n} f(x)
 \right)^\top
+\]
+** Norms
+*** Distances
+A distance (or metric) $d$ on a space $X$ satisfies
+- $d(x,x) = 0$
+- $d(x,y) > 0$ if $x \neq y$.
+- $d(x,z) \leq d(x,y) + d(y,z)$.
+*** Norms
+
+**** Absolute value
+For any $x \in \Reals$, $|x| = x$ if $x > 0$ and $|x| = - x$ if $x < 0$.
+
+**** $L_p$ norm
+For any vector $x \in \Reals^n$,
+\[
+\|x\|_p \defn \left(\sum_{i=1}^n |x_i|^p\right)^{1/p}
+\]
+Special cases: $L_1, L_2, L_\infty$.
+
+**** $L_1$ norm: Manhattan norm
+\[
+\|x\|_1 = \sum_{i=1}^n |x_i|
+\]
+
+**** $L_2$ norm: Euclidean norm
+\[
+\|x\|_2 = \sqrt{\left(\sum_{i=1}^n (x_i)^p\right)^{1/p}}
+\]
+
+**** $L_\infty$ norm: max norm
+\[
+\|x\|_\infty = \max_i |x_i|
+\]
+
+*** Inequalities
+
+
+**** Minkowski inequality
+**** H\"{o}lder inequality
+If $1/p + 1/q = 1$ then
+\[
+\|xy\|_1 \leq \|x\|_p \|y\|q
+\]
+
+
+
+
+** Functional analysis
+*** Lipschitz functions
+A function $f : X \to Y$ is Lipschitz with respect to some distances $d, \rho$ on $X, Y$ if
+\[
+d[f(x), f(y)] \leq \rho(x, y).
 \]
