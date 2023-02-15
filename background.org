@@ -109,7 +109,6 @@ A matrix $A \in \Reals^{n \times m}$ is a tabular array
 A_{1,1} & \cdots & A_{1, m}\\
 \vdots  & \ddots & \vdots \\
 A_{n,1} & \cdots & A_{n, m}
-\matrix{}
 \end{bmatrix}\)
 **** Matrix multiplication
 For $A \in \Reals^{n \times d}$, $B \in \Reals^{d \times m}$, the
@@ -138,7 +137,6 @@ $A^{-1}$ is called the inverse of $A$ if
 **** The pseudo-inverse of a matrix $A \in \Reals^{n \times m}$
 -$\tilde{A}^{-1}$ is called the *left pseudoinverse* of $A$ if $\tilde{A}^{-1} A = I.
 -$\tilde{A}^{-1}$ is called the *right pseudoinverse* of $A$ if $A \tilde{A}^{-1} = I.
-
 
 * Calculus
 ** Univariate caclulus
