@@ -35,21 +35,21 @@
 - Should I go hiking tomorrow?
 - Should I buy some bitcoins?
 - Should I fold, call, or raise in my poker game?
+- How can I get a spaceship to orbit the moon?
 
 *** Learning from data
 **** Unsupervised learning
 - Given data $x_1, \ldots, x_T$.
-- How is the data generated?
+- Learn about the data-generating process.
 
 **** Supervised learning
 - Given data $(x_1, y_1), \ldots, (x_T, y_T)$
-- Learn about the relationship between $x_t$ and $y_t$
+- Learn about the relationship between $x_t$ and $y_t$.
 
 **** Reinforcement learning
 - No data is given: the agent acts to obtain data.
 - Learn to act in an *unknown* world through interaction and reward
   feedback.
-
 
 * Learning as Optimisation (4 weeks)
 #+TOC: headlines [currentsection,hideothersubsections]]
@@ -107,6 +107,11 @@ $y_t  \in \Reals^m$
 - $D = ((x_t, y_t) : t = 1, \ldots, T)$.
 - $x_t \in X$
 - $y_t \in \Reals^m$.
+**** Assumption: The data is generated i.i.d.
+- $(x_t, y_t) \sim P$ for all $t$ (identical)
+- $D \sim P^T$ (independent)
+That is, if you know $P$, then knowing $(x_t, y_t)$ gives you no information about $(x_k, y_k)$.
+
 **** The optimal decision rule for $P$
 \[
 \max_\pi U(\pi, P)

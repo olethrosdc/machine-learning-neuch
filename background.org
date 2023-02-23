@@ -15,12 +15,16 @@
 * Probability background
 #+TOC: headlines [currentsection]
 ** Probability facts
-*** Axioms of probability
+*** Probability fundamentals
+**** Probability measure $P$
+- Defined on a universe $\Omega$
+- $P : \Sigma \to [0,1]$ is a function of subsets of $\Omega$.
+- A subset $A \subset \Omega$ is an *event* and $P$ measures its likelihood.
+**** Axioms of probability
 - $P(\Omega) = 1$
-- If $A \cap B = \emptyset$ then $P(A \cup B) = P(A) + P(B)$.
-- $P(\emptyset) = 0$.
-*** Marginalisation
-If $A_1, \ldots, A_n$ are a partition of $\Omega$
+- For $A, B \subset \Omega$, if $A \cap B = \emptyset$ then $P(A \cup B) = P(A) + P(B)$.
+**** Marginalisation
+If $A_1, \ldots, A_n \subset \Omega$ are a partition of $\Omega$
 \[
 P(B) = \sum_{i = 1}^n P(B \cap A_i).
 \]
@@ -74,12 +78,18 @@ P(A_j | B) = \frac{P(B | A_j)}{\sum_{i=1}^n P(B | A_i) P(A_i)}
 \]
 
 *** Independence
-**** Independence
+**** Independent events
 $A, B$ are independent iff $P(A \cap B) = P(A) P(B)$.
 **** Conditional independence
  $A, B$ are conditionally independent given $C$ iff $P(A \cap B | C) = P(A | C) P(B | C)$.
 **** Uncorrelated random variables
 If $x,y : \Omega \to \Reals$ are two random variables, they are *uncorrelated* under $P$ iff $\E_P[xy] = \E_P[x] \E_P[y]$.
+**** Independent random variables
+A sequence $x_t$ of r.v.s distributed according to $P_t$ is independent if
+$(x_1, \ldots, x_t, \ldots, x_T) \sim \prod_{t=1}^T P_t$.
+**** IID (Independent and Identically Distributed) random variables
+A sequence $x_t$ of r.v.s is IID if
+$(x_1, \ldots, x_t, \ldots, x_T) \sim P^T$.
 
 * Linear algebra
 ** Vectors
@@ -151,7 +161,6 @@ The derivative of a single-argument function is defined as:
 \frac{d}{dx} f(x) = \lim_{\epsilon \to 0} \frac{f(x + \epsilon) - f(x)}{\epsilon}.
 \]
 $f$ must be absolutely continuous at $x$ for the derivative to exist.
-**** Directional derivative
 **** Subdifferential
 For non-differential functions, we can sometimes define the set of all subderivatives:
 \[
@@ -188,11 +197,15 @@ If $\frac{d}{dx} F = f$ then its integral from $a$ to $b$ is:
 - Any $x \in \Reals^n$ is $x = (x_1, \ldots, x_n)$, with $x_i \in \Reals$.
 - We write $f(x)$ instead of $f(x_1, \ldots, x_n)$.
 
+**** Multivariate functions  $f: \Reals^n \to \Reals^m$. 
+- If $y = f(x)$ then $y_i$ is the $i$-th component of $y \in \Reals^m$.
+- Can be seen as $m$ functions $f_i: \Reals^n \to \Reals$, with $y_i = f_i(x)$.
+
+*** Derivatives in many dimensions
+    
 **** Partial derivative
 The partial derivative of $f$ with respect to its \(i\)-th argument is:
-\[
-\frac{\partial}{\partial x_i} f(x),
-\]
+$\frac{\partial}{\partial x_i} f(x)$,
 where we see all $x_j$ with $j \neq i$ as fixed.
 
 **** Gradient of $f$
@@ -207,3 +220,8 @@ This is the vector of all its partial derivatives:
 \frac{\partial}{\partial x_n} f(x)
 \right)^\top
 \]
+**** Directional derivative
+\[
+D_\delta f(x) = \lim_{\epsilon \to 0} \frac{f(x + \epsilon \delta) - f(x)}{\epsilon}.
+\]
+
