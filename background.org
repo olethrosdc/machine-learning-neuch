@@ -12,8 +12,6 @@
 #+LaTeX_HEADER: \newcommand \param {\theta}
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
-
-
 * Probability background
 #+TOC: headlines [currentsection]
 ** Probability facts
@@ -111,25 +109,27 @@ A matrix $A \in \Reals^{n \times m}$ is a tabular array
 A_{1,1} & \cdots & A_{1, m}\\
 \vdots  & \ddots & \vdots \\
 A_{n,1} & \cdots & A_{n, m}
-\matrix{}
 \end{bmatrix}\)
+Matrices can be seen as linear operators when used to multiply vectors.
+*** Multiplication operators
 **** Matrix multiplication
 For $A \in \Reals^{n \times d}$, $B \in \Reals^{d \times m}$, the
-$ij$-th element of the result of the multiplication $AB$ is
+\(ij\)-th element of the result of the multiplication $AB$ is
  \[
  (AB)_{i,j} = \sum_{k=1}^d A_{i,k} B_{k,j}.
  \]
-
+so that $AB \in \Reals^{n \times m}$.
 **** Matrix-vector multiplication
-A matrix $A \in \Reals^{n \to m}$ defines the following linear operator $A : \Reals^m \to \Reals^n$.
+A matrix $A \in \Reals^{n \times m}$ defines the following linear operator $A : \Reals^m \to \Reals^n$.
 \[
 Ax = \left(\sum_{j=1}^m A_{i,j} x_j : i = 1, \ldots, n \right)
 \]
 All vectors $x \in \Reals^m$ are equivalent to matrices in $\Reals^{m \times 1}$.
-A matrix $A \in \Reals^{n \to m}$ defines the following linear operator
+
+
 *** Matrix inverses
 **** The identity matrix $I \in \Reals^{n \times n}$
-- For this matrix, $I_{i,i} = 1$ and $I_{i,j} = 0$.
+- For this matrix, $I_{i,i} = 1$ and $I_{i,j} = 0$ when $j \neq i$.
 - $Ix = x$ and $IA = A$.
 
 **** The inverse of a matrix $A \in \Reals^{n \times n}$
@@ -138,21 +138,12 @@ $A^{-1}$ is called the inverse of $A$ if
 - or equivalently $A^{-1} A = I$.
 
 **** The pseudo-inverse of a matrix $A \in \Reals^{n \times m}$
--$\tilde{A}^{-1}$ is called the *left pseudoinverse* of $A$ if $\tilde{A}^{-1} A = I.
--$\tilde{A}^{-1}$ is called the *right pseudoinverse* of $A$ if $A \tilde{A}^{-1} = I.
+- $\tilde{A}^{-1}$ is called the *left pseudoinverse* of $A$ if $\tilde{A}^{-1} A = I$.
+- $\tilde{A}^{-1}$ is called the *right pseudoinverse* of $A$ if $A \tilde{A}^{-1} = I$.
+
 
 
 * Calculus
-** Special Functions
-*** Indicator function
-\[
-\ind{A} = \begin{cases}
-1, & \textrm{$A$ is true}\\
-0, & \textrm{otherwise}
-\end{cases}
-\]
-
-
 ** Univariate caclulus
 *** Derivatives
 **** Derivative
@@ -168,39 +159,45 @@ For non-differential functions, we can sometimes define the set of all subderiva
 \partial{f(x)} =  [\lim_{\epsilon \to 0} \frac{f(x) - f(x - \epsilon)}{\epsilon}, \lim_{\epsilon \to 0} \frac{f(x + \epsilon) - f(x)}{\epsilon}]
 \]
 
-*** Riemann integral
+*** Integrals
+**** Riemann integral
+The Reimann integral is obtained by taking a horizontal discretisation of a function to the limit:
 \[
 \int_a^b f(x) dx = \lim_{n \to \infty} \sum_{t=1}^{n} f(x_t) \frac{b - a}{n},
 \qquad 
 x_t = a + (t-1) \cdot \frac{b - a}{n}
 \]
-
-*** Lebesgue integral
+**** Lebesgue integral
+The Reimann integral is obtained by taking a vertical discretisation of a function to the limit.
+Let $\lambda$ be the Lebesgue measure (i.e. area) of a set. Then:
+\[
+\int_X f(x) d\lambda(x) = \lim_{n \to \infty} \sum_{t=1}^n y_t \lambda(S_t),
+\]
+$S_t = \{x : f(x) \in (y_{t-1}, y_t\}$, $y_0 = -\infty$, $y_n = \sup_x f(x)$.
 
 *** Fundamental theorem of calculus
 \[
-F(x) = \int_a^x f(x) dx \qquad \Rightarrow \qquad f(x) = \frac{d}{dx} F(x).
+f(x) = \frac{d}{dx} \int_a^x f(t) dt
 \]
 If $\frac{d}{dx} F = f$ then its integral from $a$ to $b$ is:
 \[
 \int_a^b f(x) dx = F(b) - F(a),
 \]
-** Multivariate calculus
+*** Multivariate calculus
 
-*** Multivariate functions
-Consider a function $f: \Reals^n \to \Reals$. 
-- Any $x \in \Reals^n$ is decomposed into $x = (x_1, \ldots, x_n)$, with each $x_i \in \Reals^n$.
+**** Multivariate functions  $f: \Reals^n \to \Reals$. 
+- Any $x \in \Reals^n$ is $x = (x_1, \ldots, x_n)$, with $x_i \in \Reals$.
 - We write $f(x)$ instead of $f(x_1, \ldots, x_n)$.
 
-*** Partial derivative
+**** Partial derivative
 The partial derivative of $f$ with respect to its \(i\)-th argument is:
 \[
-\frac{\partial}{\partial x_i} f(x)
+\frac{\partial}{\partial x_i} f(x),
 \]
-is the derivative of the function $f_i$ where all terms other than $x_i$ are held constant.
+where we see all $x_j$ with $j \neq i$ as fixed.
 
-*** Gradient
-The gradient of $f$ with respect to all its arguments is the column vector of partial derivatives
+**** Gradient of $f$
+This is the vector of all its partial derivatives:
 \[
 \nabla_x f(x) = 
 \left(
@@ -210,56 +207,4 @@ The gradient of $f$ with respect to all its arguments is the column vector of pa
 \cdots
 \frac{\partial}{\partial x_n} f(x)
 \right)^\top
-\]
-** Norms
-*** Distances
-A distance (or metric) $d$ on a space $X$ satisfies
-- $d(x,x) = 0$
-- $d(x,y) > 0$ if $x \neq y$.
-- $d(x,z) \leq d(x,y) + d(y,z)$.
-*** Norms
-
-**** Absolute value
-For any $x \in \Reals$, $|x| = x$ if $x > 0$ and $|x| = - x$ if $x < 0$.
-
-**** $L_p$ norm
-For any vector $x \in \Reals^n$,
-\[
-\|x\|_p \defn \left(\sum_{i=1}^n |x_i|^p\right)^{1/p}
-\]
-Special cases: $L_1, L_2, L_\infty$.
-
-**** $L_1$ norm: Manhattan norm
-\[
-\|x\|_1 = \sum_{i=1}^n |x_i|
-\]
-
-**** $L_2$ norm: Euclidean norm
-\[
-\|x\|_2 = \sqrt{\left(\sum_{i=1}^n (x_i)^p\right)^{1/p}}
-\]
-
-**** $L_\infty$ norm: max norm
-\[
-\|x\|_\infty = \max_i |x_i|
-\]
-
-*** Inequalities
-
-
-**** Minkowski inequality
-**** H\"{o}lder inequality
-If $1/p + 1/q = 1$ then
-\[
-\|xy\|_1 \leq \|x\|_p \|y\|q
-\]
-
-
-
-
-** Functional analysis
-*** Lipschitz functions
-A function $f : X \to Y$ is Lipschitz with respect to some distances $d, \rho$ on $X, Y$ if
-\[
-d[f(x), f(y)] \leq \rho(x, y).
 \]

@@ -51,14 +51,17 @@
   feedback.
 
 
-
 * Learning as Optimisation (4 weeks)
 #+TOC: headlines [currentsection,hideothersubsections]]
 ** Objective functions
 *** Supervised learning objectives
+- Data $(x_t, y_t)$, $x_t \in X$, $y_t \in Y$, $t \in [T]$.
+- i.i.d assumption: $(x_t, y_t) \sim P$ for all $t$.
+- Supervised decision rule $\pol(a_t | x_t)$
 **** Classification
-- Predict the labels correctly
+- Predict the labels correctly, i.e. $a_t = y_t$.
 - Have an appropriate confidence level
+
 **** Regression
 - Predict the mean correctly
 - Have an appropriate variance around the mean
@@ -68,7 +71,7 @@
 *** Reinforcement learning objectives
 - Maximise total reward
 
-
+  
 ** $k$ Nearest Neighbours
 *** The Nearest Neighbour algorithm
 **** Pseudocode
@@ -118,17 +121,19 @@ $y_t  \in \Reals^m$
 \]
 
 
-
-
 *** Classification
 **** The classifier as a decision rule
 A decision rule $\pi(a | x)$ generates a *decision* $a \in [m]$. It is the conditional probability of $a$ given $x$.
 
-**** The accuracy of a decision rule
-If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
-under the distribution $P$ is the probability it predicts correctly
+**** The accuracy of a single decision
 \[
-U(\pi, P) \defn \int_X \sum_{y=1}^m dP(x, y) \sum_{a=1}^m \pi(y | x)
+U(a_t, y_t) = \ind{a_t = y_t}
+ = \begin{cases}
+1, & \textrm{if $a_t = y_t$}
+0, & \textrm{otherwise}
+\]
+\[
+U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
 \]
 
 
@@ -136,6 +141,16 @@ U(\pi, P) \defn \int_X \sum_{y=1}^m dP(x, y) \sum_{a=1}^m \pi(y | x)
 \[
 U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
 \]
+
+**** The accuracy of a decision rule
+If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
+under the distribution $P$ is the probability it predicts correctly
+\[
+U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \sum_{a=1}^m \pi(y | x)
+\]
+
+
+
 
 
 *** Regression
@@ -163,7 +178,7 @@ U(\pi, P) \defn - \int_X \sum_{y=1}^m dP(x, y) \sum_{a=1}^m \pi(a | x)
 - Input $x_t \in \Reals^n$
 - Output $y_t \in \Reals$.
 
-**** Parametrised function
+**** Predicting the mean
 - Parameters $\param \in \Reals^n$
 - Function $f_\param : \Reals^n \to \Reals$, defined as
 \[
@@ -172,12 +187,26 @@ f_\param(x_t) = \param^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
 
 **** Optimisation goal: Miniminise mean-squared error.
 \[
-\min_\param \sum_t [y_t - f_\param(x_t)]^2
+\min_\param \sum_{t=1}^T [y_t - \pi_\param(x_t)]^2
 \]
 
+*** Gradient descent algorithm
+\[
+\min_\param \sum_{t=1}^T [y_t
+\]
 ** Multi-layer neural networks
 * Learning as Probabilistic Inference (4 weeks)
 ** Probabilistic Models
+** Discriminative modelling
+*** Classification
+**** Two-class classification: logistic regression
+
+
+*** Regression
+** Generative modelling
+*** Classification 
+*** Regression
+
 #+TOC: headlines [currentsection,hideothersubsections]
 * Reinforcement Learning (2 weeks)
 #+TOC: headlines [currentsection,hideothersubsections]
