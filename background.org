@@ -14,6 +14,39 @@
 #+OPTIONS:   H:3
 * Probability background
 #+TOC: headlines [currentsection]
+** Logic and Set theory
+*** Logic
+**** Statements
+- A statement $A$ may be true or false
+
+**** Unary operators
+- negation: $\neg A$ is true if $A$ is false (and vice-versa).
+
+**** Binary operators
+- or: $A \vee B$ ($A$ or $B$) is true if either $A$ or $B$ are true.
+- and: $A \wedge B$ is true if both $A$ and $B$ are true.
+- implies: $A \Rightarrow B$: is false if $A$ is true and $B$ is false.
+- iff: $A \Leftrightarrow B$: is true if $A,B$ have equal truth values.
+
+**** Operator precedence
+$\neg, \wedge, \vee, \Rightarrow, \Leftrightarrow$
+
+
+*** Set theory
+- First, consider some universal set $\Omega$.
+- A set $A$ is a collection of points $x$ in $\Omega$.
+- $\{x \in \Omega : f(x)\}$: the set of points in $\Omega$ with the property that $f(x)$ is true.
+
+**** Unary operators
+- $\neg A =  \{x \in \Omega : x \notin A\}$.
+**** Binary operators
+- $A \cup B$ if $\{x \in \Omega : x \in A \vee x \in B\}$ - (c.f. $A \vee B$)
+- $A \cap B$ if $\{x \in \Omega : x \in A \wedge x \in B\}$ - (c.f. $A \wedge B$)
+**** Binary relations
+- $A \subset B$ if $x \in A \Rightarrow x \in B$ - (c.f. $A \implies B$)
+- $A = B$ if $x \in A \Leftrightarrow x \in B$ - (c.f. $A \Leftrightarrow B$)
+
+
 ** Probability facts
 *** Probability fundamentals
 **** Probability measure $P$
@@ -44,10 +77,24 @@ For any random variable $f: \Omega \to \Reals$, the expectation with respect to 
 \]
 ** Conditional probability and inference
 *** Conditional probability
+**** Conditional probability
+    :PROPERTIES:
+    :BEAMER_env: definition
+    :END:
 The conditional probability of an event $A$ given an event $B$ is defined as 
 \[
-P(A | B) = \frac{P(A \cap B)}{P(B)}
+P(A | B) \defn \frac{P(A \cap B)}{P(B)}
 \]
+The above definition requires $P(B)$ to exist and be positive.
+
+**** Conditional probabilities as a collection of probabilities
+More generally, we can define conditional probabilities as simply a
+collection of probability distributions:
+\[
+\cset{P_\param(A)}{\theta \in \Param},
+\]
+where $\Param$ is an arbitrary set. 
+
 *** Conditional expectation
 The conditional expectation of a random variable $f: \Omega \to \Reals$, with respect to a probability measure $P$ conditioned on some event $B$ is simply
 \[
@@ -191,14 +238,15 @@ If $\frac{d}{dx} F = f$ then its integral from $a$ to $b$ is:
 \[
 \int_a^b f(x) dx = F(b) - F(a),
 \]
-*** Multivariate calculus
-
-**** Multivariate functions  $f: \Reals^n \to \Reals$. 
+** Multivariate calculus
+*** Multivariate Functions
+We consider functions operating in multi-dimensional Euclidean spaces.
+**** $f: \Reals^n \to \Reals$. 
 - Any $x \in \Reals^n$ is $x = (x_1, \ldots, x_n)$, with $x_i \in \Reals$.
 - We write $f(x)$ instead of $f(x_1, \ldots, x_n)$.
 
-**** Multivariate functions  $f: \Reals^n \to \Reals^m$. 
-- If $y = f(x)$ then $y_i$ is the $i$-th component of $y \in \Reals^m$.
+**** $f: \Reals^n \to \Reals^m$. 
+- If $y = f(x)$ then $y_i$ is the \(i\)-th component of $y \in \Reals^m$.
 - Can be seen as $m$ functions $f_i: \Reals^n \to \Reals$, with $y_i = f_i(x)$.
 
 *** Derivatives in many dimensions

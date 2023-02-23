@@ -13,46 +13,7 @@
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 
-* The problems of Machine Learning (1 weeks)
-#+TOC: headlines [currentsection,hideothersubsections]
-** Models, hypotheses
-*** Data collection
-- Why do we need data?
-- What data do we need?
-- How much data do we want?
-- How will we collect the data?
-*** Models from data
-**** Prediction
-- Will it rain tomorrow?
-- How much will bitcoin be worth next year?
 
-**** Inference
-- Does my poker opponent have two aces?
-- What is the mass of the moon?
-- What is the law of gravitation?
-
-**** Decision Making
-- Should I go hiking tomorrow?
-- Should I buy some bitcoins?
-- Should I fold, call, or raise in my poker game?
-- How can I get a spaceship to orbit the moon?
-
-*** Learning from data
-**** Unsupervised learning
-- Given data $x_1, \ldots, x_T$.
-- Learn about the data-generating process.
-
-**** Supervised learning
-- Given data $(x_1, y_1), \ldots, (x_T, y_T)$
-- Learn about the relationship between $x_t$ and $y_t$.
-
-**** Reinforcement learning
-- No data is given: the agent acts to obtain data.
-- Learn to act in an *unknown* world through interaction and reward
-  feedback.
-
-* Learning as Optimisation (4 weeks)
-#+TOC: headlines [currentsection,hideothersubsections]]
 ** Objective functions
 *** Supervised learning objectives
 - Data $(x_t, y_t)$, $x_t \in X$, $y_t \in Y$, $t \in [T]$.
@@ -124,7 +85,6 @@ That is, if you know $P$, then knowing $(x_t, y_t)$ gives you no information abo
 \max_\pi \sum_{(x,y) \in D)} \sum_a \pi(a | x) U(a,y)
 \]
 
-
 *** Classification
 **** The classifier as a decision rule
 A decision rule $\pi(a | x)$ generates a *decision* $a \in [m]$. It is
@@ -138,8 +98,9 @@ is undefined without a given $x$. So it's better to
 \[
 U(a_t, y_t) = \ind{a_t = y_t}
  = \begin{cases}
-1, & \textrm{if $a_t = y_t$}
+1, & \textrm{if $a_t = y_t$}\\
 0, & \textrm{otherwise}
+\end{cases}
 \]
 \[
 U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
@@ -159,13 +120,14 @@ U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \sum_{a=1}^m \pi(y | x)
 \]
 
 
-
 *** Regression
 
 
 
 **** The regressor as a decision rule
-A decision rule $\pi(a | x)$ generates a *decision* $a \in \Reals^m$. It is the conditional density of $a$ given $x$.
+
+A decision rule $\pi(a | x)$ generates a *decision* $a \in
+\Reals^m$. It is the conditional density of $a$ given $x$.
 
 **** The accuracy of a regressor
 If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
@@ -174,50 +136,6 @@ under the distribution $P$ is the probability it predicts correctly
 U(\pi, P) \defn - \int_X \sum_{y=1}^m dP(x, y) \sum_{a=1}^m \pi(a | x)
 \]
 
-
-
-
-** Linear neural networks
-*** Simple linear regression
-**** Input and output
-- Data pairs $(x_t, y_t)$, $t = 1, \ldots, T$.
-- Input $x_t \in \Reals^n$
-- Output $y_t \in \Reals$.
-
-**** Predicting the mean
-- Parameters $\param \in \Reals^n$
-- Function $f_\param : \Reals^n \to \Reals$, defined as
-\[
-f_\param(x_t) = \param^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
-\]
-
-**** Optimisation goal: Miniminise mean-squared error.
-\[
-\min_\param \sum_{t=1}^T [y_t - \pi_\param(x_t)]^2
-\]
-
-*** Gradient descent algorithm
-\[
-\min_\param \sum_{t=1}^T [y_t
-\]
-** Multi-layer neural networks
-* Learning as Probabilistic Inference (4 weeks)
-** Probabilistic Models
-** Discriminative modelling
-*** Classification
-**** Two-class classification: logistic regression
-
-
-*** Regression
-** Generative modelling
-*** Classification 
-*** Regression
-
-#+TOC: headlines [currentsection,hideothersubsections]
-* Reinforcement Learning (2 weeks)
-#+TOC: headlines [currentsection,hideothersubsections]
-
-* Footnotes
 
 
 
