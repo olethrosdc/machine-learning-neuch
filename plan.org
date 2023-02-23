@@ -10,6 +10,7 @@
 #+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
 #+LaTeX_HEADER: \newcommand \Param {\Theta}
 #+LaTeX_HEADER: \newcommand \param {\theta}
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 
@@ -109,7 +110,6 @@ $y_t  \in \Reals^m$
 **** Assumption: The data is generated i.i.d.
 - $(x_t, y_t) \sim P$ for all $t$ (identical)
 - $D \sim P^T$ (independent)
-That is, if you know $P$, then knowing $(x_t, y_t)$ gives you no information about $(x_k, y_k)$.
 
 **** The optimal decision rule for $P$
 \[
@@ -123,7 +123,14 @@ That is, if you know $P$, then knowing $(x_t, y_t)$ gives you no information abo
 = 
 \max_\pi \sum_{(x,y) \in D)} \sum_a \pi(a | x) U(a,y)
 \]
+**** Mismatched objectives
+The $\pi^*$ maximising $U(\pi, P)$ is not the $\hat{\pi}$ maximising $U(\pi, D)$.
 
+**** Lemma
+If $|U(\pi, P) - U(\pi, D)| \leq \epsilon$ for all $\pi$ then
+\[
+U(\hat{\pi}, D) \geq U(\pi^*, P) - 2 \epsilon.
+\]
 
 *** Classification
 **** The classifier as a decision rule
@@ -138,8 +145,9 @@ is undefined without a given $x$. So it's better to
 \[
 U(a_t, y_t) = \ind{a_t = y_t}
  = \begin{cases}
-1, & \textrm{if $a_t = y_t$}
+1, & \textrm{if $a_t = y_t$}\\
 0, & \textrm{otherwise}
+\end{cases}
 \]
 \[
 U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
@@ -151,33 +159,64 @@ U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
 U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
 \]
 
-**** The accuracy of a decision rule
-If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
+**** The expected accuracy of a decision rule
+If $(x, y) \sim P$, the accuracy $U$ of a stochastic decision rule $\pi$
 under the distribution $P$ is the probability it predicts correctly
 \[
-U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \sum_{a=1}^m \pi(y | x)
+U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \pi(y | x)
+\]
+
+**** The log-accuracy
+If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
+under the distribution $P$ is 
+\[
+U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \ln \pi(y | x)
 \]
 
 
 
 *** Regression
 
-
-
 **** The regressor as a decision rule
-A decision rule $\pi(a | x)$ generates a *decision* $a \in \Reals^m$. It is the conditional density of $a$ given $x$.
 
-**** The accuracy of a regressor
+A decision rule $\pi(a | x)$ generates a *decision* $a \in \Reals^m$.
+It is the conditional density of $a$ given $x$.
+
+**** Accuracy
 If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
-under the distribution $P$ is the probability it predicts correctly
+under the distribution $P$ is:
 \[
-U(\pi, P) \defn - \int_X \sum_{y=1}^m dP(x, y) \sum_{a=1}^m \pi(a | x)
+U(\pi, P) \defn \int_X \int_Y dP(x, y) \pi(y | x).
+\]
+
+**** Mean-Squared Error
+If $(x, y) \sim P$, the mean-square error of a deterministic decision rule $\pi : X \to \Reals$
+under the distribution $P$ is:
+\[
+\int_X \sum_{y=1}^m dP(x, y) \sum_{a=1}^m \pi(a | x)
 \]
 
 
 
-
 ** Linear neural networks
+*** The perceptron algorithm
+
+*** Gradient methods example
+**** Estimate the expected value
+$x_t \sim P$ with $\E_P[x_t] = \mu$.
+**** Objective
+\[
+\min_\param \E_P[(x_t - \param)^2].
+\]
+**** Derivative
+\[
+d/d\param \E_P[(x_t - \param)^2]
+= \E_P[d/d\param(x_t - \param)^2]
+= \E_P[-(x_t - \param)]
+= \E_P[x_t] - \param.
+\]
+
+
 *** Simple linear regression
 **** Input and output
 - Data pairs $(x_t, y_t)$, $t = 1, \ldots, T$.
@@ -195,12 +234,18 @@ f_\param(x_t) = \param^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
 \[
 \min_\param \sum_{t=1}^T [y_t - \pi_\param(x_t)]^2
 \]
+**** Gradient direction
 
 *** Gradient descent algorithm
+**** Minimising a function
 \[
-\min_\param \sum_{t=1}^T [y_t
+\min_\param \
 \]
+*** Stochastic gradient descent algorithm
 ** Multi-layer neural networks
+*** Gradient Descent
+*** Stochastic Gradient Descent
+***
 * Learning as Probabilistic Inference (4 weeks)
 ** Probabilistic Models
 ** Discriminative modelling
@@ -217,7 +262,7 @@ f_\param(x_t) = \param^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
 * Reinforcement Learning (2 weeks)
 #+TOC: headlines [currentsection,hideothersubsections]
 
-* Footnotes
+
 
 
 

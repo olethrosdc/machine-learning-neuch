@@ -106,34 +106,46 @@ U(a_t, y_t) = \ind{a_t = y_t}
 U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
 \]
 
-
 **** The accuracy on the training set
 \[
 U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
 \]
 
-**** The accuracy of a decision rule
-If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
+**** The expected accuracy of a decision rule
+If $(x, y) \sim P$, the accuracy $U$ of a stochastic decision rule $\pi$
 under the distribution $P$ is the probability it predicts correctly
 \[
-U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \sum_{a=1}^m \pi(y | x)
+U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \pi(y | x)
 \]
+
+**** The log-accuracy
+If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
+under the distribution $P$ is 
+\[
+U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \ln \pi(y | x)
+\]
+
 
 
 *** Regression
 
-
-
 **** The regressor as a decision rule
 
-A decision rule $\pi(a | x)$ generates a *decision* $a \in
-\Reals^m$. It is the conditional density of $a$ given $x$.
+A decision rule $\pi(a | x)$ generates a *decision* $a \in \Reals^m$.
+It is the conditional density of $a$ given $x$.
 
-**** The accuracy of a regressor
+**** Accuracy
 If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
-under the distribution $P$ is the probability it predicts correctly
+under the distribution $P$ is:
 \[
-U(\pi, P) \defn - \int_X \sum_{y=1}^m dP(x, y) \sum_{a=1}^m \pi(a | x)
+U(\pi, P) \defn \int_X \int_Y dP(x, y) \pi(y | x).
+\]
+
+**** Mean-Squared Error
+If $(x, y) \sim P$, the mean-square error of a deterministic decision rule $\pi : X \to \Reals$
+under the distribution $P$ is:
+\[
+\int_X \sum_{y=1}^m dP(x, y) \sum_{a=1}^m \pi(a | x)
 \]
 
 
