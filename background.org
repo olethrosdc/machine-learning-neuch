@@ -142,7 +142,6 @@ $A^{-1}$ is called the inverse of $A$ if
 - $\tilde{A}^{-1}$ is called the *right pseudoinverse* of $A$ if $A \tilde{A}^{-1} = I$.
 
 
-
 * Calculus
 ** Univariate caclulus
 *** Derivatives
