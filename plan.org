@@ -14,7 +14,7 @@
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 
-* The problems of Machine Learning (1 weeks)
+* The problems of Machine Learning (1 week)
 #+TOC: headlines [currentsection,hideothersubsections]
 ** Models, hypotheses
 *** Data collection
@@ -197,7 +197,6 @@ under the distribution $P$ is:
 \]
 
 
-
 ** Linear neural networks
 *** The perceptron algorithm
 
@@ -243,22 +242,24 @@ f_\param(x_t) = \param^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
 \]
 *** Stochastic gradient descent algorithm
 ** Multi-layer neural networks
-*** Gradient Descent
-*** Stochastic Gradient Descent
-***
+*** Back-propagation
+*** Neural architectures
 * Learning as Probabilistic Inference (4 weeks)
 ** Probabilistic Models
 ** Discriminative modelling
 *** Classification
 **** Two-class classification: logistic regression
 
-
 *** Regression
 ** Generative modelling
-*** Classification 
+*** Classification
+	Modelling two classes
 *** Regression
-
 #+TOC: headlines [currentsection,hideothersubsections]
+* Sequence modelling (1 week)
+** Auto-regressive models
+** Recursive models
+
 * Reinforcement Learning (2 weeks)
 #+TOC: headlines [currentsection,hideothersubsections]
 
