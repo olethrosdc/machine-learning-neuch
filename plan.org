@@ -17,12 +17,7 @@
 * The problems of Machine Learning (1 week)
 #+TOC: headlines [currentsection,hideothersubsections]
 ** Models, hypotheses
-*** Data collection
-- Why do we need data?
-- What data do we need?
-- How much data do we want?
-- How will we collect the data?
-*** Models from data
+*** The main problems in machine learning and statistics
 **** Prediction
 - Will it rain tomorrow?
 - How much will bitcoin be worth next year?
@@ -38,11 +33,26 @@
 - Should I fold, call, or raise in my poker game?
 - How can I get a spaceship to orbit the moon?
 
+*** The need to learn from data
+**** Problem definition
+- What problem do we need to solve?
+- How can we formalise it?
+- What properties of the problem can we learn from data?
+
+**** Data collection
+- Why do we need data?
+- What data do we need?
+- How much data do we want?
+- How will we collect the data?
+
+**** Modelling and decision making
+- How will we compute something useful?
+
 *** Learning from data
 **** Unsupervised learning
 - Given data $x_1, \ldots, x_T$.
 - Learn about the data-generating process.
-
+  
 **** Supervised learning
 - Given data $(x_1, y_1), \ldots, (x_T, y_T)$
 - Learn about the relationship between $x_t$ and $y_t$.
@@ -174,7 +184,6 @@ U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \ln \pi(y | x)
 \]
 
 
-
 *** Regression
 
 **** The regressor as a decision rule
@@ -195,7 +204,6 @@ under the distribution $P$ is:
 \[
 \int_X \sum_{y=1}^m dP(x, y) \sum_{a=1}^m \pi(a | x)
 \]
-
 
 ** Linear neural networks
 *** The perceptron algorithm
