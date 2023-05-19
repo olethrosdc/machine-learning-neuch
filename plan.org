@@ -216,7 +216,22 @@ under the distribution $P$ is:
 
 ** Linear neural networks
 *** The perceptron algorithm
-
+**** Input
+- Feature space $X \subset \Reals^n$.
+- Label space $Y = \{-1, 1\}$.
+- Data $(x_t, y_t)$, $t \in [T]$,  with $x_t \in X, y_t in Y$.
+**** Algorithm
+- $w_1 = w_0$.
+- For $t = 1, \ldots, T$.
+-- $a_t = \sgn(w_t^\top x_t)$.
+-- If $a_t \neq y_t$
+--- $w_{t+1} = w_t + y_t x_t$
+-- Else
+--- $w_{t+1} = $w_t$
+- Return $w_{T+1}$
+**** Theorem
+	 The number of mistakes made by the perceptron algorithm is boudned by $(r/\rho)^2$, where $\|x_t\|\leq r$, $\rho \leq y_t (v^\top x_t) / \|v\|$ for some *margin* $\rho$ and *hyperplane* $v$.
+	 
 *** Gradient methods example
 **** Estimate the expected value
 $x_t \sim P$ with $\E_P[x_t] = \mu$.
