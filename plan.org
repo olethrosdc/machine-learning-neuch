@@ -10,6 +10,7 @@
 #+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
 #+LaTeX_HEADER: \newcommand \Param {\Theta}
 #+LaTeX_HEADER: \newcommand \param {\theta}
+#+LaTeX_CLASS_OPTIONS: [smaller]
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
@@ -113,8 +114,7 @@ $y_t  \in \Reals^m$
 $y_t  \in \Reals^m$
 
 *** Training and overfitting
-**** Training data
-- $D = ((x_t, y_t) : t = 1, \ldots, T)$.
+**** Training data $D = ((x_t, y_t) : t = 1, \ldots, T)$.
 - $x_t \in X$
 - $y_t \in \Reals^m$.
 **** Assumption: The data is generated i.i.d.
@@ -133,8 +133,23 @@ $y_t  \in \Reals^m$
 = 
 \max_\pi \sum_{(x,y) \in D)} \sum_a \pi(a | x) U(a,y)
 \]
-**** Mismatched objectives
+*** Generalisation error as mismatched objectives
 The $\pi^*$ maximising $U(\pi, P)$ is not the $\hat{\pi}$ maximising $U(\pi, D)$.
+
+**** Illustration
+#+BEGIN_SRC latex :file circle.png :eval yes :results drawer :exports results
+\begin{tikzpicture}
+  \draw[->] (-3, 0) -- (4.2, 0) node[right] {$x$};
+  \draw[->] (0, -3) -- (0, 4.2) node[above] {$y$};
+  \draw[scale=0.5, domain=-3:3, smooth, variable=\x, blue] plot ({\x}, {\x*\x});
+  \draw[scale=0.5, domain=-3:3, smooth, variable=\y, red]  plot ({\y*\y}, {\y});
+\end{tikzpicture}
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+[[file:circle.png]]
+:END:
 
 **** Lemma
 If $|U(\pi, P) - U(\pi, D)| \leq \epsilon$ for all $\pi$ then
