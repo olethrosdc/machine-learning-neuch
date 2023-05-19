@@ -52,6 +52,15 @@
 - Learn to act in an *unknown* world through interaction and reward
   feedback.
 
+*** Unsupervised learning
+**** Density estimation
+**** Clustering
+**** Compression
+*** Supervised learning
+**** Classification
+**** Regression
+**** Sequence prediction
+	 
 * Learning as Optimisation (4 weeks)
 #+TOC: headlines [currentsection,hideothersubsections]]
 ** Objective functions
@@ -195,7 +204,6 @@ under the distribution $P$ is:
 \[
 \int_X \sum_{y=1}^m dP(x, y) \sum_{a=1}^m \pi(a | x)
 \]
-
 
 ** Linear neural networks
 *** The perceptron algorithm
