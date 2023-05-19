@@ -1,6 +1,7 @@
 #+TITLE: Machine Learning and Data Mining
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
+#+LaTeX_HEADER: \usepackage{tikz}
 #+LaTeX_HEADER: \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
 #+LaTeX_HEADER: \newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
 #+LaTeX_HEADER: \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
@@ -156,9 +157,8 @@ The $\pi^*$ maximising $U(\pi, P)$ is not the $\hat{\pi}$ maximising $U(\pi, D)$
 #+END_SRC
 
 #+RESULTS:
-:RESULTS:
-[[file:circle.png]]
-:END:
+:results:
+:end:
 
 **** Lemma
 If $|U(\pi, P) - U(\pi, D)| \leq \epsilon$ for all $\pi$ then
