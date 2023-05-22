@@ -246,7 +246,9 @@ under the distribution $P$ is:
 --- $w_{t+1} = $w_t$
 - Return $w_{T+1}$
 **** Theorem
-	 The number of mistakes made by the perceptron algorithm is boudned by $(r/\rho)^2$, where $\|x_t\|\leq r$, $\rho \leq y_t (v^\top x_t) / \|v\|$ for some *margin* $\rho$ and *hyperplane* $v$.
+ The number of mistakes made by the perceptron algorithm is boudned by
+ $(r/\rho)^2$, where $\|x_t\|\leq r$, $\rho \leq y_t (v^\top x_t) /
+ \|v\|$ for some *margin* $\rho$ and *hyperplane* $v$.
 	 
 *** Gradient methods example
 **** Estimate the expected value
@@ -291,6 +293,14 @@ f_\param(x_t) = \param^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
 *** Stochastic gradient descent algorithm
 ** Multi-layer neural networks
 *** Back-propagation
+**** The chain rule
+\[
+f : X \to Z, \qquad g : Z \to Y
+\]
+\[
+\frac{dg}{dx} = \frac{dg}{df} \frac{df}{dx}
+\]
+
 *** Neural architectures
 * Learning as Probabilistic Inference (4 weeks)
 ** Probabilistic Models
