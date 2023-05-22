@@ -283,14 +283,50 @@ f_\param(x_t) = \param^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
 \[
 \min_\param \sum_{t=1}^T [y_t - \pi_\param(x_t)]^2
 \]
-**** Gradient direction
 
 *** Gradient descent algorithm
 **** Minimising a function
 \[
-\min_\param \
+\min_\param f(\param) \geq f(\param') \forall \param',
+\qquad \param^* = \argmin_\param f(\param) \Rightarrow f(\param^*) = \min_param f(\param)
 \]
+**** Gradient descent for minimisation
+- Input $\param_0$
+- For $n = 0, \ldots, N$:
+- $\param_{n+1} = \param_n - \eta_n \nabla_\param f(\param_n)$
+**** Step-size $\eta_n$
+- $\eta_n$ fixed: for online learning
+- $\eta_n = c/[c + n]$ for asymptotic convergence
+- $\eta_n = \argmin_\eta f(\theta_n + \eta \nabla_\param)$: Line search.
+
+*** Gradient descnr for squared error
+**** Cost function
+\[
+f(\param) =  \sum_{t=1}^T [y_t - \pi_\param(x_t)]^2
+\]
+**** Cost gradient
+\begin{align*}
+\nabla_\param f(\param)
+&= \nabla \sum_{t=1}^T [y_t - \pi_\param(x_t)]^2
+\\
+&= \sum_{t=1}^T \nabla [y_t - \pi_\param(x_t)]^2
+\\
+&= \sum_{t=1}^T 2 [y_t - \pi_\param(x_t)] [- \nabla \pi_\param(x_t)]^2
+\end{align*}
+
+	
 *** Stochastic gradient descent algorithm
+**** When $f$ is an expectation
+\[
+f(\param) = \int_X dP(x) g(x, \param).
+\]
+**** Replacing the expectation with a sample:
+\begin{align*}
+\nabla f(\param)
+&= \int_X dP(x) \nabla g(x, \param)\\
+&\approx \frac{1}{K} \sum_{k=1}^K \nabla g(x^{(k)}, \param), && x^{(k)} \sim P.
+\end{align*}
+
 ** Multi-layer neural networks
 *** Back-propagation
 **** The chain rule
