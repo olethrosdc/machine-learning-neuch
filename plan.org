@@ -147,18 +147,19 @@ $y_t  \in \Reals^m$
 The $\pi^*$ maximising $U(\pi, P)$ is not the $\hat{\pi}$ maximising $U(\pi, D)$.
 
 **** Illustration
-#+BEGIN_SRC latex :file circle.png :eval yes :results drawer :exports results
-\begin{tikzpicture}
-  \draw[->] (-3, 0) -- (4.2, 0) node[right] {$x$};
-  \draw[->] (0, -3) -- (0, 4.2) node[above] {$y$};
-  \draw[scale=0.5, domain=-3:3, smooth, variable=\x, blue] plot ({\x}, {\x*\x});
-  \draw[scale=0.5, domain=-3:3, smooth, variable=\y, red]  plot ({\y*\y}, {\y});
-\end{tikzpicture}
+#+HEADER: :file circle.pdf :imagemagick yes
+#+HEADER: :results output silent :headers '("\\usepackage{tikz}")
+#+HEADER: :fit yes :imoutoptions -geometry 400 :iminoptions -density 600
+#+BEGIN_SRC latex
+  \begin{tikzpicture}
+	\draw[->] (-3, 0) -- (4.2, 0) node[right] {$x$};
+	\draw[->] (0, -3) -- (0, 4.2) node[above] {$y$};
+	\draw[scale=0.5, domain=-3:3, smooth, variable=\x, blue] plot ({\x}, {\x*\x});
+	\draw[scale=0.5, domain=-3:3, smooth, variable=\y, red]  plot ({\y*\y}, {\y});
+  \end{tikzpicture}
 #+END_SRC
+[[./circle.pdf][Circle]]
 
-#+RESULTS:
-:results:
-:end:
 
 **** Lemma
 If $|U(\pi, P) - U(\pi, D)| \leq \epsilon$ for all $\pi$ then
