@@ -264,8 +264,6 @@ d/d\param \E_P[(x_t - \param)^2]
 = \E_P[-(x_t - \param)]
 = \E_P[x_t] - \param.
 \]
-
-
 *** Simple linear regression
 **** Input and output
 - Data pairs $(x_t, y_t)$, $t = 1, \ldots, T$.
@@ -299,22 +297,27 @@ f_\param(x_t) = \param^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
 - $\eta_n = c/[c + n]$ for asymptotic convergence
 - $\eta_n = \argmin_\eta f(\theta_n + \eta \nabla_\param)$: Line search.
 
-*** Gradient descnr for squared error
+*** Gradient descnt for squared error
 **** Cost function
 \[
-f(\param) =  \sum_{t=1}^T [y_t - \pi_\param(x_t)]^2
+\ell(\param) =  \sum_{t=1}^T [y_t - \pi_\param(x_t)]^2
 \]
 **** Cost gradient
+Using the chain rule of differentiation:
 \begin{align*}
-\nabla_\param f(\param)
+\nabla_\param \ell(\param)
 &= \nabla \sum_{t=1}^T [y_t - \pi_\param(x_t)]^2
 \\
 &= \sum_{t=1}^T \nabla [y_t - \pi_\param(x_t)]^2
 \\
 &= \sum_{t=1}^T 2 [y_t - \pi_\param(x_t)] [- \nabla \pi_\param(x_t)]^2
 \end{align*}
+**** Parameter gradient
+For a linear regressor:
+\[
+\frac{\partial}{\param_j} \pi_\param(x) = x_j.
+\]
 
-	
 *** Stochastic gradient descent algorithm
 **** When $f$ is an expectation
 \[
@@ -335,6 +338,18 @@ f : X \to Z, \qquad g : Z \to Y
 \]
 \[
 \frac{dg}{dx} = \frac{dg}{df} \frac{df}{dx}
+\]
+
+**** Parametrised functions
+\begin{align}
+f: \Theta \times X \to Z, && g: \Omega \times Z \to Y, &&\pi = fg \tag{network mappings}
+\\
+\ell(D, \pi) = \sum_{(x,y) \in D} [y - \pi(x)]^2
+\end{align}
+**** Gradient descent with /back-propagation/
+Apply the chain rule 
+\[
+
 \]
 
 *** Neural architectures
