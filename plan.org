@@ -7,6 +7,7 @@
 #+LaTeX_HEADER: \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
 #+LaTeX_HEADER: \DeclareMathOperator*{\argmax}{arg\,max}
 #+LaTeX_HEADER: \DeclareMathOperator*{\argmin}{arg\,min}
+#+LaTeX_HEADER: \DeclareMathOperator*{\sgn}{sgn}
 #+LaTeX_HEADER: \newcommand \defn {\mathrel{\triangleq}}
 #+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
 #+LaTeX_HEADER: \newcommand \Param {\Theta}
@@ -319,6 +320,12 @@ For a linear regressor:
 \]
 
 *** Stochastic gradient descent algorithm
+**** Note
+ :PROPERTIES:
+ :BEAMER_ENV: note
+ :END:
+For the general case, we got to do this.
+
 **** When $f$ is an expectation
 \[
 f(\param) = \int_X dP(x) g(x, \param).
@@ -334,10 +341,8 @@ f(\param) = \int_X dP(x) g(x, \param).
 *** Back-propagation
 **** The chain rule
 \[
-f : X \to Z, \qquad g : Z \to Y
-\]
-\[
-\frac{dg}{dx} = \frac{dg}{df} \frac{df}{dx}
+f : X \to Z, \qquad g : Z \to Y,
+\qquad \frac{dg}{dx} = \frac{dg}{df} \frac{df}{dx}
 \]
 
 **** Parametrised functions
@@ -349,7 +354,7 @@ f: \Theta \times X \to Z, && g: \Omega \times Z \to Y, &&\pi = fg \tag{network m
 **** Gradient descent with /back-propagation/
 Apply the chain rule 
 \[
-
+\nabla_{\theta, \omega} \pi = \nabla_\omega
 \]
 
 *** Neural architectures
