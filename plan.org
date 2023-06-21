@@ -17,8 +17,36 @@
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 
+* Schedule
+
+Here is a summary of the scheduled topics for this course, together
+with the theory and practice focus.
+
+|------+-------+--------------------------------+----------------------------------+--------------------|
+| Week |  Date | Topic                          | Theory                           | Lab                |
+|------+-------+--------------------------------+----------------------------------+--------------------|
+|    1 | 09.19 | Course Introduction            |                                  | Pandas             |
+|    2 | 09.26 | kNN                            | Generalisation                   | pandas,sklearn     |
+|    3 | 10.03 | Perceptron                     | Convergence                      | sklearn            |
+|    4 | 10.10 | Linear Regression              | SGD, Least-Squares               | sklearn,tensorflow |
+|    5 | 10.17 | Multi-Layer Neural Network     | Backpropagation                  | tensorflow         |
+|    6 | 10.24 | TensorFlow Lab                 | Network Architectures            | tensorflow         |
+|    7 | 10.31 | Discriminative Models          | Logistic Regression              | TFProb             |
+|    8 | 11.07 | Generative Models              | Bayes Classifier                 | Python             |
+|    9 | 11.14 | Bayesian Networks              | Conditional Independence         | TFProb             |
+|   10 | 11.21 | Regularisation                 | Non-linear programming           | tensorflow         |
+|   11 | 11.28 | Bayesian Inference             | Conjugate priors                 | TFprob             |
+|   12 | 12.05 | Approximate Bayesian Inference | Monte-Carlo Methods              | TFProb             |
+|   13 | 12.12 | Bayesian Neural Networks       | Stochastic Variational Inference | TFProb             |
+|   14 | 12.19 | Project Presentations          |                                  |                    |
+|------+-------+--------------------------------+----------------------------------+--------------------|
+
 * The problems of Machine Learning (1 week)
 #+TOC: headlines [currentsection,hideothersubsections]
+** Activities
+*** Class data
+**** Fill in your data (does not have to be true)
+
 ** Models, hypotheses
 *** The main problems in machine learning and statistics
 **** Prediction
@@ -59,23 +87,43 @@
 **** Supervised learning
 - Given data $(x_1, y_1), \ldots, (x_T, y_T)$
 - Learn about the relationship between $x_t$ and $y_t$.
-
+- Example: Classification, Regression
+**** Online learning
+- Sequence prediction: At each step $t$, predict $x_{t+1}$ from $x_1, \ldots, x_t$.
+- Conditional prediction: At each step $t$, predict $y_{t+1}$ from $x_1, y_1 \ldots, x_t, y_t, \alert{x_{t+1}}$
 **** Reinforcement learning
-- No data is given: the agent acts to obtain data.
-- Learn to act in an *unknown* world through interaction and reward
-  feedback.
+ Learn to act in an *unknown* world through interaction and rewards
+** Examples
+*** Unsupervised learning
+**** Image compression
+- Learn two mappings $c, d$
+- $c(x)$ compresses an image $x$ to a small representation $z$.
+- $d(z)$ decompresses to an approximate image $\hat{x}$.
+
+*** Supervised learning
+**** Image classification
 
 *** Unsupervised learning
 **** Density estimation
-**** Clustering
 **** Compression
-*** Supervised learning
-**** Classification
-**** Regression
-**** Sequence prediction
-	 
+**** Generative modelling
+
+** Pitfalls
+*** Pitfalls
+**** Reproducibility
+- Modelling assumptions
+- Distribution shift
+- Interactions and feedback
+**** Fairness
+- Implicit biases in training data
+- Fair decision rules and meritocracy
+**** Privacy
+- Accidental data disclosure
+- Re-identification risk
+
+
 * Learning as Optimisation (4 weeks)
-#+TOC: headlines [currentsection,hideothersubsections]]
+  #+TOC: headlines [currentsection,hideothersubsections]]
 ** Objective functions
 *** Supervised learning objectives
 - Data $(x_t, y_t)$, $x_t \in X$, $y_t \in Y$, $t \in [T]$.
@@ -90,11 +138,21 @@
 - Have an appropriate variance around the mean
 *** Unsupervised learning objectives
 - Reconstruct the data well
+- Model the data-generating distribution
 - Be able to generate data
 *** Reinforcement learning objectives
-- Maximise total reward
+- Maximise total expected reward, either
+- during learning, or
+- after learning is finished.
 
 ** $k$ Nearest Neighbours
+*** A simple classification problem
+**** Income distribution data:
+- $x \in \{\textrm{M},\textrm{F}\}$, gender.
+- $y \in \Reals$, income.
+**** Problem
+- Can we model the income distribution?
+
 *** The Nearest Neighbour algorithm
 **** Pseudocode
 - Input: Data $(x_t, y_t)_{t=1}^T$, test point $x$, distance $d$
@@ -109,7 +167,6 @@ See example code
 $y_t  \in \Reals^m$
 
 *** The k-Nearest Neighbour algorithm
-
 **** Pseudocode
 - Input: Data $(x_t, y_t)_{t=1}^T$, test point $x$, distance $d$, neighbours $k$
 - Calculate $h_t = d(x_t, x)$ for all $t$.
@@ -124,7 +181,8 @@ $y_t  \in \Reals^m$
 **** Regression
 $y_t  \in \Reals^m$
 
-*** Training and overfitting
+** Learning and generalisation
+*** The Train/Test methodology
 **** Training data $D = ((x_t, y_t) : t = 1, \ldots, T)$.
 - $x_t \in X$
 - $y_t \in \Reals^m$.
@@ -209,7 +267,6 @@ under the distribution $P$ is
 U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \ln \pi(y | x)
 \]
 
-
 *** Regression
 
 **** The regressor as a decision rule
@@ -226,9 +283,9 @@ U(\pi, P) \defn \int_X \int_Y dP(x, y) \pi(y | x).
 
 **** Mean-Squared Error
 If $(x, y) \sim P$, the mean-square error of a deterministic decision rule $\pi : X \to \Reals$
-under the distribution $P$ is:
+under the distribution $P(x,y) = P(x | y) P(y)$ is:
 \[
-\int_X \sum_{y=1}^m dP(x, y) \sum_{a=1}^m \pi(a | x)
+\int_X \sum_{y=1}^m dP(x| y) P(y) \sum_{a=1}^m \pi(a | x)
 \]
 
 ** Linear neural networks
@@ -259,19 +316,34 @@ $x_t \sim P$ with $\E_P[x_t] = \mu$.
 \min_\param \E_P[(x_t - \param)^2].
 \]
 **** Derivative
+Idea: at the minimum the derivative should be zero.
 \[
 d/d\param \E_P[(x_t - \param)^2]
 = \E_P[d/d\param(x_t - \param)^2]
 = \E_P[-(x_t - \param)]
 = \E_P[x_t] - \param.
 \]
+
+Setting the derivative to 0, we have $\param = \E_P[x_t]$. This is a simple solution.
+**** Real-world setting
+- The objective function does not result in a simple solution
+- The distribution $P$ is not known.
+- We can sample $x \sim P$.
+
+*** Stochastic gradient for mean estimation
+\begin{align*}
+ \frac{d}{d\param} \E_P [(x - \param)^2] 
+&= \int_{-\infty}^\infty dP(x) \frac{d}{d\param} (x - \param)^2
+\\
+&=  \frac{d}{d\param} \int_{-\infty}^\infty dP(x) (x - \param)^2
+\end{align*}
+
 *** Simple linear regression
 **** Input and output
 - Data pairs $(x_t, y_t)$, $t = 1, \ldots, T$.
 - Input $x_t \in \Reals^n$
 - Output $y_t \in \Reals$.
-
-**** Predicting the mean
+**** Predicting the conditional mean $\E[y_t | x_t]$
 - Parameters $\param \in \Reals^n$
 - Function $f_\param : \Reals^n \to \Reals$, defined as
 \[
@@ -282,6 +354,8 @@ f_\param(x_t) = \param^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
 \[
 \min_\param \sum_{t=1}^T [y_t - \pi_\param(x_t)]^2
 \]
+
+How can we solve this problem?
 
 *** Gradient descent algorithm
 **** Minimising a function
