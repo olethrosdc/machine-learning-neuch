@@ -31,12 +31,18 @@ plt.plot(x, sigmoid(x))
 # Transform the final layer
 y = sigmoid(z)
 
-
 plt.plot(y[:,0], y[:,1], '.', alpha=0.5)
 plt.axis('equal')
 plt.grid()
 plt.show()
 
+# derivative
+def sigmoid_derivative(x):
+    return np.exp(-x) / np.power((1 + np.exp(-x)),2)
+
+# plot the derivative
+x = np.linspace(-10,10)
+plt.plot(x, sigmoid_derivative(x))
 
 
 
