@@ -2,6 +2,9 @@
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \usepackage{tikz}
+#+LaTeX_HEADER: \usepackage{amsmath}
+#+LaTeX_HEADER: \usepackage{amssymb}
+#+LaTeX_HEADER: \usepackage{isomath}
 #+LaTeX_HEADER: \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
 #+LaTeX_HEADER: \newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
 #+LaTeX_HEADER: \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
@@ -12,6 +15,14 @@
 #+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
 #+LaTeX_HEADER: \newcommand \Param {\Theta}
 #+LaTeX_HEADER: \newcommand \param {\theta}
+#+LaTeX_HEADER: \newcommand \bW {\matrixsym{W}}
+#+LaTeX_HEADER: \newcommand \wi {\vectorsym{w}_i}
+#+LaTeX_HEADER: \newcommand \wij {w_{i,j}}
+#+LaTeX_HEADER: \newcommand \bA {\matrixsym{A}}
+#+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
+#+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
+#+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
+
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
@@ -121,7 +132,6 @@ with the theory and practice focus.
 - Accidental data disclosure
 - Re-identification risk
 
-
 * Learning as Optimisation (4 weeks)
   #+TOC: headlines [currentsection,hideothersubsections]]
 ** Objective functions
@@ -204,21 +214,6 @@ $y_t  \in \Reals^m$
 \]
 *** Generalisation error as mismatched objectives
 The $\pi^*$ maximising $U(\pi, P)$ is not the $\hat{\pi}$ maximising $U(\pi, D)$.
-
-**** Illustration
-#+HEADER: :file circle.pdf :imagemagick yes
-#+HEADER: :results output silent :headers '("\\usepackage{tikz}")
-#+HEADER: :fit yes :imoutoptions -geometry 400 :iminoptions -density 600
-#+BEGIN_SRC latex
-  \begin{tikzpicture}
-	\draw[->] (-3, 0) -- (4.2, 0) node[right] {$x$};
-	\draw[->] (0, -3) -- (0, 4.2) node[above] {$y$};
-	\draw[scale=0.5, domain=-3:3, smooth, variable=\x, blue] plot ({\x}, {\x*\x});
-	\draw[scale=0.5, domain=-3:3, smooth, variable=\y, red]  plot ({\y*\y}, {\y});
-  \end{tikzpicture}
-#+END_SRC
-[[./circle.pdf][Circle]]
-
 
 **** Lemma
 If $|U(\pi, P) - U(\pi, D)| \leq \epsilon$ for all $\pi$ then
@@ -421,17 +416,81 @@ f : X \to Z, \qquad g : Z \to Y,
 
 **** Parametrised functions
 \begin{align}
-f: \Theta \times X \to Z, && g: \Omega \times Z \to Y, &&\pi = fg \tag{network mappings}
+f: \mathcal{W} \times X \to Z, && g: \Omega \times Z \to Y, &&\pi = fg \tag{network mappings}
 \\
 \ell(D, \pi) = \sum_{(x,y) \in D} [y - \pi(x)]^2
 \end{align}
 **** Gradient descent with /back-propagation/
 Apply the chain rule 
 \[
-\nabla_{\theta, \omega} \pi = \nabla_\omega
+\nabla_{w, \omega} \pi = \nabla_\omega
 \]
 
 *** Neural architectures
+
+**** Layers
+- Input to layer $x \in R^n$ 
+- Output from layer $z \in R^m$.
+
+**** Linear layer
+Transform the output of previous layers or features into either:
+- A higher-dimensional space.
+- A lower-dimensional space.
+- They have adaptive parameters.
+- Parameters can be dependent on each other for invariance (cf. convolution)
+
+**** Non-linear layers
+- Simple transformations of previous output
+- Examples: Sigmoid, Softmax
+
+*** Liner layer
+**** Definition
+This is a linear combination of inputs $x \in \Reals^n$ and parameter matrix $\bW \in \Reals^{m \times n}$
+where $\bW = \begin{bmatrix}
+	\vectorsym{w}_1\\
+        \vdots\\
+	\wi\\
+	\vdots\\
+	\vectorsym{w}_m
+\end{bmatrix}
+=
+\begin{bmatrix}
+w_{1,1} & \cdots & w_{1,j} & \cdots & w_{1,m}\\
+\vdots  & \ddots & \vdots  & \ddots & \cdots \\
+w_{i,1} & \cdots & w_{i,j} & \cdots & w_{i,m}\\
+\vdots  & \ddots & \ddots  & \ddots & \cdots \\ 	   
+w_{n,1} & \cdots & w_{i,j} & \cdots & w_{n,m}
+\end{bmatrix}$
+
+\[
+f(\bW, \bx) = \bW \bx 
+\qquad
+f_i(\bW, \bx)= \wi \cdot \bx =  \sum_{j=1}^n w_{i,j} x_i,
+\]
+
+
+**** Gradient 
+Each partial derivative is simple:
+\[
+\frac{\partial}{\partial \wij} f_k(\bW, x) = x_i \ind{j = k}
+\]
+
+*** Sigmoid layer
+**** Definition
+This layer transforms each input non-linearly
+\[
+f_j(\bx) 1/[1 + \exp(-x_j)] =
+\]
+without looking at the other inputs.
+
+**** Derivative
+So let us ignore the other inputs for simplicity:
+\[
+\frac{d}{dx} f(x) = \exp(-x)/[1+\exp(-x)]^{2}
+\]
+
+
+**** Softmax 
 * Learning as Probabilistic Inference (4 weeks)
 ** Probabilistic Models
 ** Discriminative modelling
