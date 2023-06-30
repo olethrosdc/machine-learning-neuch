@@ -16,6 +16,13 @@
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 
+This course gives an introduction to the theory of machine learning. Application is in the form of a course project.
+During the course, you will be able to:
+
+- Formulate machine learning problems in terms of opimisation or probabilistic inference.
+- Apply off-the-shelf algorithms to problems.
+- Develop custom models and algorithms using the TensorFlow python library.
+  
 * The problems of Machine Learning (1 week)
 #+TOC: headlines [currentsection,hideothersubsections]
 ** Models, hypotheses
