@@ -2,20 +2,33 @@
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \usepackage{tikz}
+#+LaTeX_HEADER: \usepackage{amsmath}
+#+LaTeX_HEADER: \usepackage{amssymb}
+#+LaTeX_HEADER: \usepackage{isomath}
 #+LaTeX_HEADER: \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
 #+LaTeX_HEADER: \newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
 #+LaTeX_HEADER: \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
 #+LaTeX_HEADER: \DeclareMathOperator*{\argmax}{arg\,max}
 #+LaTeX_HEADER: \DeclareMathOperator*{\argmin}{arg\,min}
+#+LaTeX_HEADER: \DeclareMathOperator*{\sgn}{sgn}
 #+LaTeX_HEADER: \newcommand \defn {\mathrel{\triangleq}}
 #+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
 #+LaTeX_HEADER: \newcommand \Param {\Theta}
 #+LaTeX_HEADER: \newcommand \param {\theta}
+#+LaTeX_HEADER: \newcommand \bW {\matrixsym{W}}
+#+LaTeX_HEADER: \newcommand \wi {\vectorsym{w}_i}
+#+LaTeX_HEADER: \newcommand \wij {w_{i,j}}
+#+LaTeX_HEADER: \newcommand \bA {\matrixsym{A}}
+#+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
+#+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
+#+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
+
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 
+<<<<<<< HEAD
 This course gives an introduction to the theory of machine learning. Application is in the form of a course project.
 During the course, you will be able to:
 
@@ -23,8 +36,38 @@ During the course, you will be able to:
 - Apply off-the-shelf algorithms to problems.
 - Develop custom models and algorithms using the TensorFlow python library.
   
+=======
+* Schedule
+
+Here is a summary of the scheduled topics for this course, together
+with the theory and practice focus.
+
+|------+-------+--------------------------------+----------------------------------+--------------------|
+| Week |  Date | Topic                          | Theory                           | Lab                |
+|------+-------+--------------------------------+----------------------------------+--------------------|
+|    1 | 09.19 | Course Introduction            |                                  | Pandas             |
+|    2 | 09.26 | kNN                            | Generalisation                   | pandas,sklearn     |
+|    3 | 10.03 | Perceptron                     | Convergence                      | sklearn            |
+|    4 | 10.10 | Linear Regression              | SGD, Least-Squares               | sklearn,tensorflow |
+|    5 | 10.17 | Multi-Layer Neural Network     | Backpropagation                  | tensorflow         |
+|    6 | 10.24 | TensorFlow Lab                 | Network Architectures            | tensorflow         |
+|    7 | 10.31 | Discriminative Models          | Logistic Regression              | TFProb             |
+|    8 | 11.07 | Generative Models              | Bayes Classifier                 | Python             |
+|    9 | 11.14 | Bayesian Networks              | Conditional Independence         | TFProb             |
+|   10 | 11.21 | Regularisation                 | Non-linear programming           | tensorflow         |
+|   11 | 11.28 | Bayesian Inference             | Conjugate priors                 | TFprob             |
+|   12 | 12.05 | Approximate Bayesian Inference | Monte-Carlo Methods              | TFProb             |
+|   13 | 12.12 | Bayesian Neural Networks       | Stochastic Variational Inference | TFProb             |
+|   14 | 12.19 | Project Presentations          |                                  |                    |
+|------+-------+--------------------------------+----------------------------------+--------------------|
+
+>>>>>>> b078f6a128790dc510f34a718194e77138519b1d
 * The problems of Machine Learning (1 week)
 #+TOC: headlines [currentsection,hideothersubsections]
+** Activities
+*** Class data
+**** Fill in your data (does not have to be true)
+
 ** Models, hypotheses
 *** The main problems in machine learning and statistics
 **** Prediction
@@ -65,23 +108,42 @@ During the course, you will be able to:
 **** Supervised learning
 - Given data $(x_1, y_1), \ldots, (x_T, y_T)$
 - Learn about the relationship between $x_t$ and $y_t$.
-
+- Example: Classification, Regression
+**** Online learning
+- Sequence prediction: At each step $t$, predict $x_{t+1}$ from $x_1, \ldots, x_t$.
+- Conditional prediction: At each step $t$, predict $y_{t+1}$ from $x_1, y_1 \ldots, x_t, y_t, \alert{x_{t+1}}$
 **** Reinforcement learning
-- No data is given: the agent acts to obtain data.
-- Learn to act in an *unknown* world through interaction and reward
-  feedback.
+ Learn to act in an *unknown* world through interaction and rewards
+** Examples
+*** Unsupervised learning
+**** Image compression
+- Learn two mappings $c, d$
+- $c(x)$ compresses an image $x$ to a small representation $z$.
+- $d(z)$ decompresses to an approximate image $\hat{x}$.
+
+*** Supervised learning
+**** Image classification
 
 *** Unsupervised learning
 **** Density estimation
-**** Clustering
 **** Compression
-*** Supervised learning
-**** Classification
-**** Regression
-**** Sequence prediction
-	 
+**** Generative modelling
+
+** Pitfalls
+*** Pitfalls
+**** Reproducibility
+- Modelling assumptions
+- Distribution shift
+- Interactions and feedback
+**** Fairness
+- Implicit biases in training data
+- Fair decision rules and meritocracy
+**** Privacy
+- Accidental data disclosure
+- Re-identification risk
+
 * Learning as Optimisation (4 weeks)
-#+TOC: headlines [currentsection,hideothersubsections]]
+  #+TOC: headlines [currentsection,hideothersubsections]]
 ** Objective functions
 *** Supervised learning objectives
 - Data $(x_t, y_t)$, $x_t \in X$, $y_t \in Y$, $t \in [T]$.
@@ -96,11 +158,21 @@ During the course, you will be able to:
 - Have an appropriate variance around the mean
 *** Unsupervised learning objectives
 - Reconstruct the data well
+- Model the data-generating distribution
 - Be able to generate data
 *** Reinforcement learning objectives
-- Maximise total reward
+- Maximise total expected reward, either
+- during learning, or
+- after learning is finished.
 
 ** $k$ Nearest Neighbours
+*** A simple classification problem
+**** Income distribution data:
+- $x \in \{\textrm{M},\textrm{F}\}$, gender.
+- $y \in \Reals$, income.
+**** Problem
+- Can we model the income distribution?
+
 *** The Nearest Neighbour algorithm
 **** Pseudocode
 - Input: Data $(x_t, y_t)_{t=1}^T$, test point $x$, distance $d$
@@ -115,7 +187,6 @@ See example code
 $y_t  \in \Reals^m$
 
 *** The k-Nearest Neighbour algorithm
-
 **** Pseudocode
 - Input: Data $(x_t, y_t)_{t=1}^T$, test point $x$, distance $d$, neighbours $k$
 - Calculate $h_t = d(x_t, x)$ for all $t$.
@@ -130,7 +201,8 @@ $y_t  \in \Reals^m$
 **** Regression
 $y_t  \in \Reals^m$
 
-*** Training and overfitting
+** Learning and generalisation
+*** The Train/Test methodology
 **** Training data $D = ((x_t, y_t) : t = 1, \ldots, T)$.
 - $x_t \in X$
 - $y_t \in \Reals^m$.
@@ -152,21 +224,6 @@ $y_t  \in \Reals^m$
 \]
 *** Generalisation error as mismatched objectives
 The $\pi^*$ maximising $U(\pi, P)$ is not the $\hat{\pi}$ maximising $U(\pi, D)$.
-
-**** Illustration
-#+HEADER: :file circle.pdf :imagemagick yes
-#+HEADER: :results output silent :headers '("\\usepackage{tikz}")
-#+HEADER: :fit yes :imoutoptions -geometry 400 :iminoptions -density 600
-#+BEGIN_SRC latex
-  \begin{tikzpicture}
-	\draw[->] (-3, 0) -- (4.2, 0) node[right] {$x$};
-	\draw[->] (0, -3) -- (0, 4.2) node[above] {$y$};
-	\draw[scale=0.5, domain=-3:3, smooth, variable=\x, blue] plot ({\x}, {\x*\x});
-	\draw[scale=0.5, domain=-3:3, smooth, variable=\y, red]  plot ({\y*\y}, {\y});
-  \end{tikzpicture}
-#+END_SRC
-[[./circle.pdf][Circle]]
-
 
 **** Lemma
 If $|U(\pi, P) - U(\pi, D)| \leq \epsilon$ for all $\pi$ then
@@ -215,7 +272,6 @@ under the distribution $P$ is
 U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \ln \pi(y | x)
 \]
 
-
 *** Regression
 
 **** The regressor as a decision rule
@@ -232,9 +288,9 @@ U(\pi, P) \defn \int_X \int_Y dP(x, y) \pi(y | x).
 
 **** Mean-Squared Error
 If $(x, y) \sim P$, the mean-square error of a deterministic decision rule $\pi : X \to \Reals$
-under the distribution $P$ is:
+under the distribution $P(x,y) = P(x | y) P(y)$ is:
 \[
-\int_X \sum_{y=1}^m dP(x, y) \sum_{a=1}^m \pi(a | x)
+\int_X \sum_{y=1}^m dP(x| y) P(y) \sum_{a=1}^m \pi(a | x)
 \]
 
 ** Linear neural networks
@@ -265,6 +321,7 @@ $x_t \sim P$ with $\E_P[x_t] = \mu$.
 \min_\param \E_P[(x_t - \param)^2].
 \]
 **** Derivative
+Idea: at the minimum the derivative should be zero.
 \[
 d/d\param \E_P[(x_t - \param)^2]
 = \E_P[d/d\param(x_t - \param)^2]
@@ -272,14 +329,26 @@ d/d\param \E_P[(x_t - \param)^2]
 = \E_P[x_t] - \param.
 \]
 
+Setting the derivative to 0, we have $\param = \E_P[x_t]$. This is a simple solution.
+**** Real-world setting
+- The objective function does not result in a simple solution
+- The distribution $P$ is not known.
+- We can sample $x \sim P$.
+
+*** Stochastic gradient for mean estimation
+\begin{align*}
+ \frac{d}{d\param} \E_P [(x - \param)^2] 
+&= \int_{-\infty}^\infty dP(x) \frac{d}{d\param} (x - \param)^2
+\\
+&=  \frac{d}{d\param} \int_{-\infty}^\infty dP(x) (x - \param)^2
+\end{align*}
 
 *** Simple linear regression
 **** Input and output
 - Data pairs $(x_t, y_t)$, $t = 1, \ldots, T$.
 - Input $x_t \in \Reals^n$
 - Output $y_t \in \Reals$.
-
-**** Predicting the mean
+**** Predicting the conditional mean $\E[y_t | x_t]$
 - Parameters $\param \in \Reals^n$
 - Function $f_\param : \Reals^n \to \Reals$, defined as
 \[
@@ -290,6 +359,8 @@ f_\param(x_t) = \param^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
 \[
 \min_\param \sum_{t=1}^T [y_t - \pi_\param(x_t)]^2
 \]
+
+How can we solve this problem?
 
 *** Gradient descent algorithm
 **** Minimising a function
@@ -306,23 +377,34 @@ f_\param(x_t) = \param^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
 - $\eta_n = c/[c + n]$ for asymptotic convergence
 - $\eta_n = \argmin_\eta f(\theta_n + \eta \nabla_\param)$: Line search.
 
-*** Gradient descnr for squared error
+*** Gradient descnt for squared error
 **** Cost function
 \[
-f(\param) =  \sum_{t=1}^T [y_t - \pi_\param(x_t)]^2
+\ell(\param) =  \sum_{t=1}^T [y_t - \pi_\param(x_t)]^2
 \]
 **** Cost gradient
+Using the chain rule of differentiation:
 \begin{align*}
-\nabla_\param f(\param)
+\nabla_\param \ell(\param)
 &= \nabla \sum_{t=1}^T [y_t - \pi_\param(x_t)]^2
 \\
 &= \sum_{t=1}^T \nabla [y_t - \pi_\param(x_t)]^2
 \\
 &= \sum_{t=1}^T 2 [y_t - \pi_\param(x_t)] [- \nabla \pi_\param(x_t)]^2
 \end{align*}
+**** Parameter gradient
+For a linear regressor:
+\[
+\frac{\partial}{\param_j} \pi_\param(x) = x_j.
+\]
 
-	
 *** Stochastic gradient descent algorithm
+**** Note
+ :PROPERTIES:
+ :BEAMER_ENV: note
+ :END:
+For the general case, we got to do this.
+
 **** When $f$ is an expectation
 \[
 f(\param) = \int_X dP(x) g(x, \param).
@@ -338,13 +420,87 @@ f(\param) = \int_X dP(x) g(x, \param).
 *** Back-propagation
 **** The chain rule
 \[
-f : X \to Z, \qquad g : Z \to Y
+f : X \to Z, \qquad g : Z \to Y,
+\qquad \frac{dg}{dx} = \frac{dg}{df} \frac{df}{dx}
 \]
+
+**** Parametrised functions
+\begin{align}
+f: \mathcal{W} \times X \to Z, && g: \Omega \times Z \to Y, &&\pi = fg \tag{network mappings}
+\\
+\ell(D, \pi) = \sum_{(x,y) \in D} [y - \pi(x)]^2
+\end{align}
+**** Gradient descent with /back-propagation/
+Apply the chain rule 
 \[
-\frac{dg}{dx} = \frac{dg}{df} \frac{df}{dx}
+\nabla_{w, \omega} \pi = \nabla_\omega
 \]
 
 *** Neural architectures
+
+**** Layers
+- Input to layer $x \in R^n$ 
+- Output from layer $z \in R^m$.
+
+**** Linear layer
+Transform the output of previous layers or features into either:
+- A higher-dimensional space.
+- A lower-dimensional space.
+- They have adaptive parameters.
+- Parameters can be dependent on each other for invariance (cf. convolution)
+
+**** Non-linear layers
+- Simple transformations of previous output
+- Examples: Sigmoid, Softmax
+
+*** Liner layer
+**** Definition
+This is a linear combination of inputs $x \in \Reals^n$ and parameter matrix $\bW \in \Reals^{m \times n}$
+where $\bW = \begin{bmatrix}
+	\vectorsym{w}_1\\
+        \vdots\\
+	\wi\\
+	\vdots\\
+	\vectorsym{w}_m
+\end{bmatrix}
+=
+\begin{bmatrix}
+w_{1,1} & \cdots & w_{1,j} & \cdots & w_{1,m}\\
+\vdots  & \ddots & \vdots  & \ddots & \cdots \\
+w_{i,1} & \cdots & w_{i,j} & \cdots & w_{i,m}\\
+\vdots  & \ddots & \ddots  & \ddots & \cdots \\ 	   
+w_{n,1} & \cdots & w_{i,j} & \cdots & w_{n,m}
+\end{bmatrix}$
+
+\[
+f(\bW, \bx) = \bW \bx 
+\qquad
+f_i(\bW, \bx)= \wi \cdot \bx =  \sum_{j=1}^n w_{i,j} x_i,
+\]
+
+
+**** Gradient 
+Each partial derivative is simple:
+\[
+\frac{\partial}{\partial \wij} f_k(\bW, x) = x_i \ind{j = k}
+\]
+
+*** Sigmoid layer
+**** Definition
+This layer transforms each input non-linearly
+\[
+f_j(\bx) 1/[1 + \exp(-x_j)] =
+\]
+without looking at the other inputs.
+
+**** Derivative
+So let us ignore the other inputs for simplicity:
+\[
+\frac{d}{dx} f(x) = \exp(-x)/[1+\exp(-x)]^{2}
+\]
+
+
+**** Softmax 
 * Learning as Probabilistic Inference (4 weeks)
 ** Probabilistic Models
 ** Discriminative modelling

@@ -10,6 +10,9 @@
 #+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
 #+LaTeX_HEADER: \newcommand \Param {\Theta}
 #+LaTeX_HEADER: \newcommand \param {\theta}
+#+LaTeX_HEADER: \newcommand \bA {\matrixsym{A}}
+#+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
+#+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 * Probability background
@@ -161,11 +164,11 @@ For $a \in \Reals$ and $x, y \in F$,
 - $A(x + y) = Ax + Ay$
 - $A(ax) = a(Ax)$.
 **** Matrices in $\Reals^{n \times m}$.
-A matrix $A \in \Reals^{n \times m}$ is a tabular array
-\(A= \begin{bmatrix}
-A_{1,1} & \cdots & A_{1, m}\\
+A matrix $\bA \in \Reals^{n \times m}$ is a tabular array
+\(\bA= \begin{bmatrix}
+a_{1,1} & \cdots & a_{1, m}\\
 \vdots  & \ddots & \vdots \\
-A_{n,1} & \cdots & A_{n, m}
+a_{n,1} & \cdots & a_{n, m}
 \end{bmatrix}\)
 Matrices can be seen as linear operators when used to multiply vectors.
 *** Multiplication operators
