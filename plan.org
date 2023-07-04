@@ -23,6 +23,9 @@
 #+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
 #+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
 #+LaTeX_HEADER: \newcommand \bel {\beta}
+#+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
+#+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
+#+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
 
 
 #+LaTeX_CLASS_OPTIONS: [smaller]
@@ -61,7 +64,6 @@ with the theory and practice focus.
 |   14 | 12.19 | Project Presentations          |                                  |                    |
 |------+-------+--------------------------------+----------------------------------+--------------------|
 
->>>>>>> b078f6a128790dc510f34a718194e77138519b1d
 * The problems of Machine Learning (1 week)
 #+TOC: headlines [currentsection,hideothersubsections]
 ** Activities
@@ -532,13 +534,33 @@ $\hat{\param}_t = \frac{1}{t} \sum_{k=1}^t x_k$
 
 *** The Gaussian distribution: Modelling gambling gains
 ** Discriminative modelling
-*** Classification
-**** Two-class classification: logistic regression
+*** Discriminative modelling: general idea
+- Data $(x,y)$
+- Need to model $P(y | x)$
+- No need to model $P(x)$.
+  
+*** Linear regression
+**** Model
+- $z = \param^\top x$
+- $p_\param(y | x) = \frac{1}{\sqrt{2 \pi} \sigma} \exp(-\frac{1}{2 \sigma^2} |z - y|^2)$
 
-*** Regression
+*** Two-class classification: logistic regression
+**** Model
+- $z = \param^\top x$
+- $P_\param(y = 1 | x) = \frac{1}{1 - e^z}$
+
+
 ** Generative modelling
-*** Classification
-	Modelling two classes
+*** Generative modelling: general idea
+- Data $(x,y)$.
+- Need to model $P(y | x)$.
+- Model the complet data distribution: $P(x | y)$, $P(x)$, $P(y)$.
+- Calculate \(  P(y | x) = \frac{P(x | y) P(x)}{P(y)}. \)
+  
+*** Classification: Naive Bayes Classifier
+- Data $(x,y)$
+- Assume $x \sim \Normal(\mu, \sigma I)$
+  
 *** Regression
     #+TOC: headlines [currentsection,hideothersubsections]
 * Sequence modelling (1 week)
