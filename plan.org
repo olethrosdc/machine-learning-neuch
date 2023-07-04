@@ -22,13 +22,14 @@
 #+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
 #+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
 #+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
+#+LaTeX_HEADER: \newcommand \bel {\beta}
+
 
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 
-<<<<<<< HEAD
 This course gives an introduction to the theory of machine learning. Application is in the form of a course project.
 During the course, you will be able to:
 
@@ -36,7 +37,6 @@ During the course, you will be able to:
 - Apply off-the-shelf algorithms to problems.
 - Develop custom models and algorithms using the TensorFlow python library.
   
-=======
 * Schedule
 
 Here is a summary of the scheduled topics for this course, together
@@ -503,6 +503,34 @@ So let us ignore the other inputs for simplicity:
 **** Softmax 
 * Learning as Probabilistic Inference (4 weeks)
 ** Probabilistic Models
+*** Probabilistic modelling
+**** The problem
+- Model family $\{P_\param : \param \in \Param\}$
+- Each model assigns a probability $P_\param(x)$ to the data $x$.
+- How can we estimate $\param$ from $x$?
+**** Maximum Likelihood (ML) Estimation
+$\hat{\theta}(x) = \argmax_\theta P_\param(x)$.
+
+**** Maximum A Posteriori (MAP) Estimation
+Here we also need a prior distribution, but still estimate a single parameter:
+- Prior $\bel(\param)$, a distribution on $\Param$.
+- $\hat{\param}(x) = \argmax_\param P_\param(x) \bel(\param)$.
+**** Bayesian Estimation
+Here we estimate the complete distribution over parameters
+- $\bel(\param | x) = P_\param(x) \bel(\param) / \sum_{\param'} P_{\param'}(x) \bel(\param')$ 
+
+
+*** The Bernoulli distribution: Modelling a coin
+**** Definition
+If $x_t \sim \Ber(\param)$ then
+$x_t = 1$ w.p. $\param$ and $x_t = 0$ w.p. $1 - \param$.
+**** Maximum Likelihood Estimate
+$\hat{\param}_t = \frac{1}{t} \sum_{k=1}^t x_k$
+**** Bayesian Estimate
+- Prior $\param \sim \Beta(\alpha_1, \alpha_0)$
+- Posterior $\param \sim \Beta(\alpha_1 + \sum_{k=1}^t x_k, \alpha_0 + \sum_{k=1}^t x_k)$.
+
+*** The Gaussian distribution: Modelling gambling gains
 ** Discriminative modelling
 *** Classification
 **** Two-class classification: logistic regression
@@ -512,7 +540,7 @@ So let us ignore the other inputs for simplicity:
 *** Classification
 	Modelling two classes
 *** Regression
-#+TOC: headlines [currentsection,hideothersubsections]
+    #+TOC: headlines [currentsection,hideothersubsections]
 * Sequence modelling (1 week)
 ** Auto-regressive models
 ** Recursive models
