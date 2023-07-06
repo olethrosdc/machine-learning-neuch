@@ -39,7 +39,7 @@ During the course, you will be able to:
 - Formulate machine learning problems in terms of opimisation or probabilistic inference.
 - Apply off-the-shelf algorithms to problems.
 - Develop custom models and algorithms using the TensorFlow python library.
-  
+
 * Schedule
 
 Here is a summary of the scheduled topics for this course, together
@@ -563,9 +563,45 @@ $\hat{\param}_t = \frac{1}{t} \sum_{k=1}^t x_k$
   
 *** Regression
     #+TOC: headlines [currentsection,hideothersubsections]
-* Sequence modelling (1 week)
-** Auto-regressive models
-** Recursive models
+* Sequence modelling (2 weeks)
+** Sequence prediction
+*** The problem of sequence prediction
+- Data $x_1, x_2, x_3, \ldots$
+- At time $t$, make a prediction $a_t$ for $x_t$.
+*** Auto-regressive models
+**** General idea
+- Predict $x_{t}$ from the last $k$ inputs
+\[
+x_t \approx g(x_{t-k}, \ldots, x_{t-1})
+\]
+**** Optimisation view
+We wish to minimise the difference between our predictions $a_t$ and the next symbol
+\[
+\sum_t (a_t - x_t)^2
+\]
+**** Probabilistic view
+We wish to model
+\[
+P(x_t | x_{t-k}, \ldots, x_{t-1})
+\]
+*** Linear auto-regression
+
+*** Recursive models
+**** General idea
+- Maintain an /internal state/ $z_t$, which summarises what has been seen.
+\[
+z_t = f(z_{t-1}, x_{t-1}) \tag{change state}
+\]
+- Make predictions using the internal state
+\[
+\hat{x}_t = g(z_t) \tag{predict}
+\]
+
+**** Hidden Markov models
+
+
+** State estimation
+
 
 * Reinforcement Learning (2 weeks)
 #+TOC: headlines [currentsection,hideothersubsections]
