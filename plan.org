@@ -33,12 +33,15 @@
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 
-This course gives an introduction to the theory of machine learning. Application is in the form of a course project.
+This course gives an introduction to the algorithms and theory of
+machine learning. Application is in the form of a course project.
 During the course, you will be able to:
 
 - Formulate machine learning problems in terms of opimisation or probabilistic inference.
+- Understand the fundamental machine learning algorithms.
+- Be able to implement some of the simplest algorithms.
 - Apply off-the-shelf algorithms to problems.
-- Develop custom models and algorithms using the TensorFlow python library.
+- Develop custom models using algorithms from TensorFlow python library.
 
 * Schedule
 
@@ -303,6 +306,7 @@ under the distribution $P(x,y) = P(x | y) P(y)$ is:
 - Data $(x_t, y_t)$, $t \in [T]$,  with $x_t \in X, y_t in Y$.
 **** Algorithm
 - $w_1 = w_0$.
+
 - For $t = 1, \ldots, T$.
 -- $a_t = \sgn(w_t^\top x_t)$.
 -- If $a_t \neq y_t$
@@ -311,10 +315,33 @@ under the distribution $P(x,y) = P(x | y) P(y)$ is:
 --- $w_{t+1} = $w_t$
 - Return $w_{T+1}$
 **** Theorem
- The number of mistakes made by the perceptron algorithm is boudned by
+ The number of mistakes made by the perceptron algorithm is bounded by
  $(r/\rho)^2$, where $\|x_t\|\leq r$, $\rho \leq y_t (v^\top x_t) /
  \|v\|$ for some *margin* $\rho$ and *hyperplane* $v$.
 	 
+*** Perceptron examples
+**** Example 1: One-dimensional data
+- Done on the board
+- Shows how the algorithm works.
+- Demonstrates the idea of a margin
+
+**** Example 2: Two-dimensional data
+- See [[file:src/NeuralNetworks/perceptron.py][in-class programming exercise]]
+
+**** Python concepts
+- Numpy
+-- np.random.multivariate_normal(): generate samples from an n-D normal distribution
+-- np.random.choice(): generate samples from a discrete distribution
+-- np.zeros(): generate an array of zeros
+-- np.array(): create an array from a list
+-- np.block(): make an array from nested lists
+-- np.dot(): calculate the dot (aka inner) product
+- matplotlib.pyplot
+-- plt.plot(): Plot lines and points
+-- plt.axis(): manipulate axes
+-- plt.grid(): show a grid
+-- plt.show(): display the plot
+
 *** Gradient methods example
 **** Estimate the expected value
 $x_t \sim P$ with $\E_P[x_t] = \mu$.
@@ -503,6 +530,7 @@ So let us ignore the other inputs for simplicity:
 
 
 **** Softmax 
+
 * Learning as Probabilistic Inference (4 weeks)
 ** Probabilistic Models
 *** Probabilistic modelling
@@ -520,7 +548,6 @@ Here we also need a prior distribution, but still estimate a single parameter:
 **** Bayesian Estimation
 Here we estimate the complete distribution over parameters
 - $\bel(\param | x) = P_\param(x) \bel(\param) / \sum_{\param'} P_{\param'}(x) \bel(\param')$ 
-
 
 *** The Bernoulli distribution: Modelling a coin
 **** Definition
@@ -549,7 +576,6 @@ $\hat{\param}_t = \frac{1}{t} \sum_{k=1}^t x_k$
 - $z = \param^\top x$
 - $P_\param(y = 1 | x) = \frac{1}{1 - e^z}$
 
-
 ** Generative modelling
 *** Generative modelling: general idea
 - Data $(x,y)$.
@@ -563,6 +589,7 @@ $\hat{\param}_t = \frac{1}{t} \sum_{k=1}^t x_k$
   
 *** Regression
     #+TOC: headlines [currentsection,hideothersubsections]
+
 * Sequence modelling (2 weeks)
 ** Sequence prediction
 *** The problem of sequence prediction
@@ -598,7 +625,6 @@ z_t = f(z_{t-1}, x_{t-1}) \tag{change state}
 \]
 
 **** Hidden Markov models
-
 
 ** State estimation
 
