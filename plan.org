@@ -585,8 +585,24 @@ $\hat{\param}_t = \frac{1}{t} \sum_{k=1}^t x_k$
   
 *** Classification: Naive Bayes Classifier
 - Data $(x,y)$
-- Assume $x \sim \Normal(\mu, \sigma I)$
+- $x \in X$
+- $y \in Y \subset \mathbb{N}$, $N_i$: amount of data from class $i$
+
   
+**** Separately model each class
+- Assume each class data comes from a different normal distribution
+- $x | y = i \sim \Normal(\mu_i, \sigma_i I)$
+- For each class, calculate
+  - Empirical mean $\hat{\mu}_i = \sum_{t : y_t = i} x_t / N_i$
+  - Empirical variance $\hat{\sigma}_i$.
+
+**** Decision rule
+Use Bayes's theorem:
+\[
+P(y | x) = P(x | y) P(y) / P(x),
+\]
+choosing the $y$ with largest posterior $P(y | x)$.
+- $P(x | y = i) \propto \exp(- \|\hat{\mu}_i - x\|^2/\hat{\sigma}_i^2$
 *** Regression
     #+TOC: headlines [currentsection,hideothersubsections]
 
