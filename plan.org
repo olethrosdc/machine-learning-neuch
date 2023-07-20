@@ -227,7 +227,9 @@ $y_t  \in \Reals^m$
 = 
 \max_\pi \sum_{(x,y) \in D)} \sum_a \pi(a | x) U(a,y)
 \]
-*** Generalisation error as mismatched objectives
+*** Generalisation 
+
+**** Error due to mismatched objectives
 The $\pi^*$ maximising $U(\pi, P)$ is not the $\hat{\pi}$ maximising $U(\pi, D)$.
 
 **** Lemma
@@ -235,6 +237,10 @@ If $|U(\pi, P) - U(\pi, D)| \leq \epsilon$ for all $\pi$ then
 \[
 U(\hat{\pi}, D) \geq U(\pi^*, P) - 2 \epsilon.
 \]
+
+**** Error due to restricted classes
+- We may use a constrained $\hat{\Pi} \subset \Pi$. 
+- Then $\max_{\hat{\pi} \in \hat{\Pi}} U(\pi, P) \leq \max_{\pi \in \Pi} U(\pi, P)$.
 
 *** Classification
 **** The classifier as a decision rule
