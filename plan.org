@@ -206,6 +206,7 @@ $y_t  \in \Reals^m$
 **** Regression
 $y_t  \in \Reals^m$
 
+Code: 
 ** Learning and generalisation
 *** The Train/Test methodology
 **** Training data $D = ((x_t, y_t) : t = 1, \ldots, T)$.
@@ -334,19 +335,19 @@ under the distribution $P(x,y) = P(x | y) P(y)$ is:
 **** Example 2: Two-dimensional data
 - See [[file:src/NeuralNetworks/perceptron.py][in-class programming exercise]]
 
-**** Python concepts
-- Numpy
--- np.random.multivariate_normal(): generate samples from an n-D normal distribution
--- np.random.choice(): generate samples from a discrete distribution
--- np.zeros(): generate an array of zeros
--- np.array(): create an array from a list
--- np.block(): make an array from nested lists
--- np.dot(): calculate the dot (aka inner) product
-- matplotlib.pyplot
--- plt.plot(): Plot lines and points
--- plt.axis(): manipulate axes
--- plt.grid(): show a grid
--- plt.show(): display the plot
+*** Python concepts
+****  Numpy
+- np.random.multivariate_normal(): generate samples from an n-D normal distribution
+- np.random.choice(): generate samples from a discrete distribution
+- np.zeros(): generate an array of zeros
+- np.array(): create an array from a list
+- np.block(): make an array from nested lists
+- np.dot(): calculate the dot (aka inner) product
+**** matplotlib.pyplot
+- plt.plot(): Plot lines and points
+- plt.axis(): manipulate axes
+- plt.grid(): show a grid
+- plt.show(): display the plot
 
 *** Gradient methods example
 **** Estimate the expected value
@@ -412,7 +413,7 @@ How can we solve this problem?
 - $\eta_n = c/[c + n]$ for asymptotic convergence
 - $\eta_n = \argmin_\eta f(\theta_n + \eta \nabla_\param)$: Line search.
 
-*** Gradient descnt for squared error
+*** Gradient desecnt for squared error
 **** Cost function
 \[
 \ell(\param) =  \sum_{t=1}^T [y_t - \pi_\param(x_t)]^2
@@ -432,6 +433,8 @@ For a linear regressor:
 \[
 \frac{\partial}{\param_j} \pi_\param(x) = x_j.
 \]
+
+*** Analytical Least-Squares Solution
 
 *** Stochastic gradient descent algorithm
 **** Note
