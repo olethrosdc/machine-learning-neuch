@@ -572,9 +572,13 @@ $\hat{\param}_t = \frac{1}{t} \sum_{k=1}^t x_k$
 ** Discriminative modelling
 *** Discriminative modelling: general idea
 - Data $(x,y)$
-- Need to model $P(y | x)$
+- Easier to model $P(y | x)$
 - No need to model $P(x)$.
-  
+**** Examples
+- Linear regression
+- Logistic regression
+- Multi-layer perceptron
+
 *** Linear regression
 **** Model
 - $z = \param^\top x$
@@ -586,12 +590,17 @@ $\hat{\param}_t = \frac{1}{t} \sum_{k=1}^t x_k$
 - $P_\param(y = 1 | x) = \frac{1}{1 - e^z}$
 
 ** Generative modelling
-*** Generative modelling: general idea
+*** Generative modelling
+**** general idea
 - Data $(x,y)$.
 - Need to model $P(y | x)$.
 - Model the complet data distribution: $P(x | y)$, $P(x)$, $P(y)$.
 - Calculate \(  P(y | x) = \frac{P(x | y) P(x)}{P(y)}. \)
-  
+**** Examples
+- Naive Bayes classifier
+- Density estimation
+- Sequence models
+
 *** Classification: Naive Bayes Classifier
 - Data $(x,y)$
 - $x \in X$
@@ -612,7 +621,7 @@ P(y | x) = P(x | y) P(y) / P(x),
 \]
 choosing the $y$ with largest posterior $P(y | x)$.
 - $P(x | y = i) \propto \exp(- \|\hat{\mu}_i - x\|^2/\hat{\sigma}_i^2$
-*** Regression
+*** Density estimation
     #+TOC: headlines [currentsection,hideothersubsections]
 
 * Sequence modelling (2 weeks)
@@ -649,9 +658,48 @@ z_t = f(z_{t-1}, x_{t-1}) \tag{change state}
 \hat{x}_t = g(z_t) \tag{predict}
 \]
 
-**** Hidden Markov models
+**** Examples
+- Hidden Markov models
+- Recurrent Neural Networks
 
-** State estimation
+*** Hidden Markov Models: General setting
+**** Variables
+- State $z_t$
+- Observations $x_t$
+**** Parameters
+- Transition $\theta$
+- Observation $\psi$
+**** Distributions
+- Transition distribution $P_\theta(z_{t+1} | z_t)$
+- Observation distribution $P_\psi(x_t | z_t)$.
+*** HMMs: Discrete case
+**** Variables
+- State $z_t \in [n]$
+- Observation $x_t \in [m]$
+**** Transition distribution
+Multinomial with 
+\[
+P_\theta(z_{t+1} = j | z_t = i) = \param_{i,j}
+\]
+**** Observation distribution
+Multinomial with 
+\[
+P_\theta(x_t = j | z_t = i) = \psi_{i,j}
+\]
+*** HMMs: Continuous case
+**** Variables
+- State $z_t \in [n]$
+- Observation $x_t \in \Reals^m$
+**** Transition distribution
+Multinomial with 
+\[
+P_\theta(z_{t+1} = j | z_t = i) = \param_{i,j}
+\]
+**** Observation distribution
+Multinomial with 
+\[
+P_\theta(x_t = j | z_t = i) = \psi_{i,j}
+\]
 
 
 * Reinforcement Learning (2 weeks)
