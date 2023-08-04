@@ -696,10 +696,15 @@ Multinomial with
 P_\theta(z_{t+1} = j | z_t = i) = \param_{i,j}
 \]
 **** Observation distribution
-Multinomial with 
+Gaussian with 
 \[
-P_\theta(x_t = j | z_t = i) = \psi_{i,j}
+P_\theta(x_t = x | z_t = i) \propto \exp\left(-\|x - \psi_{i}\|\right)
 \]
+** Expectation Maximisation
+*** Density Estimation with EM
+*** HMM Estimation with EM
+
+** Monte-Carlo Methods
 
 
 * Reinforcement Learning (2 weeks)
