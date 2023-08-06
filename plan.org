@@ -69,8 +69,18 @@ with the theory and practice focus.
 
 * Material
 ** Textbooks
+*** Primary
 - Introduction to Statistical Learning with Python
 https://hastie.su.domains/ISLP/ISLP_website.pdf
+- Elements of Statistical Learning
+https://hastie.su.domains/Papers/ESLII.pdf
+*** Secondary
+- Probabilistic Machine Learning: An Introduction
+https://probml.github.io/pml-book/book1.html
+https://github.com/probml/pml-book/releases/latest/download/book1.pdf
+- Probabilistic Machine Learning: Advanced Topics
+https://probml.github.io/pml-book/book2.html
+https://github.com/probml/pml2-book/releases/latest/download/book2.pdf
 
 * The problems of Machine Learning (1 week)
 #+TOC: headlines [currentsection,hideothersubsections]
