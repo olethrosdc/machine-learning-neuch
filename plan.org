@@ -46,26 +46,30 @@ During the course, you will be able to:
 * Schedule
 
 Here is a summary of the scheduled topics for this course, together
-with the theory and practice focus.
+with the theory and practice focus, as well as which book chapters correspond to which lecture.
 
-|------+-------+--------------------------------+----------------------------------+--------------------|
-| Week |  Date | Topic                          | Theory                           | Lab                |
-|------+-------+--------------------------------+----------------------------------+--------------------|
-|    1 | 09.19 | Course Introduction            |                                  | Pandas             |
-|    2 | 09.26 | kNN                            | Generalisation                   | pandas,sklearn     |
-|    3 | 10.03 | Perceptron                     | Convergence                      | sklearn            |
-|    4 | 10.10 | Linear Regression              | SGD, Least-Squares               | sklearn,tensorflow |
-|    5 | 10.17 | Multi-Layer Neural Network     | Backpropagation                  | tensorflow         |
-|    6 | 10.24 | TensorFlow Lab                 | Network Architectures            | tensorflow         |
-|    7 | 10.31 | Discriminative Models          | Logistic Regression              | TFProb             |
-|    8 | 11.07 | Generative Models              | Bayes Classifier                 | Python             |
-|    9 | 11.14 | Bayesian Networks              | Conditional Independence         | TFProb             |
-|   10 | 11.21 | Regularisation                 | Non-linear programming           | tensorflow         |
-|   11 | 11.28 | Bayesian Inference             | Conjugate priors                 | TFprob             |
-|   12 | 12.05 | Approximate Bayesian Inference | Monte-Carlo Methods              | TFProb             |
-|   13 | 12.12 | Bayesian Neural Networks       | Stochastic Variational Inference | TFProb             |
-|   14 | 12.19 | Project Presentations          |                                  |                    |
-|------+-------+--------------------------------+----------------------------------+--------------------|
+The course is split in two parts, the first focusing on
+optimisation-based learning, and the second on probabilistic learning.
+
+|------+-------+--------------------------------+----------------------------------+-----------------+------+---------|
+| Week |  Date | Topic                          | Theory                           | Lab             | ISLP |    ESL2 |
+|------+-------+--------------------------------+----------------------------------+-----------------+------+---------|
+|    1 | 09.26 | Course Introduction            |                                  | Pandas          |  1,2 | 2.1-2.2 |
+|    2 | 10.03 | kNN                            | Generalisation                   | pandas,sklearn  |    2 |     2.3 |
+|    3 | 10.10 | Perceptron                     | Convergence                      | sklearn         | 10.1 |     4.5 |
+|    4 | 10.17 | Linear Regression              | SGD, Least-Squares               | sklearn,pyTorch |    3 |         |
+|    5 | 10.24 | Multi-Layer Neural Network     | Backpropagation                  | pyTorch         |   10 |         |
+|    6 | 10.31 | Neural Network Lab             | Network Architectures            | pyTorch         |   10 |         |
+|------+-------+--------------------------------+----------------------------------+-----------------+------+---------|
+|    7 | 11.07 | Discriminative Models          | Logistic Regression              | pyTorch         |  4.3 |         |
+|    8 | 11.14 | Generative Models              | Bayes Classifier                 | Python          |  4.4 |         |
+|    9 | 11.21 | Bayesian Networks              | Conditional Independence         | pyTorch         |      |         |
+|   10 | 11.28 | Regularisation                 | Non-linear programming           | pyTorch         |      |         |
+|   11 | 12.05 | Bayesian Inference             | Conjugate priors                 | pyTorch         |      |         |
+|   12 | 12.12 | Approximate Bayesian Inference | Monte-Carlo Methods              | pyTorch         |      |         |
+|------+-------+--------------------------------+----------------------------------+-----------------+------+---------|
+|   13 | 12.19 | Project Presentations          | Stochastic Variational Inference | pyTorch         |      |         |
+|------+-------+--------------------------------+----------------------------------+-----------------+------+---------|
 
 * Material
 ** Textbooks
