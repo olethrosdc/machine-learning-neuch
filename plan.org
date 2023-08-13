@@ -36,36 +36,58 @@
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 
-This course gives an introduction to the theory of machine learning. Application is in the form of a course project.
+This course gives an introduction to the algorithms and theory of
+machine learning. Application is in the form of a course project.
 During the course, you will be able to:
 
 - Formulate machine learning problems in terms of opimisation or probabilistic inference.
+- Understand the fundamental machine learning algorithms.
+- Be able to implement some of the simplest algorithms.
 - Apply off-the-shelf algorithms to problems.
-- Develop custom models and algorithms using the TensorFlow python library.
+- Develop custom models using algorithms from TensorFlow python library.
 
 * Schedule
 
 Here is a summary of the scheduled topics for this course, together
-with the theory and practice focus.
+with the theory and practice focus, as well as which book chapters correspond to which lecture.
 
-|------+-------+--------------------------------+----------------------------------+--------------------|
-| Week |  Date | Topic                          | Theory                           | Lab                |
-|------+-------+--------------------------------+----------------------------------+--------------------|
-|    1 | 09.19 | Course Introduction            |                                  | Pandas             |
-|    2 | 09.26 | kNN                            | Generalisation                   | pandas,sklearn     |
-|    3 | 10.03 | Perceptron                     | Convergence                      | sklearn            |
-|    4 | 10.10 | Linear Regression              | SGD, Least-Squares               | sklearn,tensorflow |
-|    5 | 10.17 | Multi-Layer Neural Network     | Backpropagation                  | tensorflow         |
-|    6 | 10.24 | TensorFlow Lab                 | Network Architectures            | tensorflow         |
-|    7 | 10.31 | Discriminative Models          | Logistic Regression              | TFProb             |
-|    8 | 11.07 | Generative Models              | Bayes Classifier                 | Python             |
-|    9 | 11.14 | Bayesian Networks              | Conditional Independence         | TFProb             |
-|   10 | 11.21 | Regularisation                 | Non-linear programming           | tensorflow         |
-|   11 | 11.28 | Bayesian Inference             | Conjugate priors                 | TFprob             |
-|   12 | 12.05 | Approximate Bayesian Inference | Monte-Carlo Methods              | TFProb             |
-|   13 | 12.12 | Bayesian Neural Networks       | Stochastic Variational Inference | TFProb             |
-|   14 | 12.19 | Project Presentations          |                                  |                    |
-|------+-------+--------------------------------+----------------------------------+--------------------|
+The course is split in two parts, the first focusing on
+optimisation-based learning, and the second on probabilistic learning.
+
+|------+-------+--------------------------------+----------------------------------+-----------------+------+---------|
+| Week |  Date | Topic                          | Theory                           | Lab             | ISLP |    ESL2 |
+|------+-------+--------------------------------+----------------------------------+-----------------+------+---------|
+|    1 | 09.26 | Course Introduction            |                                  | Pandas          |  1,2 | 2.1-2.2 |
+|    2 | 10.03 | kNN                            | Generalisation                   | pandas,sklearn  |    2 |     2.3 |
+|    3 | 10.10 | Perceptron                     | Convergence                      | sklearn         | 10.1 |     4.5 |
+|    4 | 10.17 | Linear Regression              | SGD, Least-Squares               | sklearn,pyTorch |    3 |         |
+|    5 | 10.24 | Multi-Layer Neural Network     | Backpropagation                  | pyTorch         |   10 |         |
+|    6 | 10.31 | Neural Network Lab             | Network Architectures            | pyTorch         |   10 |         |
+|------+-------+--------------------------------+----------------------------------+-----------------+------+---------|
+|    7 | 11.07 | Discriminative Models          | Logistic Regression              | pyTorch         |  4.3 |         |
+|    8 | 11.14 | Generative Models              | Bayes Classifier                 | Python          |  4.4 |         |
+|    9 | 11.21 | Bayesian Networks              | Conditional Independence         | pyTorch         |      |         |
+|   10 | 11.28 | Regularisation                 | Non-linear programming           | pyTorch         |      |         |
+|   11 | 12.05 | Bayesian Inference             | Conjugate priors                 | pyTorch         |      |         |
+|   12 | 12.12 | Approximate Bayesian Inference | Monte-Carlo Methods              | pyTorch         |      |         |
+|------+-------+--------------------------------+----------------------------------+-----------------+------+---------|
+|   13 | 12.19 | Project Presentations          | Stochastic Variational Inference | pyTorch         |      |         |
+|------+-------+--------------------------------+----------------------------------+-----------------+------+---------|
+
+* Material
+** Textbooks
+*** Primary
+- Introduction to Statistical Learning with Python
+https://hastie.su.domains/ISLP/ISLP_website.pdf
+- Elements of Statistical Learning
+https://hastie.su.domains/Papers/ESLII.pdf
+*** Secondary
+- Probabilistic Machine Learning: An Introduction
+https://probml.github.io/pml-book/book1.html
+https://github.com/probml/pml-book/releases/latest/download/book1.pdf
+- Probabilistic Machine Learning: Advanced Topics
+https://probml.github.io/pml-book/book2.html
+https://github.com/probml/pml2-book/releases/latest/download/book2.pdf
 
 * The problems of Machine Learning (1 week)
 #+TOC: headlines [currentsection,hideothersubsections]
@@ -206,6 +228,7 @@ $y_t  \in \Reals^m$
 **** Regression
 $y_t  \in \Reals^m$
 
+Code: 
 ** Learning and generalisation
 *** The Train/Test methodology
 **** Training data $D = ((x_t, y_t) : t = 1, \ldots, T)$.
@@ -227,7 +250,9 @@ $y_t  \in \Reals^m$
 = 
 \max_\pi \sum_{(x,y) \in D)} \sum_a \pi(a | x) U(a,y)
 \]
-*** Generalisation error as mismatched objectives
+*** Generalisation 
+
+**** Error due to mismatched objectives
 The $\pi^*$ maximising $U(\pi, P)$ is not the $\hat{\pi}$ maximising $U(\pi, D)$.
 
 **** Lemma
@@ -235,6 +260,10 @@ If $|U(\pi, P) - U(\pi, D)| \leq \epsilon$ for all $\pi$ then
 \[
 U(\hat{\pi}, D) \geq U(\pi^*, P) - 2 \epsilon.
 \]
+
+**** Error due to restricted classes
+- We may use a constrained $\hat{\Pi} \subset \Pi$. 
+- Then $\max_{\hat{\pi} \in \hat{\Pi}} U(\pi, P) \leq \max_{\pi \in \Pi} U(\pi, P)$.
 
 *** Classification
 **** The classifier as a decision rule
@@ -306,6 +335,7 @@ under the distribution $P(x,y) = P(x | y) P(y)$ is:
 - Data $(x_t, y_t)$, $t \in [T]$,  with $x_t \in X, y_t in Y$.
 **** Algorithm
 - $w_1 = w_0$.
+
 - For $t = 1, \ldots, T$.
 -- $a_t = \sgn(w_t^\top x_t)$.
 -- If $a_t \neq y_t$
@@ -314,10 +344,33 @@ under the distribution $P(x,y) = P(x | y) P(y)$ is:
 --- $w_{t+1} = $w_t$
 - Return $w_{T+1}$
 **** Theorem
- The number of mistakes made by the perceptron algorithm is boudned by
+ The number of mistakes made by the perceptron algorithm is bounded by
  $(r/\rho)^2$, where $\|x_t\|\leq r$, $\rho \leq y_t (v^\top x_t) /
  \|v\|$ for some *margin* $\rho$ and *hyperplane* $v$.
 	 
+*** Perceptron examples
+**** Example 1: One-dimensional data
+- Done on the board
+- Shows how the algorithm works.
+- Demonstrates the idea of a margin
+
+**** Example 2: Two-dimensional data
+- See [[file:src/NeuralNetworks/perceptron.py][in-class programming exercise]]
+
+*** Python concepts
+****  Numpy
+- np.random.multivariate_normal(): generate samples from an n-D normal distribution
+- np.random.choice(): generate samples from a discrete distribution
+- np.zeros(): generate an array of zeros
+- np.array(): create an array from a list
+- np.block(): make an array from nested lists
+- np.dot(): calculate the dot (aka inner) product
+**** matplotlib.pyplot
+- plt.plot(): Plot lines and points
+- plt.axis(): manipulate axes
+- plt.grid(): show a grid
+- plt.show(): display the plot
+
 *** Gradient methods example
 **** Estimate the expected value
 $x_t \sim P$ with $\E_P[x_t] = \mu$.
@@ -382,7 +435,7 @@ How can we solve this problem?
 - $\eta_n = c/[c + n]$ for asymptotic convergence
 - $\eta_n = \argmin_\eta f(\theta_n + \eta \nabla_\param)$: Line search.
 
-*** Gradient descnt for squared error
+*** Gradient desecnt for squared error
 **** Cost function
 \[
 \ell(\param) =  \sum_{t=1}^T [y_t - \pi_\param(x_t)]^2
@@ -402,6 +455,8 @@ For a linear regressor:
 \[
 \frac{\partial}{\param_j} \pi_\param(x) = x_j.
 \]
+
+*** Analytical Least-Squares Solution
 
 *** Stochastic gradient descent algorithm
 **** Note
@@ -506,6 +561,7 @@ So let us ignore the other inputs for simplicity:
 
 
 **** Softmax 
+
 * Learning as Probabilistic Inference (4 weeks)
 ** Probabilistic Models
 *** Probabilistic modelling
@@ -524,7 +580,6 @@ Here we also need a prior distribution, but still estimate a single parameter:
 Here we estimate the complete distribution over parameters
 - $\bel(\param | x) = P_\param(x) \bel(\param) / \sum_{\param'} P_{\param'}(x) \bel(\param')$ 
 
-
 *** The Bernoulli distribution: Modelling a coin
 **** Definition
 If $x_t \sim \Ber(\param)$ then
@@ -539,9 +594,13 @@ $\hat{\param}_t = \frac{1}{t} \sum_{k=1}^t x_k$
 ** Discriminative modelling
 *** Discriminative modelling: general idea
 - Data $(x,y)$
-- Need to model $P(y | x)$
+- Easier to model $P(y | x)$
 - No need to model $P(x)$.
-  
+**** Examples
+- Linear regression
+- Logistic regression
+- Multi-layer perceptron
+
 *** Linear regression
 **** Model
 - $z = \param^\top x$
@@ -553,12 +612,17 @@ $\hat{\param}_t = \frac{1}{t} \sum_{k=1}^t x_k$
 - $P_\param(y = 1 | x) = \frac{1}{1 - e^z}$
 
 ** Generative modelling
-*** Generative modelling: general idea
+*** Generative modelling
+**** general idea
 - Data $(x,y)$.
 - Need to model $P(y | x)$.
 - Model the complet data distribution: $P(x | y)$, $P(x)$, $P(y)$.
 - Calculate \(  P(y | x) = \frac{P(x | y) P(x)}{P(y)}. \)
-  
+**** Examples
+- Naive Bayes classifier
+- Density estimation
+- Sequence models
+
 *** Classification: Naive Bayes Classifier
 - Data $(x,y)$
 - $x \in X$
@@ -579,8 +643,9 @@ P(y | x) = P(x | y) P(y) / P(x),
 \]
 choosing the $y$ with largest posterior $P(y | x)$.
 - $P(x | y = i) \propto \exp(- \|\hat{\mu}_i - x\|^2/\hat{\sigma}_i^2$
-*** Regression
+*** Density estimation
     #+TOC: headlines [currentsection,hideothersubsections]
+
 * Sequence modelling (2 weeks)
 ** Sequence prediction
 *** The problem of sequence prediction
@@ -630,10 +695,53 @@ z_t = f(z_{t-1}, x_{t-1}) \tag{change state}
 \hat{x}_t = g(z_t) \tag{predict}
 \]
 
-**** Hidden Markov models
+**** Examples
+- Hidden Markov models
+- Recurrent Neural Networks
 
+*** Hidden Markov Models: General setting
+**** Variables
+- State $z_t$
+- Observations $x_t$
+**** Parameters
+- Transition $\theta$
+- Observation $\psi$
+**** Distributions
+- Transition distribution $P_\theta(z_{t+1} | z_t)$
+- Observation distribution $P_\psi(x_t | z_t)$.
+*** HMMs: Discrete case
+**** Variables
+- State $z_t \in [n]$
+- Observation $x_t \in [m]$
+**** Transition distribution
+Multinomial with 
+\[
+P_\theta(z_{t+1} = j | z_t = i) = \param_{i,j}
+\]
+**** Observation distribution
+Multinomial with 
+\[
+P_\theta(x_t = j | z_t = i) = \psi_{i,j}
+\]
+*** HMMs: Continuous case
+**** Variables
+- State $z_t \in [n]$
+- Observation $x_t \in \Reals^m$
+**** Transition distribution
+Multinomial with 
+\[
+P_\theta(z_{t+1} = j | z_t = i) = \param_{i,j}
+\]
+**** Observation distribution
+Gaussian with 
+\[
+P_\theta(x_t = x | z_t = i) \propto \exp\left(-\|x - \psi_{i}\|\right)
+\]
+** Expectation Maximisation
+*** Density Estimation with EM
+*** HMM Estimation with EM
 
-** State estimation
+** Monte-Carlo Methods
 
 
 * Reinforcement Learning (2 weeks)
