@@ -16,7 +16,9 @@
 #+LaTeX_HEADER: \newcommand \Param {\Theta}
 #+LaTeX_HEADER: \newcommand \param {\theta}
 #+LaTeX_HEADER: \newcommand \vparam {\vectorsym{\theta}}
+#+LaTeX_HEADER: \newcommand \mparam {\matrixsym{\Theta}}
 #+LaTeX_HEADER: \newcommand \bW {\matrixsym{W}}
+#+LaTeX_HEADER: \newcommand \bw {\vectorsym{w}}
 #+LaTeX_HEADER: \newcommand \wi {\vectorsym{w}_i}
 #+LaTeX_HEADER: \newcommand \wij {w_{i,j}}
 #+LaTeX_HEADER: \newcommand \bA {\matrixsym{A}}
@@ -703,6 +705,21 @@ We wish to model
 P(x_t | x_{t-k}, \ldots, x_{t-1})
 \]
 *** Linear auto-regression
+**** Simple time-series data
+- Observations $x_t \in \Reals$
+- Parameters $\vparam \in \Reals^k$
+\[
+\hat{x}_t = \sum_i \param_i x_{t-i}.
+\]
+**** Multi-dimensional time-series data
+- Observations $x_t \in \Reals^n$
+- Parameters $\mparam \in \Reals^{k \times n}$
+\[
+\hat{x}_t
+= \sum_i \param^\top_i x_{t-i}.
+= \sum_{i,j} \param_{i,j} x_{t-i}.
+\]
+
 
 *** Recursive models
 **** General idea
