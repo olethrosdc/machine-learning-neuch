@@ -54,25 +54,25 @@ with the theory and practice focus, as well as which book chapters correspond to
 The course is split in two parts, the first focusing on
 optimisation-based learning, and the second on probabilistic learning.
 
-|------+-------+--------------------------------+----------------------------------+-----------------+------+---------|
-| Week |  Date | Topic                          | Theory                           | Lab             | ISLP |    ESL2 |
-|------+-------+--------------------------------+----------------------------------+-----------------+------+---------|
-|    1 | 09.26 | Course Introduction            |                                  | Pandas          |  1,2 | 2.1-2.2 |
-|    2 | 10.03 | kNN                            | Generalisation                   | pandas,sklearn  |    2 |     2.3 |
-|    3 | 10.10 | Perceptron                     | Convergence                      | sklearn         | 10.1 |     4.5 |
-|    4 | 10.17 | Linear Regression              | SGD, Least-Squares               | sklearn,pyTorch |    3 |         |
-|    5 | 10.24 | Multi-Layer Neural Network     | Backpropagation                  | pyTorch         |   10 |         |
-|    6 | 10.31 | Neural Network Lab             | Network Architectures            | pyTorch         |   10 |         |
-|------+-------+--------------------------------+----------------------------------+-----------------+------+---------|
-|    7 | 11.07 | Discriminative Models          | Logistic Regression              | pyTorch         |  4.3 |         |
-|    8 | 11.14 | Generative Models              | Bayes Classifier                 | Python          |  4.4 |         |
-|    9 | 11.21 | Bayesian Networks              | Conditional Independence         | pyTorch         |      |         |
-|   10 | 11.28 | Regularisation                 | Non-linear programming           | pyTorch         |      |         |
-|   11 | 12.05 | Bayesian Inference             | Conjugate priors                 | pyTorch         |      |         |
-|   12 | 12.12 | Approximate Bayesian Inference | Monte-Carlo Methods              | pyTorch         |      |         |
-|------+-------+--------------------------------+----------------------------------+-----------------+------+---------|
-|   13 | 12.19 | Project Presentations          | Stochastic Variational Inference | pyTorch         |      |         |
-|------+-------+--------------------------------+----------------------------------+-----------------+------+---------|
+|------+-------+--------------------------------+------------------------+-----------------+------+---------|
+| Week |  Date | Topic                          | Theory                 | Lab             | ISLP |    ESL2 |
+|------+-------+--------------------------------+------------------------+-----------------+------+---------|
+|    1 | 09.26 | Course Introduction            |                        | Pandas          |  1,2 | 2.1-2.2 |
+|    2 | 10.03 | kNN                            | Generalisation         | pandas,sklearn  |    2 |     2.3 |
+|    3 | 10.10 | Perceptron                     | Convergence            | sklearn         | 10.1 |     4.5 |
+|    4 | 10.17 | Linear Regression              | SGD, Least-Squares     | sklearn,pyTorch |    3 |         |
+|    5 | 10.24 | Multi-Layer Neural Network     | Backpropagation        | pyTorch         |   10 |         |
+|    6 | 10.31 | Neural Network Lab             | Network Architectures  | pyTorch         |   10 |         |
+|------+-------+--------------------------------+------------------------+-----------------+------+---------|
+|    7 | 11.07 | Discriminative Models          | Logistic Regression    | pyTorch         |  4.3 |         |
+|    8 | 11.14 | Generative Models              | Bayes Classifier       | Python          |  4.4 |         |
+|    9 | 11.21 | Latent-Variable Models         | EM, GMM                | pyTorch         |      |     8.5 |
+|   10 | 11.28 | Regularisation                 | Non-linear programming | pyTorch         |      |         |
+|   11 | 12.05 | Bayesian Inference             | Conjugate priors       | pyTorch         |      |         |
+|   12 | 12.12 | Approximate Bayesian Inference | Monte-Carlo Methods    | pyTorch         |      |         |
+|------+-------+--------------------------------+------------------------+-----------------+------+---------|
+|   13 | 12.19 | Project Presentations          |                        |                 |      |         |
+|------+-------+--------------------------------+------------------------+-----------------+------+---------|
 
 * Material
 ** Textbooks
@@ -584,11 +584,30 @@ Here we estimate the complete distribution over parameters
 **** Definition
 If $x_t \sim \Ber(\param)$ then
 $x_t = 1$ w.p. $\param$ and $x_t = 0$ w.p. $1 - \param$.
+**** Likelihood function
+ \(P(x_1, \ldots, x_T | \param) = \prod_{t=1}^T P(x_t | \param)\) = \prod_{t=1}^T \theta^{x_t} (1 - \theta)^{1 - x_t}
 **** Maximum Likelihood Estimate
-$\hat{\param}_t = \frac{1}{t} \sum_{k=1}^t x_k$
-**** Bayesian Estimate
-- Prior $\param \sim \Beta(\alpha_1, \alpha_0)$
-- Posterior $\param \sim \Beta(\alpha_1 + \sum_{k=1}^t x_k, \alpha_0 + \sum_{k=1}^t x_k)$.
+$\argmax_\param P(x | \param) = \argmax_\param \ln P(x | \param)$.
+\begin{align*}
+\frac{d}{d\param} \ln P(x | \param)
+&=  \frac{d}{d\param} [\sum_t \ln P(x_t | \param)]
+= \frac{d}{d\param} [\sum_t \ln \theta^{x_t} (1 - \theta)^{1 - x_t}]
+\\
+&=
+\frac{d}{d\param}[ \ln (\theta) \sum_t x_t +  \ln (1 - \theta) \sum_t (1 - x_t)]
+\\
+&=
+\frac{1}{\theta} \sum_t x_t  - \frac{1}{1 - \theta} \sum_t (1 - x_t)
+\end{align*}
+Setting the derivative to zero: \[\hat{\param}_T = \frac{1}{T} \sum_{t=1}^T x_t\]
+
+*** Bayesian Estimate
+**** The prior distribution $P(\param)$
+$\param \sim \Beta(\alpha_1, \alpha_0)$
+**** The likelihood function $P(x | \param)$
+ \(P(x_1, \ldots, x_T | \param) = \prod_{t=1}^T P(x_t | \param)\)
+**** The posterior distribution $P(\param | x)$
+$\param \sim \Beta(\alpha_1 + \sum_{t=1}^T x_t, \alpha_0 + \sum_{t=1}^T x_t)$.
 
 *** The Gaussian distribution: Modelling gambling gains
 ** Classification: Discriminative modelling
@@ -678,6 +697,11 @@ choosing the $y$ with largest posterior $P(y | x)$.
 - Variational Bayesian Inference (with appropriate prior)
 
 *** GMM with EM
+**** Objective function: log-likelihood
+\[
+\ln P(x | \theta, \mu, \Sigma) = \ln \sum_i \theta_i P(x | \mu_i, \sigma_i)
+\]
+
 **** Expectation Step
 **** Maximization Step
 
