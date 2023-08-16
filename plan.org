@@ -706,6 +706,16 @@ choosing the $y$ with largest posterior $P(y | x)$.
 **** Maximization Step
 
 
+*** GMM Classifier :exercise:
+**** Base class: sklearn GaussianMixtureModel
+- /fit()/ only works for Density Estimaiton
+- /predict()/ only predicts cluster labels
+**** Problem
+- Create a GMMClassifier class
+- /fit()/ should take X, y, arguments
+- /predict()/ should predict class labels
+- Hint: Use /predict_proba()/ and multiple GMM models
+
 
 * Sequence modelling (2 weeks)
 ** Sequence prediction
