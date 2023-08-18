@@ -56,7 +56,9 @@ y_true[y_true>2]=1
 
 model = GMMClassifier(4)
 model.fit(X, y_true)
-model.predict_proba(X[0:3])
+posterior = model.predict_proba(X)
+print(np.mean(posterior[y_true]))
+    
 
 
 
