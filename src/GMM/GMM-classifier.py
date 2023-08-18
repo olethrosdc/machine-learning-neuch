@@ -14,10 +14,9 @@ class GMMClassifier:
     def fit(self, X, y):
         classes = set(y)
         self.n_classes = len(set(y))
-        self.models = [GaussianMixture(n_components = self.n_components).fit(X[y==c]) for c in classes]
-        self.class_probabilities = [sum(np.equal(y, c)) for c in classes]
-        self.class_probabilities /= sum(self.class_probabilities)
-        print(self.class_probabilities)
+        # self.models = -- fill in
+        # self.class_probabilities = -- fill in
+
 
     ## Calculate the probability of a class given the features, i.e. P(y|x).
     ## You can calculate this with Bayes's theorem:
@@ -26,24 +25,9 @@ class GMMClassifier:
     ## $P(y)$ is simply the prior class probabilities
     ## $P(x) = \sum_{y'} P(x|y') P(y')$
     def predict_proba(self, X):
-        log_likelihood = [self.models[c].score_samples(X) for c in range(self.n_classes)]
         n_examples = X.shape[0]
-        log_posterior = np.zeros([self.n_classes, n_examples])
         posterior = np.zeros([self.n_classes, n_examples])
-        if True:
-            for t in range(n_examples):
-                for c in range(self.n_classes):
-                    log_posterior[c,t] = log_likelihood[c][t] + np.log(self.class_probabilities[c])
-                log_posterior[:,t] = log_posterior[:,t] - logsumexp(log_posterior[:,t])
-            posterior = np.exp(log_posterior)
-            #print("log calc:\n", posterior)
-        else:
-            for t in range(n_examples):
-                for c in range(self.n_classes):
-                    posterior[c,t] = np.exp(log_likelihood[c][t]) * self.class_probabilities[c]
-                posterior[:,t] = posterior[:,t] / sum(posterior[:,t])
-            #print("direct calc:\n", posterior)
-        
+        ## FILL IN
         return posterior
     
 # test code
