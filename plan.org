@@ -91,6 +91,21 @@ https://github.com/probml/pml2-book/releases/latest/download/book2.pdf
 
 * The problems of Machine Learning (1 week)
 #+TOC: headlines [currentsection,hideothersubsections]
+** Introduction
+*** Machine learning
+**** Data Collection
+- Downloading a clean dataset from a repository
+- Performing a survey
+- Scraping data from the web
+- Deploying sensors, performing experiments, and obtaining measurements.
+**** Modelling (what we focus on this course)
+- Can be as simple as counting coin tosses.
+- Can be as complex as a large language model with billions of parameters
+- The model depends on the data and the problem
+**** Decision Making
+- Ultimately, we use models to make decisions.
+- However, decisions are made every step of the way (how to collect data, which model to choose)
+  
 ** Activities
 *** Class data
 **** Fill in your data (does not have to be true)
