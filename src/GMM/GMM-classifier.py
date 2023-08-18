@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn.mixture import GaussianMixture
-
+from scipy.special import logsumexp
 
 class GMMClassifier:
     # n_components: the number of components per class
@@ -27,10 +27,25 @@ class GMMClassifier:
     ## $P(x) = \sum_{y'} P(x|y') P(y')$
     def predict_proba(self, X):
         log_likelihood = [self.models[c].score_samples(X) for c in range(self.n_classes)]
-        for t in range(X.shape[0]):
-            for c in range(self.n_classes):
-                log_likelihood[c][t] += log(self.class_probabilities[c])
-                # need to use logsumexp
+        n_examples = X.shape[0]
+        log_posterior = np.zeros([self.n_classes, n_examples])
+        posterior = np.zeros([self.n_classes, n_examples])
+        if True:
+            for t in range(n_examples):
+                for c in range(self.n_classes):
+                    log_posterior[c,t] = log_likelihood[c][t] + np.log(self.class_probabilities[c])
+                log_posterior[:,t] = log_posterior[:,t] - logsumexp(log_posterior[:,t])
+            posterior = np.exp(log_posterior)
+            #print("log calc:\n", posterior)
+        else:
+            for t in range(n_examples):
+                for c in range(self.n_classes):
+                    posterior[c,t] = np.exp(log_likelihood[c][t]) * self.class_probabilities[c]
+                posterior[:,t] = posterior[:,t] / sum(posterior[:,t])
+            #print("direct calc:\n", posterior)
+        
+        return posterior
+    
 # test code
 from sklearn.datasets._samples_generator import make_blobs
 import matplotlib.pyplot as plt
