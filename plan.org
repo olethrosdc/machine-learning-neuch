@@ -36,6 +36,9 @@
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 
+* General
+** Introduction
+*** Summary
 This course gives an introduction to the algorithms and theory of
 machine learning. Application is in the form of a course project.
 During the course, you will be able to:
@@ -43,16 +46,15 @@ During the course, you will be able to:
 - Formulate machine learning problems in terms of opimisation or probabilistic inference.
 - Understand the fundamental machine learning algorithms.
 - Be able to implement some of the simplest algorithms.
-- Apply off-the-shelf algorithms to problems.
-- Develop custom models using algorithms from TensorFlow python library.
+- Apply off-the-shelf algorithms from scikit-learn to problems.
+- Develop custom models using the pyTorch library.
 
-* Schedule
+The course focuses on algorithms and models, firstly on
+optimisation-based learning, and the secondly on probabilistic
+learning.
 
-Here is a summary of the scheduled topics for this course, together
-with the theory and practice focus, as well as which book chapters correspond to which lecture.
+*** Schedule
 
-The course is split in two parts, the first focusing on
-optimisation-based learning, and the second on probabilistic learning.
 
 |------+-------+--------------------------------+------------------------+-----------------+------+---------|
 | Week |  Date | Topic                          | Theory                 | Lab             | ISLP |    ESL2 |
@@ -74,14 +76,14 @@ optimisation-based learning, and the second on probabilistic learning.
 |   13 | 12.19 | Project Presentations          |                        |                 |      |         |
 |------+-------+--------------------------------+------------------------+-----------------+------+---------|
 
-* Material
-** Textbooks
-*** Primary
+** Material
+*** Textbooks
+**** Primary
 - Introduction to Statistical Learning with Python
 https://hastie.su.domains/ISLP/ISLP_website.pdf
 - Elements of Statistical Learning
 https://hastie.su.domains/Papers/ESLII.pdf
-*** Secondary
+**** Secondary
 - Probabilistic Machine Learning: An Introduction
 https://probml.github.io/pml-book/book1.html
 https://github.com/probml/pml-book/releases/latest/download/book1.pdf
