@@ -6,6 +6,8 @@
 #+LaTeX_HEADER: \usepackage{amssymb}
 #+LaTeX_HEADER: \usepackage{isomath}
 #+LaTeX_HEADER: \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand \Var {\mathop{\mbox{\ensuremath{\mathbb{V}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand \Bias {\mathop{\mbox{\ensuremath{\mathbb{B}}}}\nolimits}
 #+LaTeX_HEADER: \newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
 #+LaTeX_HEADER: \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
 #+LaTeX_HEADER: \DeclareMathOperator*{\argmax}{arg\,max}
@@ -267,7 +269,7 @@ Code:
 = 
 \max_\pi \sum_{(x,y) \in D)} \sum_a \pi(a | x) U(a,y)
 \]
-*** Generalisation 
+*** Generalisation as error
 
 **** Error due to mismatched objectives
 The $\pi^*$ maximising $U(\pi, P)$ is not the $\hat{\pi}$ maximising $U(\pi, D)$.
@@ -282,6 +284,19 @@ U(\hat{\pi}, D) \geq U(\pi^*, P) - 2 \epsilon.
 - We may use a constrained $\hat{\Pi} \subset \Pi$. 
 - Then $\max_{\hat{\pi} \in \hat{\Pi}} U(\pi, P) \leq \max_{\pi \in \Pi} U(\pi, P)$.
 
+*** The bias/variance trade-off
+- Dataset $D$
+- Predictor $f_D(x)$
+- Target function $y = f(x) + \epsilon$
+- $\E \epsilon = 0$ zero-mean noise.
+**** MSE decomposition
+\[
+\E_{D \sim P,y \sim P(y|x)} \left\{[y - f_D(x)]^2 \middle| x\right\}= \Var(f(x)) + \Bias(f(x))^2 + \Var(\epsilon)
+\]
+**** Variance
+\[
+\Var(f) = \E[
+\]
 *** Classification
 **** The classifier as a decision rule
 A decision rule $\pi(a | x)$ generates a *decision* $a \in [m]$. It is
