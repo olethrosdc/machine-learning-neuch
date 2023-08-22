@@ -291,23 +291,29 @@ U(\hat{\pi}, D) \geq U(\pi^*, P) - 2 \epsilon.
 - Then $\max_{\hat{\pi} \in \hat{\Pi}} U(\pi, P) \leq \max_{\pi \in \Pi} U(\pi, P)$.
 
 *** The bias/variance trade-off
-- Dataset $D$
+- Dataset $D ~ P$.
 - Predictor $f_D(x)$
 - Target function $y = f(x) + \epsilon$
-- $\E \epsilon = 0$ zero-mean noise.
+- $\E \epsilon = 0$ zero-mean noise with variance $\sigma^2 = \Var(\epsilon0$
 **** MSE decomposition
+The expected error obeys
 \[
-\E_{D \sim P,y \sim P(y|x)} \left\{[y - f_D(x)]^2 \middle| x\right\}= \Var(f(x)) + \Bias(f(x))^2 + \Var(\epsilon)
+\E_{D \sim P,y \sim P(y|x)} \left\{[y - f_D(x)]^2 ~\middle|~ x\right\}= \Var(f(x)) + \Bias(f(x))^2 + \sigma^2
 \]
 **** Variance
 \[
 \Var(f_D)
  = \E[(f_D - \E(f_D))^2]
- = \E(f_D)^2] + \E[f_D^2] - 2 \E[f_D \E(f_D)]
- = \E[f_D]^2 -\E[f_D^2]
+% = \E(f_D)^2] + \E[f_D^2] - 2 \E[f_D \E(f_D)]
+% = \E[f_D]^2 -\E[f_D^2]
 \]
 **** Bias
-**** Noise
+\[
+\Bias(f_D) = \E[(f_D - f)
+\]
+
+*** A proof of the bias/variance trade-off
+
 
 *** Classification
 **** The classifier as a decision rule
