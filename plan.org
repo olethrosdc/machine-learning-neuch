@@ -213,11 +213,17 @@ https://github.com/probml/pml2-book/releases/latest/download/book2.pdf
 
 ** $k$ Nearest Neighbours
 *** A simple classification problem
-**** Income distribution data:
-- $x \in \{\textrm{M},\textrm{F}\}$, gender.
-- $y \in \Reals$, income.
-**** Problem
-- Can we model the income distribution?
+**** Height distribution data:
+- $y \in \{\textrm{M},\textrm{F}\}$, gender.
+- $x \in \Reals$, income.
+**** Problems
+- Can we model the height distribution $P(x)$?
+- $P(x | y)$ How does the height depend on the gender? 
+- $P(y | x)$ How does the gender depend on the height?
+**** The Bayes classifier
+- Predicted gender $a$ from height so that
+$a = \argmax_y P(y | x)$.
+- Requires knowledge of $P$.
 
 *** The Nearest Neighbour algorithm
 **** Pseudocode
@@ -295,8 +301,14 @@ U(\hat{\pi}, D) \geq U(\pi^*, P) - 2 \epsilon.
 \]
 **** Variance
 \[
-\Var(f) = \E[
+\Var(f_D)
+ = \E[(f_D - \E(f_D))^2]
+ = \E(f_D)^2] + \E[f_D^2] - 2 \E[f_D \E(f_D)]
+ = \E[f_D]^2 -\E[f_D^2]
 \]
+**** Bias
+**** Noise
+
 *** Classification
 **** The classifier as a decision rule
 A decision rule $\pi(a | x)$ generates a *decision* $a \in [m]$. It is
