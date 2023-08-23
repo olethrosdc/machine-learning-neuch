@@ -307,6 +307,7 @@ U(\hat{\pi}, D) \geq U(\pi^*, P) - 2 \epsilon.
  = \E[f_D]^2 -\E[f_D^2]
 \]
 **** Bias
+
 **** Noise
 
 *** Classification
