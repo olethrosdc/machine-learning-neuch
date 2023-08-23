@@ -322,8 +322,8 @@ What is the expected deviation from the true function
 - $\Bias(f_D) = 0$.
 **** Laplace mean estimator:
 - $f_D = \sum_{t=1}^T (\lambda + x_t) / T$.
-- $\Var(f_D) = \E [f_D - \mu] = 1/\sqrt{T}$
-- $\Bias(f_D) = 1/T$.
+- $\Var(f_D) = \E [f_D - \mu] = \frac{1 + \sqrt{T}}$
+- $\Bias(f_D) = O(1/T)$.
 
 
 *** A proof of the bias/variance trade-off
