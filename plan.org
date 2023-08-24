@@ -294,11 +294,10 @@ U(\hat{\pi}, D) \geq U(\pi^*, P) - 2 \epsilon.
 - Dataset $D ~ P$.
 - Predictor $f_D(x)$
 - Target function $y = f(x) + \epsilon$
-- $\E \epsilon = 0$ zero-mean noise with variance $\sigma^2 = \Var(\epsilon0$
+- $\E \epsilon = 0$ zero-mean noise with variance $\sigma^2 = \Var(\epsilon)$
 **** MSE decomposition
-The expected error obeys
 \[
-\E_{D \sim P,y \sim P(y|x)} \left\{[y - f_D(x)]^2 ~\middle|~ x\right\}= \Var(f(x)) + \Bias(f(x))^2 + \sigma^2
+\E[(f - f_D)^2]= \Var(f_D) + \Bias(f_D)^2 + \sigma^2
 \]
 **** Variance
 \[
@@ -309,8 +308,10 @@ The expected error obeys
 \]
 **** Bias
 \[
-\Bias(f_D) = \E[(f_D - f)
+\Bias(f_D) = \E[(f_D - f)]
 \]
+
+*** Example: mean estimation
 
 *** A proof of the bias/variance trade-off
 
