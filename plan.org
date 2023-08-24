@@ -325,10 +325,10 @@ What is the expected deviation from the true function
 - $\Bias(f_D) = O(1/T)$.
 
 
-*** Example: mean estimation
 
 *** A proof of the bias/variance trade-off
-
+\begin{align*}
+\end{align*}
 
 *** Classification
 **** The classifier as a decision rule
