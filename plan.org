@@ -331,6 +331,7 @@ What is the expected deviation from the true function
 \begin{align*}
 \E[(f_D - f)^2]
 &= \E[f_D^2] - 2 \E[f_D f] + \E[f^2]\\
+&= \E[f_D^2] - 2 \E[f_D f] + \sigma^2\\
 &= \E[f_D^2] - 2 \E[f_D] f + f^2\\
 &= \Var(f_D) + \Bias(f_D)^2 + \sigma^2
 \end{align*}
