@@ -305,7 +305,7 @@ How sensitive the estimator is to the data
 \Var(f_D)
  = \E[(f_D - \E(f_D))^2]
 % = \E(f_D)^2] + \E[f_D^2] - 2 \E[f_D \E(f_D)]
-% = \E[f_D]^2 -\E[f_D^2]
+% = \E[f_D^2] - \E[f_D]^2
 \]
 **** Bias
 What is the expected deviation from the true function
@@ -327,8 +327,14 @@ What is the expected deviation from the true function
 
 
 *** A proof of the bias/variance trade-off
+#+BEGIN_EXPORT latex
 \begin{align*}
+\E[(f_D - f)^2]
+&= \E[f_D^2] - 2 \E[f_D f] + \E[f^2]\\
+&= \E[f_D^2] - 2 \E[f_D] f + f^2\\
+&= \Var(f_D) + \Bias(f_D)^2 + \sigma^2
 \end{align*}
+#+END_EXPORT
 
 *** Classification
 **** The classifier as a decision rule
