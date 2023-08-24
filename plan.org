@@ -300,6 +300,7 @@ U(\hat{\pi}, D) \geq U(\pi^*, P) - 2 \epsilon.
 \E[(f - f_D)^2]= \Var(f_D) + \Bias(f_D)^2 + \sigma^2
 \]
 **** Variance
+How sensitive the estimator is to the data
 \[
 \Var(f_D)
  = \E[(f_D - \E(f_D))^2]
@@ -307,9 +308,22 @@ U(\hat{\pi}, D) \geq U(\pi^*, P) - 2 \epsilon.
 % = \E[f_D]^2 -\E[f_D^2]
 \]
 **** Bias
+What is the expected deviation from the true function
 \[
 \Bias(f_D) = \E[(f_D - f)]
 \]
+*** Example: mean estimation
+- Data $D = x_1, \ldots, x_T$ with $\E[x_t] = \mu$.
+- Goal: estimate $\mu$
+**** Empirical mean estimator:
+- $f_D = \sum_{t=1}^T x_t / T$.
+- $\Var(f_D) = \E [f_D - \mu] = 1/\sqrt{T}$
+- $\Bias(f_D) = 0$.
+**** Laplace mean estimator:
+- $f_D = \sum_{t=1}^T (\lambda + x_t) / T$.
+- $\Var(f_D) = \E [f_D - \mu] = \frac{1 + \sqrt{T}}$
+- $\Bias(f_D) = O(1/T)$.
+
 
 *** Example: mean estimation
 
