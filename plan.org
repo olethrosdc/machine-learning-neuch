@@ -313,8 +313,11 @@ What is the expected deviation from the true function
 \Bias(f_D) = \E[(f_D - f)]
 \]
 *** Example: mean estimation
-- Data $D = x_1, \ldots, x_T$ with $\E[x_t] = \mu$.
-- Goal: estimate $\mu$
+- Data $D = y_1, \ldots, y_T$ with $\E[y_t] = \mu$.
+- Goal: estimate $\mu$ with some estimator $f_D$ to minimise
+- MSE: $\E[(y - f_D)^2]$, the expected square difference between new samples our guess.
+**** Optimal estimate
+To minimise the MSE, we use $f^* = \mu$. This gives us two ideas:
 **** Empirical mean estimator:
 - $f_D = \sum_{t=1}^T x_t / T$.
 - $\Var(f_D) = \E [f_D - \mu] = 1/\sqrt{T}$
@@ -327,16 +330,24 @@ What is the expected deviation from the true function
 
 
 *** A proof of the bias/variance trade-off
+- RV's $y_t \sim P$, $\E[y_t] = \mu$, $y_t = \mu + \epsilon_t$.
+- Estimator $f_D$, $D = y_1, \ldots, y_{t-1}$.
 #+BEGIN_EXPORT latex
 \begin{align*}
-\E[(f_D - f)^2]
-&= \E[f_D^2] - 2 \E[f_D f] + \E[f^2]\\
-&= \E[f_D^2] - 2 \E[f_D f] + \sigma^2\\
-&= \E[f_D^2] - 2 \E[f_D] f + f^2\\
+\E[(f_D - y_t)^2]
+&= \E[f_D^2] - 2 \E[f_D y_t] + \E[y_t^2]\\
+&= \Var[f_D] + \E[f_D]^2 - 2 \E[f_D y_t] + \E[y_t^2]\\
+&= \Var[f_D] + \E[f_D]^2 - 2 \E[f_D] \E[y_t] + \E[y_t^2]\\
+&= \Var[f_D] + \E[f_D]^2 - 2 \E[f_D] \mu + \E[y_t^2]\\
+&= \Var[f_D] + \E[f_D]^2 - 2 \E[f_D] \mu + \E[(\mu + \epsilon_t)^2]\\
+&= \Var[f_D] + \E[f_D]^2 - 2 \E[f_D] \mu + \E[\mu^2 + 2\mu\epsilon_t + \epsilon_t^2]\\
+&= \Var[f_D] + \E[f_D]^2 - 2 \E[f_D] \mu + \mu^2  + \sigma^2\\
+&= \Var[f_D] + \left(\E[f_D]  - \mu\right)^2 +  \sigma^2\\
 &= \Var(f_D) + \Bias(f_D)^2 + \sigma^2
 \end{align*}
 #+END_EXPORT
 
+** Supervised machine learning problems
 *** Classification
 **** The classifier as a decision rule
 A decision rule $\pi(a | x)$ generates a *decision* $a \in [m]$. It is
@@ -357,7 +368,6 @@ U(a_t, y_t) = \ind{a_t = y_t}
 \[
 U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
 \]
-
 
 **** The accuracy on the training set
 \[
