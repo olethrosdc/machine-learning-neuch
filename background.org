@@ -1,11 +1,16 @@
 #+TITLE: Mathematical background
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
+#+LaTeX_HEADER: \usepackage{tikz}
+#+LaTeX_HEADER: \usepackage{amsmath}
+#+LaTeX_HEADER: \usepackage{amssymb}
+#+LaTeX_HEADER: \usepackage{isomath}
 #+LaTeX_HEADER: \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
 #+LaTeX_HEADER: \newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
 #+LaTeX_HEADER: \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
 #+LaTeX_HEADER: \DeclareMathOperator*{\argmax}{arg\,max}
 #+LaTeX_HEADER: \DeclareMathOperator*{\argmin}{arg\,min}
+#+LaTeX_HEADER: \newcommand \cset[2] {\left\{#1 ~\middle|~ #2\right\}}
 #+LaTeX_HEADER: \newcommand \defn {\mathrel{\triangleq}}
 #+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
 #+LaTeX_HEADER: \newcommand \Param {\Theta}
@@ -64,21 +69,8 @@ If $A_1, \ldots, A_n \subset \Omega$ are a partition of $\Omega$
 \[
 P(B) = \sum_{i = 1}^n P(B \cap A_i).
 \]
-** Random variables and expectation
-*** Random variables
-A random variable $f : \Omega \to \Reals$ is a real-value function measurable with respect to the underlying probability measure $P$
-**** The distribution of $f$
-The probability that $f$ lies in some subset $A \subset \Reals$ is
-\[
-P_f(A) \defn P(\{\omega \in \Omega : f(\omega) \in A\}).
-\]
 
-*** Expectation
-For any random variable $f: \Omega \to \Reals$, the expectation with respect to a probability measure $P$ is
-\[
-\E_P(f) = \sum_{\omega \in \Omega} f(\omega) P(\omega).
-\]
-** Conditional probability and inference
+** Conditional probability and independence
 *** Conditional probability
 **** Conditional probability
     :PROPERTIES:
@@ -97,12 +89,6 @@ collection of probability distributions:
 \cset{P_\param(A)}{\theta \in \Param},
 \]
 where $\Param$ is an arbitrary set. 
-
-*** Conditional expectation
-The conditional expectation of a random variable $f: \Omega \to \Reals$, with respect to a probability measure $P$ conditioned on some event $B$ is simply
-\[
-\E_P(f | B) = \sum_{\omega \in \Omega} f(\omega) P(\omega | B).
-\]
 
 *** The theorem of Bayes
 **** Bayes's theorem
@@ -140,6 +126,48 @@ $(x_1, \ldots, x_t, \ldots, x_T) \sim \prod_{t=1}^T P_t$.
 **** IID (Independent and Identically Distributed) random variables
 A sequence $x_t$ of r.v.s is IID if
 $(x_1, \ldots, x_t, \ldots, x_T) \sim P^T$.
+
+** Random variables, expectation and variance
+*** Random variables
+A random variable $f : \Omega \to \Reals$ is a real-value function measurable with respect to the underlying probability measure $P$
+**** The distribution of $f$
+The probability that $f$ lies in some subset $A \subset \Reals$ is
+\[
+P_f(A) \defn P(\{\omega \in \Omega : f(\omega) \in A\}).
+\]
+**** Independence
+Two RVs $f,g$ are independent in the same way that events are independent:
+\[
+P(f \in A \wedge g \in B) = P(f \in A) P(g \in B) = P_f(A) P_g(B).
+\]
+
+*** Expectation
+For any real-valued random variable $f: \Omega \to \Reals$, the expectation with respect to a probability measure $P$ is
+\[
+\E_P(f) = \sum_{\omega \in \Omega} f(\omega) P(\omega).
+\]
+**** Linearity of expectations
+If $x, y$ are real RVs then 
+\[
+\E_P(x + y) = \E_P(x) + \E_P(y)
+\]
+**** Correlation and independence
+If $x,y$ are independent RVs
+
+*** Conditional expectation
+The conditional expectation of a random variable $f: \Omega \to \Reals$, with respect to a probability measure $P$ conditioned on some event $B$ is simply
+\[
+\E_P(f | B) = \sum_{\omega \in \Omega} f(\omega) P(\omega | B).
+\]
+
+
+*** Variance
+For any real-valued random variable $f: \Omega \to \Reals$, the variance with respect to a probability measure $P$ is
+\[
+\E_P(f) = \sum_{\omega \in \Omega} f(\omega) P(\omega).
+\]
+
+
 
 * Linear algebra
 ** Vectors
