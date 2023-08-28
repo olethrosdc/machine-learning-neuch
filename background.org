@@ -6,6 +6,7 @@
 #+LaTeX_HEADER: \usepackage{amssymb}
 #+LaTeX_HEADER: \usepackage{isomath}
 #+LaTeX_HEADER: \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand \Var {\mathop{\mbox{\ensuremath{\mathbb{V}}}}\nolimits}
 #+LaTeX_HEADER: \newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
 #+LaTeX_HEADER: \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
 #+LaTeX_HEADER: \DeclareMathOperator*{\argmax}{arg\,max}
@@ -118,18 +119,9 @@ P(A_j | B) = \frac{P(B | A_j)}{\sum_{i=1}^n P(B | A_i) P(A_i)}
 $A, B$ are independent iff $P(A \cap B) = P(A) P(B)$.
 **** Conditional independence
  $A, B$ are conditionally independent given $C$ iff $P(A \cap B | C) = P(A | C) P(B | C)$.
-**** Uncorrelated random variables
-If $x,y : \Omega \to \Reals$ are two random variables, they are *uncorrelated* under $P$ iff $\E_P[xy] = \E_P[x] \E_P[y]$.
-**** Independent random variables
-A sequence $x_t$ of r.v.s distributed according to $P_t$ is independent if
-$(x_1, \ldots, x_t, \ldots, x_T) \sim \prod_{t=1}^T P_t$.
-**** IID (Independent and Identically Distributed) random variables
-A sequence $x_t$ of r.v.s is IID if
-$(x_1, \ldots, x_t, \ldots, x_T) \sim P^T$.
-
 ** Random variables, expectation and variance
 *** Random variables
-A random variable $f : \Omega \to \Reals$ is a real-value function measurable with respect to the underlying probability measure $P$
+A random variable $f : \Omega \to \Reals$ is a real-value function measurable with respect to the underlying probability measure $P$, and we write $f \sim P$.
 **** The distribution of $f$
 The probability that $f$ lies in some subset $A \subset \Reals$ is
 \[
@@ -140,6 +132,7 @@ Two RVs $f,g$ are independent in the same way that events are independent:
 \[
 P(f \in A \wedge g \in B) = P(f \in A) P(g \in B) = P_f(A) P_g(B).
 \]
+In that sense, $f \sim P_f$ and $g \sim P_g$.
 
 *** Expectation
 For any real-valued random variable $f: \Omega \to \Reals$, the expectation with respect to a probability measure $P$ is
@@ -147,12 +140,17 @@ For any real-valued random variable $f: \Omega \to \Reals$, the expectation with
 \E_P(f) = \sum_{\omega \in \Omega} f(\omega) P(\omega).
 \]
 **** Linearity of expectations
-If $x, y$ are real RVs then 
+For any RVs $x, y$:
 \[
 \E_P(x + y) = \E_P(x) + \E_P(y)
 \]
-**** Correlation and independence
-If $x,y$ are independent RVs
+**** Independence
+If $x,y$ are independent RVs then $\E_P(xy) = \E(x)\E(y)$.
+**** Correlation
+If $x,y$ are *not* correlated then $\E_P(xy) = \E(x)\E(y)$.
+**** IID (Independent and Identically Distributed) random variables
+A sequence $x_t$ of r.v.s is IID if $x_t \sim P$
+$(x_1, \ldots, x_t, \ldots, x_T) \sim P^T$.
 
 *** Conditional expectation
 The conditional expectation of a random variable $f: \Omega \to \Reals$, with respect to a probability measure $P$ conditioned on some event $B$ is simply
@@ -164,7 +162,17 @@ The conditional expectation of a random variable $f: \Omega \to \Reals$, with re
 *** Variance
 For any real-valued random variable $f: \Omega \to \Reals$, the variance with respect to a probability measure $P$ is
 \[
-\E_P(f) = \sum_{\omega \in \Omega} f(\omega) P(\omega).
+\Var_P(f) = \sum_{\omega \in \Omega} [f(\omega) - \E_P(f(\omega)]^2 P(\omega).
+\]
+**** Linearity of variance
+If $f,g$ are uncorrelated RVs
+\[
+\Var_P(f + g) = \Var_P(f) + \Var_P(g).
+\]
+**** Variance products
+If $f,g$ are independent RVs
+\[
+\Var_P(f + g) = \E_P(f)^2 \Var_P(g) + \E_P(g)^2 \Var_P(f)+ \Var_P(f) \Var_P(g).
 \]
 
 
