@@ -693,6 +693,8 @@ So let us ignore the other inputs for simplicity:
 
 **** Softmax 
 
+** Support Vector Machines
+
 * Learning as Probabilistic Inference (4 weeks)
 ** Probabilistic Models
 *** Probabilistic modelling
