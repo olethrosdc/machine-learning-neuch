@@ -55,28 +55,51 @@ The course focuses on algorithms and models, firstly on
 optimisation-based learning, and the secondly on probabilistic
 learning.
 
+*** Reference Material
+
+| Topic                       | ISLP | ESL2 |
+|-----------------------------+------+------|
+| Linear Regression           |    3 |    3 |
+| Nearest Neighbours          |  3,4 |   13 |
+| Linear Classification       |    4 |    4 |
+| Model Selection             |    5 |    7 |
+| Linear Model Regularization |    6 |    3 |
+| Basis Expansions            |    7 |    5 |
+| Kernel Smoothing            |    7 |    6 |
+| Additive Models             |    7 |    9 |
+| Model Inference/Averaging   |    8 |    8 |
+| Random Forests              |    8 |   15 |
+| Ensemble Learning           |    8 |   16 |
+| Trees                       |    8 |    9 |
+| Boosting                    |    8 |   10 |
+| SVMs                        |    9 |   12 |
+| Neural Netowrks             |   10 |   11 |
+| Censored Data               |   11 |   18 |
+| Unsupervised Learning       |   12 |   14 |
+| Undirected Graphical Models |    * |   17 |
+| Hypothesis tesing           |   13 |   18 |
+| High-Dimensional Statisitcs |    6 |   18 |
+|-----------------------------+------+------|
+
 *** Schedule
-
-
-|------+-------+--------------------------------+------------------------+-----------------+------+---------|
-| Week |  Date | Topic                          | Theory                 | Lab             | ISLP |    ESL2 |
-|------+-------+--------------------------------+------------------------+-----------------+------+---------|
-|    1 | 09.26 | Course Introduction            |                        | Pandas          |  1,2 | 2.1-2.2 |
-|    2 | 10.03 | kNN                            | Generalisation         | pandas,sklearn  |    2 |     2.3 |
-|    3 | 10.10 | Perceptron                     | Convergence            | sklearn         | 10.1 |     4.5 |
-|    4 | 10.17 | Linear Regression              | SGD, Least-Squares     | sklearn,pyTorch |    3 |         |
-|    5 | 10.24 | Multi-Layer Neural Network     | Backpropagation        | pyTorch         |   10 |         |
-|    6 | 10.31 | Neural Network Lab             | Network Architectures  | pyTorch         |   10 |         |
-|------+-------+--------------------------------+------------------------+-----------------+------+---------|
-|    7 | 11.07 | Discriminative Models          | Logistic Regression    | pyTorch         |  4.3 |         |
-|    8 | 11.14 | Generative Models              | Bayes Classifier       | Python          |  4.4 |         |
-|    9 | 11.21 | Latent-Variable Models         | EM, GMM                | pyTorch         |      |     8.5 |
-|   10 | 11.28 | Regularisation                 | Non-linear programming | pyTorch         |      |         |
-|   11 | 12.05 | Bayesian Inference             | Conjugate priors       | pyTorch         |      |         |
-|   12 | 12.12 | Approximate Bayesian Inference | Monte-Carlo Methods    | pyTorch         |      |         |
-|------+-------+--------------------------------+------------------------+-----------------+------+---------|
-|   13 | 12.19 | Project Presentations          |                        |                 |      |         |
-|------+-------+--------------------------------+------------------------+-----------------+------+---------|
+|------+-------+--------------------------------+------------------------|
+| Week |  Date | Topic                          | Theory                 |
+|------+-------+--------------------------------+------------------------|
+|    1 | 09.26 | Supervisd Learning, kNN        | Decision theory        |
+|    2 | 10.03 | XV, Bootstrapping              | Generalisation         |
+|    3 | 10.10 | Perceptron                     | Convergence            |
+|    4 | 10.17 | Linear Regression              | SGD, Least-Squares     |
+|    5 | 10.24 | Basis Functions                | GAMs                   |
+|    6 | 10.31 | Multi-Layer Neural Network     | Backpropagation        |
+|    7 | 11.07 | Discriminative Models          | Logistic Regression    |
+|    8 | 11.14 | Generative Models              | Bayes Classifier       |
+|    9 | 11.21 | Latent-Variable Models         | EM, GMM                |
+|   10 | 11.28 | Regularisation                 | Non-linear programming |
+|   11 | 12.05 | Bayesian Inference             | Conjugate priors       |
+|   12 | 12.12 | Approximate Bayesian Inference | Monte-Carlo Methods    |
+|------+-------+--------------------------------+------------------------|
+|   13 | 12.19 | Project Presentations          |                        |
+|------+-------+--------------------------------+------------------------|
 
 ** Material
 *** Textbooks
@@ -346,6 +369,32 @@ To minimise the MSE, we use $f^* = \mu$. This gives us two ideas:
 &= \Var(f_D) + \Bias(f_D)^2 + \sigma^2
 \end{align*}
 #+END_EXPORT
+
+*** Validation sets
+*** Cross-validation
+*** Bootstrapping
+
+** Cross-validation lab :activity:
+*** The wrong way to do XV
+Consider a classification problem with a large number of predictors, as may
+arise, for example, in genomic or proteomic applications. A typical strategy
+for analysis might be as follows:
+1. Screen the predictors: find a subset of “good” predictors that show
+fairly strong (univariate) correlation with the class labels
+2. Using just this subset of predictors, build a multivariate classifier.
+3. Use cross-validation to estimate the unknown tuning parameters and
+to estimate the prediction error of the final model.
+Is this a correct application of cross-validation? Consider a scenario with
+N = 50 samples in two equal-sized classes, and p = 5000 quantitative
+predictors (standard Gaussian) that are independent of the class labels.
+The true (test) error rate of any classifier is 50%.
+*** The right way to do XV
+1. Divide the samples into K cross-validation folds (groups) at random.
+2. For each fold $k = 1, 2, \ldots, K$
+   (a) Find a subset of “good” predictors that show fairly strong (univariate) correlation with the class labels, using all of the samples except those in fold k.
+   (b) Using just this subset of predictors, build a multivariate classifier, using all of the samples except those in fold k.
+   (c) Use the classifier to predict the class labels for the samples in
+fold k.
 
 ** Supervised machine learning problems
 *** Classification
