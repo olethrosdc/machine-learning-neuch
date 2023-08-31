@@ -277,6 +277,68 @@ $y_t  \in \Reals^m$
 $y_t  \in \Reals^m$
 
 Code: 
+** Supervised machine learning problems
+*** Classification
+**** The classifier as a decision rule
+A decision rule $\pi(a | x)$ generates a *decision* $a \in [m]$. It is
+the conditional probability of $a$ given $x$.
+
+Even though normally conditional probabilities are defined as
+$P(A | B) = P(A \cap B) / P(B)$, the probability of the decision $a$
+is undefined without a given $x$. So it's better to 
+
+**** The accuracy of a single decision
+\[
+U(a_t, y_t) = \ind{a_t = y_t}
+ = \begin{cases}
+1, & \textrm{if $a_t = y_t$}\\
+0, & \textrm{otherwise}
+\end{cases}
+\]
+\[
+U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
+\]
+
+**** The accuracy on the training set
+\[
+U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
+\]
+
+**** The expected accuracy of a decision rule
+If $(x, y) \sim P$, the accuracy $U$ of a stochastic decision rule $\pi$
+under the distribution $P$ is the probability it predicts correctly
+\[
+U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \pi(y | x)
+\]
+
+**** The log-accuracy
+If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
+under the distribution $P$ is 
+\[
+U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \ln \pi(y | x)
+\]
+
+*** Regression
+
+**** The regressor as a decision rule
+
+A decision rule $\pi(a | x)$ generates a *decision* $a \in \Reals^m$.
+It is the conditional density of $a$ given $x$.
+
+**** Accuracy
+If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
+under the distribution $P$ is:
+\[
+U(\pi, P) \defn \int_X \int_Y dP(x, y) \pi(y | x).
+\]
+
+**** Mean-Squared Error
+If $(x, y) \sim P$, the mean-square error of a deterministic decision rule $\pi : X \to \Reals$
+under the distribution $P(x,y) = P(x | y) P(y)$ is:
+\[
+\int_X \sum_{y=1}^m dP(x| y) P(y) \sum_{a=1}^m \pi(a | x)
+\]
+
 ** Learning and generalisation
 *** The Train/Test methodology
 **** Training data $D = ((x_t, y_t) : t = 1, \ldots, T)$.
@@ -375,10 +437,8 @@ To minimise the MSE, we use $f^* = \mu$. This gives us two ideas:
 *** Bootstrapping
 
 ** Cross-validation lab :activity:
-*** The wrong way to do XV
-Consider a classification problem with a large number of predictors, as may
-arise, for example, in genomic or proteomic applications. A typical strategy
-for analysis might be as follows:
+*** The wrong way to do XV for subset selection
+
 1. Screen the predictors: find a subset of “good” predictors that show
 fairly strong (univariate) correlation with the class labels
 2. Using just this subset of predictors, build a multivariate classifier.
@@ -388,7 +448,8 @@ Is this a correct application of cross-validation? Consider a scenario with
 N = 50 samples in two equal-sized classes, and p = 5000 quantitative
 predictors (standard Gaussian) that are independent of the class labels.
 The true (test) error rate of any classifier is 50%.
-*** The right way to do XV
+
+*** The right way to do XV for feature selection
 1. Divide the samples into K cross-validation folds (groups) at random.
 2. For each fold $k = 1, 2, \ldots, K$
    (a) Find a subset of “good” predictors that show fairly strong (univariate) correlation with the class labels, using all of the samples except those in fold k.
@@ -396,67 +457,6 @@ The true (test) error rate of any classifier is 50%.
    (c) Use the classifier to predict the class labels for the samples in
 fold k.
 
-** Supervised machine learning problems
-*** Classification
-**** The classifier as a decision rule
-A decision rule $\pi(a | x)$ generates a *decision* $a \in [m]$. It is
-the conditional probability of $a$ given $x$.
-
-Even though normally conditional probabilities are defined as
-$P(A | B) = P(A \cap B) / P(B)$, the probability of the decision $a$
-is undefined without a given $x$. So it's better to 
-
-**** The accuracy of a single decision
-\[
-U(a_t, y_t) = \ind{a_t = y_t}
- = \begin{cases}
-1, & \textrm{if $a_t = y_t$}\\
-0, & \textrm{otherwise}
-\end{cases}
-\]
-\[
-U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
-\]
-
-**** The accuracy on the training set
-\[
-U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
-\]
-
-**** The expected accuracy of a decision rule
-If $(x, y) \sim P$, the accuracy $U$ of a stochastic decision rule $\pi$
-under the distribution $P$ is the probability it predicts correctly
-\[
-U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \pi(y | x)
-\]
-
-**** The log-accuracy
-If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
-under the distribution $P$ is 
-\[
-U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \ln \pi(y | x)
-\]
-
-*** Regression
-
-**** The regressor as a decision rule
-
-A decision rule $\pi(a | x)$ generates a *decision* $a \in \Reals^m$.
-It is the conditional density of $a$ given $x$.
-
-**** Accuracy
-If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
-under the distribution $P$ is:
-\[
-U(\pi, P) \defn \int_X \int_Y dP(x, y) \pi(y | x).
-\]
-
-**** Mean-Squared Error
-If $(x, y) \sim P$, the mean-square error of a deterministic decision rule $\pi : X \to \Reals$
-under the distribution $P(x,y) = P(x | y) P(y)$ is:
-\[
-\int_X \sum_{y=1}^m dP(x| y) P(y) \sum_{a=1}^m \pi(a | x)
-\]
 
 ** Linear neural networks
 *** The perceptron algorithm
@@ -608,6 +608,8 @@ f(\param) = \int_X dP(x) g(x, \param).
 \end{align*}
 
 ** Multi-layer neural networks
+*** Non-linear transformations
+
 *** Back-propagation
 **** The chain rule
 \[
@@ -694,7 +696,9 @@ So let us ignore the other inputs for simplicity:
 **** Softmax 
 
 ** Support Vector Machines
-
+*** The maximum margin classifier
+*** Soft margins
+*** Kernel methods
 * Learning as Probabilistic Inference (4 weeks)
 ** Probabilistic Models
 *** Probabilistic modelling
@@ -849,7 +853,6 @@ choosing the $y$ with largest posterior $P(y | x)$.
 - /predict()/ should predict class labels
 - Hint: Use /predict_proba()/ and multiple GMM models
 
-
 * Sequence modelling (2 weeks)
 ** Sequence prediction
 *** The problem of sequence prediction
@@ -946,7 +949,6 @@ P_\theta(x_t = x | z_t = i) \propto \exp\left(-\|x - \psi_{i}\|\right)
 *** HMM Estimation with EM
 
 ** Monte-Carlo Methods
-
 
 * Reinforcement Learning (2 weeks)
 #+TOC: headlines [currentsection,hideothersubsections]
