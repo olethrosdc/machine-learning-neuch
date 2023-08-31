@@ -409,7 +409,7 @@ To minimise the MSE, we use $f^* = \mu$. This gives us two ideas:
 - $\Bias(f_D) = 0$.
 **** Laplace mean estimator:
 - $f_D = \sum_{t=1}^T (\lambda + x_t) / T$.
-- $\Var(f_D) = \E [f_D - \mu] = \frac{1 + \sqrt{T}}$
+- $\Var(f_D) = \E [f_D - \mu] = \frac{1}{1 + \sqrt{T}}$
 - $\Bias(f_D) = O(1/T)$.
 
 
@@ -608,7 +608,47 @@ f(\param) = \int_X dP(x) g(x, \param).
 \end{align*}
 
 ** Multi-layer neural networks
-*** Non-linear transformations
+*** Layering and features
+**** Fixed layers
+- Fixed number of units, architecture and parameters
+- Example 1: Feature transformation
+- Example 2: Softmax layer
+
+**** Adaptive layers
+- Fixed units and architecture
+- Adaptive parameters
+- Example 1: Linear layer
+- Example 2: Convolutional layers (e.g. images)
+
+*** Softmax layer
+- Features $x$
+- Linear activation layer
+\[
+z_i = \vparam_i^\top x
+\]
+
+**** Softmax output layer
+We want to translate the real-valued $z_i$ into probabilities:
+\[
+y_i = \frac{\exp(z_i)}{\sum_j \exp(z_j)}.
+\]
+
+*** Random projections
+- Features $x$
+- Hidden layer activation $z$
+- Output $y$
+
+**** Hidden layer: Random projection
+Here we project the input into a high-dimensional space
+\[
+z_i = \sgn(\vparam_i^\top x),
+\]
+where $\mparam = [\vparam_i]_{i=1}^m$.
+
+**** The reason for random projections
+- The high dimension makes it easier to learn.
+- The randomness ensures we are not learning something spurious.
+
 
 *** Back-propagation
 **** The chain rule
