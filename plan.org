@@ -184,19 +184,26 @@ https://github.com/probml/pml2-book/releases/latest/download/book2.pdf
 **** Reinforcement learning
  Learn to act in an *unknown* world through interaction and rewards
 ** Examples
+*** Supervised learning
+The general goal is learning a function $f: X \to Y$.
+**** Classification
+- Input data $x_t \in \Reals$, $y_t \in [m] = \{1, 2, \ldots, m\}$
+- Learn a mapping $f$ so that $f(x_t) = y_t$ for unseen data
+**** Regression
+- Input data $x_t, y_t$
+- Learn a mapping $f$ so that $f(x_t) = \E[y_t]$ for unseen data
 *** Unsupervised learning
-**** Image compression
+The general goal is learning the data distribution.
+**** Compression
 - Learn two mappings $c, d$
 - $c(x)$ compresses an image $x$ to a small representation $z$.
 - $d(z)$ decompresses to an approximate image $\hat{x}$.
-
-*** Supervised learning
-**** Image classification
-
-*** Unsupervised learning
 **** Density estimation
-**** Compression
-**** Generative modelling
+- Input data $x_1, \ldots, x_T$ from distribution with density $p$
+- Problem: Estimate $p$.
+**** Clustering
+- Input data $x_1, \ldots, x_T$ 
+- Assign each data $x_t$. to  cluster label $c_t$.
 
 ** Pitfalls
 *** Pitfalls
