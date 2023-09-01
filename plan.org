@@ -31,8 +31,6 @@
 #+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
 #+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
 #+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
-
-
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
@@ -72,7 +70,8 @@ learning.
 | Ensemble Learning           |    8 |   16 |
 | Trees                       |    8 |    9 |
 | Boosting                    |    8 |   10 |
-| SVMs                        |    9 |   12 |
+| Expectation Maximisation    |    * |    8 |
+|  SVMs                       |    9 |   12 |
 | Neural Netowrks             |   10 |   11 |
 | Censored Data               |   11 |   18 |
 | Unsupervised Learning       |   12 |   14 |
@@ -133,6 +132,20 @@ https://github.com/probml/pml2-book/releases/latest/download/book2.pdf
 - Ultimately, we use models to make decisions.
 - However, decisions are made every step of the way (how to collect data, which model to choose)
   
+*** Models and Algorithms
+**** Models
+- k-Nearest Neighbours
+- Linear models and perceptrons
+- Multi-layer perceptrons (aka deep neural networks)
+- Trees
+- Mixture models
+
+**** Algorithms
+- (Stochastic) Gradient
+- Bayesian inference
+- Expectation maximisation
+- Bagging
+
 ** Activities
 *** Class data
 **** Fill in your data (does not have to be true)
@@ -464,7 +477,6 @@ The true (test) error rate of any classifier is 50%.
    (c) Use the classifier to predict the class labels for the samples in
 fold k.
 
-
 ** Linear neural networks
 *** The perceptron algorithm
 **** Input
@@ -740,10 +752,14 @@ So let us ignore the other inputs for simplicity:
 \]
 
 
-**** Softmax 
+*** Softmax layer
+
 
 ** Support Vector Machines
 *** The maximum margin classifier
+\[
+\max_\pi 
+\]
 *** Soft margins
 *** Kernel methods
 * Learning as Probabilistic Inference (4 weeks)
@@ -848,6 +864,25 @@ P(y | x) = P(x | y) P(y) / P(x),
 \]
 choosing the $y$ with largest posterior $P(y | x)$.
 - $P(x | y = i) \propto \exp(- \|\hat{\mu}_i - x\|^2/\hat{\sigma}_i^2$
+** Regression and Classification Trees
+** Ensemble methods
+*** Bagging
+**** Algorithm
+- Input: Data $D$, bags $K$, base learner $\lambda$
+- For $k = 1, \ldots, K$
+-- Sample with replacement $D_k \sim \Uniform(D)$
+-- Obtain predictor $f_k = \lambda(D_k)$.
+- Return $\{f_k\}$
+
+**** The bagged predictor
+\[
+f = \frac{1}{K} f_k
+\]
+
+*** Boosting
+
+
+
 ** Density estimation
 *** General idea
 **** Parametric models
@@ -887,8 +922,25 @@ choosing the $y$ with largest posterior $P(y | x)$.
 \]
 
 **** Expectation Step
+
 **** Maximization Step
 
+*** Expectation Maximisation     
+**** EM Algorithm
+- Initial parameter $\vparam^{(0)}$, observed data $D$
+- For $k=0, 1, \ldots$
+-- Expectation step:
+\[
+Q(\vparam | \vparam^{(k)})
+ \defn \E_{Z \sim P(Z | D, \vparam^{(k)})} [\ln P(D, Z | \vparam) ]
+ = \int_{\mathcal{Z}} [\ln P(D, Z | \vparam)] d P(Z  \mid D, \vparam^{(k)})
+\]
+-- Maximisation step:
+\[
+\vparam^{(k+1)} = \argmax_\vparam Q(\vparam, \vparam^{(k)}).
+\]
+**** Analysis 
+(see wiipedia)
 
 *** GMM Classifier :exercise:
 **** Base class: sklearn GaussianMixtureModel
