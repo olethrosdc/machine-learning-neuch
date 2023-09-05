@@ -1,0 +1,220 @@
+#+TITLE: Machine Learning and Data Mining
+#+AUTHOR: Christos Dimitrakakis
+#+EMAIL:christos.dimitrakakis@unine.ch
+#+LaTeX_HEADER: \usepackage{tikz}
+#+LaTeX_HEADER: \usepackage{amsmath}
+#+LaTeX_HEADER: \usepackage{amssymb}
+#+LaTeX_HEADER: \usepackage{isomath}
+#+LaTeX_HEADER: \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand \Var {\mathop{\mbox{\ensuremath{\mathbb{V}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand \Bias {\mathop{\mbox{\ensuremath{\mathbb{B}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
+#+LaTeX_HEADER: \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
+#+LaTeX_HEADER: \DeclareMathOperator*{\argmax}{arg\,max}
+#+LaTeX_HEADER: \DeclareMathOperator*{\argmin}{arg\,min}
+#+LaTeX_HEADER: \DeclareMathOperator*{\sgn}{sgn}
+#+LaTeX_HEADER: \newcommand \defn {\mathrel{\triangleq}}
+#+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
+#+LaTeX_HEADER: \newcommand \Param {\Theta}
+#+LaTeX_HEADER: \newcommand \param {\theta}
+#+LaTeX_HEADER: \newcommand \vparam {\vectorsym{\theta}}
+#+LaTeX_HEADER: \newcommand \mparam {\matrixsym{\Theta}}
+#+LaTeX_HEADER: \newcommand \bW {\matrixsym{W}}
+#+LaTeX_HEADER: \newcommand \bw {\vectorsym{w}}
+#+LaTeX_HEADER: \newcommand \wi {\vectorsym{w}_i}
+#+LaTeX_HEADER: \newcommand \wij {w_{i,j}}
+#+LaTeX_HEADER: \newcommand \bA {\matrixsym{A}}
+#+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
+#+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
+#+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
+#+LaTeX_HEADER: \newcommand \bel {\beta}
+#+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
+#+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
+#+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
+#+LaTeX_CLASS_OPTIONS: [smaller]
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+#+TAGS: activity advanced definition exercise homework project example theory code
+#+OPTIONS:   H:3
+* Quality metrics
+** Supervised machine learning problems
+*** Classification
+**** The classifier as a decision rule
+A decision rule $\pi(a | x)$ generates a *decision* $a \in [m]$. It is
+the conditional probability of $a$ given $x$.
+
+Even though normally conditional probabilities are defined as
+$P(A | B) = P(A \cap B) / P(B)$, the probability of the decision $a$
+is undefined without a given $x$. So it's better to 
+
+**** The accuracy of a single decision
+\[
+U(a_t, y_t) = \ind{a_t = y_t}
+ = \begin{cases}
+1, & \textrm{if $a_t = y_t$}\\
+0, & \textrm{otherwise}
+\end{cases}
+\]
+\[
+U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
+\]
+
+**** The accuracy on the training set
+\[
+U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
+\]
+
+**** The expected accuracy of a decision rule
+If $(x, y) \sim P$, the accuracy $U$ of a stochastic decision rule $\pi$
+under the distribution $P$ is the probability it predicts correctly
+\[
+U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \pi(y | x)
+\]
+
+**** The log-accuracy
+If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
+under the distribution $P$ is 
+\[
+U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \ln \pi(y | x)
+\]
+
+*** Regression
+
+**** The regressor as a decision rule
+
+A decision rule $\pi(a | x)$ generates a *decision* $a \in \Reals^m$.
+It is the conditional density of $a$ given $x$.
+
+**** Accuracy
+If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
+under the distribution $P$ is:
+\[
+U(\pi, P) \defn \int_X \int_Y dP(x, y) \pi(y | x).
+\]
+
+**** Mean-Squared Error
+If $(x, y) \sim P$, the mean-square error of a deterministic decision rule $\pi : X \to \Reals$
+under the distribution $P(x,y) = P(x | y) P(y)$ is:
+\[
+\int_X \sum_{y=1}^m dP(x| y) P(y) \sum_{a=1}^m \pi(a | x)
+\]
+
+
+* Estimating quality
+** Methodology
+*** The Train/Test methodology
+**** Training data $D = ((x_t, y_t) : t = 1, \ldots, T)$.
+- $x_t \in X$
+- $y_t \in \Reals^m$.
+**** Assumption: The data is generated i.i.d.
+- $(x_t, y_t) \sim P$ for all $t$ (identical)
+- $D \sim P^T$ (independent)
+
+**** The optimal decision rule for $P$
+\[
+\max_\pi U(\pi, P)
+= 
+\max_\pi \int_{X \times Y} dP(x, y) \sum_a \pi(a | x) U(a,y)
+\]
+**** The optimal decision rule for $D$
+\[
+\max_\pi U(\pi, D)
+= 
+\max_\pi \sum_{(x,y) \in D)} \sum_a \pi(a | x) U(a,y)
+\]
+*** Cross-validation
+*** Bootstrapping
+
+*** The wrong way to do XV for subset selection :activity:
+
+1. Screen the predictors: find a subset of “good” predictors that show
+fairly strong (univariate) correlation with the class labels
+2. Using just this subset of predictors, build a multivariate classifier.
+3. Use cross-validation to estimate the unknown tuning parameters and
+to estimate the prediction error of the final model.
+Is this a correct application of cross-validation? Consider a scenario with
+N = 50 samples in two equal-sized classes, and p = 5000 quantitative
+predictors (standard Gaussian) that are independent of the class labels.
+The true (test) error rate of any classifier is 50%.
+
+*** The right way to do XV for feature selection :activity:
+1. Divide the samples into K cross-validation folds (groups) at random.
+2. For each fold $k = 1, 2, \ldots, K$
+   (a) Find a subset of “good” predictors that show fairly strong (univariate) correlation with the class labels, using all of the samples except those in fold k.
+   (b) Using just this subset of predictors, build a multivariate classifier, using all of the samples except those in fold k.
+   (c) Use the classifier to predict the class labels for the samples in
+fold k.
+
+
+* Learning and generalisation
+** Generalisation as error
+**** Error due to mismatched objectives
+The $\pi^*$ maximising $U(\pi, P)$ is not the $\hat{\pi}$ maximising $U(\pi, D)$.
+
+**** Lemma
+If $|U(\pi, P) - U(\pi, D)| \leq \epsilon$ for all $\pi$ then
+\[
+U(\hat{\pi}, D) \geq U(\pi^*, P) - 2 \epsilon.
+\]
+
+**** Error due to restricted classes
+- We may use a constrained $\hat{\Pi} \subset \Pi$. 
+- Then $\max_{\hat{\pi} \in \hat{\Pi}} U(\pi, P) \leq \max_{\pi \in \Pi} U(\pi, P)$.
+
+** Bias and variance
+*** The bias/variance trade-off
+- Dataset $D ~ P$.
+- Predictor $f_D(x)$
+- Target function $y = f(x) + \epsilon$
+- $\E \epsilon = 0$ zero-mean noise with variance $\sigma^2 = \Var(\epsilon)$
+**** MSE decomposition
+\[
+\E[(f - f_D)^2]= \Var(f_D) + \Bias(f_D)^2 + \sigma^2
+\]
+**** Variance
+How sensitive the estimator is to the data
+\[
+\Var(f_D)
+ = \E[(f_D - \E(f_D))^2]
+% = \E(f_D)^2] + \E[f_D^2] - 2 \E[f_D \E(f_D)]
+% = \E[f_D^2] - \E[f_D]^2
+\]
+**** Bias
+What is the expected deviation from the true function
+\[
+\Bias(f_D) = \E[(f_D - f)]
+\]
+*** Example: mean estimation
+- Data $D = y_1, \ldots, y_T$ with $\E[y_t] = \mu$.
+- Goal: estimate $\mu$ with some estimator $f_D$ to minimise
+- MSE: $\E[(y - f_D)^2]$, the expected square difference between new samples our guess.
+**** Optimal estimate
+To minimise the MSE, we use $f^* = \mu$. This gives us two ideas:
+**** Empirical mean estimator:
+- $f_D = \sum_{t=1}^T x_t / T$.
+- $\Var(f_D) = \E [f_D - \mu] = 1/\sqrt{T}$
+- $\Bias(f_D) = 0$.
+**** Laplace mean estimator:
+- $f_D = \sum_{t=1}^T (\lambda + x_t) / T$.
+- $\Var(f_D) = \E [f_D - \mu] = \frac{1}{1 + \sqrt{T}}$
+- $\Bias(f_D) = O(1/T)$.
+
+
+*** A proof of the bias/variance trade-off
+- RV's $y_t \sim P$, $\E[y_t] = \mu$, $y_t = \mu + \epsilon_t$.
+- Estimator $f_D$, $D = y_1, \ldots, y_{t-1}$.
+#+BEGIN_EXPORT latex
+\begin{align*}
+\E[(f_D - y_t)^2]
+&= \E[f_D^2] - 2 \E[f_D y_t] + \E[y_t^2]\\
+&= \Var[f_D] + \E[f_D]^2 - 2 \E[f_D y_t] + \E[y_t^2]\\
+&= \Var[f_D] + \E[f_D]^2 - 2 \E[f_D] \E[y_t] + \E[y_t^2]\\
+&= \Var[f_D] + \E[f_D]^2 - 2 \E[f_D] \mu + \E[y_t^2]\\
+&= \Var[f_D] + \E[f_D]^2 - 2 \E[f_D] \mu + \E[(\mu + \epsilon_t)^2]\\
+&= \Var[f_D] + \E[f_D]^2 - 2 \E[f_D] \mu + \E[\mu^2 + 2\mu\epsilon_t + \epsilon_t^2]\\
+&= \Var[f_D] + \E[f_D]^2 - 2 \E[f_D] \mu + \mu^2  + \sigma^2\\
+&= \Var[f_D] + \left(\E[f_D]  - \mu\right)^2 +  \sigma^2\\
+&= \Var(f_D) + \Bias(f_D)^2 + \sigma^2
+\end{align*}
+#+END_EXPORT
+
+
