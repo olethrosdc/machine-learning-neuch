@@ -58,5 +58,11 @@
 - $P_\param(y = 1 | x) = \frac{1}{1 - e^z}$
 
 ** Multi-class classification:
+* Discriminative modelling for regression
+* Tree models
+** Tree structure algorithms
+*** KD-Tree
+*** Cover-Tree
+** Regression and Classification Trees
 
 

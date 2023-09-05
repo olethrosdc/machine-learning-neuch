@@ -1,0 +1,4 @@
+** Bayesian Inference
+*** Conjugate priors
+*** The Monte-Carlo Algorithm
+*** Gibbs Sampling and Markov Chain Monte-Carlo
