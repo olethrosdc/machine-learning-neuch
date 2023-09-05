@@ -36,7 +36,7 @@
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 
-** Linear neural networks
+* The Perceptron
 *** The perceptron algorithm
 **** Input
 - Feature space $X \subset \Reals^n$.
@@ -52,7 +52,7 @@
 -- Else
 --- $w_{t+1} = $w_t$
 - Return $w_{T+1}$
-**** Theorem
+*** The Perceptron Theorem
  The number of mistakes made by the perceptron algorithm is bounded by
  $(r/\rho)^2$, where $\|x_t\|\leq r$, $\rho \leq y_t (v^\top x_t) /
  \|v\|$ for some *margin* $\rho$ and *hyperplane* $v$.
@@ -66,8 +66,10 @@
 **** Example 2: Two-dimensional data
 - See [[file:src/NeuralNetworks/perceptron.py][in-class programming exercise]]
 
-
-*** Gradient methods example
+*** Why doesn't the perceptron always work?
+* Gradient methods
+** Gradients for optimisation
+*** Gradient methods for expected value :example:
 **** Estimate the expected value
 $x_t \sim P$ with $\E_P[x_t] = \mu$.
 **** Objective
@@ -89,11 +91,17 @@ Setting the derivative to 0, we have $\param = \E_P[x_t]$. This is a simple solu
 - The distribution $P$ is not known.
 - We can sample $x \sim P$.
 
-*** Stochastic gradient for mean estimation
+**** Stochastic gradient for mean estimation
 \begin{align*}
  \frac{d}{d\param} \E_P [(x - \param)^2] 
 &= \int_{-\infty}^\infty dP(x) \frac{d}{d\param} (x - \param)^2
 \\
 &=  \frac{d}{d\param} \int_{-\infty}^\infty dP(x) (x - \param)^2
 \end{align*}
+
+** The perceptron as a gradient algorithm
+*** The classification error cost function
+
+*** The entropy cost function
+
 
