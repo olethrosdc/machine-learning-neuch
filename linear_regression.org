@@ -1,0 +1,113 @@
+#+TITLE: Machine Learning and Data Mining
+#+AUTHOR: Christos Dimitrakakis
+#+EMAIL:christos.dimitrakakis@unine.ch
+#+LaTeX_HEADER: \usepackage{tikz}
+#+LaTeX_HEADER: \usepackage{amsmath}
+#+LaTeX_HEADER: \usepackage{amssymb}
+#+LaTeX_HEADER: \usepackage{isomath}
+#+LaTeX_HEADER: \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand \Var {\mathop{\mbox{\ensuremath{\mathbb{V}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand \Bias {\mathop{\mbox{\ensuremath{\mathbb{B}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
+#+LaTeX_HEADER: \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
+#+LaTeX_HEADER: \DeclareMathOperator*{\argmax}{arg\,max}
+#+LaTeX_HEADER: \DeclareMathOperator*{\argmin}{arg\,min}
+#+LaTeX_HEADER: \DeclareMathOperator*{\sgn}{sgn}
+#+LaTeX_HEADER: \newcommand \defn {\mathrel{\triangleq}}
+#+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
+#+LaTeX_HEADER: \newcommand \Param {\Theta}
+#+LaTeX_HEADER: \newcommand \param {\theta}
+#+LaTeX_HEADER: \newcommand \vparam {\vectorsym{\theta}}
+#+LaTeX_HEADER: \newcommand \mparam {\matrixsym{\Theta}}
+#+LaTeX_HEADER: \newcommand \bW {\matrixsym{W}}
+#+LaTeX_HEADER: \newcommand \bw {\vectorsym{w}}
+#+LaTeX_HEADER: \newcommand \wi {\vectorsym{w}_i}
+#+LaTeX_HEADER: \newcommand \wij {w_{i,j}}
+#+LaTeX_HEADER: \newcommand \bA {\matrixsym{A}}
+#+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
+#+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
+#+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
+#+LaTeX_HEADER: \newcommand \bel {\beta}
+#+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
+#+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
+#+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
+#+LaTeX_CLASS_OPTIONS: [smaller]
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+#+TAGS: activity advanced definition exercise homework project example theory code
+#+OPTIONS:   H:3
+*** Simple linear regression
+**** Input and output
+- Data pairs $(x_t, y_t)$, $t = 1, \ldots, T$.
+- Input $x_t \in \Reals^n$
+- Output $y_t \in \Reals$.
+**** Predicting the conditional mean $\E[y_t | x_t]$
+- Parameters $\param \in \Reals^n$
+- Function $f_\param : \Reals^n \to \Reals$, defined as
+\[
+f_\param(x_t) = \param^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
+\]
+
+**** Optimisation goal: Miniminise mean-squared error.
+\[
+\min_\param \sum_{t=1}^T [y_t - \pi_\param(x_t)]^2
+\]
+
+How can we solve this problem?
+
+*** Gradient descent algorithm
+**** Minimising a function
+\[
+\min_\param f(\param) \geq f(\param') \forall \param',
+\qquad \param^* = \argmin_\param f(\param) \Rightarrow f(\param^*) = \min_param f(\param)
+\]
+**** Gradient descent for minimisation
+- Input $\param_0$
+- For $n = 0, \ldots, N$:
+- $\param_{n+1} = \param_n - \eta_n \nabla_\param f(\param_n)$
+**** Step-size $\eta_n$
+- $\eta_n$ fixed: for online learning
+- $\eta_n = c/[c + n]$ for asymptotic convergence
+- $\eta_n = \argmin_\eta f(\theta_n + \eta \nabla_\param)$: Line search.
+
+*** Gradient desecnt for squared error
+**** Cost function
+\[
+\ell(\param) =  \sum_{t=1}^T [y_t - \pi_\param(x_t)]^2
+\]
+**** Cost gradient
+Using the chain rule of differentiation:
+\begin{align*}
+\nabla_\param \ell(\param)
+&= \nabla \sum_{t=1}^T [y_t - \pi_\param(x_t)]^2
+\\
+&= \sum_{t=1}^T \nabla [y_t - \pi_\param(x_t)]^2
+\\
+&= \sum_{t=1}^T 2 [y_t - \pi_\param(x_t)] [- \nabla \pi_\param(x_t)]^2
+\end{align*}
+**** Parameter gradient
+For a linear regressor:
+\[
+\frac{\partial}{\param_j} \pi_\param(x) = x_j.
+\]
+
+*** Analytical Least-Squares Solution
+
+*** Stochastic gradient descent algorithm
+**** Note
+ :PROPERTIES:
+ :BEAMER_ENV: note
+ :END:
+For the general case, we got to do this.
+
+**** When $f$ is an expectation
+\[
+f(\param) = \int_X dP(x) g(x, \param).
+\]
+**** Replacing the expectation with a sample:
+\begin{align*}
+\nabla f(\param)
+&= \int_X dP(x) \nabla g(x, \param)\\
+&\approx \frac{1}{K} \sum_{k=1}^K \nabla g(x^{(k)}, \param), && x^{(k)} \sim P.
+\end{align*}
+
+
