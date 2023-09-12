@@ -54,24 +54,24 @@ learning.
 
 
 *** Schedule
-|------+-------+--------------------------------+----------------------------------|
-| Week |  Date | Topic                          | Theory                           |
-|------+-------+--------------------------------+----------------------------------|
-|    1 | 09.26 | Supervisd Learning, kNN        | Decision theory                  |
-|    2 | 10.03 | XV, Bootstrapping              | Generalisation                   |
-|    3 | 10.10 | Perceptron                     | SGD, Convergence                 |
-|    4 | 10.17 | Discriminative models          | Linear Regression, Least-Squares |
-|    5 | 10.24 | Generative Models              | Bayes Classifier                 |
-|    6 | 10.31 | Basis Functions                | GAMs                             |
-|    7 | 11.07 | Multi-Layer Neural Network     | Backpropagation                  |
-|    8 | 11.14 | Support Vector Machines        | Maximal Margin                   |
-|    9 | 11.21 | Regularisation                 | Non-linear programming           |
-|   10 | 11.28 | Bayesian Inference             | Conjugate priors                 |
-|   11 | 12.05 | Latent Variable Models         | Expectation Maximisation         |
-|   12 | 12.12 | Approximate Bayesian Inference | Monte-Carlo Methods              |
-|------+-------+--------------------------------+----------------------------------|
-|   13 | 12.19 | Project Presentations          |                                  |
-|------+-------+--------------------------------+----------------------------------|
+|------+-------+--------------------------------+----------------------------------+----------------------------|
+| Week |  Date | Topic                          | Theory                           | Lab                        |
+|------+-------+--------------------------------+----------------------------------+----------------------------|
+|    1 | 09.26 | Supervisd Learning, kNN        | Decision theory                  | None                       |
+|    2 | 10.03 | XV, Bootstrapping              | Generalisation                   | Train/Test/XV              |
+|    3 | 10.10 | Perceptron                     | SGD, Convergence                 | Perceptron, Classification |
+|    4 | 10.17 | Discriminative models          | Linear Regression, Least-Squares | As Theory                  |
+|    5 | 10.24 | Generative Models              | Bayes Classifier                 | As Theory                  |
+|    6 | 10.31 | Basis Functions                | GAMs                             | Feature selection          |
+|    7 | 11.07 | Multi-Layer Neural Network     | Backpropagation                  | Network architectures      |
+|    8 | 11.14 | Support Vector Machines        | Maximal Margin                   | SVMs                       |
+|    9 | 11.21 | Regularisation                 | Non-linear programming           | LASSO ?                    |
+|   10 | 11.28 | Bayesian Inference             | Conjugate priors                 | Beta-Bernoulli             |
+|   11 | 12.05 | Latent Variable Models         | Expectation Maximisation         | Gaussian Mixture Model     |
+|   12 | 12.12 | Approximate Bayesian Inference | Monte-Carlo Methods              | Gaussian Mixture Model     |
+|------+-------+--------------------------------+----------------------------------+----------------------------|
+|   13 | 12.19 | Project Presentations          |                                  |                            |
+|------+-------+--------------------------------+----------------------------------+----------------------------|
 
 ** Material
 *** Textbooks
