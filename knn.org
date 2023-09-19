@@ -13,25 +13,8 @@
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 
-
-** Objective functions
-*** Supervised learning objectives
-- Data $(x_t, y_t)$, $x_t \in X$, $y_t \in Y$, $t \in [T]$.
-- i.i.d assumption: $(x_t, y_t) \sim P$ for all $t$.
-- Supervised decision rule $\pi(a_t | x_t)$
-**** Classification
-- Predict the labels correctly, i.e. $a_t = y_t$.
-- Have an appropriate confidence level
-
-**** Regression
-- Predict the mean correctly
-- Have an appropriate variance around the mean
-*** Unsupervised learning objectives
-- Reconstruct the data well
-- Be able to generate data
-*** Reinforcement learning objectives
-- Maximise total reward
-
+* K Nearest Neighbours
+  
 ** $k$ Nearest Neighbours
 *** The Nearest Neighbour algorithm
 **** Pseudocode
@@ -124,7 +107,6 @@ under the distribution $P$ is
 \[
 U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \ln \pi(y | x)
 \]
-
 
 
 *** Regression

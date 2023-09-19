@@ -37,8 +37,22 @@
 #+OPTIONS:   H:3
 
 * The problems of Machine Learning (1 week)
-#+TOC: headlines [currentsection,hideothersubsections]
+  #+TOC: headlines [currentsection,hideothersubsections]
 ** Introduction
+*** Machine Learning And Data Mining
+**** The nuts and bolts
+- Models
+- Algorithms
+- Theory
+- Practice
+**** Problems
+- Data collection
+- Classification
+- Regression
+- Clustering
+- Compression
+- Reinforcement learning
+
 *** Machine learning
 **** Data Collection
 - Downloading a clean dataset from a repository
@@ -49,34 +63,16 @@
 - Can be as simple as counting coin tosses.
 - Can be as complex as a large language model with billions of parameters
 - The model depends on the data and the problem
-**** Decision Making
-- Ultimately, we use models to make decisions.
-- However, decisions are made every step of the way (how to collect data, which model to choose)
+**** Algorithms and Decision Making
+- We want to use models to make decisions.
+- Decisions are made every step of the way.
+- Decisions are automated algorithmically.
   
-*** Models and Algorithms
-**** Models
-- k-Nearest Neighbours
-- Linear models and perceptrons
-- Multi-layer perceptrons (aka deep neural networks)
-- Trees
-- Mixture models
-
-**** Algorithms
-- (Stochastic) Gradient
-- Bayesian inference
-- Expectation maximisation
-- Bagging
-
-** Activities
-*** Class data
-**** Fill in your data (does not have to be true)
-
-** Models, hypotheses
 *** The main problems in machine learning and statistics
 **** Prediction
 - Will it rain tomorrow?
 - How much will bitcoin be worth next year?
-
+  
 **** Inference
 - Does my poker opponent have two aces?
 - What is the mass of the moon?
@@ -103,6 +99,8 @@
 **** Modelling and decision making
 - How will we compute something useful?
 
+
+
 *** Learning from data
 **** Unsupervised learning
 - Given data $x_1, \ldots, x_T$.
@@ -117,7 +115,32 @@
 - Conditional prediction: At each step $t$, predict $y_{t+1}$ from $x_1, y_1 \ldots, x_t, y_t, \alert{x_{t+1}}$
 **** Reinforcement learning
  Learn to act in an *unknown* world through interaction and rewards
-** Examples
+
+
+
+
+
+
+** Course Contents
+
+*** Course Contents
+**** Models
+- k-Nearest Neighbours.
+- Linear models and perceptrons.
+- Multi-layer perceptrons (aka deep neural networks).
+- Trees.
+- Mixture models (bagging, boosting).
+- Support vector machines.
+
+**** Algorithms
+- (Stochastic) Gradient Descent.
+- Linear programming.
+- Quadratic programming
+- Bayesian inference.
+- Expectation maximisation.
+- Monte Carlo Methods.
+
+
 *** Supervised learning
 The general goal is learning a function $f: X \to Y$.
 **** Classification
@@ -138,6 +161,24 @@ The general goal is learning the data distribution.
 **** Clustering
 - Input data $x_1, \ldots, x_T$ 
 - Assign each data $x_t$. to  cluster label $c_t$.
+** Objective functions
+*** Supervised learning objectives
+- Data $(x_t, y_t)$, $x_t \in X$, $y_t \in Y$, $t \in [T]$.
+- i.i.d assumption: $(x_t, y_t) \sim P$ for all $t$.
+- Supervised decision rule $\pi(a_t | x_t)$
+**** Classification
+- Predict the labels correctly, i.e. $a_t = y_t$.
+- Have an appropriate confidence level
+
+**** Regression
+- Predict the mean correctly
+- Have an appropriate variance around the mean
+*** Unsupervised learning objectives
+- Reconstruct the data well
+- Be able to generate data
+*** Reinforcement learning objectives
+- Maximise total reward
+
 
 ** Pitfalls
 *** Pitfalls
@@ -154,5 +195,13 @@ The general goal is learning the data distribution.
 
 
 
+** Activities
+*** Class data
+Fill in the class data
+#+CAPTION: Link to spreadsheet
+#+NAME:   fig:class-qr
+#+ATTR_LATEX: :width 0.5\textwidth
+#+ATTR_HTML: :width 300px
+[[./fig/class_data_QR.png]]
 
-    
+*** KNN activity
