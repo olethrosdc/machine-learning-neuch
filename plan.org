@@ -122,3 +122,4 @@ PML2: Probabilistic Machine Learning: Advanced Topics
 | Hypothesis tesing           |   13 |   18 |      |      |
 | High-Dimensional Statisitcs |    6 |   18 |      |      |
 |-----------------------------+------+------+------+------|
+
