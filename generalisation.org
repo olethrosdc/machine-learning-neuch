@@ -98,6 +98,91 @@ under the distribution $P(x,y) = P(x | y) P(y)$ is:
 \int_X \sum_{y=1}^m dP(x| y) P(y) \sum_{a=1}^m \pi(a | x)
 \]
 
+* Generalisation
+*** Training and overfitting
+**** Training data
+- $D = ((x_t, y_t) : t = 1, \ldots, T)$.
+- $x_t \in X$
+- $y_t \in \Reals^m$.
+**** Assumption: The data is generated i.i.d.
+- $(x_t, y_t) \sim P$ for all $t$ (identical)
+- $D \sim P^T$ (independent)
+That is, if you know $P$, then knowing $(x_t, y_t)$ gives you no information about $(x_k, y_k)$.
+
+**** The optimal decision rule for $P$
+\[
+\max_\pi U(\pi, P)
+= 
+\max_\pi \int_{X \times Y} dP(x, y) \sum_a \pi(a | x) U(a,y)
+\]
+**** The optimal decision rule for $D$
+\[
+\max_\pi U(\pi, D)
+= 
+\max_\pi \sum_{(x,y) \in D)} \sum_a \pi(a | x) U(a,y)
+\]
+
+*** Classification
+**** The classifier as a decision rule
+A decision rule $\pi(a | x)$ generates a *decision* $a \in [m]$. It is
+the conditional probability of $a$ given $x$.
+
+Even though normally conditional probabilities are defined as
+$P(A | B) = P(A \cap B) / P(B)$, the probability of the decision $a$
+is undefined without a given $x$. So it's better to 
+
+**** The accuracy of a single decision
+\[
+U(a_t, y_t) = \ind{a_t = y_t}
+ = \begin{cases}
+1, & \textrm{if $a_t = y_t$}\\
+0, & \textrm{otherwise}
+\end{cases}
+\]
+\[
+U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
+\]
+
+**** The accuracy on the training set
+\[
+U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
+\]
+
+**** The expected accuracy of a decision rule
+If $(x, y) \sim P$, the accuracy $U$ of a stochastic decision rule $\pi$
+under the distribution $P$ is the probability it predicts correctly
+\[
+U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \pi(y | x)
+\]
+
+**** The log-accuracy
+If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
+under the distribution $P$ is 
+\[
+U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \ln \pi(y | x)
+\]
+
+
+*** Regression
+
+**** The regressor as a decision rule
+
+A decision rule $\pi(a | x)$ generates a *decision* $a \in \Reals^m$.
+It is the conditional density of $a$ given $x$.
+
+**** Accuracy
+If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
+under the distribution $P$ is:
+\[
+U(\pi, P) \defn \int_X \int_Y dP(x, y) \pi(y | x).
+\]
+
+**** Mean-Squared Error
+If $(x, y) \sim P$, the mean-square error of a deterministic decision rule $\pi : X \to \Reals$
+under the distribution $P$ is:
+\[
+\int_X \sum_{y=1}^m dP(x, y) \sum_{a=1}^m \pi(a | x)
+\]
 
 * Estimating quality
 ** Methodology
@@ -143,6 +228,7 @@ The true (test) error rate of any classifier is 50%.
    (b) Using just this subset of predictors, build a multivariate classifier, using all of the samples except those in fold k.
    (c) Use the classifier to predict the class labels for the samples in
 fold k.
+
 
 
 * Learning and generalisation

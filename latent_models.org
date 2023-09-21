@@ -1,0 +1,44 @@
+#+TITLE: Generative Modelling
+#+AUTHOR: Christos Dimitrakakis
+#+EMAIL:christos.dimitrakakis@unine.ch
+#+LaTeX_HEADER: \usepackage{tikz}
+#+LaTeX_HEADER: \usepackage{amsmath}
+#+LaTeX_HEADER: \usepackage{amssymb}
+#+LaTeX_HEADER: \usepackage{isomath}
+#+LaTeX_HEADER: \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand \Var {\mathop{\mbox{\ensuremath{\mathbb{V}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand \Bias {\mathop{\mbox{\ensuremath{\mathbb{B}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
+#+LaTeX_HEADER: \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
+#+LaTeX_HEADER: \DeclareMathOperator*{\argmax}{arg\,max}
+#+LaTeX_HEADER: \DeclareMathOperator*{\argmin}{arg\,min}
+#+LaTeX_HEADER: \DeclareMathOperator*{\sgn}{sgn}
+#+LaTeX_HEADER: \newcommand \defn {\mathrel{\triangleq}}
+#+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
+#+LaTeX_HEADER: \newcommand \Param {\Theta}
+#+LaTeX_HEADER: \newcommand \param {\theta}
+#+LaTeX_HEADER: \newcommand \vparam {\vectorsym{\theta}}
+#+LaTeX_HEADER: \newcommand \mparam {\matrixsym{\Theta}}
+#+LaTeX_HEADER: \newcommand \bW {\matrixsym{W}}
+#+LaTeX_HEADER: \newcommand \bw {\vectorsym{w}}
+#+LaTeX_HEADER: \newcommand \wi {\vectorsym{w}_i}
+#+LaTeX_HEADER: \newcommand \wij {w_{i,j}}
+#+LaTeX_HEADER: \newcommand \bA {\matrixsym{A}}
+#+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
+#+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
+#+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
+#+LaTeX_HEADER: \newcommand \bel {\beta}
+#+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
+#+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
+#+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
+#+LaTeX_CLASS_OPTIONS: [smaller]
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+#+TAGS: activity advanced definition exercise homework project example theory code
+#+OPTIONS:   H:3
+
+* Mixture Models
+* Image models
+* Temporal Models
+* Tree models
+
+

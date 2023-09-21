@@ -1,4 +1,4 @@
-#+TITLE: Machine Learning and Data Mining
+#+TITLE: Nearest Neighbour Algorithms
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
@@ -13,10 +13,22 @@
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 
-* K Nearest Neighbours
+* Introduction
+** The hidden secret of machine learning
+*** The kNN algorithm idea
+- Given labelled training examples..
+- Assume an unknown example is similar to its neighbours
+- Smoothness!
+
+*** Performance of KNN on image classification
+[[./fig/knn-image-performance.png]]
+
+
+* The algorithm
   
 ** $k$ Nearest Neighbours
 *** The Nearest Neighbour algorithm
+
 **** Pseudocode
 - Input: Data $(x_t, y_t)_{t=1}^T$, test point $x$, distance $d$
 - $t^* = \argmin_t d(x_t, x)$
@@ -24,7 +36,6 @@
 
 **** Classification
      $y_t  \in [m] \equiv \{1, \ldots, m\}$
-See example code
 
 **** Regression
 $y_t  \in \Reals^m$
@@ -36,100 +47,28 @@ $y_t  \in \Reals^m$
 - Calculate $h_t = d(x_t, x)$ for all $t$.
 - Get sorted indices $s = \texttt{argsort}(h)$ so that $d(x_{s_i}, x) \leq d(x_{s_{i+1}}, x)$ for all $i$.
 - Return $\sum_{i=1}^k y_{s_i} / k$.
-
+  
 **** Classification
-- It is not convenient to work with discrete labels
+- It is not convenient to work with discrete labels.
 - We use a *one-hot encoding* vector representation $(0, \ldots, 0, 1, 0, \ldots, 0)$.
 - $y_t \in \{0,1\}^m$ with $\|y_t\|_1 = 1$, so that the class of the $t$-th example is $j$ iff $y_{t,j} = 1$.
 
 **** Regression
 $y_t  \in \Reals^m$
 
-*** Training and overfitting
-**** Training data
-- $D = ((x_t, y_t) : t = 1, \ldots, T)$.
-- $x_t \in X$
-- $y_t \in \Reals^m$.
-**** Assumption: The data is generated i.i.d.
-- $(x_t, y_t) \sim P$ for all $t$ (identical)
-- $D \sim P^T$ (independent)
-That is, if you know $P$, then knowing $(x_t, y_t)$ gives you no information about $(x_k, y_k)$.
+* Extensions and parameters
+** Neighbourhood calculation
 
-**** The optimal decision rule for $P$
+** Distance function
+*** Norms and semi-norms
+**** A norm $d$
+- Zero element $\|0\| = 0$.
+- Homogeneity $\|cx\| = c \|x\|$ for any scalar $a$.
+- Triangle inequality $\|x + y\| \leq \|x\| + \|y\|$.
+
+**** $p$-norm
+\[d(x,y) = \|x - y\|_p\]
+with
 \[
-\max_\pi U(\pi, P)
-= 
-\max_\pi \int_{X \times Y} dP(x, y) \sum_a \pi(a | x) U(a,y)
+\|z\|_p = \left(\sum_i z_i^p\right)^p
 \]
-**** The optimal decision rule for $D$
-\[
-\max_\pi U(\pi, D)
-= 
-\max_\pi \sum_{(x,y) \in D)} \sum_a \pi(a | x) U(a,y)
-\]
-
-*** Classification
-**** The classifier as a decision rule
-A decision rule $\pi(a | x)$ generates a *decision* $a \in [m]$. It is
-the conditional probability of $a$ given $x$.
-
-Even though normally conditional probabilities are defined as
-$P(A | B) = P(A \cap B) / P(B)$, the probability of the decision $a$
-is undefined without a given $x$. So it's better to 
-
-**** The accuracy of a single decision
-\[
-U(a_t, y_t) = \ind{a_t = y_t}
- = \begin{cases}
-1, & \textrm{if $a_t = y_t$}\\
-0, & \textrm{otherwise}
-\end{cases}
-\]
-\[
-U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
-\]
-
-**** The accuracy on the training set
-\[
-U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
-\]
-
-**** The expected accuracy of a decision rule
-If $(x, y) \sim P$, the accuracy $U$ of a stochastic decision rule $\pi$
-under the distribution $P$ is the probability it predicts correctly
-\[
-U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \pi(y | x)
-\]
-
-**** The log-accuracy
-If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
-under the distribution $P$ is 
-\[
-U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \ln \pi(y | x)
-\]
-
-
-*** Regression
-
-**** The regressor as a decision rule
-
-A decision rule $\pi(a | x)$ generates a *decision* $a \in \Reals^m$.
-It is the conditional density of $a$ given $x$.
-
-**** Accuracy
-If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
-under the distribution $P$ is:
-\[
-U(\pi, P) \defn \int_X \int_Y dP(x, y) \pi(y | x).
-\]
-
-**** Mean-Squared Error
-If $(x, y) \sim P$, the mean-square error of a deterministic decision rule $\pi : X \to \Reals$
-under the distribution $P$ is:
-\[
-\int_X \sum_{y=1}^m dP(x, y) \sum_{a=1}^m \pi(a | x)
-\]
-
-
-
-
