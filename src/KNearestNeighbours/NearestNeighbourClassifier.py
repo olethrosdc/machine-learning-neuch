@@ -11,12 +11,20 @@ class NearestNeighbourClassifier:
         self.metric = metric
         self.data = data
         self.labels = labels
-        self.n_classes = max(labels) # VERY CRUDE
+        self.n_classes = int(max(labels)) # VERY CRUDE
         self.K = K
         self.n_points = data.shape[0]
         self.n_features = data.shape[1]
         print("classes: ", self.n_classes)
         pass
+    # Gives a utility for every possible choice made by the algorithm
+    def decide(self, U):
+        n_actions = U.shape[0]
+        n_labels = U.shape[1]
+        assert(n_labels == self.n_classes)
+        # Need to use the get_probabilities function to return the action with the highest
+        # expected utility
+        # i.e. maximising sum_y P(y|x) U(a,y)
     ## predict the most likely label
     def predict(self, x):
         proportions = self.get_probabilities(x)
@@ -35,7 +43,7 @@ class NearestNeighbourClassifier:
         proportions = np.zeros(self.n_classes)
         for i in range(self.K):
             index = indices[i]
-            label = self.labels[index] - 1
+            label = self.labels[index] 
             proportions[label - 1] += 1
         proportions /= self.K
         
