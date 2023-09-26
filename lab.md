@@ -10,7 +10,7 @@ various methods covered in our classes. It is highly encouraged to work through 
 Additionally, we will integrate select lab exercises from the book
 
 After completing the labs, you will have the opportunity to work on assignments that will further enhance your
-understanding of the course. Please note that the lab assignments will not be graded.
+understanding of the course.
 
 ## Setup
 
