@@ -31,12 +31,12 @@
 #+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
 #+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
 #+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
+#+LaTeX_HEADER: \newcommand \cset[2] {\left\{#1 ~\middle| #2 \right\}}
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 
-$\bel$
 
 * Probability background
 #+TOC: headlines [currentsection]
@@ -272,14 +272,14 @@ For non-differential functions, we can sometimes define the set of all subderiva
 
 *** Integrals
 **** Riemann integral
-The Reimann integral is obtained by taking a horizontal discretisation of a function to the limit:
+The Reimann integral is obtained by taking a *horizontal* discretisation of a function to the limit:
 \[
 \int_a^b f(x) dx = \lim_{n \to \infty} \sum_{t=1}^{n} f(x_t) \frac{b - a}{n},
 \qquad 
 x_t = a + (t-1) \cdot \frac{b - a}{n}
 \]
 **** Lebesgue integral
-The Reimann integral is obtained by taking a vertical discretisation of a function to the limit.
+This integral is obtained by taking a *vertical* discretisation of a function to the limit.
 Let $\lambda$ be the Lebesgue measure (i.e. area) of a set. Then:
 \[
 \int_X f(x) d\lambda(x) = \lim_{n \to \infty} \sum_{t=1}^n y_t \lambda(S_t),
