@@ -18,7 +18,7 @@ class NearestNeighbourClassifier:
         print("classes: ", self.n_classes)
         pass
     # Gives a utility for every possible choice made by the algorithm
-    def decide(self, U):
+    def decide(self, U, x):
         n_actions = U.shape[0]
         n_labels = U.shape[1]
         assert(n_labels == self.n_classes)
