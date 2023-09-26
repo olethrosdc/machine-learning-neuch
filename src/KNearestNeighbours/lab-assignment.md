@@ -6,7 +6,7 @@ The "decide" method of the class determines the final action for a test point \(
   
 In mathematical terms:  
   
-$$ \argmax_a E[U| a, x] =  \argmax_a \sum_y U(a,y)P(y|x) $$  
+$$ \mathop{\mathrm{argmin}}_a E[U| a, x] =  \mathop{\mathrm{argmin}}_a \sum_y U(a,y)P(y|x) $$  
   
 Where **U** is the utility matrix.
   
