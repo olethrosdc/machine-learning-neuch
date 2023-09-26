@@ -51,3 +51,37 @@ class NearestNeighbourClassifier:
         return proportions
     
     
+x = np.random.uniform(size=[10, 4])
+y = 1 + np.random.choice(2, size=10)
+
+kNN = NearestNeighbourClassifier(x, y, euclidean_metric, 10)
+
+
+kNN.get_probabilities(x[0])
+
+
+
+import pandas as pd
+
+
+data = pd.read_csv("./class.csv")
+
+data
+
+x = data[["Height (cm)", "Weight (kg)"]].to_numpy()
+
+y = data["Biking (0/1)"].to_numpy()
+print(y)
+y[np.isnan(y)] = 0
+y += 1
+y = y.astype(int)
+print(y)
+
+kNN = NearestNeighbourClassifier(x, y, euclidean_metric, 10)
+for t in range(x.shape[0]):
+    x_t = x[t]
+    p = kNN.get_probabilities(x_t)
+    print(y[t], p)
+    
+    print(p[y[t]-1])
+    
