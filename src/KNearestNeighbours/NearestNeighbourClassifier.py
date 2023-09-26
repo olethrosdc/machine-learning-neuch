@@ -22,9 +22,20 @@ class NearestNeighbourClassifier:
 
     # Gives a utility for every possible choice made by the algorithm
     def decide(self, U, x):
+        """
+        A method that return the action that maximise the expected utility.
+        :param U: is a 2 denominational array that indicated the utility of each action based on y.
+                    example: U = np.array([ [ 1 , -1000],
+                                            [ -1 ,    0]  ])
+                            so the U[1,0] indicated the utility of tanking the action a=1 based on y=0.
+        :param x: the test point.
+        :return: the action that maximise the expected utility max_a E(U)[a].
+                 where E(U)[a] = sum_y P(y|x) U(a,y).
+        """
         n_actions = U.shape[0]
         n_labels = U.shape[1]
         assert (n_labels == self.n_classes)
+        # HINT:
         # Need to use the get_probabilities function to return the action with the highest
         # expected utility
         # i.e. maximising sum_y P(y|x) U(a,y)
@@ -66,10 +77,7 @@ import pandas as pd
 
 data = pd.read_csv("./class.csv")
 
-data
-
 x = data[["Height (cm)", "Weight (kg)"]].to_numpy()
-
 y = data["Biking (0/1)"].to_numpy()
 print(y)
 y[np.isnan(y)] = 0
@@ -84,3 +92,9 @@ for t in range(x.shape[0]):
     print(y[t], p)
 
     print(p[y[t] - 1])
+
+# Assignment
+# fill the .decide method of the knn algorithm above.
+U = np.array([[1, -1000],
+              [-1, 0]])
+kNN.decide(U=U, x=x_t)
