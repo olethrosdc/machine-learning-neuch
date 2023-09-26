@@ -29,8 +29,8 @@ class NearestNeighbourClassifier:
                                             [ -1 ,    0]  ])
                             so the U[1,0] indicated the utility of tanking the action a=1 based on y=0.
         :param x: the test point.
-        :return: the action that maximise the expected utility max_a E(U)[a].
-                 where E(U)[a] = sum_y P(y|x) U(a,y).
+        :return: the action that maximises the expected utility max_a E[U|a,x].
+                 where E[U|a,x] = sum_y P(y|x) U(a,y).
         """
         n_actions = U.shape[0]
         n_labels = U.shape[1]
