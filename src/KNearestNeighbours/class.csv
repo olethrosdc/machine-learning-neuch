@@ -1,0 +1,19 @@
+Name,Specialisation,Sex,Height (cm),Weight (kg),Age,Eye Color,Citiizenship,Exercise (h/week),Marital Status,Children,Siblings,Alcohol (u/week),Smoking (u/day),Reading (0/1),TV (0/1),Music (listening),Music (Playing),Writing (0/1),Football (0/1),Basketball (0/1),Tennis (0/1),Swimming  (0/1),Running (0/1),Mountain Sport (0/1),Biking (0/1),Weights (0/1),Other (0/1)
+student_1,AI,m,178,80,48.00,Brown,Greece,7,Married,2,0,3,0,0,0,1,1,1,0,0,0,1,1,1,0,1,0
+student_2,Maths,m,177,77,23,Brown,Swiss,12,Single,0,2,0,0,1,0,1,1,0,0,0,0,0,1,1,1,1,0
+student_3,-,m,178,60,28,Brown,Cuban,5,married,1,0,2,0,1,0,1,1,0,0,0,0,0,0,0,1,1,1
+student_4,Data science,f,172,70,24,blue,Swiss,5,Single,0,2,1,0,1,1,1,0,0,0,0,0,0,0,0,0,0,1
+student_5,Procrastination,M,177,63,25,Blue,Swiss,10,Single,0,2,6,10,1,0,1,0,0,1,0,0,0,1,1,1,0,1
+student_6,Maths,m,178,69,28,Blue,Swiss,7,Single,0,2,6,0,1,0,1,0,0,0,0,0,1,0,0,0,0,1
+student_7,Data science,M,178,82,23,Black,Indian,,Single,0,1,4,0,1,1,1,1,0,1,0,0,0,1,0,0,1,1
+student_8,Data science,M,175,78,23,Brown,Bangladeshi,4,Single,0,1,0,0,1,0,1,1,1,0,0,0,1,1,1,0,1,1
+student_9,Business Informatics,f,168,61,24,blue,Swiss,5,not married,0,3,2,0,1,0,1,0,0,0,0,0,0,1,1,0,1,0
+student_10,Geography,m,180,70,26,blue,Swiss,6,Single,0,1,2,0,1,1,1,0,0,1,0,0,0,1,1,0,0,0
+student_11,Business IT,f,155,52,23,Brown,Swiss,5,Single,0,3,0,2,1,0,1,0,0,0,0,0,0,0,1,0,0,1
+student_12,data science,m,165,54,21,brown,france,5,single,0,1,2,0,1,0,1,0,0,1,0,0,0,1,1,0,0,0
+student_13,Data Science,m,170,85,29,brown,greece,2,single,0,1,2,10,1,0,1,0,1,1,0,0,0,1,0,1,0,0
+student_14,Data Science,m,170,65,23,hazel,Swiss,5,Single,0,6,3,0,1,0,1,0,1,0,0,0,0,1,0,1,0,
+student_15,Data Science,M,183,73,28,Brown,Syrian,7,Single,0,4,0,5,1,0,1,0,1,1,0,0,1,1,1,1,,1
+student_16,Business Informatics,M,180,95,29,brown,Swiss,10,Single,0,5,0,0,1,1,1,0,1,1,0,0,0,1,0,0,0,0
+student_17,Statistics,M,177,70,25,Black,Ivorian,3,Not married,0,,,,,,,,,,,,,,,,,
+student_18,Logic,m,183,80,28,Brown,Swiss,3,Single,0,2,5,0,1,1,1,0,0,0,0,0,1,0,1,0,0,0

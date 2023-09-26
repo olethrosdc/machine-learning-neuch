@@ -76,7 +76,6 @@ kNN.get_probabilities(x[0])
 import pandas as pd
 
 data = pd.read_csv("./class.csv")
-
 x = data[["Height (cm)", "Weight (kg)"]].to_numpy()
 y = data["Biking (0/1)"].to_numpy()
 print(y)
@@ -85,7 +84,7 @@ y += 1
 y = y.astype(int)
 print(y)
 
-kNN = NearestNeighbourClassifier(x, y, euclidean_metric, 10)
+kNN = NearestNeighbourClassifier(x, y, euclidean_metric, 3)
 for t in range(x.shape[0]):
     x_t = x[t]
     p = kNN.get_probabilities(x_t)
@@ -93,8 +92,12 @@ for t in range(x.shape[0]):
 
     print(p[y[t] - 1])
 
-# Assignment
-# fill the .decide method of the knn algorithm above.
+# Assignment 1
+# fill the kNN.decide method of the knn class above.
 U = np.array([[1, -1000],
               [-1, 0]])
-kNN.decide(U=U, x=x_t)
+print("Utility matrix")
+print(U)
+final_decision = kNN.decide(U=U, x=x_t)
+print("final decision")
+print(final_decision)
