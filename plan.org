@@ -54,24 +54,24 @@ learning.
 
 
 *** Schedule
-|------+-------+----------------------------+----------------------------------+----------------------------|
-| Week |  Date | Topic                      | Theory                           | Lab                        |
-|------+-------+----------------------------+----------------------------------+----------------------------|
-|    1 | 09.26 | Supervisd Learning, kNN    | Decision theory                  | None                       |
-|    2 | 10.03 | XV, Bootstrapping          | Generalisation                   | Train/Test/XV              |
-|    3 | 10.10 | Perceptron                 | SGD, Convergence                 | Perceptron, Classification |
-|    4 | 10.17 | Discriminative models      | Linear Regression, Least-Squares | As Theory                  |
-|    5 | 10.24 | Generative Models          | Bayes Classifier, GMM            | As Theory                  |
-|    6 | 10.31 | Basis Functions            | GAMs                             | Feature selection          |
-|    7 | 11.07 | Multi-Layer Neural Network | Backpropagation                  | Network architectures      |
-|    8 | 11.14 | Support Vector Machines    | Maximal Margin                   | SVMs                       |
-|    9 | 11.21 | Regularisation             | Non-linear programming           | LASSO ?                    |
-|   10 | 11.28 | Bayesian Inference         | Conjugate priors                 | Beta-Bernoulli             |
-|   11 | 12.05 | Tree Models                | Expectation Maximisation         | Gaussian Mixture Model     |
-|   12 | 12.12 | Sequential Moodels         | Markov Chain Monte Carlo         | MCMC                       |
-|------+-------+----------------------------+----------------------------------+----------------------------|
-|   13 | 12.19 | Project Presentations      |                                  |                            |
-|------+-------+----------------------------+----------------------------------+----------------------------|
+|------+-------+----------------------------+----------------------------------+----------------------------+---------------------|
+| Week |  Date | Topic                      | Theory                           | Lab                        | Assignment          |
+|------+-------+----------------------------+----------------------------------+----------------------------+---------------------|
+|    1 | 09.26 | Supervisd Learning, kNN    | Decision theory                  | None                       |                     |
+|    2 | 10.03 | XV, Bootstrapping          | Generalisation                   | Train/Test/XV              | XV/Bootstrapping    |
+|    3 | 10.10 | Perceptron                 | SGD, Convergence                 | Perceptron, Classification | Perceptron          |
+|    4 | 10.17 | Discriminative models      | Linear Regression, Least-Squares | As Theory                  |                     |
+|    5 | 10.24 | Generative Models          | Bayes Classifier, GMM            | As Theory                  | GMM Bayes Classifier |
+|    6 | 10.31 | Basis Functions            | GAMs                             | Feature selection          | Featire Selection   |
+|    7 | 11.07 | Multi-Layer Neural Network | Backpropagation                  | Network architectures      | Logistic Regression |
+|    8 | 11.14 | Support Vector Machines    | Maximal Margin                   | SVMs                       |                     |
+|    9 | 11.21 | Regularisation             | Non-linear programming           | LASSO ?                    |                     |
+|   10 | 11.28 | Bayesian Inference         | Conjugate priors                 | Beta-Bernoulli             |                     |
+|   11 | 12.05 | Tree Models                | Expectation Maximisation         | Gaussian Mixture Model     |                     |
+|   12 | 12.12 | Sequential Moodels         | Markov Chain Monte Carlo         | MCMC                       |                     |
+|------+-------+----------------------------+----------------------------------+----------------------------+---------------------|
+|   13 | 12.19 | Project Presentations      |                                  |                            |                     |
+|------+-------+----------------------------+----------------------------------+----------------------------+---------------------|
 
 ** Material
 *** Textbooks
