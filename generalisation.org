@@ -42,10 +42,24 @@
 A decision rule $\pi(a | x)$ generates a *decision* $a \in [m]$. It is
 the conditional probability of $a$ given $x$.
 
+**** A note on conditional probabilities
 Even though normally conditional probabilities are defined as
 $P(A | B) = P(A \cap B) / P(B)$, the probability of the decision $a$
-is undefined without a given $x$. So it's better to 
+is undefined without a given $x$. So it's better to think if $\pi(a | x)$ as a collection of distributions on $a$, one for each value of $x$.
 
+**** Deterministic predictions given a model $P(y|x)$
+Here, we pick the most likely class:
+\[
+\pi(a | x_t) = \ind{a= \argmax_y P(y|x_t)}
+\]
+**** Deterministic predictions given a model $P(y|x)$
+Here, we randomly select a class according to our model:
+\[
+\pi(a | x_t) = P(y_t = a  | x_t)
+\]
+
+
+*** Accuracy as a classification metric
 **** The accuracy of a single decision
 \[
 U(a_t, y_t) = \ind{a_t = y_t}
@@ -54,10 +68,6 @@ U(a_t, y_t) = \ind{a_t = y_t}
 0, & \textrm{otherwise}
 \end{cases}
 \]
-\[
-U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
-\]
-
 **** The accuracy on the training set
 \[
 U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
@@ -69,46 +79,34 @@ under the distribution $P$ is the probability it predicts correctly
 \[
 U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \pi(y | x)
 \]
-
-**** The log-accuracy
-If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
-under the distribution $P$ is 
-\[
-U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \ln \pi(y | x)
-\]
-
 *** Regression
 
 **** The regressor as a decision rule
+A decision rule $\pi$ generates a *decision* $a \in \Reals^m$.
+- For *randomised* rules, $\pi(a | x)$ is the conditional density of $a$ given $x$.
+- For *deterministic* rules $\pi(x)$ is the prediction for $x$.
 
-A decision rule $\pi(a | x)$ generates a *decision* $a \in \Reals^m$.
-It is the conditional density of $a$ given $x$.
-
-**** Accuracy
-If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
-under the distribution $P$ is:
+**** Mean-Squared Error on a Dataset
+The mean-square error is simply the squared difference in predicted versus actual values:
 \[
-U(\pi, P) \defn \int_X \int_Y dP(x, y) \pi(y | x).
+\frac{1}{T} \sum_{t=1}^T [y_t - \pi(x_t)]^2  
 \]
 
-**** Mean-Squared Error
-If $(x, y) \sim P$, the mean-square error of a deterministic decision rule $\pi : X \to \Reals$
-under the distribution $P(x,y) = P(x | y) P(y)$ is:
+**** Expected MSE
+If $(x, y) \sim P$, the expected MSE of a deterministic decision rule $\pi : X \to \Reals$ is
 \[
-\int_X \sum_{y=1}^m dP(x| y) P(y) \sum_{a=1}^m \pi(a | x)
+\int_X \int_Y dP(x,y) [y - \pi(x)]^2.
 \]
+
 
 * Generalisation
 *** Training and overfitting
 **** Training data
 - $D = ((x_t, y_t) : t = 1, \ldots, T)$.
-- $x_t \in X$
-- $y_t \in \Reals^m$.
+- $x_t \in X$, $y_t \in Y$.
 **** Assumption: The data is generated i.i.d.
 - $(x_t, y_t) \sim P$ for all $t$ (identical)
 - $D \sim P^T$ (independent)
-That is, if you know $P$, then knowing $(x_t, y_t)$ gives you no information about $(x_k, y_k)$.
-
 **** The optimal decision rule for $P$
 \[
 \max_\pi U(\pi, P)
@@ -119,96 +117,44 @@ That is, if you know $P$, then knowing $(x_t, y_t)$ gives you no information abo
 \[
 \max_\pi U(\pi, D)
 = 
-\max_\pi \sum_{(x,y) \in D)} \sum_a \pi(a | x) U(a,y)
-\]
-
-*** Classification
-**** The classifier as a decision rule
-A decision rule $\pi(a | x)$ generates a *decision* $a \in [m]$. It is
-the conditional probability of $a$ given $x$.
-
-Even though normally conditional probabilities are defined as
-$P(A | B) = P(A \cap B) / P(B)$, the probability of the decision $a$
-is undefined without a given $x$. So it's better to 
-
-**** The accuracy of a single decision
-\[
-U(a_t, y_t) = \ind{a_t = y_t}
- = \begin{cases}
-1, & \textrm{if $a_t = y_t$}\\
-0, & \textrm{otherwise}
-\end{cases}
-\]
-\[
-U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
-\]
-
-**** The accuracy on the training set
-\[
-U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
-\]
-
-**** The expected accuracy of a decision rule
-If $(x, y) \sim P$, the accuracy $U$ of a stochastic decision rule $\pi$
-under the distribution $P$ is the probability it predicts correctly
-\[
-U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \pi(y | x)
-\]
-
-**** The log-accuracy
-If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
-under the distribution $P$ is 
-\[
-U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \ln \pi(y | x)
-\]
-
-
-*** Regression
-
-**** The regressor as a decision rule
-
-A decision rule $\pi(a | x)$ generates a *decision* $a \in \Reals^m$.
-It is the conditional density of $a$ given $x$.
-
-**** Accuracy
-If $(x, y) \sim P$, the accuracy $U$ of a decision rule $\pi$
-under the distribution $P$ is:
-\[
-U(\pi, P) \defn \int_X \int_Y dP(x, y) \pi(y | x).
-\]
-
-**** Mean-Squared Error
-If $(x, y) \sim P$, the mean-square error of a deterministic decision rule $\pi : X \to \Reals$
-under the distribution $P$ is:
-\[
-\int_X \sum_{y=1}^m dP(x, y) \sum_{a=1}^m \pi(a | x)
+\max_\pi \sum_{(x,y) \in D} \sum_a \pi(a | x) U(a,y)
 \]
 
 * Estimating quality
 ** Methodology
-*** The Train/Test methodology
-**** Training data $D = ((x_t, y_t) : t = 1, \ldots, T)$.
-- $x_t \in X$
-- $y_t \in \Reals^m$.
-**** Assumption: The data is generated i.i.d.
-- $(x_t, y_t) \sim P$ for all $t$ (identical)
-- $D \sim P^T$ (independent)
+*** The Train/Validation/Test methodology
+**** Main idea
+Use each piece of data once to make decisions and measure
+**** Training set
+Use to decide low-level model parameters
+**** Validation set
+Use to decide between:
+- different hyperparameters  (e.g. $K$ in nearest neighbours)
+- model (e.g. neural networks versus kNN)
+**** Test set
+Use to measure the final quality of a model
 
-**** The optimal decision rule for $P$
-\[
-\max_\pi U(\pi, P)
-= 
-\max_\pi \int_{X \times Y} dP(x, y) \sum_a \pi(a | x) U(a,y)
-\]
-**** The optimal decision rule for $D$
-\[
-\max_\pi U(\pi, D)
-= 
-\max_\pi \sum_{(x,y) \in D)} \sum_a \pi(a | x) U(a,y)
-\]
-*** Cross-validation
+
+*** Cross-validation (XV)
+**** Idea
+- Use XV to select hyperparameters instead of a single train/valid test.
+**** Methodology
+- Split training set $D$ in $k$ different subsets
+- At iteration $i$
+- Use the $i$-th subset for validation
+- Use all the remaining $k-1$ subsets for training
+- Average results on validation sets
+
 *** Bootstrapping
-
+**** Idea
+- How to take into account variability? 
+- Resample the data and repeat your calculations for each resample
+**** Boostrap samples
+- Input: Data $D$, of size $T$
+- For $t$ in $\{1, \ldots, T\}$
+-- Select $i$ uniformly in $[T]$
+-- Add the $i$-th point to $D_b$
+- Return $D_b$
 *** The wrong way to do XV for subset selection :activity:
 
 1. Screen the predictors: find a subset of “good” predictors that show
@@ -232,7 +178,9 @@ fold k.
 
 
 * Learning and generalisation
-** Generalisation as error
+** Generalisation
+*** Generalisation as error
+
 **** Error due to mismatched objectives
 The $\pi^*$ maximising $U(\pi, P)$ is not the $\hat{\pi}$ maximising $U(\pi, D)$.
 
