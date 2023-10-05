@@ -85,7 +85,18 @@ throughout this course.
 
 ## Contact
 
-For any general inquiries or technical issues related to the lab, you are strongly advised to contact us.
+You are encouraged to talk to us in class. If that is not possible, you can use Ilias for course content and assignment questions. You can use e-mail for personal issues, or to arrange a meeting during office hours.
+
+### General inquires, technical problems
+
+First, if you are stuck on something, ask in class. That is why we don't just record lectures and labs. If you do show up, make sure to ask if something is unclear.
+
+After the class, you can **use the forum on Ilias** https://ilias.unibe.ch/ilias.php?ref_id=2868486&cmdClass=ilobjforumgui&cmdNode=11q:rm&baseClass=ilRepositoryGUI
+This helps other students that might have the same question. Do not send emails for questions about the course content. If a question is hard to answer online, then we will do it in class or during office hours.
+
+### Personal issues and office hours
+
+If you have personal issues, or anything else requiring a personalised answer, or if you wish to schedule an appointment during office hours, you should use e-mail.
 
 **Professor:**
 Christos Dimitrakakis
@@ -97,5 +108,5 @@ Christos Dimitrakakis
 **Teaching Assistant:**
 Andreas Athanasopoulos
 
-- Email: andreas.athansopoulos@unine.ch
+- Email: andreas.athanasopoulos@unine.ch
 - Office: B120
