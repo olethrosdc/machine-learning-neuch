@@ -100,8 +100,24 @@ Setting the derivative to 0, we have $\param = \E_P[x_t]$. This is a simple solu
 \end{align*}
 
 ** The perceptron as a gradient algorithm
+
 *** The classification error cost function
 
 *** The entropy cost function
+
+* Lab and Assignment
+
+** Lab demonstration
+
+- How to use kNN and LogisticRegression with sklearn (and perhaps statsmodels, time permitting)
+- Use an example where there is no default 'class' label
+
+** Assignment
+
+1. Find a dataset with some categorical variable of interest that we want to predict from the UCI repository.
+2. Formulate the appropriate classification problem.
+3. Perform model selection through train/validate or crossvalidation to find the best model and hyperparameters
+4. Measure the model's final performance on the test set.
+5. Discuss anything of interest in the data such as: feature scaling/selection, missing data, outliers.
 
 
