@@ -155,6 +155,7 @@ Use to measure the final quality of a model
 -- Select $i$ uniformly in $[T]$
 -- Add the $i$-th point to $D_b$
 - Return $D_b$
+
 *** The wrong way to do XV for subset selection :activity:
 
 1. Screen the predictors: find a subset of “good” predictors that show
