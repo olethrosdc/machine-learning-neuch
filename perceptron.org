@@ -41,21 +41,18 @@
 **** Input
 - Feature space $X \subset \Reals^n$.
 - Label space $Y = \{-1, 1\}$.
-- Data $(x_t, y_t)$, $t \in [T]$,  with $x_t \in X, y_t in Y$.
+- Data $(x_t, y_t)$, $t \in [T]$,  with $x_t \in X, y_t \in Y$.
 **** Algorithm
 - $w_1 = w_0$.
 
 - For $t = 1, \ldots, T$.
--- $a_t = \sgn(w_t^\top x_t)$.
--- If $a_t \neq y_t$
---- $w_{t+1} = w_t + y_t x_t$
--- Else
---- $w_{t+1} = $w_t$
+  - $a_t = \sgn(w_t^\top x_t)$.
+  - If $a_t \neq y_t$
+    - $w_{t+1} = w_t + y_t x_t$
+  - Else
+    - $w_{t+1} = w_t$
+  - EndIf
 - Return $w_{T+1}$
-*** The Perceptron Theorem
- The number of mistakes made by the perceptron algorithm is bounded by
- $(r/\rho)^2$, where $\|x_t\|\leq r$, $\rho \leq y_t (v^\top x_t) /
- \|v\|$ for some *margin* $\rho$ and *hyperplane* $v$.
 	 
 *** Perceptron examples
 **** Example 1: One-dimensional data
@@ -65,6 +62,36 @@
 
 **** Example 2: Two-dimensional data
 - See [[file:src/NeuralNetworks/perceptron.py][in-class programming exercise]]
+
+  
+*** The Perceptron Theorem
+ The number of mistakes made by the perceptron algorithm is bounded by
+ $\rho^{-2}$, where $\|x_t\|\leq 1$, $\rho \leq y_t (x_t^top w^*)$ for some *margin* $\rho$ and *hyperplane* $w^*$ with $\|w^*\|=1$.
+
+**** Hyperplane $w^*$
+Separates the examples
+**** Margin $\rho$
+The minimum distance $\rho$ between the hyperplane and any point.
+
+*** Simple proof
+- Scale data: $\|x\| \leq 1$
+- Separating plane: $y_t(x_t^\top w^*) > 0$, $\|w^*\| = 1$.
+- When we make an update: $y_t(x_t^\top w_t) \leq 0$.
+- At each mistake, $w^\top w^*$ grows *by at least $\rho$*
+\[
+(w + yx)^\top w^* = w^\top w^* + y(x^\top w^*) \geq w^\top w^* + \rho
+\]
+- At each mistake, $w^\top w$ grows by *at most 1.*
+\[
+(w + yx)^\top (w + yx) = w^\top w + 2y(w^\top x) + y^2(x^\top x) \leq w^\top w + 1
+\]
+**** Putting it together
+After $M$ mistakes:
+- $w^\top w^* \geq M \rho$
+- $w^\top w \leq M$
+So $M \rho \leq w^\top w^* \leq \|w\| = \sqrt{w^\top w} \leq \sqrt{M}$.
+
+- Thus, $M \leq \rho^{-2}$.
 
 *** Why doesn't the perceptron always work?
 * Gradient methods
@@ -91,33 +118,57 @@ Setting the derivative to 0, we have $\param = \E_P[x_t]$. This is a simple solu
 - The distribution $P$ is not known.
 - We can sample $x \sim P$.
 
-**** Stochastic gradient for mean estimation
+*** Stochastic gradient for mean estimation
+- The gradient is zero when the parameter is the expected value
 \begin{align*}
  \frac{d}{d\param} \E_P [(x - \param)^2] 
 &= \int_{-\infty}^\infty dP(x) \frac{d}{d\param} (x - \param)^2
 \\
-&=  \frac{d}{d\param} \int_{-\infty}^\infty dP(x) (x - \param)^2
+&=  \int_{-\infty}^\infty dP(x) 2(x - \param)
+\\
+&=  2 \E_P[x] - 2\param.
+\end{align*}
+- If we sample $x$ we approximate the gradient:
+\begin{align*}
+ \frac{d}{d\param} \E_P [(x - \param)^2] 
+&= \int_{-\infty}^\infty dP(x) \frac{d}{d\param} (x - \param)^2
+\\
+&\approx \frac{1}{T} \sum_{t=1}^T \frac{d}{d\param} (x_t - \param)^2
+= \frac{1}{T} \sum_{t=1}^T 2(x_t - \param)
 \end{align*}
 
+
 ** The perceptron as a gradient algorithm
-
 *** The classification error cost function
-
-*** The entropy cost function
+$\ell(x,y, w) = \ind{y(x^\top w) > 0}$
+**** Derivative: Chain rule
+- $\nabla_w \ell(x,y, w) = \ind{y(x^\top w) > 0} \nabla_w [y(x^\top w)]$
+- $\partial w / \partial{w^i} [y(x_t^\top w)] = y x^{t,i}$
+*** Classification probability
+**** Output as a measure of confidence
+- $P_w(y = 1| x) = \frac{1}{1 + \exp(- x_t^\top w)}$
+**** Negative Log likelihood
+- $\ell(x_t, y_t, w) = - \ln P_w(y = y_t | x) = \ln(1 + \exp(- y_t x_t^\top w))$
+\begin{align*}
+\nabla_w \ell(x_t, y_t, w) 
+&= \frac{1}{1 + \exp(- y x_t^\top w)} \nabla_w[1 + \exp(-y x_t^\top w)]
+\\
+&= \frac{1}{1 + \exp(- y x_t^\top w)} \exp(-y x_t^\top w) [\nabla_w (-y_t x_t^\top w)]
+\\
+&= - \frac{1}{1 + \exp(x_t^\top w)} (x_{t,i})_{i=1}^ne
+\end{align*}
 
 * Lab and Assignment
 
-** Lab demonstration
+*** Lab demonstration
 
 - How to use kNN and LogisticRegression with sklearn (and perhaps statsmodels, time permitting)
 - Use an example where there is no default 'class' label
 
-** Assignment
+*** Assignment
 
 1. Find a dataset with some categorical variable of interest that we want to predict from the UCI repository.
 2. Formulate the appropriate classification problem.
 3. Perform model selection through train/validate or crossvalidation to find the best model and hyperparameters
 4. Measure the model's final performance on the test set.
 5. Discuss anything of interest in the data such as: feature scaling/selection, missing data, outliers.
-
-

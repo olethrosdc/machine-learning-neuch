@@ -33,7 +33,7 @@ def perceptron(features, classes, iterations=100):
 
 
 ## call the algorithm
-w, labels = perceptron(features, classes, 100, 1)
+w, labels = perceptron(features, classes, 100)
 
 ## plot the results
 
