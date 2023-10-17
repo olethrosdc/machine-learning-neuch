@@ -46,19 +46,24 @@
 - Logistic regression
 - Multi-layer perceptron
 
+** Logistic regression
+*** Two-class classification: logistic regression
+**** Model
+- $z = \param^\top x$
+- $P_\param(y = 1 | x) = \frac{1}{1 + e^{-z}}$
+
+** Multi-class classification:
+
+
+
+* Discriminative modelling for regression
 *** Linear regression
 **** Model
 - $z = \param^\top x$
 - $p_\param(y | x) = \frac{1}{\sqrt{2 \pi} \sigma} \exp(-\frac{1}{2 \sigma^2} |z - y|^2)$
 
-** Logistic regression
-*** Two-class classification: logistic regression
-**** Model
-- $z = \param^\top x$
-- $P_\param(y = 1 | x) = \frac{1}{1 - e^z}$
+**** 
 
-** Multi-class classification:
-* Discriminative modelling for regression
 * Tree models
 ** Tree structure algorithms
 *** KD-Tree
