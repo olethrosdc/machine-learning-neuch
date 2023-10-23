@@ -1,4 +1,187 @@
-** Bayesian Inference
-*** Conjugate priors
-*** The Monte-Carlo Algorithm
-*** Gibbs Sampling and Markov Chain Monte-Carlo
+#+TITLE:     Bayesian Inference and Hypothesis Testing
+#+OPTIONS:   H:2
+
+* Conditional Probability and the Theorem of Bayes
+** Bayes theorem                                         :theory:probability:
+#+ATTR_BEAMER: :overlay <+->
+- Recall the definition of Conditional probability:
+ \[
+ P(A | B) = P(A \cap B) / P(B)
+ \]
+ i.e. the probability of A happening if B happens.
+- It is also true that:
+ \[
+ P(B | A) = P(A \cap B) / P(A)
+ \]
+- Combining the two equations, reverse the conditioning:
+ \[
+ P(A | B) = P(B | A) P (A) / P(B)
+ \]
+
+- So we can reverse the order of conditioning, i.e. relate to the probability of A given B to that of B given A.
+
+* Conditional probability example
+** The cards problem
+ 1. Print out a number of cards, with either [A|A], [A|B] or [B|B] on their sides.
+ 2. If you have an A, what is the probability of an A on the other side?
+ 3. Have the students perform the experiment with:
+    1. Draw a random card.
+    2. Count the number of people with A.
+    3. What is the probability that somebody with an A on one side will have an A on the other?
+    4. Half of the people should have an A?
+#+BEAMER: \pause
+
+*** The prior and posterior probabilities
+	| A | A | 2/6 | A observed | 2/3
+	| A | B | 1/6 | A observed | 1/3
+	| B | A | 1/6 |            |
+	| B | B | 2/6 |            |
+
+* Bayesian analysis example
+** The murder problem
+#+ATTR_BEAMER: :overlay <+->
+- Somebody saw somebody matching their description and he was found
+       in the neighbourghood. There is no other evidence.
+
+- There are two possibilities:
+       - $H_0$: They are innocent.
+       - $H_1$: They are guilty.
+
+       What is your belief that they have committed the crime? 
+	
+*** Prior elicitation
+#+ATTR_BEAMER: :overlay <+->
+- All those that think the accused is guilty, raise their hand.
+- Divide by the number of people in class
+- Let us call this $P(H_1)$.
+- This is a purely subjective measure!
+
+** DNA test
+
+ - Let us now do a DNA test on the suspect
+#+BEAMER: \pause
+
+*** DNA test properties
+ #+ATTR_BEAMER: :overlay <+->
+ - $D$: Test is positive
+ - $P(D | H_0) = 1\%$: False positive rate
+ - $P(D | H_1) = 100\%$: True positive rate
+
+#+BEAMER: \pause
+
+*** Run the test
+#+ATTR_BEAMER: :overlay <+->
+- The result is either positive or negative ($\neg D)$.
+- What is your belief *now* that the suspect is guilty?
+
+** Everybody is a suspect
+       #+ATTR_BEAMER: :overlay <+->
+- Run a DNA test on everybody.
+- What is different from before?
+- Who has a positive test?
+- What is your belief that the people with the positive test are guilty?
+
+** Explanation
+       #+ATTR_BEAMER: :overlay <+->
+- Prior: $P(H_i)$.
+- Likelihood $P(D | H_i)$.
+- Posterior: $P(H_i | D) = P(D \cap H_i) / P(D) = P(D | H_i) P(H_i) / P(D)$
+- Marginal probability: $P(D) = P(D | H_0) P(H_0) + P(D | H_1) P(H_1)$
+- Posterior: $P(H_0 | D) = \frac{P(D | H_0) P(H_0)}{P(D | H_0) P(H_0) + P(D | H_1) P(H_1)}$
+- Assuming $P(D | H_1) = 1$, and setting $P(H_0) = q$, this gives
+       \[
+       P(H_0 | D) = \frac{0.1 q}{0.1 q + 1 - q} =  \frac{q}{10 - 9q}
+       \]
+- The posterior can always be updated with more data!
+** Python example
+
+#+BEGIN_SRC python
+# the input to the function is the prior, the likelihood function, and posteriors
+# Input:
+# - prior for hypothesis 0 (scalar)
+# - data (single data point)
+# - likelihood[data][hypothesis] array unction
+# Returns:
+# - posterior for the data point (if multiple points are given, the calculation is repeated)
+def get_posterior(prior, data, likelihood):
+    marginal = prior * likelihood[data][0] + (1 - prior) * likelihood[data][1]
+    posterior = prior * likelihood[data][0] / marginal
+    return posterior
+
+import numpy as np
+prior = 0.9
+likelihood = np.zeros([2, 2])
+# pr of negative test if not a match
+likelihood[0][0] = 0.9
+# pr of positive test if not a match
+likelihood[1][0] = 0.1
+# pr of negative test if a match
+likelihood[0][1] = 0
+# pr of positive test if a match
+likelihood[1][1] = 1
+data = 1
+return get_posterior(prior, data, likelihood)
+#+END_SRC
+
+#+RESULTS:
+: 0.4736842105263158
+
+* More general problems
+** The $k$-meteorologists problem
+
+
+We have $k$ meteorological stations. 
+*** Predictions and outcomes
+| Station      |   M |   T |   W |   T |
+|--------------+-----+-----+-----+-----|
+| MeteoSuisse  | 25% | 20% | 10% |  5% |
+| Wunderground | 30% | 50% | 20% | 10% |
+| AccuWeather  | 90% | 70% | 10% |  0% |
+|--------------+-----+-----+-----+-----|
+| Rain         |   Y |   N |   N |   Y |
+
+*** $H_i$: The $i$-th station's model is correct
+- $P(H_i)$: prior
+- $P(D | H_i)$: likelihood according to station $i$
+- $P(H_i | D)$: posterior
+
+** Types of hypothesis testing problems
+#+ATTR_BEAMER: :overlay <+->
+*** Simple Hypothesis Test
+#+ATTR_BEAMER: :overlay <+->
+Example: DNA evidence, Covid tests
+- Two hypothesese $H_0, H_1$
+- $P(D | H_i)$ is defined for all $i$
+
+*** Multiple Hypotheses Test
+#+ATTR_BEAMER: :overlay <+->
+Example: Model selection
+- $H_i$: One of many mutually exclusive models
+- $P(D | H_i)$ is defined for all $i$
+
+*** Null Hypothesis Test
+#+ATTR_BEAMER: :overlay <+->
+Example: Are men's and women's heights the same?
+- $H_0$: The 'null' hypothesis
+- $P(D | H_0)$ is defined
+- The alternative is *undefined*
+
+** Pitfalls
+#+ATTR_BEAMER: :overlay <+->
+
+*** Problem definition
+#+ATTR_BEAMER: :overlay <+->
+- Defining the models $P(D | H_i)$ incorrectly.
+- Using an "unreasonable" prior $P(H_i)$
+
+*** The garden of many paths
+#+ATTR_BEAMER: :overlay <+->
+- Having a huge hypothesis space
+- Selecting the relevant hypothesis after seeing the data
+
+
+* Bayesian Inference
+
+** Conjugate priors
+** The Monte-Carlo Algorithm
+** Gibbs Sampling and Markov Chain Monte-Carlo
