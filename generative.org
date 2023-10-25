@@ -36,6 +36,7 @@
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 
+* Classification
 ** Classification: Generative modelling
    #+TOC: headlines [currentsection,hideothersubsections]
 *** Generative modelling
@@ -53,8 +54,7 @@
 *** Classification: Naive Bayes Classifier
 - Data $(x,y)$
 - $x \in X$
-- $y \in Y \subset \mathbb{N}$, $N_i$: amount of data from class $i$
-
+- $y \in Y \subset \mathbb{N}$, $N_i$: amount of data from class $i$.
   
 **** Separately model each class
 - Assume each class data comes from a different normal distribution

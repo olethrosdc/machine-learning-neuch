@@ -1,0 +1,166 @@
+#+TITLE: Confidence Intervals
+#+AUTHOR: Christos Dimitrakakis
+#+EMAIL:christos.dimitrakakis@unine.ch
+#+LaTeX_HEADER: \usepackage{tikz}
+#+LaTeX_HEADER: \usepackage{amsmath}
+#+LaTeX_HEADER: \usepackage{amssymb}
+#+LaTeX_HEADER: \usepackage{isomath}
+#+LaTeX_HEADER: \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand \Var {\mathop{\mbox{\ensuremath{\mathbb{V}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand \Bias {\mathop{\mbox{\ensuremath{\mathbb{B}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
+#+LaTeX_HEADER: \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
+#+LaTeX_HEADER: \DeclareMathOperator*{\argmax}{arg\,max}
+#+LaTeX_HEADER: \DeclareMathOperator*{\argmin}{arg\,min}
+#+LaTeX_HEADER: \DeclareMathOperator*{\sgn}{sgn}
+#+LaTeX_HEADER: \newcommand \defn {\mathrel{\triangleq}}
+#+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
+#+LaTeX_HEADER: \newcommand \Param {B}
+#+LaTeX_HEADER: \newcommand \param {\beta}
+#+LaTeX_HEADER: \newcommand \vparam {\vectorsym{\beta}}
+#+LaTeX_HEADER: \newcommand \mparam {\matrixsym{B}}
+#+LaTeX_HEADER: \newcommand \bW {\matrixsym{W}}
+#+LaTeX_HEADER: \newcommand \bw {\vectorsym{w}}
+#+LaTeX_HEADER: \newcommand \wi {\vectorsym{w}_i}
+#+LaTeX_HEADER: \newcommand \wij {w_{i,j}}
+#+LaTeX_HEADER: \newcommand \bA {\matrixsym{A}}
+#+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
+#+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
+#+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
+#+LaTeX_HEADER: \newcommand \by {\vectorsym{y}}
+#+LaTeX_HEADER: \newcommand \bel {\beta}
+#+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
+#+LaTeX_HEADER: \newcommand \Binom {\textrm{Binomial}}
+#+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
+#+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
+#+LaTeX_CLASS_OPTIONS: [smaller]
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+#+TAGS: activity advanced definition exercise homework project example theory code
+#+OPTIONS:   H:3
+
+* Hypothesis testing
+** Which is the right model?
+   
+* Mean estimation
+** Estimating a mean
+*** The mean estimation
+- Data $D =x_1, \ldots, x_T$
+- i.i.d samples $x_t \sim P$
+- Expectation $\E_P(x_t) = \mu$, 
+- Empirical mean:
+\[
+\hat{\mu}(D) = \frac{1}{T} \sum_{t=1}^T x_t.
+\]
+**** The error of the empirical mean
+Since the data $D$ is random, what is the probability that our estimate is far away from $\mu$? 
+\[
+\Pr[|\hat{\mu}(D) - \mu| > \epsilon] \leq \delta.
+\]
+This means that the probability that our error is larger than $\epsilon$ is at most $\delta$, with s $\epsilon, \delta > 0$.
+
+**** Two methods:
+- Distribution-specific confidence intervals
+- Concentration inequalities
+
+*** Distribution-specific intervals
+**** Bernoulli 
+If $x_t \sim \Ber(\mu)$, then the distribution of $\hat{\mu}$ is given by
+the Binomial distribution.
+
+**** Binomial
+Let $n_t = \sum_{i=1}^t x_i$, where $x_t \sim \Ber(\mu)$. Then $n_t$ has a binomial distribution with parameter $\mu$ and $t$ trials, i.e. $n_t \sim \Binom(\mu, t)$, and its probability function is
+\[
+\Pr(n_t = k) = \binom{t}{k} \mu^k (1 - \mu)^{1 - k} 
+\]
+
+** Concentration inequalities
+*** Markov's Inequality
+If $x \geq 0$
+\[
+\Pr(x \geq u) \leq \frac{\E[x]}{u}
+\]
+**** Proof
+\begin{align}
+\E[x]
+& =  \int_0^\infty x p(x) dx\\
+& =  \int_0^u x p(x) dx + \int_u^\infty x p(x) dx\\
+& \geq  \int_u^\infty u p(x) dx\\
+& =  u \Pr(x \geq u)
+\end{align}
+*** Chernoff bound
+\[
+\Pr(x - \mu \geq u) 
+=
+\Pr(e^{\lambda(x - \mu)} \geq e^{\lambda u}) 
+\leq 
+\frac{\E[e^{\lambda(x - \mu)}]}{e^{\lambda u}}
+\]
+- This follows directly from Markov's inequality.
+- Tuning $\lambda$ gives us the tightest bound.
+*** Normal tail bound
+**** Moment generating function
+If $x \sim \Normal(\mu, \sigma^2)$ then
+\[
+\E[e^{\lambda x}]
+= 
+e^{\mu \lambda + \sigma^2 \lambda^2 / 2}
+\]
+**** Proof
+\begin{align}
+\E[e^{\lambda x}]
+&=
+\frac{1}{\sigma \sqrt{2 \pi}}
+\int_{-\infty}^\infty
+e^{\lambda x}
+e^{-\frac{|x - \mu|^2}{2 \sigma^2}}
+dx
+&=
+\frac{1}{\sigma \sqrt{2 \pi}}
+\int_{-\infty}^\infty
+e^{\lambda x -\frac{|x - \mu|^2}{2 \sigma^2}}
+dx
+\\
+&=
+\frac{1}{\sigma \sqrt{2 \pi}}
+\int_{-\infty}^\infty
+e^{\lambda (\sqrt{2} \sigma y + \mu) - y^2}
+dy
+\end{align}
+where $y = (x-\mu)/(\sqrt{2} \sigma)$, so $x = \sqrt{2} \sigma y + \mu$.
+**** Normal tail bound
+If $x_t \sim \Normal(\mu, 1)$, then
+\[
+\Pr(|x_t - \mu| > \epsilon) \leq 2 e^{- \epsilon^2/2}
+\]
+*** Normal bound
+- $\hat{\mu} \sim \Normal(\mu, 1/T)$.
+- For any $c > 0$,  $\Var[c x] = c \Var[x] \Rightarrow T \hat{\mu} \sim \Normal(T \mu, 1)$. So:
+\begin{align}
+\Pr(|T\hat{\mu} - T\mu| \geq \epsilon) 
+&\leq 2 e^{- \epsilon^2/2}
+&&\textrm{from the tail bound}
+\\
+\Pr(|\hat{\mu} - \mu| \geq \epsilon/T)
+&\leq 2 e^{- \epsilon^2/2}
+&&\textrm{as $a \geq b \Leftrightarrow c a \geq c b$ for $c > 0$}
+\\
+\Pr(|\hat{\mu} - \mu| \geq u)
+&\leq 2 e^{- T^2u^2/2}
+&& \textrm{where $u = \epsilon / T$}
+\end{align}
+
+
+    
+* Exercises
+
+** Conditional probability
+*** Bayesian Reasoning
+  You are tested for COVID are found negative. The doctor says that the probability of a false positive (i.e. that the probability that the test is positive if you do not have COVID) is $1/10$ and the probability of a negative test if you have COVID is $1/5$.  The prevalence of COVID in the population in the population $1/10$. What is the probability that you actually have COVID?
+** Hypothesis testing
+*** A statistical test
+Consider the null hypothesis $H_0$ that $x_t \sim \Bern(1/2)$ and the sample mean $\hat{\mu_T} = \frac{1}{T} \sum_{t=1}^T x_t$. The probability of making an error of more than $\epsilon$ is
+\[
+1 - \sum_{k={T \epsilon}}{T\epsilon}
+\]
+
+

@@ -39,13 +39,16 @@ class NearestNeighbourClassifier:
         # Need to use the get_probabilities function to return the action with the highest
         # expected utility
         # i.e. maximising sum_y P(y|x) U(a,y)
-
+        P = self.get_probabilities(x)
+        return np.argmax(np.dot(U, P))
+    
     ## predict the most likely label
     def predict(self, x):
         proportions = self.get_probabilities(x)
         return np.argmax(proportions)  # is that a good idea?
 
-    ## return a vector of 
+    ## return a vector of probabilities, one for each label
+    ## Each component of the vector corresponds to the ratio of that same label in the set of neighbours
     def get_probabilities(self, x):
         # calculate distances
         distances = np.zeros(self.n_points)
