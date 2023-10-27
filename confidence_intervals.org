@@ -30,6 +30,7 @@
 #+LaTeX_HEADER: \newcommand \by {\vectorsym{y}}
 #+LaTeX_HEADER: \newcommand \bel {\beta}
 #+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
+#+LaTeX_HEADER: \newcommand \Lapl {\textrm{Laplace}}
 #+LaTeX_HEADER: \newcommand \Binom {\textrm{Binomial}}
 #+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
 #+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
@@ -43,7 +44,7 @@
 ** Simple Hypothesis Tests
 *** Simple hypothesis tests
 - Consider $n$ hypotheses, $H_1, \ldots, H_n \in \CH$
-- Each hypothesis corresponds to a model $P(x | H_i)$ giving a value to every possible data $x$.
+- Each hypothesis corresponds to a model $P(x | H_i)$ giving a probability value to every possible data $x \in X$.
 - Given specific data $x$, we want to select the most likely model. 
 **** Maximum Likelihood 
 Pick the model with the highest likelihood:
@@ -51,7 +52,7 @@ Pick the model with the highest likelihood:
 **** Maximum A Posteriori
 - Given prior $P(H_i)$
 - Pick $\hat{H} = \argmax_{H_i} P(H_i | x)$
-- We use Bayes's theorem to calculate the posterior.
+- We use Bayes's theorem to calculate the posterior $P(H_i | x)$.
 - When $P(H_i)$ is uniform, it is the same as maximum likelihood.
 
 *** The Theorem of Bayes
@@ -61,7 +62,7 @@ Pick the model with the highest likelihood:
 - $\Sigma$ is a collection of subsets of $\Omega$, corresponding to events.
 - Let $\{H_i\}$ be a partition of $\Omega$, i.e.
 \[
-H_i \cup H_j = \emptyset i \neq j, \qquad  \bigcup_i H_i = \Omega.
+H_i \cup H_j = \emptyset ~ \forall i \neq j, \qquad  \bigcup_i H_i = \Omega.
 \] 
 Then, for any event $A \in \Sigma$, $A \subset \Omega$, 
 \[
@@ -88,10 +89,36 @@ P(B | x) = \frac{\int_{B} f_h(x) dP(h)}{\int_{\CH} f_h(x) dP(h)}, \qquad B \subs
 *** Null Hypothesis Tests
 - Consider a model $H_0$ such that $P(x | H_0)$ is known.
 - We need to compare against an *unknown* alternative.
-- We calculate a *statistic* $s(x)$ with distribution $P(s | H_0)$.
-- We select a subset $S$ of values so that $P(S | H_0) = 1 - \alpha$
-- If $s \in S$, we accept $H_0$.
-- Otherwise, we reject it.
+- We calculate a *statistic* $s : X \to \Reals$ to partition $X$ in $S_0, S_1$ i.e.
+\[
+S_0 = \{x : s(x) \leq \theta\},
+\qquad
+S_1 = \{x : s(x) > \theta\}
+\]
+- Then $P(S_0 | H_0) = 1 - \alpha$, $P(S_1 | H_0) = \alpha$ for some $\alpha$
+- We tune $\theta$ to achieve the desired $\alpha$.
+- If $x \in S_0$, we accept $H_0$, otherwise we reject it.
+**** Example statistics
+- Likelihood test: $s(x) = P(x|H_0)$, 
+- Mean test: $s(x) = |x - \E[x | H_0]|^2$.
+*** Likelihood test
+- We can use $s(x) = P(x | H_0)$.
+- Now we can choose a threshold $\theta$ so that:
+\[
+S_1 = \{x : s(x) \geq \theta\}
+\]
+**** Example: Laplace distributiotan
+- Density: $f(x | \mu, \lambda) = \frac{1}{2\lambda} e^{-\frac{1}{\lambda} |x - \mu|}$
+- $H_0$: $x \sim \Lapl(0, 1)$.
+- $f(x | 0, 1) \geq \theta$ means $|x| \leq \ln(1/2 \theta)$. So 
+\[
+P(S_1 | H_0) =
+\int_{-infty}{^-\ln(1/2\theta)} e^{-x} dx
+=
+1/2\theta.
+\]
+- Consequently,  $\theta = 1/2(1 -  \alpha)$, i.e. we accept $H_0$ if $|x| \leq \ln (4 - 4\alpha)$
+
 *** Bernoulli test                                                  :example:
 - $H_0$: The coin tosses are fair
 - Then the probability of any sequence $x = x_1, \ldots, x_T$ is $2^{-T}$.
@@ -101,12 +128,13 @@ P(B | x) = \frac{\int_{B} f_h(x) dP(h)}{\int_{\CH} f_h(x) dP(h)}, \qquad B \subs
 - There is some $c \in [0,1/2]$ so that $P(S | H_0) = 1 - \alpha$
 - To calculate $c$ we can use the inverse CDF of $s$.
 
+
 *** p values
 **** How to use $p$ values
 - First select a significance threshold $\alpha$.
 - Collect the data, obtain the $p$ value
 - If $p \leq \alpha$, reject the null hypothesis $H_0$.
-- This ensures that, if $H_0$ is true, the probability of rejecting it is exactly $\alpha$!
+- This ensures that, if $H_0$ is true, the probability of rejecting it is exactly $\alpha$! (Because $p$ is uniform in $[0,1]$ under $H_0$)
 
 **** Problems with $p$ values
 - They do not measure quality of fit on the data.
