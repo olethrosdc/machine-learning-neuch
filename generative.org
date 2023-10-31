@@ -199,16 +199,15 @@ Here we use the *log trick*: $\nabla \ln f(x) = \nabla f(x) / f(x)$.
 ** Expectation maximisation
 *** A lower bound on the likelihood
 \begin{align*}
-\ln P(x | \theta)
-& = \ln P(x, z | \theta) - \ln P(z | x, \theta) && \forall z
-\\
-& = \sum_z G(z) [\ln P(x, z | \theta) - \ln P(z | x, \theta)] && \forall G \in \Delta(Z)
+\ln P(x | \alert{\theta})
+& = \sum_z G(z) P(x | \theta)\\
+& = \sum_z G(z) [\ln P(x, z | \theta) - \ln P(z | x, \theta)]
 \\
 & = \sum_z G(z) \ln P(x, z | \theta) - \sum_z G(z) \ln P(z | x, \theta)]
 \\
 & = \sum_z P(z | x, \theta^{(k)}) \ln P(x, z | \theta) - \sum_z P(z | x, \theta^{(k)}) \ln P(z | x, \theta)
 \\
-& \geq \sum_z P(z | x, \theta^{(k)}) \ln P(x, z | \theta) - \sum_z P(z | x, \theta^{(k)}) \ln P(z | x, \theta^{(k)})
+& \geq \sum_z P(z | x, \theta^{(k)}) \ln P(x, z | \alert{\theta}) - \sum_z P(z | x, \theta^{(k)}) \ln P(z | x, \theta^{(k)})
 \\
 & = Q(\alert{\theta} \mid \theta^{(k)}) +\mathbb{H}(z \mid x = x, \theta = \theta^{(k)})
 \end{align*}
