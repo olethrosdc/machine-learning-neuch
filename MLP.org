@@ -27,6 +27,8 @@
 #+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
 #+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
 #+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
+#+LaTeX_HEADER: \newcommand \by {\vectorsym{y}}
+#+LaTeX_HEADER: \newcommand \bz {\vectorsym{z}}
 #+LaTeX_HEADER: \newcommand \bel {\beta}
 #+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
 #+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
@@ -49,18 +51,34 @@
 - Example 1: Linear layer
 - Example 2: Convolutional layers (e.g. images)
 
-*** Softmax layer
-- Features $x$
-- Linear activation layer
+*** Linear layers
+**** Example: Linear regression with $n$ inputs, $m$ outputs.
+- Input: Features $\bx \in \Reals^n$
+- Dense linear layer with $\mparam \in \Reals^{m \times n}$
+- Output: $\by \in \Reals^m$
+**** Dense linear layer
+- Parameters \(\mparam = \begin{pmatrix}{\vparam_1 \\ \vdots \\ \vparam_m}\end{pmatrix}\),
+- $\vparam_i = (\param_{i,1}, \ldots, \param_{i,n})$, $\vparam_i$ connects the \(i\)-th output $y_i$ to the features $\bx$:
 \[
-z_i = \vparam_i^\top x
+y_i = \vparam_i \bx
+\]
+- In compact form:
+\[
+\bz = \mparam \bx
 \]
 
+*** Softmax layer
+**** Example: Multivariate logistic regression with $m$ classes.
+- Input: Features $\bx \in \Reals^n$
+- Middle: Fully-connected Linear activation layer $\bz = \mparam \bx$.
+- Output: $\by \in \Reals^m$
+  
 **** Softmax output layer
 We want to translate the real-valued $z_i$ into probabilities:
 \[
 y_i = \frac{\exp(z_i)}{\sum_j \exp(z_j)}.
 \]
+Now $P_\mparam(y = i | \bx)$
 
 *** Random projections
 - Features $x$
@@ -70,7 +88,7 @@ y_i = \frac{\exp(z_i)}{\sum_j \exp(z_j)}.
 **** Hidden layer: Random projection
 Here we project the input into a high-dimensional space
 \[
-z_i = \sgn(\vparam_i^\top x),
+z_i = \sgn(\vparam_i^\top x) = y_i
 \]
 where $\mparam = [\vparam_i]_{i=1}^m$.
 
