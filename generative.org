@@ -227,18 +227,8 @@ Q(\alert{\vparam} \mid  \vparam^{(k)})
 \vparam^{(k+1)} = \argmax_\vparam Q(\vparam, \vparam^{(k)}).
 \]
 
-*** Another view of the lower bound
-/Expectation-Maximization as lower bound maximization, Minka, 1998/
-**** Alternative bound
-\begin{align}
-\E_{z \sim Q}[\ln [P(x, z | \theta) / Q(z)]
-&=
-\E_{z \sim Q}[\ln [P(x | \theta) P(z | x, \theta) / Q(z)]
-\\
-&=
-- D(Q(z) \| P(z | x, \theta)) + \ln P(x | \theta)
-\end{align}
-When this function is maximised the divergence $D$ is zero
+See /Expectation-Maximization as lower bound maximization, Minka, 1998/
+
 *** Minorise-Maximise
 EM can be seen as a version of the minorise-maximise algorithm
 - $f(\vparam)$: Target function to *maximise*
