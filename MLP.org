@@ -96,7 +96,7 @@ This activation ensures we get something we can use as a probability
 \[
 f(z) =  1/[1 + \exp(z)].
 \]
-Now $P_\vparam(y = 1 | x) = \hy$.
+Now we can interpret $\hy = P_\vparam(y = 1 | x)$.
 *** Softmax layer
 **** Example: Multivariate logistic regression with $m$ classes.
 - Input: Features $\bx \in \Reals^n$
@@ -108,7 +108,7 @@ We want to translate the real-valued $z_i$ into probabilities:
 \[
 \hy_i = \frac{\exp(z_i)}{\sum_j \exp(z_j)}.
 \]
-Now $P_\mparam(y = i | \bx) = \hy$
+Now we can use $P_\mparam(y = i | \bx) = \hy_i$
 
 
 * Algorithms
@@ -144,7 +144,6 @@ where $\mparam = [\vparam_i]_{i=1}^m$, $\param_{i,j} \sim \Normal(0,1)$
 - [1976] Rosenblat's perceptron without realising it!
 - [1982] Werbos applied it to MLPs.
 - [1986] Rummelhart, Hinton and Williams popularised it.
-
 *** Back-propagation
 **** The chain rule
 \[
@@ -211,7 +210,7 @@ Newton-like method
 
 ** Derivatives
 *** Example derivatives
-Here are some example derivativesx
+Here are some example derivatives
 *** Linear layer
 **** Definition
 This is a linear combination of inputs $x \in \Reals^n$ and parameter matrix $\mparam \in \Reals^{m \times n}$
