@@ -90,7 +90,7 @@ Here we project the input into a high-dimensional space
 \[
 z_i = \sgn(\vparam_i^\top x) = y_i
 \]
-where $\mparam = [\vparam_i]_{i=1}^m$.
+where $\mparam = [\vparam_i]_{i=1}^m$, $\param_{i,j} \sim \Normal(0,1)$
 
 **** The reason for random projections
 - The high dimension makes it easier to learn.
