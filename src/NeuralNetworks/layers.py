@@ -19,6 +19,7 @@ z = np.dot(data, A)
 plt.plot(z[:,0], z[:,1], '.', alpha=0.5)
 plt.axis('equal')
 plt.grid()
+plt.title("Original data")
 plt.show()
 
 # A non-linear transformation
