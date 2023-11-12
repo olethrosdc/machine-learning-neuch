@@ -15,10 +15,6 @@
 #+LaTeX_HEADER: \DeclareMathOperator*{\sgn}{sgn}
 #+LaTeX_HEADER: \newcommand \defn {\mathrel{\triangleq}}
 #+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
-#+LaTeX_HEADER: \newcommand \Param {\Theta}
-#+LaTeX_HEADER: \newcommand \param {\theta}
-#+LaTeX_HEADER: \newcommand \vparam {\vectorsym{\theta}}
-#+LaTeX_HEADER: \newcommand \mparam {\matrixsym{\Theta}}
 #+LaTeX_HEADER: \newcommand \bW {\matrixsym{W}}
 #+LaTeX_HEADER: \newcommand \bw {\vectorsym{w}}
 #+LaTeX_HEADER: \newcommand \wi {\vectorsym{w}_i}
@@ -27,7 +23,8 @@
 #+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
 #+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
 #+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
-#+LaTeX_HEADER: \newcommand \bel {\beta}
+#+LaTeX_HEADER: \newcommand \param {\vectorsym{\beta}}
+#+LaTeX_HEADER: \newcommand \vparam {\vectorsym{\beta}}
 #+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
 #+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
 #+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
@@ -35,6 +32,58 @@
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
+* Background
+** Maximal margin
+*** Hyperplane
+If $x \in \Reals^n$, then an affine subspace of dimension $n-1$ is a hyperplane.
+**** Definition
+A hyperplane in $\Reals^n$ is the set of points satisfying
+\[
+\{\bx : \param_0 + \vparam^\top \bx =0 \}
+\]
+**** Separating hyperplane
+Consider a dataset $(\bx_t, y_t)$ of points with $y_t \in \{-1, 1\}$. If 
+\[
+(\param_0 + \vparam^\top \bx_t) y_t \qquad \forall t
+\]
+then the hyperplane separates the dataset.
+*** The maximal margin hyperplane
+**** The margin
+For any a dataset $(\bx_t, y_t)$, and hyperplane we can define the margin
+\[
+M = \min_t (\param_0 + \vparam^\top \bx_t) y_t 
+\]
+as the minimum distance between the hyperplane and a correctly classied point.
+**** The maximal margin hyperplane
+Similarly, there is some $\param_0, \vparam$ that achieves the maximum separation:
+\[
+\max_{\param_0, \vparam} \min_t (\param_0 + \vparam^\top \bx_t) y_t 
+\]
+*** The maximum margin classifier
+**** The optimisation problem
+We can write the problem like this
+\begin{align}
+\max_{\param_0, \vparam, M} & M \tag{maximise the margin}\\
+\textrm{s.t.} & \|\vparam\| = 1 \tag{invariance} \\
+ & y_t(\param_0 + \vparam^\top \bx_t) \geq M && \forall t \in [T] \tag{margin for all examples}.
+\end{align}
+And we can divide by $\|\vparam\|$ to remove the norm constraint:
+\[
+ y_t(\param_0 + \vparam^\top \bx_t) \geq M \|\vparam\|, \qquad \forall t \in [T] 
+\]
+Setting $\|\vparam\| = 1/M$, we can rewrite this as
+\begin{align*}
+\min_{\param_0, \vparam} & \frac{1}{2}\|\vparam\|^2\\
+\textrm{s.t.} &  y_t(\param_0 + \vparam^\top \bx_t) \geq 1 && \forall t 
+\end{align*}
+*** Quadratic programming
+**** A quadratic program
+This has the form:
+\[\min_\vparam \|\vparam\|^2, s.t. \vparam^\top x_t \geq 1 \forall t.
+\]
+**** The lagrange method for constrained optimisation
+
+
 
 ** Support Vector Machines
 *** The maximum margin classifier
