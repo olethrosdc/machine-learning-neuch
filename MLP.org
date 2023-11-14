@@ -28,11 +28,19 @@
 #+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
 #+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
 #+LaTeX_HEADER: \newcommand \by {\vectorsym{y}}
+#+LaTeX_HEADER: \newcommand \hby {\hat{\by}}
+#+LaTeX_HEADER: \newcommand \hy {\hat{y}}
 #+LaTeX_HEADER: \newcommand \bz {\vectorsym{z}}
 #+LaTeX_HEADER: \newcommand \bel {\beta}
+#+LaTeX_HEADER: \newcommand \loss {\ell}
 #+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
 #+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
 #+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
+#+LaTeX_HEADER: \usetikzlibrary{shapes.geometric}
+#+LaTeX_HEADER: \tikzstyle{utility}=[diamond,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=8mm]
+#+LaTeX_HEADER: \tikzstyle{select}=[rectangle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
+#+LaTeX_HEADER: \tikzstyle{hidden}=[dashed,draw=black,fill=red!10]
+#+LaTeX_HEADER: \tikzstyle{RV}=[circle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
@@ -41,144 +49,226 @@
 * Features and layers
 *** Layering and features
 **** Fixed layers
-- Fixed number of units, architecture and parameters
-- Example 1: Feature transformation
-- Example 2: Softmax layer
+- Input to layer $x \in R^n$ 
+- Output from layer $\hby \in R^m$.
 
-**** Adaptive layers
-- Fixed units and architecture
-- Adaptive parameters
-- Example 1: Linear layer
-- Example 2: Convolutional layers (e.g. images)
+**** Intermediate layers
+Combinations of
+- Linear layer
+- Non-linear activation function.
 
+**** Linear layers types
+- Dense 
+- Sparse
+- Convolutional
+
+**** Activation funnction
+Simple transformations of previous output.
+- Sigmoid
+- Softmax
+
+  
 *** Linear layers
 **** Example: Linear regression with $n$ inputs, $m$ outputs.
 - Input: Features $\bx \in \Reals^n$
 - Dense linear layer with $\mparam \in \Reals^{m \times n}$
-- Output: $\by \in \Reals^m$
+- Output: $\hby \in \Reals^m$
 **** Dense linear layer
-- Parameters \(\mparam = \begin{pmatrix}{\vparam_1 \\ \vdots \\ \vparam_m}\end{pmatrix}\),
-- $\vparam_i = (\param_{i,1}, \ldots, \param_{i,n})$, $\vparam_i$ connects the \(i\)-th output $y_i$ to the features $\bx$:
+- Parameters $\mparam = \begin{pmatrix}\vparam_1 \\ \vdots \\ \vparam_m \end{pmatrix}$,
+- $\vparam_i = [\param_{i,1}, \ldots, \param_{i,n}]$, $\vparam_i$ connects the \(i\)-th output $y_i$ to the features $\bx$:
 \[
 y_i = \vparam_i \bx
 \]
 - In compact form:
 \[
-\bz = \mparam \bx
+\by = \mparam \bx
 \]
-
+*** Sigmoid activation
+**** Example: Logistic regression
+- Input $\bx \in \Reals^n$
+- Intermediate output: $z \in \Reals$,
+\[
+z = \sum_{i=1}^n \param_i x_i.
+\]
+- Output $\hy \in [0,1]$.
+**** Definition
+This activation ensures we get something we can use as a probability
+\[
+f(z) =  1/[1 + \exp(z)].
+\]
+Now we can interpret $\hy = P_\vparam(y = 1 | x)$.
 *** Softmax layer
 **** Example: Multivariate logistic regression with $m$ classes.
 - Input: Features $\bx \in \Reals^n$
 - Middle: Fully-connected Linear activation layer $\bz = \mparam \bx$.
-- Output: $\by \in \Reals^m$
+- Output: $\hby \in \Reals^m$
   
 **** Softmax output layer
 We want to translate the real-valued $z_i$ into probabilities:
 \[
-y_i = \frac{\exp(z_i)}{\sum_j \exp(z_j)}.
+\hy_i = \frac{\exp(z_i)}{\sum_j \exp(z_j)}.
 \]
-Now $P_\mparam(y = i | \bx)$
+Now we can use $P_\mparam(y = i | \bx) = \hy_i$
 
+
+* Algorithms
+** Random projection
 *** Random projections
 - Features $x$
 - Hidden layer activation $z$
 - Output $y$
-
 **** Hidden layer: Random projection
 Here we project the input into a high-dimensional space
 \[
 z_i = \sgn(\vparam_i^\top x) = y_i
 \]
-where $\mparam = [\vparam_i]_{i=1}^m$.
+where $\mparam = [\vparam_i]_{i=1}^m$, $\param_{i,j} \sim \Normal(0,1)$
 
 **** The reason for random projections
 - The high dimension makes it easier to learn.
 - The randomness ensures we are not learning something spurious.
 
-* Algorithms
+** Back propagation
+*** Background on back-propagation
+**** The problem
+- We need to minimise a loss function $\loss$
+- We need to calculate 
+\[
+\nabla_\vparam \E_\vparam[\loss]
+\approx 
+\frac{1}{T} \sum_{t=1}^T \nabla_\vparam c(x_t, y_t, \vparam).
+\]
+- However $c(x_t, y_t, \vparam)$ is a complex non-linear function of $\vparam$.
+**** The solution
+- [1673] Liebniz, the chain rule of differentiation.
+- [1976] Rosenblat's perceptron without realising it!
+- [1982] Werbos applied it to MLPs.
+- [1986] Rummelhart, Hinton and Williams popularised it.
 *** Back-propagation
 **** The chain rule
 \[
 f : X \to Z, \qquad g : Z \to Y,
-\qquad \frac{dg}{dx} = \frac{dg}{df} \frac{df}{dx}
+\qquad \frac{dg}{dx} = \frac{dg}{df} \frac{df}{dx},
+\qquad \nabla_x g = \nabla_f g \nabla_x f
 \]
-
-**** Parametrised functions
+**** Linear regression :example:
+- $f_\vparam(x) = \sum_{i=1}^n \param_i x_i$.
+- $\E_\vparam[\loss] \approx \loss(D, \vparam) = \frac{1}{T} \sum_{t=1}^T c(\vparam, \bx_t, y_t)$.
 \begin{align}
-f: \mathcal{W} \times X \to Z, && g: \Omega \times Z \to Y, &&\pi = fg \tag{network mappings}
+\nabla_\vparam c(\vparam, \bx_t, y_t) 
+&=
+\nabla_\vparam [\underbrace{f_\vparam(x_t) - y_t}_z]^2, \qquad g(z) = z^2
 \\
-\ell(D, \pi) = \sum_{(x,y) \in D} [y - \pi(x)]^2
+&=
+\nabla_z g(z) \nabla_f z \nabla_\vparam f(x_t)
+\\
+&=
+2 [f_\vparam(x_t) - y_t]
+\nabla_f [f_\vparam(x_t)  - y_t]
+\nabla_\vparam f_\vparam(x_t) 
+\\
+&=
+2 [f_\vparam(x_t) - y_t] 
+\nabla_\vparam f_\vparam(x_t) 
 \end{align}
-**** Gradient descent with /back-propagation/
-Apply the chain rule 
-\[
-\nabla_{w, \omega} \pi = \nabla_\omega
-\]
 
-* Network Architectures
-*** Neural architectures
-**** Layers
-- Input to layer $x \in R^n$ 
-- Output from layer $z \in R^m$.
+*** Gradient descent with /back-propagation/
+**** Inputs
+- Dataset $D$, cost function $\loss = \sum_t c_t$
+- Parametrised architecture with $k$ layers
+  - Parameters $\vparam_1, \ldots, \vparam_k$ 
+  - Intermediate variables: $\bz_j = f_j(\bz_{j-1}, \vparam_j)$, $\bz_0 = \bx$, $\bz_k = \hby$.
+**** Dependency  graph
+\begin{tikzpicture}
+      \node[RV] at (0,0) (x) {$\bx$};
+      \node[RV] at (1,0) (z1) {$\bz_1$};
+      \node[RV] at (2,0) (z2) {$\bz_2$};
+      \node[RV] at (1,1) (w1) {$\vparam_1$};
+      \node[RV] at (2,1) (w2) {$\vparam_2$};
+      \node[RV] at (3,0) (hy) {$\hby$};
+      \node[RV] at (5,0) (y) {$\by$};
+      \node[utility] at (4,0) (c) {$c$};
+      \draw[->] (x) to (z1);
+      \draw[->] (z1) to (z2);
+      \draw[->] (w2) to (z2);
+      \draw[->] (w1) to (z1);
+      \draw[->] (z2) to (hy);
+      \draw[->] (hy) to (c);
+      \draw[->] (y) to (c);
+\end{tikzpicture}
+**** Backpropagation with steepest stochastic gradient descent
+- Forward step: For $j = 1, \ldots, k$, calculate $\bz_j = f_j(k)$ and $c(\hby, \by)$
+- Backward step: Calculate $\nabla_{\hby} c$ and $d_j \defn \nabla_{\vparam_j} c = \nabla_{\vparam_j} z_j d_{j+1}$ for $j = k \ldots, 1$
+- Apply gradient: $\vparam_j  -\!= \alpha d_j$.
+*** Other algorithms and gradients
+**** Natural gradient
+Defined for probabilistic models
+**** ADAM
+Exponential moving average of gradient and square gradients
+**** BFGS: Broyden–Fletcher–Goldfarb–Shanno algorithm
+Newton-like method
 
-**** Linear layer
-Transform the output of previous layers or features into either:
-- A higher-dimensional space.
-- A lower-dimensional space.
-- They have adaptive parameters.
-- Parameters can be dependent on each other for invariance (cf. convolution)
-
-**** Non-linear layers
-- Simple transformations of previous output
-- Examples: Sigmoid, Softmax
-
-** Common type of Layers
+** Derivatives
+*** Example derivatives
+Here are some example derivatives
 *** Linear layer
 **** Definition
-This is a linear combination of inputs $x \in \Reals^n$ and parameter matrix $\bW \in \Reals^{m \times n}$
-where $\bW = \begin{bmatrix}
-	\vectorsym{w}_1\\
+This is a linear combination of inputs $x \in \Reals^n$ and parameter matrix $\mparam \in \Reals^{m \times n}$
+where $\mparam = \begin{bmatrix}
+	\vparam_1\\
         \vdots\\
-	\wi\\
+	\vparam_i\\
 	\vdots\\
-	\vectorsym{w}_m
+	\vparam_m
 \end{bmatrix}
 =
 \begin{bmatrix}
-w_{1,1} & \cdots & w_{1,j} & \cdots & w_{1,m}\\
+\param_{1,1} & \cdots & \param_{1,j} & \cdots & \param_{1,m}\\
 \vdots  & \ddots & \vdots  & \ddots & \cdots \\
-w_{i,1} & \cdots & w_{i,j} & \cdots & w_{i,m}\\
+\param_{i,1} & \cdots & \param_{i,j} & \cdots & \param_{i,m}\\
 \vdots  & \ddots & \ddots  & \ddots & \cdots \\ 	   
-w_{n,1} & \cdots & w_{i,j} & \cdots & w_{n,m}
+\param_{n,1} & \cdots & \param_{i,j} & \cdots & \param_{n,m}
 \end{bmatrix}$
 
 \[
-f(\bW, \bx) = \bW \bx 
+f(\mparam, \bx) = \mparam \bx 
 \qquad
-f_i(\bW, \bx)= \wi \cdot \bx =  \sum_{j=1}^n w_{i,j} x_i,
+f_i(\mparam, \bx)= \vparam_i \cdot \bx =  \sum_{j=1}^n \param_{i,j} x_j,
 \]
 
 
 **** Gradient 
 Each partial derivative is simple:
 \[
-\frac{\partial}{\partial \wij} f_k(\bW, x) = x_i \ind{j = k}
+\frac{\partial}{\partial \param_{i,j}} f_k(\mparam, \bx) = x_j
 \]
 
+
 *** Sigmoid layer
-**** Definition
-This layer transforms each input non-linearly
 \[
-f_j(\bx) 1/[1 + \exp(-x_j)] =
+f(z) = 1 / (1 + \exp(-z))
 \]
-without looking at the other inputs.
 
 **** Derivative
 So let us ignore the other inputs for simplicity:
 \[
-\frac{d}{dx} f(x) = \exp(-x)/[1+\exp(-x)]^{2}
+\frac{d}{dz} f(z) = \exp(-z)/[1+\exp(-z)]^{2}
 \]
 
-*** Softmax layer
 
+*** Softmax layer
+\[
+y_i(\bz) = \frac{\exp(z_i)}{\sum_j \exp(z_j)}
+\]
+**** Derivative
+\[
+\frac{\partial}{\partial z_i} y_i (\bz)
+=
+\frac{e^{z_i} e^{\sum_{j \neq i} z_j}}{\left(\sum_j e^{z_j}\right)^2}
+\]
+
+\[
+\frac{\partial}{\partial z_i} y_k (\bz)
+=
+\frac{e^{z_i + z_k}}{\left(\sum_j e^{z_j}\right)^2}
+\]
