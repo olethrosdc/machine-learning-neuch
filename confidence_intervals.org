@@ -252,6 +252,21 @@ If $x_t \sim \Normal(\mu, 1)$, then
 && \textrm{where $u = \epsilon / T$}
 \end{align}
 
+*** Hoeffding bound
+
+**** Hoeffding Inequality
+For any sequence of independent (but not identical) rv's $x_1, \ldots, x_T$, with $x_t \in [a_t, b_t]$,
+and consider the sum $s_T = \sum_{t=1}^T x_t$, which is also random. Then
+\[
+\Pr(s_T \geq \E[s_t] + \epsilon) \leq \exp\left(- \epsilon^2 / \sum_{t}(b_t - a_t)^2\right).
+\]
+**** Corollary
+For any sequence of independent rv's $x_1, \ldots, x_T$, with $x_t \in [0, 1]$,
+with expectation $\E[x_t] = \mu$
+it holds for the empirical mean $z_T = \frac{1}{T} \sum_{t=1}^T x_t$:
+\[
+\Pr(|\mu - z_T| \geq \epsilon) \leq 2 \exp\left( -2n \epsilon^2\right)
+\]
 
     
 * Exercises
@@ -262,7 +277,7 @@ If $x_t \sim \Normal(\mu, 1)$, then
 ** Hypothesis testing
 *** Exercise
 **** A statistical test
-Consider the null hypothesis $H_0$ that $x_t \sim \Bern(1/2)$ and the sample mean $\hat{\mu_T} = \frac{1}{T} \sum_{t=1}^T x_t$. The probability of making an error of more than $\epsilon$ is
+Consider the null hypothesis $H_0$ that $x_t \sim \Ber(1/2)$ and the sample mean $\hat{\mu_T} = \frac{1}{T} \sum_{t=1}^T x_t$. The probability of making an error of more than $\epsilon$ is
 \[
 1 - \sum_{k={T \epsilon}}{T\epsilon}
 \]
