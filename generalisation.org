@@ -1,4 +1,4 @@
-#+TITLE: Machine Learning and Data Mining
+#+TITLE: Generalisation in theory and practice
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \usepackage{tikz}
@@ -27,6 +27,8 @@
 #+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
 #+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
 #+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
+#+LaTeX_HEADER: \newcommand \pol {\pi}
+#+LaTeX_HEADER: \newcommand \Pols {\Pi}
 #+LaTeX_HEADER: \newcommand \bel {\beta}
 #+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
 #+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
@@ -251,5 +253,36 @@ To minimise the MSE, we use $f^* = \mu$. This gives us two ideas:
 &= \Var(f_D) + \Bias(f_D)^2 + \sigma^2
 \end{align*}
 #+END_EXPORT
+
+** Generalisation error of finite hypothesis classes
+*** Estimation error
+For any fixed rule $\pol$ with measured utility $U(\pol, D) \in [0,1]$ on a dataset $D \sim P^T$
+Then,
+\[
+P^T(|U(\pol, D) - U(\pol, P)| \geq \epsilon) \leq 2\exp(-2T\epsilon^2).
+\]
+This is a direct application of Hoeffding's inequality.
+Consequently,
+\[
+P^T(\exists \pol : |U(\pol, D) - U(\pol, P)| \geq \epsilon) \leq 2 |\Pols| \exp(-2T\epsilon^2).
+\]
+
+*** The finite hypothesis algorithm
+- Input: a finite set of rules $\Pols$, data $D$, utility $U$
+- Return $\hat{\pol} \in \argmax_\pol U(\pol, D)$.
+*** Utility of the finite hypothesis algorithm.
+- The algorithm returns the maximum of $U(\pol, D)$
+- However, we want maximum of $U(\pol, P)$.
+- But, for any $\delta$ w.p. $1 - \delta$,
+  \[
+  P^T(|U(\pol, D) - U(\pol, P)| \geq \sqrt{\frac{2T}{x}}
+  \]
+  
+
+* Probability background
+** Inequalities
+*** Markov's inequality
+
+
 
 
