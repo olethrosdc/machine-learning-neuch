@@ -1,4 +1,4 @@
-#+TITLE: Machine Learning and Data Mining
+#+TITLE: Generalisation in theory and practice
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \usepackage{tikz}
@@ -27,6 +27,8 @@
 #+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
 #+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
 #+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
+#+LaTeX_HEADER: \newcommand \pol {\pi}
+#+LaTeX_HEADER: \newcommand \Pols {\Pi}
 #+LaTeX_HEADER: \newcommand \bel {\beta}
 #+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
 #+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
@@ -179,22 +181,6 @@ fold k.
 
 
 * Learning and generalisation
-** Generalisation
-*** Generalisation as error
-
-**** Error due to mismatched objectives
-The $\pi^*$ maximising $U(\pi, P)$ is not the $\hat{\pi}$ maximising $U(\pi, D)$.
-
-**** Lemma
-If $|U(\pi, P) - U(\pi, D)| \leq \epsilon$ for all $\pi$ then
-\[
-U(\hat{\pi}, D) \geq U(\pi^*, P) - 2 \epsilon.
-\]
-
-**** Error due to restricted classes
-- We may use a constrained $\hat{\Pi} \subset \Pi$. 
-- Then $\max_{\hat{\pi} \in \hat{\Pi}} U(\pi, P) \leq \max_{\pi \in \Pi} U(\pi, P)$.
-
 ** Bias and variance
 *** The bias/variance trade-off
 - Dataset $D ~ P$.
@@ -216,7 +202,7 @@ How sensitive the estimator is to the data
 **** Bias
 What is the expected deviation from the true function
 \[
-\Bias(f_D) = \E[(f_D - f)]
+\Bias(f_D) \defn \E[(f_D - f)]
 \]
 *** Example: mean estimation
 - Data $D = y_1, \ldots, y_T$ with $\E[y_t] = \mu$.
@@ -232,7 +218,6 @@ To minimise the MSE, we use $f^* = \mu$. This gives us two ideas:
 - $f_D = \sum_{t=1}^T (\lambda + x_t) / T$.
 - $\Var(f_D) = \E [f_D - \mu] = \frac{1}{1 + \sqrt{T}}$
 - $\Bias(f_D) = O(1/T)$.
-
 
 *** A proof of the bias/variance trade-off
 - RV's $y_t \sim P$, $\E[y_t] = \mu$, $y_t = \mu + \epsilon_t$.
@@ -251,5 +236,79 @@ To minimise the MSE, we use $f^* = \mu$. This gives us two ideas:
 &= \Var(f_D) + \Bias(f_D)^2 + \sigma^2
 \end{align*}
 #+END_EXPORT
+** Generalisation
+*** Generalisation error
+**** Error decomposition
+Let the optimal rule be $\pol^* \in \Pols$, the best approximate rule be $\hat{\pi}^* \in \Pols$ and our rule be $\hat{\pol} \in \hat{\Pols}$. Then
+the difference the actual performance of $\pol^*$ and the measured performance of $\hat{\pol}$ can be decomposed as follows:
+\[
+\underbrace{U(\pol^*, P) - U(\hat{\pol}, D)}_{\textrm{generalisation error}} =
+\underbrace{U(\pol^*, P) - U(\hat{\pol}^*, P)}_{\textrm{approximation error}} +
+\underbrace{U(\hat{\pol}^*, P) - U(\hat{\pol}, D)}_{\textrm{statistical error}}
+\]
+We can bound the generalisation error by bounding each term separaelty.
+- The \alert{approximation error} tells us how expressive our class of rules is, i.e. how much we lose by looking at a restricted class $\hat{\Pi}$ of rules. It is similar to estimator \alert{bias}.
+- The \alert{statistical error} tells us how well the empirical performance on $D$ approximates the true performance. It is similar to estimator \alert{variance}.
+  
+*** Approximation error
+- Our model limits us to a set of decision rules $\hat{\Pi} \subset \Pi$.
+- The most we could do is find the best rule in $\hat{\Pi}$.
+- This still leaves a gap:
+\[
+\max_{\hat{\pi} \in \hat{\Pi}} U(\pi, P) \leq \max_{\pi \in \Pi} U(\pi, P)
+\]
+The gap can be characterised in some cases.
+**** Example: \(\epsilon\)-net on Lipschitz $U(\cdot, P)$.
+- Assume $U(\pi, P)$ is a Lipschitz function of $\pi$ for all $P$, i.e.
+  $|U(\pi, P) - U(\pi', P)| \leq L d(\pi, \pi')$ for some metric $d$.
+- Let $\hat{\Pi}$ be an \(\epsilon\)-net on $\Pi$, i.e.
+  $\max_{\pi \in \Pi} \min_{\pi' \in \hat{\Pi}} d(\pi, \pi') = \epsilon$.
+- Then $\max_{\pi \in \Pi} U(\pi, P) - \max_{\hat{\pi} \in \hat{\Pi}} U(\pi, P) \leq L \epsilon$.
+*** Statistical error
+- The rule maximising $U(\pi, P)$ does not maximise $U(\pi, D)$.
+- However, this is easy to bound.
+**** Lemma
+If $|U(\pi, P) - U(\pi, D)| \leq \epsilon$ for all $\pi$ then
+\[
+U(\hat{\pi}, D) \geq U(\hat{\pi}^*, P) - 2 \epsilon.
+\]
+We can show this with elementary algebra:
+\begin{align*}
+U(\hat{\pi}^*, P) -  U(\hat{\pi}, D)
+&=
+U(\hat{\pi}^*, P) -  U(\hat{\pi}, P) - U(\hat{\pi} U(\hat{\pi}, D)
+
+\end{align*}
+
+
+*** Estimation error
+- Let us now make a rule for the estimation error
+  
+For any fixed rule $\pol$ with measured utility $U(\pol, D) \in [0,1]$ on a dataset $D \sim P^T$
+Then,
+\[
+P^T(|U(\pol, D) - U(\pol, P)| \geq \epsilon) \leq 2\exp(-2T\epsilon^2).
+\]
+This is a direct application of Hoeffding's inequality.
+Consequently,
+\[
+P^T(\exists \pol : |U(\pol, D) - U(\pol, P)| \geq \epsilon) \leq 2 |\Pols| \exp(-2T\epsilon^2).
+\]
+
+*** The finite hypothesis algorithm
+- Input: a finite set of rules $\Pols$, data $D$, utility $U$
+- Return $\hat{\pol} \in \argmax_\pol U(\pol, D)$.
+*** Utility of the finite hypothesis algorithm.
+- The algorithm returns the maximum of $U(\pol, D)$
+- However, we want maximum of $U(\pol, P)$.
+- But, for any $\delta$ w.p. $1 - \delta$,
+  \[
+  P^T(|U(\pol, D) - U(\pol, P)| \geq \sqrt{\frac{2T}{x}}
+  \]
+  
+
+
+
+
 
 
