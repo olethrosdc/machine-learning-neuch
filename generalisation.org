@@ -100,7 +100,6 @@ If $(x, y) \sim P$, the expected MSE of a deterministic decision rule $\pi : X \
 \int_X \int_Y dP(x,y) [y - \pi(x)]^2.
 \]
 
-
 * Generalisation
 *** Training and overfitting
 **** Training data
@@ -160,30 +159,39 @@ Use to measure the final quality of a model
 
 *** The wrong way to do XV for subset selection :activity:
 
-1. Screen the predictors: find a subset of “good” predictors that show
-fairly strong (univariate) correlation with the class labels
+1. Screen the predictors: find a subset of “good” predictors that show fairly strong (univariate) correlation with the class labels.
 2. Using just this subset of predictors, build a multivariate classifier.
-3. Use cross-validation to estimate the unknown tuning parameters and
-to estimate the prediction error of the final model.
-Is this a correct application of cross-validation? Consider a scenario with
-N = 50 samples in two equal-sized classes, and p = 5000 quantitative
-predictors (standard Gaussian) that are independent of the class labels.
-The true (test) error rate of any classifier is 50%.
+3. Use cross-validation to estimate the unknown tuning parameters and to estimate the prediction error of the final model.
+
+**** Is this a correct application of cross-validation?
+Consider a scenario with N = 50 samples in two equal-sized classes,
+and p = 5000 quantitative predictors (standard Gaussian) that are
+independent of the class labels.  The true (test) error rate of any
+classifier is 50%.
 
 *** The right way to do XV for feature selection :activity:
 1. Divide the samples into K cross-validation folds (groups) at random.
 2. For each fold $k = 1, 2, \ldots, K$
-   (a) Find a subset of “good” predictors that show fairly strong (univariate) correlation with the class labels, using all of the samples except those in fold k.
-   (b) Using just this subset of predictors, build a multivariate classifier, using all of the samples except those in fold k.
-   (c) Use the classifier to predict the class labels for the samples in
-fold k.
-
+- Find a subset of “good” predictors that show fairly strong (univariate) correlation with the class labels, using all of the samples except those in fold k.
+- Using just this subset of predictors, build a multivariate classifier, using all of the samples except those in fold k.
+- Use the classifier to predict the class labels for the samples in fold k.
 
 
 * Learning and generalisation
+** Introduction
+*** Learning and generalisation
+How well can decision rule perform?
+
+**** Estimation theory view
+- Bias: The expected difference between the estimated value and the unknown parameter
+- Variance: The expected difference between the estimated value and the unknown parameter
+**** Learning theory view
+- Approximation ability: How well a class of rules can approximate the optimal one.
+- Statistical error: How easy it is to choose the best rule in the class.
+
 ** Bias and variance
 *** The bias/variance trade-off
-- Dataset $D ~ P$.
+- Dataset $D \sim P$.
 - Predictor $f_D(x)$
 - Target function $y = f(x) + \epsilon$
 - $\E \epsilon = 0$ zero-mean noise with variance $\sigma^2 = \Var(\epsilon)$
@@ -238,24 +246,24 @@ To minimise the MSE, we use $f^* = \mu$. This gives us two ideas:
 #+END_EXPORT
 ** Generalisation
 *** Generalisation error
-**** Error decomposition
-Let the optimal rule be $\pol^* \in \Pols$, the best approximate rule be $\hat{\pi}^* \in \Pols$ and our rule be $\hat{\pol} \in \hat{\Pols}$. Then
-the difference the actual performance of $\pol^*$ and the measured performance of $\hat{\pol}$ can be decomposed as follows:
+**** Regret decomposition
+Let the optimal rule be $\pol^* \in \Pols$, the best approximate rule be $\hat{\pi}^* \in \Pols$ and our rule be $\hat{\pol} \in \hat{\Pols}$. We call
+the difference between the performance of $\pol^*$ and $\hat{\pol}$ our \alert{regret}:
 \[
-\underbrace{U(\pol^*, P) - U(\hat{\pol}, D)}_{\textrm{generalisation error}} =
+\underbrace{U(\pol^*, P) - U(\hat{\pol}, P)}_{\textrm{regret}} =
 \underbrace{U(\pol^*, P) - U(\hat{\pol}^*, P)}_{\textrm{approximation error}} +
-\underbrace{U(\hat{\pol}^*, P) - U(\hat{\pol}, D)}_{\textrm{statistical error}}
+\underbrace{U(\hat{\pol}^*, P) - U(\hat{\pol}, P)}_{\textrm{statistical error}}
 \]
-We can bound the generalisation error by bounding each term separaelty.
+We can bound the regret by bounding each term separaelty.
 - The \alert{approximation error} tells us how expressive our class of rules is, i.e. how much we lose by looking at a restricted class $\hat{\Pi}$ of rules. It is similar to estimator \alert{bias}.
 - The \alert{statistical error} tells us how well the empirical performance on $D$ approximates the true performance. It is similar to estimator \alert{variance}.
-  
+- As a rule of thumb, the larger our class, the better the possible approximation but the higher the statistical error.
 *** Approximation error
 - Our model limits us to a set of decision rules $\hat{\Pi} \subset \Pi$.
 - The most we could do is find the best rule in $\hat{\Pi}$.
 - This still leaves a gap:
 \[
-\max_{\hat{\pi} \in \hat{\Pi}} U(\pi, P) \leq \max_{\pi \in \Pi} U(\pi, P)
+\Delta \defn  \max_{\pi \in \Pi} U(\pi, P) -  \max_{\hat{\pi} \in \hat{\Pi}} U(\pi, P)
 \]
 The gap can be characterised in some cases.
 **** Example: \(\epsilon\)-net on Lipschitz $U(\cdot, P)$.
@@ -263,48 +271,67 @@ The gap can be characterised in some cases.
   $|U(\pi, P) - U(\pi', P)| \leq L d(\pi, \pi')$ for some metric $d$.
 - Let $\hat{\Pi}$ be an \(\epsilon\)-net on $\Pi$, i.e.
   $\max_{\pi \in \Pi} \min_{\pi' \in \hat{\Pi}} d(\pi, \pi') = \epsilon$.
-- Then $\max_{\pi \in \Pi} U(\pi, P) - \max_{\hat{\pi} \in \hat{\Pi}} U(\pi, P) \leq L \epsilon$.
+- Then $\Delta \leq L \epsilon$.
 *** Statistical error
-- The rule maximising $U(\pi, P)$ does not maximise $U(\pi, D)$.
-- However, this is easy to bound.
+
+- First, let us bound $U(\hat{\pol}^*, P) - U(\hat{\pol}, P)$ by making an assumption.
+- Then, we can prove that our assumption holds with high probability.
+
 **** Lemma
-If $|U(\pi, P) - U(\pi, D)| \leq \epsilon$ for all $\pi$ then
+Let $f, g : S \to \Reals$. If $\|f - g\|_\infty \leq \epsilon$ and $f(x) \geq f(z)$ , 
+while $g(y) \geq g(z)$, for all $z$, i.e. $x,y$ maximise $f, g$ respectively
 \[
-U(\hat{\pi}, D) \geq U(\hat{\pi}^*, P) - 2 \epsilon.
+f(x) - f(y) \leq 2 \epsilon.
 \]
-We can show this with elementary algebra:
-\begin{align*}
-U(\hat{\pi}^*, P) -  U(\hat{\pi}, D)
-&=
-U(\hat{\pi}^*, P) -  U(\hat{\pi}, P) - U(\hat{\pi} U(\hat{\pi}, D)
+This holds as: $f(x) - f(y) \leq g(x) + \epsilon - f(y) \leq g(y) + \epsilon - f(y) \leq 2 \epsilon$.
 
-\end{align*}
+**** Corollary
+If $|U(\pol, P) - U(\pol, D)| \leq \epsilon$ for all $\pi$ then 
+\[
+U(\hat{\pol}^*, P) - U(\hat{\pol}, P) \leq 2\epsilon
+\]
 
-
-*** Estimation error
-- Let us now make a rule for the estimation error
+- Let us now prove that, with high probability, $|U(\pol, P) - U(\pol, D)| \leq \epsilon$.
+*** Bounding the statistical error
   
-For any fixed rule $\pol$ with measured utility $U(\pol, D) \in [0,1]$ on a dataset $D \sim P^T$
-Then,
+For any fixed rule $\pol \in \Pols$ and utility function $U : \Pols \times X^T \to [0,1]$,
 \[
 P^T(|U(\pol, D) - U(\pol, P)| \geq \epsilon) \leq 2\exp(-2T\epsilon^2).
 \]
-This is a direct application of Hoeffding's inequality.
-Consequently,
+This is a direct application of Hoeffding's inequality[fn:1].
+Taking the union bound over the set $\hat{\Pols}$ gives:
 \[
-P^T(\exists \pol : |U(\pol, D) - U(\pol, P)| \geq \epsilon) \leq 2 |\Pols| \exp(-2T\epsilon^2).
+P^T(\exists \pol \in \hat{\Pols} : |U(\pol, D) - U(\pol, P)| \geq \epsilon) \leq 2 |\hat{\Pols}| \exp(-2T\epsilon^2).
+\]
+Setting the right side equal to $\delta$ and re-arranging,
+\[
+P^T \left(\max_{\pol \in \hat{\Pols}} |U(\pol, D) - U(\pol, P)|
+ \geq \sqrt{\frac{\ln(2|\hat{\Pols}|/\delta)}{2T}}\right) \leq \delta.
 \]
 
+**** Example: \(\epsilon\)-net.
+In a $n$ dimensional space we require $|\hat{\Pols}| = O(\epsilon^{-n})$. This means that our statistical error is $O(\sqrt{n \ln(1/\epsilon \delta)/T})$.
+
 *** The finite hypothesis algorithm
-- Input: a finite set of rules $\Pols$, data $D$, utility $U$
-- Return $\hat{\pol} \in \argmax_\pol U(\pol, D)$.
-*** Utility of the finite hypothesis algorithm.
-- The algorithm returns the maximum of $U(\pol, D)$
-- However, we want maximum of $U(\pol, P)$.
-- But, for any $\delta$ w.p. $1 - \delta$,
-  \[
-  P^T(|U(\pol, D) - U(\pol, P)| \geq \sqrt{\frac{2T}{x}}
-  \]
+- Input: a finite set of rules $\hat{\Pols}$, data $D$, utility $U$
+- Return $\hat{\pol} \in \argmax_{\pol \in \hat{\Pols}} U(\pol, D)$.
+**** Regret of the finite hypothesis algorithm.
+With probability $1 - \delta$
+\begin{align}
+U(\hat{\pol}, P)
+&\geq U(\hat{\pol}^*, P) -  \sqrt{2\ln(2|\hat{\Pols}|/\delta)/T}
+\\
+U(\pol^*, P) - U(\hat{\pol}, P) 
+&\leq \Delta+  \sqrt{2\ln(2|\hat{\Pols}|/\delta)/T}
+\end{align}
+**** Examples
+- ML estimation: $U(\param, D) = P_\param(D)$ is the data likelihood.
+- Accuracy, etc: $U(\pol, D)$.
+*** VC Dimension
+
+* Footnotes
+
+[fn:1] See Hoeffding's inequality in the confidence intervals presentation
   
 
 
