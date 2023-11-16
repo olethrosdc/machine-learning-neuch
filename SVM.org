@@ -23,8 +23,12 @@
 #+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
 #+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
 #+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
+#+LaTeX_HEADER: \newcommand \bz {\vectorsym{z}}
 #+LaTeX_HEADER: \newcommand \param {\beta}
 #+LaTeX_HEADER: \newcommand \vparam {\vectorsym{\beta}}
+#+LaTeX_HEADER: \newcommand \Params {\mathcal{B}}
+#+LaTeX_HEADER: \newcommand \vmult {\vectorsym{\lambda}}
+#+LaTeX_HEADER: \newcommand \mult {\lambda}
 #+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
 #+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
 #+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
@@ -73,35 +77,46 @@ And we can divide by $\|\vparam\|$ to remove the norm constraint:
 \]
 Setting $\|\vparam\| = 1/M$, we can rewrite this as
 \begin{align*}
-\min_{\param_0, \vparam} & \frac{1}{2}\|\vparam\|^2\\
+\min_{\param_0, \vparam} & \|\vparam\|^2\\
 \textrm{s.t.} &  y_t(\param_0 + \vparam^\top \bx_t) \geq 1 && \forall t 
 \end{align*}
 *** Quadratic programming
-**** A quadratic program
-This has the form:
-\[\min_\vparam \|\vparam\|^2, \qquad \textrm{s.t.} \vparam^\top x_t \geq 1 \forall t.
-\]
-**** The lagrange method for constrained optimisation
+**** A quadratic program has the form:
+\begin{align*}
+\min_\vparam &\|\vparam\|^2\\
+ \textrm{s.t.} & \vparam^\top x_t \geq 1 \forall t.
+\end{align*}
+**** A constrained optimisation problem
+\begin{align*}
+\min_\vparam & f(\vparam)\\
+ \textrm{s.t.} & g_i(\vparam) = 0 \forall i\\
+ & h_i(\vparam) \geq 0 \forall i.
+\end{align*}
+
+We can use the \alert{Lagrange} method of multipliers to solve these problems.
+
 *** Lagrange methods
-**** Constrained optimisation
-Consider $f : X \to \Reals$ and $h : X \to \Reals^n$
-\[
-\min_x f(x), \qquad \textrm{s.t.~} h(x) = 0
-\]
 **** Lagrange multipliers
-For any local minimum $x^*$, there is a unique vector $\lambda^* \in \Reals^n$ so that
+For any local minimum $\vparam^*$, there is a unique vector $\vmult^* \in \Reals^n$ so that
 \[
-\nabla f(x^*) + \sum_i \lambda^*_i \nabla h_i(x^*) = 0.
+\nabla f(\vparam^*) + \sum_i \mult^*_i \nabla h_i(\vparam^*) = 0.
 \]
-**** The Langrangian function
+**** The Lagrangian function
 We first augment the original cost function to the \alert{Langrangian}
 \[
-L(x, \lambda) = f(x) + \sum_{i=1}^n \lambda_h h_i(x)
+L(\vparam, \vmult) = f(\vparam) + \sum_{i=1}^n \mult_i h_i(\vparam)
 \]
-Then, for any local minimum $x^*$ it holds
+For any local minimum $\vparam^*, \vmult^*$, 
+$\nabla_\vparam L(\vparam^*, \vmult^*) = 0$, $\nabla_\vmult L(\vparam^*, \vmult^*) = 0$.
+
+**** The Lagrange dual function
+The dual function $D$ is always concave:
 \[
-\nabla_x L(x^*, \lambda^*) = 0, \qquad \nabla_\lambda(x^*, \lambda^*) = 0.
+D(\vmult) = \inf_{\vparam} L(\vparam, \vmult).
 \]
+
+
+* Support vectors 
 ** Support Vector Machines
 *** Support vector machines
 - Hyperplanes do not always work
@@ -139,3 +154,22 @@ f(x) = \sum_t \alpha_t K(\bx,  \bx_t),
 - Linear: $K(\bx, \bx') = \bx^\top \bx$.
 - RBFs: $K(\bx, \bx') = \exp(-\|bx - \bx'\|^2)$
 - Polynomial: $K(\bx, \bx') = (1 + \bx^\top \bx)^d$.
+*** Kernels as features*
+Some kernels can be rewritten in terms of a feature mapping $\phi: X \to Z$
+\[
+K(\bx, \bx') = \phi^\top(\bx) \phi(\bx)
+\]
+- The mapping $\phi$ is implicit, and never computed.
+- The dimension of $Z$ can be infinite.
+- So-called Mercer kernels are symmetric: $K(\bx, \bx') = K(\bx', \bx)$.
+**** Mercer kernels
+$K : \Reals^n \times \Reals^n \to \Reals$  is a Mercer kernel, if for any $\{\bx_t : t \in [T]\}$, the kernel matrix
+$\vectorsym{K} \in \Reals^{n \times n}$
+\[
+\vectorsym{K} \defn [K(\bx_i, \bx_j)]_{i,j \in [T]}
+\]
+is symmetric positive semi-definite, i.e.
+\[
+\bz^\top \vectorsym{K} \bz \geq 0 \qquad \forall \bz \in \Reals^n.
+\]
+

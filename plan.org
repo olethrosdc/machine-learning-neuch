@@ -54,24 +54,24 @@ learning.
 
 
 *** Schedule
-|------+-------+----------------------------+-----------------------------------+-----------------------------+-----------------------------------------|
-| Week |  Date | Topic                      | Theory                            | Lab                         | Assignment                              |
-|------+-------+----------------------------+-----------------------------------+-----------------------------+-----------------------------------------|
-|    1 | 09.26 | Supervisd Learning, kNN    | Decision theory                   | None                        |                                         |
-|    2 | 10.03 | XV, Bootstrapping          | Generalisation                    | Train/Test/XV               | XV/Bootstrapping                        |
-|    3 | 10.10 | Perceptron                 | SGD, Convergence                  | Perceptron, Classification  | Perceptron (Logistic Regression) vs kNN |
-|    4 | 10.17 | Discriminative models      | Linear Regression, Least-Squares  | As Theory                   |                                         |
-|    5 | 10.24 | Regression lab             | Confidence Intervals              | Confidence Intervals        | Posteriors                              |
-|    6 | 10.31 | Generative Models          | Bayes Classifier, EM, GMMs        | EM                          | GMM Classifier                          |
-|    7 | 11.07 | Multi-Layer Neural Network | Backpropagation                   | Network architectures       | Architecture comparison                 |
-|    8 | 11.14 | Bayesian Inference         | Conjugate priors                  | Beta-Bernoulli/Normal-Gamma | Bayesian Linear Regression              |
-|   12 | 11.21 | Sequential Moodels         | HMM, MCMC                         | MCMC                        |                                         |
-|    8 | 11.28 | Support Vector Machines    | Max-Margin, Quadratic Programming | SVMs                        |                                         |
-|    9 | 12.05 | Regularisation             | Non-linear programming            | LASSO ?                     |                                         |
-|   11 | 12.12 | Reinforcement Learning     | MDPs                              | RL Agent                    |                                         |
-|------+-------+----------------------------+-----------------------------------+-----------------------------+-----------------------------------------|
-|   13 | 12.19 | Project Presentations      |                                   |                             |                                         |
-|------+-------+----------------------------+-----------------------------------+-----------------------------+-----------------------------------------|
+|------+-------+----------------------------+----------------------------------+-----------------------------+-----------------------------------------|
+| Week |  Date | Topic                      | Theory                           | Lab                         | Assignment                              |
+|------+-------+----------------------------+----------------------------------+-----------------------------+-----------------------------------------|
+|    1 | 09.26 | Supervisd Learning, kNN    | Decision theory                  | None                        |                                         |
+|    2 | 10.03 | XV, Bootstrapping          | Generalisation                   | Train/Test/XV               | XV/Bootstrapping                        |
+|    3 | 10.10 | Perceptron                 | SGD, Convergence                 | Perceptron, Classification  | Perceptron (Logistic Regression) vs kNN |
+|    4 | 10.17 | Discriminative models      | Linear Regression, Least-Squares | As Theory                   |                                         |
+|    5 | 10.24 | Regression lab             | Confidence Intervals             | Confidence Intervals        | Posteriors                              |
+|    6 | 10.31 | Generative Models          | Bayes Classifier, EM, GMMs       | EM                          | GMM Classifier                          |
+|    7 | 11.07 | Multi-Layer Neural Network | Backpropagation                  | Network architectures       | Architecture comparison                 |
+|    8 | 11.14 | Support Vector Machines    | Max-Margin, QP                   | SVMs                        |                                         |
+|    9 | 11.21 | Bayesian Inference         | Conjugate priors                 | Beta-Bernoulli/Normal-Gamma | Bayesian Linear Regression              |
+|   10 | 11.21 | Sequential Models          | HMM, MCMC                        | MCMC                        |                                         |
+|   11 | 12.05 | MCMC                       | Lab                              | LASSO ?                     |                                         |
+|   12 | 12.12 | Reinforcement Learning     | MDPs                             | RL Agent                    |                                         |
+|------+-------+----------------------------+----------------------------------+-----------------------------+-----------------------------------------|
+|   13 | 12.19 | Project Presentations      |                                  |                             |                                         |
+|------+-------+----------------------------+----------------------------------+-----------------------------+-----------------------------------------|
 
 ** Material
 *** Textbooks
