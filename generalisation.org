@@ -252,9 +252,9 @@ the difference between the performance of $\pol^*$ and $\hat{\pol}$ our \alert{r
 \[
 \underbrace{U(\pol^*, P) - U(\hat{\pol}, P)}_{\textrm{regret}} =
 \underbrace{U(\pol^*, P) - U(\hat{\pol}^*, P)}_{\textrm{approximation error}} +
-\underbrace{U(\hat{\pol}^*, P) - U(\hat{\pol}, P)}_{\textrm{statistical error}}
+\underbrace{U(\hat{\pol}^*, P) - U(\hat{\pol}, P)}_{\textrm{estimation error}}
 \]
-We can bound the regret by bounding each term separaelty.
+We can bound the regret by bounding each term separately.
 - The \alert{approximation error} tells us how expressive our class of rules is, i.e. how much we lose by looking at a restricted class $\hat{\Pi}$ of rules. It is similar to estimator \alert{bias}.
 - The \alert{statistical error} tells us how well the empirical performance on $D$ approximates the true performance. It is similar to estimator \alert{variance}.
 - As a rule of thumb, the larger our class, the better the possible approximation but the higher the statistical error.
@@ -272,7 +272,7 @@ The gap can be characterised in some cases.
 - Let $\hat{\Pi}$ be an \(\epsilon\)-net on $\Pi$, i.e.
   $\max_{\pi \in \Pi} \min_{\pi' \in \hat{\Pi}} d(\pi, \pi') = \epsilon$.
 - Then $\Delta \leq L \epsilon$.
-*** Statistical error
+*** Estimation error
 
 - First, let us bound $U(\hat{\pol}^*, P) - U(\hat{\pol}, P)$ by making an assumption.
 - Then, we can prove that our assumption holds with high probability.
@@ -292,7 +292,7 @@ U(\hat{\pol}^*, P) - U(\hat{\pol}, P) \leq 2\epsilon
 \]
 
 - Let us now prove that, with high probability, $|U(\pol, P) - U(\pol, D)| \leq \epsilon$.
-*** Bounding the statistical error
+*** Bounding the estimation error
   
 For any fixed rule $\pol \in \Pols$ and utility function $U : \Pols \times X^T \to [0,1]$,
 \[
