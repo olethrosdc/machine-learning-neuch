@@ -328,9 +328,19 @@ U(\pol^*, P) - U(\hat{\pol}, P)
 - ML estimation: $U(\param, D) = P_\param(D)$ is the data likelihood.
 - Accuracy, etc: $U(\pol, D)$.
 *** VC Dimension
-Here we consider the set $\Pols$ deterministic rules $\pol : X \to \{0, 1\}$.
+Here we consider sets $\Pols$ of deterministic rules $\pol : X \to \{0, 1\}$.
+**** Shattering
+If a $S \subset X$ can with $|S|=m$, can be assigned any labelling $y_1, 
+\ldots, y_m$ by a $\pol \in \Pols$, then we say $\Pols$ shatters $S$.
+
 **** The VC dimension
-This is the largest $n$ set $X^n$
+This is the largest-size set $S$ that $\Pols$ can shatter.
+
+**** Example: Perceptrons on $\Reals^2$
+This class has VC dimension 3 on the plane.
+
+
+
 
 * Footnotes
 
