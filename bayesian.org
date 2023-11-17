@@ -30,8 +30,11 @@
 #+LaTeX_HEADER: \newcommand \pol {\pi}
 #+LaTeX_HEADER: \newcommand \Pols {\Pi}
 #+LaTeX_HEADER: \newcommand \bel {\beta}
+#+LaTeX_HEADER: \newcommand \Bels {\mathcal{B}}
 #+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
+#+LaTeX_HEADER: \newcommand \Mult {\textrm{Mult}}
 #+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
+#+LaTeX_HEADER: \newcommand \Dir {\textrm{Dir}}
 #+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+LATEX_HEADER: \RequirePackage{fancyvrb}
@@ -170,24 +173,6 @@ return get_posterior(prior, data, likelihood)
 
 * More general problems
 #+TOC: headlines
-** The $k$ meteorologists problem
-
-
-We have $k$ meteorological stations. 
-*** Predictions and outcomes
-| Station      |   M |   T |   W |   T |
-|--------------+-----+-----+-----+-----|
-| MeteoSuisse  | 25% | 20% | 10% |  5% |
-| Wunderground | 30% | 50% | 20% | 10% |
-| AccuWeather  | 90% | 70% | 10% |  0% |
-|--------------+-----+-----+-----+-----|
-| Rain         |   Y |   N |   N |   Y |
-
-*** $H_i$: The \(i\)-th station's model is correct
-- $P(H_i)$: prior
-- $P(D | H_i)$: likelihood according to station $i$
-- $P(H_i | D)$: posterior
-
 ** Types of hypothesis testing problems
 #+ATTR_BEAMER: :overlay <+->
 *** Simple Hypothesis Test
@@ -244,7 +229,28 @@ Example: Are men's and women's heights the same?
 {\int_{\Params}P_{\param'}(x) d\bel(\param)}
 \tag{arbitrary $\Params$}
 \end{align}
-  
+
+** The $n$-meteorologists problem  
+- Consider $n$ meteorological stations predicting rainfall
+- $x_t \in \{0,1\}$ with $x_t = 1$ if it rains on day $t$.
+- We have a prior distribution $\bel(\mu)$ for each station.
+- At time $t$, station $\mu$ makes as a prediction $P_\mu(x_{t+1} | x_1, \ldots, x_t)$
+- We then observe $x_{t+1}$ and calculate a posterior distribution $\bel(\mu | x_1, \ldots, x_t, x_{t+1})$.
+*** The marginal distribution 
+To take into account all stations, we can marginalise:
+\[
+\Pr_\bel(x_{t+1} \mid x_1, \ldots x_t) = 
+\sum_\mu P_\mu(x_{t+1} | x_t) \bel(\mu)
+\]
+*** The posterior :exercise:
+Show that
+\[
+\bel(\mu \mid x_1, \ldots, x_{t+1}) = 
+\frac{P_\mu(x_t \mid x_1, \ldots, x_t) \bel(\mu|x_1, \ldots, x_t)}
+{\sum_{\mu'} P_{\mu'}(x_t \mid x_1, \ldots, x_t) \bel(\mu'|x_1, \ldots, x_t)}
+\]
+
+
 ** Sufficient statistics
 *** A statistic $f$
 This is any function $f : X \to S$ where
@@ -258,7 +264,71 @@ $f$ is sufficient for a family $\{P_\param : \param \in \Params\}$ when
 \[
 f(x) = f(x') \Leftrightarrow P_\param(x) = P_\param(x') \forall \param \in \Params.
 \]
+If there exists a finite-dimensional sufficient statistic, Bayesian and ML learning can be done in closed form within the family.
 ** Conjugate priors
+Consider a parametrised family of priors $\Bels$ on $\Params$ and a distribution family $\{P_\param\}$
+The pair is conjugate if, for any prior $\bel \in \Bels$, and any observation $x$, there exists $\bel' \in \Bels$ such that $\bel'(\param) = \bel(\param | x)$
+*** Standard Parametric conjugate families
+|-------------+------------+---------------------------------+-----------------------|
+| Prior       | Likelihood | Parameters $\param$             | Observations $x$      |
+|-------------+------------+---------------------------------+-----------------------|
+| Beta        | Bernoulli  | $[0,1]$                         | $\{0,1\}^T$           |
+| Multinomial | Dirichlet  | $[0,1]^n$                       | $\{1, \ldots, n\}^T$  |
+| Gamma       | Normal     | $\Reals, \Reals$                | $\Reals^T$            |
+| Wishart     | Normal     | $\Reals^n, \Reals^{n \times n}$ | $\Reals^{n \times T}$ |
+|-------------+------------+---------------------------------+-----------------------|
+*** Extensions
+- Discrete Bayesian Networks.
+- Linear-Gaussian Models (i.e. Bayesian linear regression)
+- Gaussian Processes.
+
+** Beta-Bernoulli
+
+*** Definition of the Bernoulli distribution
+If $x_t \mid \param \sim \Ber(\param)$ then
+\[
+P_\param(x_t = 1) = \param
+\]
+*** Definition of the Beta density 
+If $\param \sim \Beta(\alpha_1, \alpha_0)$ then
+\[
+p(\param | \alpha_1, \alpha_0) \propto \param^{\alpha_1 - 1} (1 - \param)^{\alpha_0 - 1}
+\]
+*** Beta-Bernoulli conjugate pair
+- $\param \sim \Beta(\alpha_1, \alpha_0)$.
+- $x_t \mid \param \sim \Ber(\param)$.
+Then, for any $x = x_1, \ldots, x_T$, the posterior distribution is
+- $\param \mid x \sim \Beta(\alpha_1 + \sum_t x_t , \alpha_0 + T - \sum_t x_t)$.
+** Dirichlet-Multinomial
+
+*** Definition of the Multinomial distribution
+If $x_t \mid \vparam \sim \Mult(\vparam)$ then
+\[
+P_\vparam(x_t = i) = \param_i
+\]
+*** Definition of the Dirichlet density 
+If $\vparam \sim \Dir(\vectorsym{\alpha})$ then
+\[
+p(\param | \vectorsym{\alpha}) \propto \prod_i \param_i^{\alpha_i - 1}
+\]
+*** Beta-Bernoulli conjugate pair
+- $\param \sim \Dir(\vectorsym{\alpha})$.
+- $x_t \mid \param \sim \Ber(\vparam)$.
+Then, for any $x = x_1, \ldots, x_T$, the posterior distribution is
+- $\param \mid x \sim \Dir(\vectorsym{\alpha + \vectorsym{s}_T})$, where $s_{T,i} = \sum_{t=1}^T \ind{x_t = i}$,
+
+** Discrete Bayesian Networks
+- A graphical model defined on variables $x_1, \ldots, x_n$ with each $x_n$ taking a finite number of values.
+- We saw some simple such models for e.g. the cancer/smoking/asbestos example.
+- Another example are discrete Markov models
+*** Markov model
+A Markov model obeys
+\[
+P(x_{k+1} | x_k, \ldots, x_1) = P(x_{k_1} | x_k)
+\]
+i.e. the graphical model is a chain
+
+
 
 * Approximate Bayesian inference
 ** The Monte-Carlo Algorithm
