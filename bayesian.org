@@ -251,13 +251,29 @@ Example: Are men's and women's heights the same?
 *** Bayesian approach
 - Posterior calculation: $\bel(\param | x) = P_\param(x) \bel(\param) / \Pr_\bel(x)$
 - Model prediction: $\Pr_\bel(x_{t+1} | x) = \sum_\param P_\param(x_{t+1}) \bel(\param | x)$ 
-  
+** Differences between approaches
+*** Maximum likelihood approach
+- Ignores model complexity
+- Is an optimisation problem
+*** Maximum a posteriori approach
+- Regularises model selection using the prior
+- Can be seen as solving the optimisation problem
+  \[
+  \max_\param \ln P_\param(x) + \ln \bel(\param),
+  \]
+  where the prior term $\ln \bel(\param)$ acts as a regulariser.
+*** Bayesian approach
+- Does not select a single model
+- Averages over all models according to their fit *and* the prior
+- Does *not* result in an optimisation problem.
+
+
 ** The $n$-meteorologists problem  
 - Consider $n$ meteorological stations predicting rainfall
 - $x_t \in \{0,1\}$ with $x_t = 1$ if it rains on day $t$.
 - We have a prior distribution $\bel(\mu)$ for each station.
 - At time $t$, station $\mu$ makes as a prediction $P_\mu(x_{t+1} | x_1, \ldots, x_t)$
-- We then observe $x_{t+1}$ and calculate a posterior distribution $\bel(\mu | x_1, \ldots, x_t, x_{t+1})$.
+- We observe $x_{t+1}$ and calculate the posterior  $\bel(\mu | x_1, \ldots, x_t, x_{t+1})$.
 *** The marginal distribution 
 To take into account all stations, we can marginalise:
 \[
@@ -265,13 +281,13 @@ To take into account all stations, we can marginalise:
 \sum_\mu P_\mu(x_{t+1} | x_t) \bel(\mu)
 \]
 *** The posterior :exercise:
-Show that
+- Show that
 \[
 \bel(\mu \mid x_1, \ldots, x_{t+1}) = 
 \frac{P_\mu(x_t \mid x_1, \ldots, x_t) \bel(\mu|x_1, \ldots, x_t)}
 {\sum_{\mu'} P_{\mu'}(x_t \mid x_1, \ldots, x_t) \bel(\mu'|x_1, \ldots, x_t)}
 \]
-
+- How would you implement an ML or a MAP solution to this problem?
 
 ** Sufficient statistics
 *** A statistic $f$
@@ -311,6 +327,8 @@ The Simplex $\Simplex^n = \{\vparam \in [0,1]^n : \|\vparam\|_1\}$ is the set of
 \begin{tikzpicture}
 \node[RV] at (1,0) (x) {$x_t$};
 \node[RV,hidden] at (0,0) (mean) {$\theta$};
+\node[RV] at (-1,0) (prior) {$\vectorsym{\alpha}$};
+\draw[->] (prior) to (mean);
 \draw[->] (mean) to (x);
 \end{tikzpicture}
 
@@ -334,6 +352,8 @@ Then, for any $x = x_1, \ldots, x_T$, the posterior distribution is
 \node[RV] at (1,0) (x) {$x_t$};
 \node[RV,hidden] at (0,0) (mean) {$\vparam$};
 \draw[->] (mean) to (x);
+\node[RV] at (-1,0) (prior) {$\vectorsym{\alpha}$};
+\draw[->] (prior) to (mean);
 \end{tikzpicture}
 *** Definition of the Multinomial distribution
 If $x_t \mid \vparam \sim \Mult(\vparam)$,
@@ -346,7 +366,7 @@ If $\vparam \sim \Dir(\vectorsym{\alpha})$, with $\vectorsym{\alpha} \in \Reals^
 \[
 p(\param | \vectorsym{\alpha}) \propto \prod_i \param_i^{\alpha_i - 1}
 \]
-*** Beta-Bernoulli conjugate pair
+*** Dirichlet-Multinomial conjugate pair
 - $\param \sim \Dir(\vectorsym{\alpha})$.
 - $x_t \mid \param \sim \Ber(\vparam)$.
 Then, for any $x = x_1, \ldots, x_T$, the posterior distribution is
@@ -406,15 +426,35 @@ P_{\vparam_C}(x_C = 1 \mid X_A= j, X_S = k) &= \param_{C,j,k}
 \end{align}
 
 ** Markov model
+\begin{tikzpicture}
+\node[RV] at (-1,0) (x0) {$x_{t-1}$};
+\node[RV] at (0,0) (x1) {$x_t$};
+\node[RV] at (1,0) (x2) {$x_{t+1}$};
+\node[RV,hidden] at (1,1) (m1) {$\vparam$};
+\node[RV] at (0,1) (prior) {$\vectorsym{\alpha}$};
+\draw[->] (prior) to (m1);
+\draw[->] (m1) to (x0);
+\draw[->] (m1) to (x1);
+\draw[->] (m1) to (x2);
+\draw[->] (x0) to (x1);
+\draw[->] (x1) to (x2);
+\end{tikzpicture}
+
 A *Markov model* obeys
 \[
 \Pr_\vparam(x_{k+1} | x_k, \ldots, x_1) = \Pr_\vparam(x_{k+1} | x_k)
 \]
 i.e. the graphical model is a chain. We are usually interested in *homogeneous* models, where
 \[
-\Pr_\vparam(x_{k+1} = i \mid x_k = j) = \param_{i,j} \qquad \foral k
+\Pr_\vparam(x_{k+1} = i \mid x_k = j) = \param_{i,j} \qquad \forall k
 \]
 *** Inference for finite Markov models
-If $x_t \in [n]$ then $x_{t+1} \mid x_t = i \sim \Mult(\vparam_i)$, $\vparam_i \in \Simplex^n$
-
+- If $x_t \in [n]$ then $x_{t+1} \mid \vparam, x_t = i \sim \Mult(\vparam_i)$, $\vparam_i \in \Simplex^n$
+- Prior $\vparam_i \mid \vectorsym{\alpha} \sim \Dir(\vectorsym{\alpha})$ for all $i \in [n]$.
+- Posterior $\vparam_i \mid x_1, \ldots, x_t, \vectorsym{\alpha} \sim \Dir(\vectorsym{\alpha}^{(t)})$ with
+  \[
+  \alpha^{t}_{i,j} = \alpha_{i,j} + \sum_{k=1}^t \ind{x_k = i \wedge x_{k+1} = j},
+  \qquad
+  \vectorsym{\alpha}^0 =   \vectorsym{\alpha}.
+  \]
 
