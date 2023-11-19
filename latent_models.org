@@ -124,8 +124,30 @@ c_t \mid \vparam &\sim \Mult(\vparam),\\
 \bx_t \mid \vectorsym{\mu}, \matrixsym{\Sigma}, c_t = i & \sim \Normal(\vectorsym{\mu}_i, \matrixsym{\Sigma}_i).
 \end{align}
 
-** Temporal Models
-
+** Hidden Markov models
+*** Hidden Markov Model
+**** Generic Hidden Markov Model
+\begin{tikzpicture}
+\node[RV] at (-1,1) (x0) {$x_{t-1}$};
+\node[RV] at (0,1) (x1) {$x_t$};
+\node[RV] at (1,1) (x2) {$x_{t+1}$};
+\node[RV,hidden] at (-1,0) (s0) {$s_{t-1}$};
+\node[RV,hidden] at (0,0) (s1) {$s_t$};
+\node[RV,hidden] at (1,0) (s2) {$s_{t+1}$};
+\draw[->] (s0) to (x0);
+\draw[->] (s1) to (x1);
+\draw[->] (s2) to (x2);
+\draw[->] (s0) to (s1);
+\draw[->] (s1) to (s2);
+\end{tikzpicture}
+- $s_t$: The state of the model. It has the \alert{Markov} property.
+- $x_t$: The observtions of the model. They are \alert{not} Markov.
+- When the model parameters are known, we can infer the hidden states. This is called \alert{filtering}.
+**** Different types of HMMs
+- Discrete $s_t, x_t$: Used in string prediction.
+- Continuous $s_t, x_t$: The Kalman filter. Used in automatic control.
+- Discrete $s_t$, continuous $x_t$. Used in speech recognition.
+  
 ** Image models
 * Tree models
 
