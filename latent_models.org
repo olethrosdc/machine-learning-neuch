@@ -1,4 +1,4 @@
-#+TITLE: Generative Modelling
+#+TITLE: Latent variable models
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \usepackage{tikz}
@@ -21,24 +21,112 @@
 #+LaTeX_HEADER: \newcommand \mparam {\matrixsym{\Theta}}
 #+LaTeX_HEADER: \newcommand \bW {\matrixsym{W}}
 #+LaTeX_HEADER: \newcommand \bw {\vectorsym{w}}
+#+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
 #+LaTeX_HEADER: \newcommand \wi {\vectorsym{w}_i}
 #+LaTeX_HEADER: \newcommand \wij {w_{i,j}}
 #+LaTeX_HEADER: \newcommand \bA {\matrixsym{A}}
 #+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
 #+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
-#+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
 #+LaTeX_HEADER: \newcommand \bel {\beta}
 #+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
 #+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
 #+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
+#+LaTeX_HEADER: \newcommand \Mult {\textrm{Mult}}
+#+LaTeX_HEADER: \newcommand \Wish {\textrm{Wish}}
+#+LaTeX_HEADER: \newcommand \Dir {\textrm{Dir}}
+#+LaTeX_HEADER: \newcommand \Simplex {\mathbb{\Delta}}
+#+LaTeX_HEADER: \usepackage[bbgreekl]{mathbbol}
+#+LaTeX_HEADER: \tikzstyle{utility}=[diamond,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=8mm]
+#+LaTeX_HEADER: \tikzstyle{select}=[rectangle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
+#+LaTeX_HEADER: \tikzstyle{hidden}=[dashed,draw=black,fill=red!10]
+#+LaTeX_HEADER: \tikzstyle{RV}=[circle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 
-* Mixture Models
-* Image models
-* Temporal Models
+* Latent variable models
+** Introduction
+*** Types of latent variables
+- Mixture model
+- Latent state in a dynamical system
+- Personal information
+- Objects in an image  
+** Gaussian mixture models
+*** Gaussian Mixture Models
+
+In this model, data is generated from one of $k$ Gaussian
+distributions with unknown mean and variance.
+
+\begin{tikzpicture}
+\node[RV] at (0,1) (x) {$x_t$};
+\node[RV] at (1,1) (x2) {$x_{t+1}$};
+\node[RV,hidden] at (0,0) (cat) {$\vparam$};
+\node[RV,hidden] at (1,0) (mean) {$\vectorsym{\mu}$};
+\node[RV,hidden] at (2,0) (var) {$\vectorsym{\Sigma}$};
+\draw[->] (cat) to (x);
+\draw[->] (mean) to (x);
+\draw[->] (var) to (x);
+\draw[->] (cat) to (x2);
+\draw[->] (mean) to (x2);
+\draw[->] (var) to (x2);
+\end{tikzpicture}
+
+**** Basic model
+\begin{align}
+c_t \mid \vparam &\sim \Mult(\vparam),\\
+\bx_t \mid \vectorsym{\mu}_i, \matrixsym{\Sigma}_i, c_t = i & \sim \Normal(\vectorsym{\mu}_i, \matrixsym{\Sigma}_i).
+\end{align}
+
+**** Variables
+- $c_t \in [k]$ specifies which distribution generated the t-th example.
+- $\vparam \in \Simplex^k$ is the parameter of the distribution generating $c_t$
+- $x_t \in \Reals^n$ is the t-th example
+- $\vectorsym{\mu}_i \in \Reals^n$ - is the mean of the i-th Gaussian
+- $\matrixsym{\Sigma}_i \succcurlyeq 0 \in \Reals^{n \times n}$ is the covariance of the i-th Gaussian
+*** Maximum Likelihood Inference for Gaussian Mixture Models
+**** Maximum likelihood
+- Use the EM algorithm to solve
+  \[
+  \max_{\vparam, \vectorsym{\mu}, \vectorsym{\Sigma}} P(x_t \mid \vparam, \vectorsym{\mu}, \vectorsym{\Sigma})
+  \]
+  by adding the latent variable into the mix:
+  \[
+  \max_{\vparam, c_i, \vectorsym{\mu}, \vectorsym{\Sigma}} P(x_1, \ldots, x_t \mid c_1, \ldots, c_t, \vparam, \vectorsym{\mu}, \vectorsym{\Sigma})
+  \]
+*** Bayesian Inference for Gaussian Mixture Models
+**** Graphical model
+\begin{tikzpicture}
+\node[RV] at (0,1) (x) {$x_t$};
+\node[RV] at (1,1) (x2) {$x_{t+1}$};
+\node[RV,hidden] at (0,0) (cat) {$\vparam$};
+\node[RV,hidden] at (1,0) (mean) {$\vectorsym{\mu}$};
+\node[RV,hidden] at (2,0) (var) {$\vectorsym{\Sigma}$};
+\draw[->] (cat) to (x);
+\draw[->] (mean) to (x);
+\draw[->] (var) to (x);
+\draw[->] (cat) to (x2);
+\draw[->] (mean) to (x2);
+\draw[->] (var) to (x2);
+\node[RV] at (0,-1) (aprior) {$\vectorsym{\alpha}$};
+\node[RV] at (1,-1) (gprior) {$\vectorsym{v}$};
+\node[RV] at (2,-1) (sprior) {$\vectorsym{W}$};
+\draw[->] (aprior) to (cat);
+\draw[->] (gprior) to (mean);
+\draw[->] (sprior) to (var);
+\end{tikzpicture}
+**** Bayesian model
+\begin{align}
+\vectorsym{\mu_i} \mid \vectorsym{v} &\sim \Normal(\vectorsym{v}, \vectorsym{I}),\\
+\vectorsym{\Sigma_i} \mid \vectorsym{W} &\sim \Wish(\vectorsym{W})\\
+\vparam \mid \vectorsym{\alpha} &\sim \Dir(\vectorsym{\alpha}),\\
+c_t \mid \vparam &\sim \Mult(\vparam),\\
+\bx_t \mid \vectorsym{\mu}, \matrixsym{\Sigma}, c_t = i & \sim \Normal(\vectorsym{\mu}_i, \matrixsym{\Sigma}_i).
+\end{align}
+
+** Temporal Models
+
+** Image models
 * Tree models
 
 

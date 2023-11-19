@@ -1,4 +1,4 @@
-#+TITLE:     Bayesian Inference and Hypothesis Testing
+#+TITLE:  Approximate Bayesian Inference
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \usepackage{tikz}
