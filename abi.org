@@ -38,6 +38,8 @@
 #+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
 #+LaTeX_HEADER: \newcommand \Simplex {\mathbb{\Delta}}
 #+LaTeX_HEADER: \newcommand \pn {\param^{(n)}}
+#+LaTeX_HEADER: \newcommand \pnn {\param^{(n+1)}}
+#+LaTeX_HEADER: \newcommand \pnp {\param^{(n-1)}}
 #+LaTeX_HEADER: \usepackage[bbgreekl]{mathbbol}
 #+LaTeX_HEADER: \tikzstyle{utility}=[diamond,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=8mm]
 #+LaTeX_HEADER: \tikzstyle{select}=[rectangle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
@@ -68,6 +70,17 @@ P_\param(x) = \sum_z P_\param(x, z).
 - Stochastic Variational Inference
 
 * Monte-Carlo Methods
+** Basic sampling theory
+*** Using the CDF to sample $x \sim P$
+$F(u) = \Pr(x \geq u) = P(\{\omega : x(\omega) \geq u\})$ is the CDF of $x$.
+- Sample $u$ uniformly in $[0,1]$
+- Set $x = F^{-1}(u)$.
+This ensures $x \sim P(x)$.
+
+- Useful for sampling from a known distribution $P$.
+- Not directly useful from sampling from unknown distributions.
+
+
 ** Monte-Carlo sampling
 \[
 \bel(B \mid x) = \frac{\int_{B} P_\param(x) d \bel(\param)}{\int_{\Params} P_{\param'}(x) \bel(\param')}
@@ -88,6 +101,8 @@ We can approximate the integrals by sampling from the prior $\bel$:
 
 ** Markov Chain Monte Carlo
 
+*** MCMC for posterior sampling
+- Form a Markov chain $P(\pnn| \pn, x)$
 
 ** The Rejection Sampler
 ** The Metropolis Sampler
