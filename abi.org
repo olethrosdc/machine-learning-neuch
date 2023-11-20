@@ -31,12 +31,16 @@
 #+LaTeX_HEADER: \newcommand \Pols {\Pi}
 #+LaTeX_HEADER: \newcommand \bel {\beta}
 #+LaTeX_HEADER: \newcommand \Bels {\mathcal{B}}
+#+LaTeX_HEADER: \newcommand \Unif {\textrm{Unif}}
 #+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
 #+LaTeX_HEADER: \newcommand \Mult {\textrm{Mult}}
 #+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
 #+LaTeX_HEADER: \newcommand \Dir {\textrm{Dir}}
 #+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
 #+LaTeX_HEADER: \newcommand \Simplex {\mathbb{\Delta}}
+#+LaTeX_HEADER: \newcommand \pn {\param^{(n)}}
+#+LaTeX_HEADER: \newcommand \pnn {\param^{(n+1)}}
+#+LaTeX_HEADER: \newcommand \pnp {\param^{(n-1)}}
 #+LaTeX_HEADER: \usepackage[bbgreekl]{mathbbol}
 #+LaTeX_HEADER: \tikzstyle{utility}=[diamond,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=8mm]
 #+LaTeX_HEADER: \tikzstyle{select}=[rectangle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
@@ -50,6 +54,82 @@
 #+OPTIONS: toc:nil
 * Approximate Bayesian inference
 ** Approximate Bayesian inference
-** The Monte-Carlo Algorithm
-** Gibbs Sampling and Markov Chain Monte-Carlo
+*** The General problem
+- Observations $x$.
+- Nuisance variables $z$.
+- Unknown parameter $\param$.
+- Direct calculation of any of these terms can be infeasible:
+\[
+\bel(\param \mid x) = \frac{P_\param(x) \bel(\param)}{\sum_{\param'} P_{\param'}(x) \bel(\param')},
+\qquad
+P_\param(x) = \sum_z P_\param(x, z).
+\]
+*** Common methods
+- Monte Carlo 
+- Variational Bayes
+- Approximate Bayesian Computation (ABC)
+- Stochastic Variational Inference
+
+* Monte-Carlo Methods
+** Basic sampling theory
+
+*** Inversion sampler
+$F(u) = \Pr(x \geq u) = P(\{\omega : x(\omega) \geq u\})$ is the CDF of $x$.
+- Sample $u$ uniformly in $[0,1]$
+- Set $x = F^{-1}(u)$.
+
+*** Rejection Sampler
+- Input: Threshold $\epsilon$, distribution $Q$
+- Repeat:
+- $\hat{x} \sim Q$.
+- $u \sim \Unif[0,1]$
+- Until $u \leq P(\hat{x}) / \epsilon Q(\hat{x})$.
+- Return $\hat{x}$
+
+*** Notes
+- Useful for sampling from a known distribution $P$.
+- Indirectly useful from sampling from unknown distributions.
+
+
+** Monte-Carlo sampling
+\[
+\bel(B \mid x) = \frac{\int_{B} P_\param(x) d \bel(\param)}{\int_{\Params} P_{\param'}(x) \bel(\param')}
+\]
+We can approximate the integrals by sampling from the prior $\bel$:
+\[
+\int_{B} P_\param(x) d \bel(\param)
+\approx
+\frac{1}{N}
+\sum_{n=1}^N \ind{\pn \in B} P_{\pn}(x),
+\qquad \pn \sim \bel.
+\]
+- Sampling from the prior is inefficient.
+- The estimator has high bias and variance.
+- So, we can use Markov Chain Monte Carlo. This lets us sample a
+  sequence $\pn$ which \alert{converges asymptotically} to $\bel(\pn |
+  x)$.
+
+
+** Markov Chain Monte Carlo
+
+*** MCMC for posterior sampling
+- Form a Markov chain $P(\pnn \mid \pn, x)$
+
+*** MCMC for other latent variables
+- Form a Markov chain $P(z^{(n+1)} \mid z^{(n)}, x)$
+
+** Metropolis-Hastings
+*** General algorithm
+- Input: Proposal distribution $Q(x | x') = Q(x' | x)$
+- At time $n$:
+- $\hat{x} \sim Q(x | x^{(n)})$
+- w.p. $P(\hat{x}) / P(x^{(n)})$, $x^{(n+1)} = \hat{x}$ else $x^{(n+1)} = x^{(n)}$
+*** Application to posterior sampling:
+The denominator cancels out, leading to:
+\[
+\frac{\bel(\param' \mid x)}{\bel(\param \mid x)}
+= 
+\frac{P_{\param'}(x) \bel(\param')}{P_{\param'}(x) \bel(\param')}
+\]
+** The Gibbs sampler
 
