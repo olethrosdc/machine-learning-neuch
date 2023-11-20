@@ -31,6 +31,7 @@
 #+LaTeX_HEADER: \newcommand \Pols {\Pi}
 #+LaTeX_HEADER: \newcommand \bel {\beta}
 #+LaTeX_HEADER: \newcommand \Bels {\mathcal{B}}
+#+LaTeX_HEADER: \newcommand \Unif {\textrm{Unif}}
 #+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
 #+LaTeX_HEADER: \newcommand \Mult {\textrm{Mult}}
 #+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
@@ -71,14 +72,23 @@ P_\param(x) = \sum_z P_\param(x, z).
 
 * Monte-Carlo Methods
 ** Basic sampling theory
-*** Using the CDF to sample $x \sim P$
+
+*** Inversion sampler
 $F(u) = \Pr(x \geq u) = P(\{\omega : x(\omega) \geq u\})$ is the CDF of $x$.
 - Sample $u$ uniformly in $[0,1]$
 - Set $x = F^{-1}(u)$.
-This ensures $x \sim P(x)$.
 
+*** Rejection Sampler
+- Input: Threshold $\epsilon$, distribution $Q$
+- Repeat:
+- $\hat{x} \sim Q$.
+- $u \sim \Unif[0,1]$
+- Until $u \leq P(\hat{x}) / \epsilon Q(\hat{x})$.
+- Return $\hat{x}$
+
+*** Notes
 - Useful for sampling from a known distribution $P$.
-- Not directly useful from sampling from unknown distributions.
+- Indirectly useful from sampling from unknown distributions.
 
 
 ** Monte-Carlo sampling
@@ -99,12 +109,27 @@ We can approximate the integrals by sampling from the prior $\bel$:
   sequence $\pn$ which \alert{converges asymptotically} to $\bel(\pn |
   x)$.
 
+
 ** Markov Chain Monte Carlo
 
 *** MCMC for posterior sampling
-- Form a Markov chain $P(\pnn| \pn, x)$
+- Form a Markov chain $P(\pnn \mid \pn, x)$
 
-** The Rejection Sampler
-** The Metropolis Sampler
+*** MCMC for other latent variables
+- Form a Markov chain $P(z^{(n+1)} \mid z^{(n)}, x)$
+
+** Metropolis-Hastings
+*** General algorithm
+- Input: Proposal distribution $Q(x | x') = Q(x' | x)$
+- At time $n$:
+- $\hat{x} \sim Q(x | x^{(n)})$
+- w.p. $P(\hat{x}) / P(x^{(n)})$, $x^{(n+1)} = \hat{x}$ else $x^{(n+1)} = x^{(n)}$
+*** Application to posterior sampling:
+The denominator cancels out, leading to:
+\[
+\frac{\bel(\param' \mid x)}{\bel(\param \mid x)}
+= 
+\frac{P_{\param'}(x) \bel(\param')}{P_{\param'}(x) \bel(\param')}
+\]
 ** The Gibbs sampler
 
