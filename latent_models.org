@@ -148,7 +148,21 @@ c_t \mid \vparam &\sim \Mult(\vparam),\\
 - Continuous $s_t, x_t$: The Kalman filter. Used in automatic control.
 - Discrete $s_t$, continuous $x_t$. Used in speech recognition.
   
-** Image models
-* Tree models
+
+** Recommendation systems
+*** Recommendation systems
+**** The setting
+- At time t, client $x_t$ appears
+- We give a recommendation $a_t$.
+- The customer chooses $y_t$
+- We obtain a reward $r_t = \rho(a_t, y_t) \in \Reals$.
+**** The two problems in recommendation
+- How to model user preferences
+- What to recommend
+
+*** Similarity-based prediction
+
+
+  
 
 

@@ -133,4 +133,12 @@ The denominator cancels out, leading to:
 \]
 
 ** The Gibbs sampler
-
+This is used when we need to sample over only some variables $z_1, \ldots, z_k$, given some fixed variables $x$.
+*** General algorithm
+- Input: Factors $P(z_k \mid z_1, \ldots z_{k-1}, z_{k+1}, \ldots, z_K, x)$
+- For $n \in [N]$:
+- For $k \in [K]$:
+  $z^{(n)}_k \sim P(z_k \mid z_1, \ldots z_{k-1}, z_{k+1}, \ldots, z_K, x)$
+*** Application to posterior sampling with latent variables:
+The factors are:
+- $P(z_k \mid z_1, \ldots z_{k-1}, z_{k+1}, \ldots, z_K, x)
