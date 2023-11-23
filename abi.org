@@ -138,7 +138,11 @@ This is used when we need to sample over only some variables $z_1, \ldots, z_k$,
 - Input: Factors $P(z_k \mid z_1, \ldots z_{k-1}, z_{k+1}, \ldots, z_K, x)$
 - For $n \in [N]$:
 - For $k \in [K]$:
-  $z^{(n)}_k \sim P(z_k \mid z_1, \ldots z_{k-1}, z_{k+1}, \ldots, z_K, x)$
+  $z^{(n)}_k \sim P(z_k \mid z^{(n)}_1, \ldots z^{(n)}_{k-1}, z^{(n-1)}_{k+1}, \ldots, z^{(n-1)}_K, x)$
 *** Application to posterior sampling with latent variables:
-The factors are:
-- $P(z_k \mid z_1, \ldots z_{k-1}, z_{k+1}, \ldots, z_K, x)
+- Latent variable $z$
+- Parameter $\param$
+- For $n \in [N]$
+- $\param^{(n)} = P(\param \mid z^{(n-1)}, x)$
+- $z^{(n)} P(z \mid \param^{(n)}, x)$
+
