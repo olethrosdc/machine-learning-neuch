@@ -160,9 +160,17 @@ c_t \mid \vparam &\sim \Mult(\vparam),\\
 - How to model user preferences
 - What to recommend
 
-*** Similarity-based prediction
+*** The modelling problem
+**** The setting
+- Clients $x_t$ 
+- Items $y_t$
+- Ratings $z_t$
 
+* Hierarchical models
 
-  
-
+** Hierarchical models
+*** Multiple hypotheses
+- 
+*** Populations
+- 2
 
