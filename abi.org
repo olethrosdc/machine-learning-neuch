@@ -131,6 +131,7 @@ The denominator cancels out, leading to:
 = 
 \frac{P_{\param'}(x) \bel(\param')}{P_{\param'}(x) \bel(\param')}
 \]
+<<<<<<< HEAD
 ** Metropolis-Hastings
 *** Algorithm
 - Input: Proposal distribution $Q(x | x') \neq Q(x' | x)$, likelihood $P$.
@@ -149,6 +150,8 @@ The denominator cancels out, leading to:
 = 
 \frac{P_{\param'}(x) \bel(\param')}{P_{\param'}(x) \bel(\param')}
 \]
+=======
+>>>>>>> ff1783a6fb249296f4624120f3f573a62d6d1351
 
 ** The Gibbs sampler
 This is used when we need to sample over only some variables $z_1, \ldots, z_k$, given some fixed variables $x$.
@@ -156,7 +159,16 @@ This is used when we need to sample over only some variables $z_1, \ldots, z_k$,
 - Input: Factors $P(z_k \mid z_1, \ldots z_{k-1}, z_{k+1}, \ldots, z_K, x)$
 - For $n \in [N]$:
 - For $k \in [K]$:
-  $z^{(n)}_k \sim P(z_k \mid z_1, \ldots z_{k-1}, z_{k+1}, \ldots, z_K, x)$
+  $z^{(n)}_k \sim P(z_k \mid z^{(n)}_1, \ldots z^{(n)}_{k-1}, z^{(n-1)}_{k+1}, \ldots, z^{(n-1)}_K, x)$
 *** Application to posterior sampling with latent variables:
+<<<<<<< HEAD
 The factors are:
 - $P(z_k \mid z_1, \ldots z_{k-1}, z_{k+1}, \ldots, z_K, x)$
+=======
+- Latent variable $z$
+- Parameter $\param$
+- For $n \in [N]$
+- $\param^{(n)} = P(\param \mid z^{(n-1)}, x)$
+- $z^{(n)} P(z \mid \param^{(n)}, x)$
+
+>>>>>>> ff1783a6fb249296f4624120f3f573a62d6d1351

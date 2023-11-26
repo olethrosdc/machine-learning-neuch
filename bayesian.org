@@ -268,8 +268,8 @@ Example: Are men's and women's heights the same?
 - Does *not* result in an optimisation problem.
 
 
-** The $n$-meteorologists problem  
-- Consider $n$ meteorological stations predicting rainfall
+** The n-meteorologists problem  
+- Consider $n$ meteorological stations $\{\mu\}$ predicting rainfall.
 - $x_t \in \{0,1\}$ with $x_t = 1$ if it rains on day $t$.
 - We have a prior distribution $\bel(\mu)$ for each station.
 - At time $t$, station $\mu$ makes as a prediction $P_\mu(x_{t+1} | x_1, \ldots, x_t)$
