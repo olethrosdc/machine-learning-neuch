@@ -119,7 +119,7 @@ We can approximate the integrals by sampling from the prior $\bel$:
 - Form a Markov chain $P(z^{(n+1)} \mid z^{(n)}, x)$
 
 ** Metropolis-Hastings
-*** General algorithm
+*** Algorithm (symmetric version)
 - Input: Proposal distribution $Q(x | x') = Q(x' | x)$
 - At time $n$:
 - $\hat{x} \sim Q(x | x^{(n)})$
@@ -131,6 +131,25 @@ The denominator cancels out, leading to:
 = 
 \frac{P_{\param'}(x) \bel(\param')}{P_{\param'}(x) \bel(\param')}
 \]
+** Metropolis-Hastings
+*** Algorithm
+- Input: Proposal distribution $Q(x | x') \neq Q(x' | x)$, likelihood $P$.
+- At time $n$:
+- $\hat{x} \sim Q(x | x^{(n)})$
+- With probability
+  \[
+  \frac{P(\hat{x}) Q(\hat{x} | x^{(n)})}{P(x^{(n)}) Q(\hat{x} | x^{(n)})}
+  \],
+  set $x^{(n+1)} = \hat{x}$
+- Otherwise $x^{(n+1)} = x^{(n)}$
+*** Application to posterior sampling:
+The denominator cancels out, leading to:
+\[
+\frac{\bel(\param' \mid x)}{\bel(\param \mid x)}
+= 
+\frac{P_{\param'}(x) \bel(\param')}{P_{\param'}(x) \bel(\param')}
+\]
+
 ** The Gibbs sampler
 This is used when we need to sample over only some variables $z_1, \ldots, z_k$, given some fixed variables $x$.
 *** General algorithm
@@ -140,4 +159,4 @@ This is used when we need to sample over only some variables $z_1, \ldots, z_k$,
   $z^{(n)}_k \sim P(z_k \mid z_1, \ldots z_{k-1}, z_{k+1}, \ldots, z_K, x)$
 *** Application to posterior sampling with latent variables:
 The factors are:
-- $P(z_k \mid z_1, \ldots z_{k-1}, z_{k+1}, \ldots, z_K, x)
+- $P(z_k \mid z_1, \ldots z_{k-1}, z_{k+1}, \ldots, z_K, x)$

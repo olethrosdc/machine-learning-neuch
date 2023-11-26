@@ -340,6 +340,24 @@ This is the largest-size set $S$ that $\Pols$ can shatter.
 This class has VC dimension 3 on the plane.
 
 
+* PAC Learning
+** The realisable setting
+*** Binary classification
+**** Learning algorithm $\lambda$
+- Takes data $D = \{(x_t, y_t)\}$ as input
+- Generates deterministic decision rules $\pol : X \to \{0,1\}$,
+**** The loss of a rule $\pol$.
+- Assume an existing concept class $\pol^* \in \Pols$
+- Distribution $x_t \sim P$ is i.i.d. and $x_1, \ldots, x_T \sim P^T$.
+- The loss under distribution $P$ is
+  \[
+  L(\pol) = P(\{x : \pol(x) \neq \pol^*(x)\})
+  \]
+**** Realisable PAC learner
+- $\lambda$ is \((\epsilon, \delta)\)-PAC, if for any $P$ and  $\epsilon, \delta > 0$, there is $T$ such that
+\[
+P^T(\{
+\]
 
 
 * Footnotes
