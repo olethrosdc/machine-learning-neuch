@@ -53,25 +53,28 @@
 - Input: Data $D$, bags $K$, base learner $\lambda$
 - For $k = 1, \ldots, K$
 -- Sample \alert{with replacement} $D_k \sim \Uniform(D)$
--- Obtain predictor $f_k = \lambda(D_k)$.
-- Return $\{f_k\}$
+-- Obtain predictor $\pi_k = \lambda(D_k)$.
+- Return $\{\pi_k\}$
 
 *** The bagged predictor
 \[
-f = \frac{1}{K} f_k
+\pi = f\left(\sum_k \pi_k\right)
 \]
+** Bagging classifiers
+*** Classification setting
+- Hypothesis set $(x)
 
 ** Sub-sample-and-aggregate
 *** Algorithm
 - Input: Data $D$, number of experts $K$, base learner $\lambda$
 - For $k = 1, \ldots, K$
 -- Sample \alert{without replacement} $D_k \sim \Uniform(D)$
--- Obtain predictor $f_k = \lambda(D_k)$.
-- Return $\{f_k\}$
+-- Obtain predictor $\pi_k = \lambda(D_k)$.
+- Return $\{\pi_k\}$
 
 *** The aggregated predictor
 \[
-f = \frac{1}{K} f_k
+\pi =  f\left(\pi_1, \ldots, \pi_k\right)
 \]
 
 

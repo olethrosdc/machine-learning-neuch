@@ -354,9 +354,11 @@ This class has VC dimension 3 on the plane.
   L(\pol) = P(\{x : \pol(x) \neq \pol^*(x)\})
   \]
 **** Realisable PAC learner
-- $\lambda$ is \((\epsilon, \delta)\)-PAC, if for any $P$ and  $\epsilon, \delta > 0$, there is $T$ such that
+- $\lambda : (X \times Y)^* \to \Pols$ is \((\epsilon, \delta)\)-PAC, if for any $P$ and  $\epsilon, \delta > 0$, and any concept $\pol^* \in \Pols$, there is $T$ such that
 \[
-P^T(\{
+P^T( \left\{ D : L[\lambda(D)] > \epsilon \right \}) < \delta,
+\qquad
+D = (\{x_t, \pol^*(x_t)\}), x_t \sim P.
 \]
 
 
