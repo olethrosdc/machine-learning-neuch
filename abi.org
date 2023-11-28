@@ -55,14 +55,14 @@
 * Approximate Bayesian inference
 ** Approximate Bayesian inference
 *** The General problem
-- Observations $x$.
+- Observations $D$.
 - Nuisance variables $z$.
 - Unknown parameter $\param$.
 - Direct calculation of any of these terms can be infeasible:
 \[
-\bel(\param \mid x) = \frac{P_\param(x) \bel(\param)}{\sum_{\param'} P_{\param'}(x) \bel(\param')},
+\bel(\param \mid D) = \frac{P_\param(D) \bel(\param)}{\sum_{\param'} P_{\param'}(D) \bel(\param')},
 \qquad
-P_\param(x) = \sum_z P_\param(x, z).
+P_\param(D) = \sum_z P_\param(D, z).
 \]
 *** Common methods
 - Monte Carlo 
@@ -93,30 +93,30 @@ $F(u) = \Pr(x \geq u) = P(\{\omega : x(\omega) \geq u\})$ is the CDF of $x$.
 
 ** Monte-Carlo sampling
 \[
-\bel(B \mid x) = \frac{\int_{B} P_\param(x) d \bel(\param)}{\int_{\Params} P_{\param'}(x) \bel(\param')}
+\bel(B \mid D) = \frac{\int_{B} P_\param(D) d \bel(\param)}{\int_{\Params} P_{\param'}(D) \bel(\param')}
 \]
 We can approximate the integrals by sampling from the prior $\bel$:
 \[
-\int_{B} P_\param(x) d \bel(\param)
+\int_{B} P_\param(D) d \bel(\param)
 \approx
 \frac{1}{N}
-\sum_{n=1}^N \ind{\pn \in B} P_{\pn}(x),
+\sum_{n=1}^N \ind{\pn \in B} P_{\pn}(D),
 \qquad \pn \sim \bel.
 \]
 - Sampling from the prior is inefficient.
 - The estimator has high bias and variance.
 - So, we can use Markov Chain Monte Carlo. This lets us sample a
   sequence $\pn$ which \alert{converges asymptotically} to $\bel(\pn |
-  x)$.
+  D)$.
 
 
 ** Markov Chain Monte Carlo
 
 *** MCMC for posterior sampling
-- Form a Markov chain $P(\pnn \mid \pn, x)$
+- Form a Markov chain $P(\pnn \mid \pn, D)$
 
 *** MCMC for other latent variables
-- Form a Markov chain $P(z^{(n+1)} \mid z^{(n)}, x)$
+- Form a Markov chain $P(z^{(n+1)} \mid z^{(n)}, D)$
 
 ** Metropolis-Hastings
 *** Algorithm (symmetric version)
@@ -127,32 +127,48 @@ We can approximate the integrals by sampling from the prior $\bel$:
 *** Application to posterior sampling:
 The denominator cancels out, leading to:
 \[
-\frac{\bel(\param' \mid x)}{\bel(\param \mid x)}
+\frac{\bel(\param' \mid D)}{\bel(\param \mid D)}
 = 
-\frac{P_{\param'}(x) \bel(\param')}{P_{\param'}(x) \bel(\param')}
+\frac{P_{\param'}(D) \bel(\param')}{P_{\param}(D) \bel(\param)}
 \]
-<<<<<<< HEAD
+The only question is which proposal to use.
 ** Metropolis-Hastings
 *** Algorithm
-- Input: Proposal distribution $Q(x | x') \neq Q(x' | x)$, likelihood $P$.
+- Input: Proposal distribution $Q(x | x')$ satisfying detailed balance, likelihood $P$.
 - At time $n$:
-- $\hat{x} \sim Q(x | x^{(n)})$
+- $\hat{x} | x^{(n)} \sim Q(x | x^{(n)})$
 - With probability
   \[
-  \frac{P(\hat{x}) Q(\hat{x} | x^{(n)})}{P(x^{(n)}) Q(\hat{x} | x^{(n)})}
-  \],
+  \frac{P(\hat{x}) Q( x^{(n)} | \hat{x} )}{P(x^{(n)}) Q(\hat{x} | x^{(n)})},
+  \]
   set $x^{(n+1)} = \hat{x}$
 - Otherwise $x^{(n+1)} = x^{(n)}$
 *** Application to posterior sampling:
-The denominator cancels out, leading to:
+The $\Pr_\bel(D)$ term cancels out, leading to:
 \[
-\frac{\bel(\param' \mid x)}{\bel(\param \mid x)}
+\frac{\bel(\param' \mid D) Q(\param \mid \param') }{\bel(\param \mid D)  Q(\param' \mid \param)}
 = 
-\frac{P_{\param'}(x) \bel(\param')}{P_{\param'}(x) \bel(\param')}
+\frac{P_{\param'}(D) \bel(\param')  Q(\param \mid \param')}{P_{\param}(D) \bel(\param)  Q(\param' \mid \param)}
 \]
-=======
->>>>>>> ff1783a6fb249296f4624120f3f573a62d6d1351
 
+** M-H Theory
+*** Stationary distribution
+The Markov chain defined by the M-H algorithm must have a unique stationary distribution
+\[
+\sigma = \sigma \vectorsym{P},
+\]
+where $\vectorsym{P}$ is the transition kernel of the chain with
+\[
+P_{ij} = \Pr(x^{(n+1)} = j \mid x^{(n)} = i).
+\]
+In addition, $\lim_{n \to \infty} \vectorsym{P}^k = \vectorsym{1} \sigma$.
+*** Sufficient conditions
+- If the transition kernel satisfies \alert{detailed balance}:
+\[
+P(x' | x) \sigma(x) = P(x | x') \sigma(x')
+\]
+then $\sigma(x)$ is a stationary distribution.
+- If the Markov chain is \alert{ergodic} then there is a unique $\sigma$.
 ** The Gibbs sampler
 This is used when we need to sample over only some variables $z_1, \ldots, z_k$, given some fixed variables $x$.
 *** General algorithm
@@ -161,14 +177,31 @@ This is used when we need to sample over only some variables $z_1, \ldots, z_k$,
 - For $k \in [K]$:
   $z^{(n)}_k \sim P(z_k \mid z^{(n)}_1, \ldots z^{(n)}_{k-1}, z^{(n-1)}_{k+1}, \ldots, z^{(n-1)}_K, x)$
 *** Application to posterior sampling with latent variables:
-<<<<<<< HEAD
-The factors are:
-- $P(z_k \mid z_1, \ldots z_{k-1}, z_{k+1}, \ldots, z_K, x)$
-=======
-- Latent variable $z$
-- Parameter $\param$
-- For $n \in [N]$
-- $\param^{(n)} = P(\param \mid z^{(n-1)}, x)$
-- $z^{(n)} P(z \mid \param^{(n)}, x)$
+Latent variable $z$, parameter $\param$.
+- Until convergence:
+- $\param^{(n)} \sim P(\param \mid z^{(n-1)}, x)$
+- $z^{(n)} \sim  P(z \mid \param^{(n)}, x)$
+** ABC: Approximate Bayesian Computation
+*** When to use
+- When we can sample from $P_\param(D)$.
+- When we cannot calculate $P_\param(D)$.
+*** A metric $\rho$ over datasets
+- $\rho(D, D')$ is distance between datasets.
+- We can use that to define a rejection sampler
+*** ABC Rejection Sampling
+- \textbf{Input}: $\epsilon > 0$.
+- Sample $\param' \sim \bel(\param)$
+- Sample $D' \sim P_{\param'}$.
+- If $\rho(D, D') \leq \epsilon$, accept $\param'$
+*** Theorem
+If $\rho(D, D') = \|f(D) - f(D')\|$ and $f$ is a \alert{sufficient statistic} and $\epsilon = 0$ then ABC Rejection Sampling is exact.
 
->>>>>>> ff1783a6fb249296f4624120f3f573a62d6d1351
+* Packages
+** Multi-platform
+- STAN
+- BUGS
+** Python
+- PyMC3
+- TensorFlow Probability
+- \alert{PyStan}
+- \alert{Pyro} (Torch)

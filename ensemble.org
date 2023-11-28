@@ -66,11 +66,13 @@ with
 \]
 - Aggregate hypothesis
 \[
-\pi(x) = \sgn\left(\sum_k \pi_k(x)\right)
+\pi(x) = \sgn\left(\sum_{k=1}^K \pi_k(x)\right)
 \]
-
-
-
+*** PAC property
+For any $\delta \in (0,1)$, and any $\pi^* : X \to \{-1, 1\}$ and a hypothesis class $\Pols$ with with VC dimension $d$, for $T$ data points, and $K \in [0.02T, T]$ bootstrap samples, then
+\[
+\mathbb{L} \in O\left(\frac{1}{T}[d + \ln(1/\delta)]\right), \qquad \textrm{w.p.} 1 - \delta.
+\]
 ** Sub-sample-and-aggregate
 *** Algorithm
     - Input: Data $D$, number of experts $K$, base learner $\lambda$
