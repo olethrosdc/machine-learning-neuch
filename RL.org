@@ -1,6 +1,126 @@
+#+TITLE:  Reinforcement Learning
+#+AUTHOR: Christos Dimitrakakis
+#+EMAIL:christos.dimitrakakis@unine.ch
+#+LaTeX_HEADER: \usepackage{tikz}
+#+LaTeX_HEADER: \usepackage{amsmath}
+#+LaTeX_HEADER: \usepackage{amssymb}
+#+LaTeX_HEADER: \usepackage{isomath}
+#+LaTeX_HEADER: \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand \Var {\mathop{\mbox{\ensuremath{\mathbb{V}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand \Bias {\mathop{\mbox{\ensuremath{\mathbb{B}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
+#+LaTeX_HEADER: \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
+#+LaTeX_HEADER: \DeclareMathOperator*{\argmax}{arg\,max}
+#+LaTeX_HEADER: \DeclareMathOperator*{\argmin}{arg\,min}
+#+LaTeX_HEADER: \DeclareMathOperator*{\sgn}{sgn}
+#+LaTeX_HEADER: \newcommand \defn {\mathrel{\triangleq}}
+#+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
+#+LaTeX_HEADER: \newcommand \Params {\Theta}
+#+LaTeX_HEADER: \newcommand \param {\theta}
+#+LaTeX_HEADER: \newcommand \vparam {\vectorsym{\theta}}
+#+LaTeX_HEADER: \newcommand \mparam {\matrixsym{\Theta}}
+#+LaTeX_HEADER: \newcommand \bW {\matrixsym{W}}
+#+LaTeX_HEADER: \newcommand \bw {\vectorsym{w}}
+#+LaTeX_HEADER: \newcommand \wi {\vectorsym{w}_i}
+#+LaTeX_HEADER: \newcommand \wij {w_{i,j}}
+#+LaTeX_HEADER: \newcommand \bA {\matrixsym{A}}
+#+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
+#+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
+#+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
+#+LaTeX_HEADER: \newcommand \pol {\pi}
+#+LaTeX_HEADER: \newcommand \Pols {\Pi}
+#+LaTeX_HEADER: \newcommand \mdp {\mu}
+#+LaTeX_HEADER: \newcommand \MDPs {\mathcal{M}}
+#+LaTeX_HEADER: \newcommand \bel {\beta}
+#+LaTeX_HEADER: \newcommand \Bels {\mathcal{B}}
+#+LaTeX_HEADER: \newcommand \Unif {\textrm{Unif}}
+#+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
+#+LaTeX_HEADER: \newcommand \Mult {\textrm{Mult}}
+#+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
+#+LaTeX_HEADER: \newcommand \Dir {\textrm{Dir}}
+#+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
+#+LaTeX_HEADER: \newcommand \Simplex {\mathbb{\Delta}}
+#+LaTeX_HEADER: \newcommand \pn {\param^{(n)}}
+#+LaTeX_HEADER: \newcommand \pnn {\param^{(n+1)}}
+#+LaTeX_HEADER: \newcommand \pnp {\param^{(n-1)}}
+#+LaTeX_HEADER: \usepackage[bbgreekl]{mathbbol}
+#+LaTeX_HEADER: \tikzstyle{utility}=[diamond,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=8mm]
+#+LaTeX_HEADER: \tikzstyle{select}=[rectangle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
+#+LaTeX_HEADER: \tikzstyle{hidden}=[dashed,draw=black,fill=red!10]
+#+LaTeX_HEADER: \tikzstyle{RV}=[circle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
+#+LaTeX_CLASS_OPTIONS: [smaller]
+#+LATEX_HEADER: \RequirePackage{fancyvrb}
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+#+TAGS: activity advanced definition exercise homework project example theory code
+#+OPTIONS:   H:2
+#+OPTIONS: toc:nil
+* Bandit problems
+** The multi-armed bandit (MAB) problem
+- At time $t$:
+- Select action $a_t \in A$
+- Obtain reward $r_t \in \Reals$
+*** Basic objective
+Maximise total reward
+\[
+U = \sum_{t=1}^T r_t,
+\]
+where $T$ is the *horizon*. It may be unknown, or random.
+*** Regret
+We can instead minimise total regret
+\[
+L = \sum_{t=1}^T [r^*_t - r_t],
+\]
+where $r^*$ is the reward an oracle that knew the "best" arm would have obtained.
 
-* Reinforcement Learning (2 weeks)
+No let's make this more precise.
 
+** The stochastic MAB
+For each arm $i \in A$:
+- $r_t \mid a_t = i \sim \mdp_i$ is the reward distribution
+- $\rho_i \defn E_\mdp[r_t \mid a_t = i]$ the expected reward
+- $\rho^* \defn \max_i \rho_i$.
+*** Policy
+The policy $\pol \in \Pols$ is a adaptive: $\pol(a_t \mid a_{t-1}, r_{t-1}, \ldots, a_1, r_1)$
 
+*** Objective
+Maximise expected total reward
+\[
+\E^\pol_\mdp[U] = \E^\pol_\mdp \left[\sum_{t=1}^T r_t \right]
+\]
+The total expected regret is
+\[
+\E^\pol_\mdp[L] = \E^\pol_\mdp \left[\sum_{t=1}^T \rho^* - \rho_t \right]
+\]
 
+** The horizon
+*** Discounted $T$
+- $U = \sum_{t=1}^T \gamma^{t-1} r_t$
+- Same as non-discounted with stopping probability $(1 - \gamma)$.
+
+*** Arbitrary $T$
+To compare algorithms, we use the notion of regret growth
+- Linear regret: $L_T = O(T)$.  i.e. insufficient learning
+- Sub-linear regret, e.g. $L_T = O(\sqrt{T})$ or $O(\ln T)$.
+
+** Algorithms
+*** $\epsilon$-greedy
+*** UCB 
+*** Thompson sampling
+
+* Markov decision processes
+** The Markov decision process
+- Transition kernel $s_{t+1} \mid s_t, a_t \sim P_\mdp(s_{t+1} \mid s_t, a_t)$
+- Reward $r_t = \rho(s_t, a_t)$ (can also be random).
+
+** Value functions
+\[
+\]
+* Reinforcement learning
+* External sources
+** Further resources
+- The Sutton/Barto RL book http://incompleteideas.net/book/the-book-2nd.html
+- The Lattimore/Szepesvari bandit book https://tor-lattimore.com/downloads/book/book.pdf
+- My book (on ILIAS)
+- Reinforcement Learning Course at Neuchatel https://mcs.unibnf.ch/courses/reinforcement-learning-and-decision-making-under-uncertainty/
+- OpenAI Gym https://github.com/openai/gym/
 
