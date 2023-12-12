@@ -92,7 +92,7 @@ The total expected regret is
 \E^\pol_\mdp[L] = \E^\pol_\mdp \left[\sum_{t=1}^T \rho^* - \rho_t \right]
 \]
 
-** The horizon
+** The horizon and regret
 *** Discounted $T$
 - $U = \sum_{t=1}^T \gamma^{t-1} r_t$
 - Same as non-discounted with stopping probability $(1 - \gamma)$.
@@ -103,24 +103,133 @@ To compare algorithms, we use the notion of regret growth
 - Sub-linear regret, e.g. $L_T = O(\sqrt{T})$ or $O(\ln T)$.
 
 ** Algorithms
-*** $\epsilon$-greedy
+*** \epsilon-greedy
+- $\hat{\rho}_{i,t}$ is the average reward of arm $i$ at time $t$.
+- w.p. $\epsilon$, $a_t \sim \Unif(A)$
+- otherwise, $a_t = \argmax_{i}\hat{\rho}_{i,t}$, 
 *** UCB 
-*** Thompson sampling
+- Play all arms once, and for $t > |A|$:
+- $a_t = \argmax_i \hat{\rho}_{i,t} + \sqrt{2\ln(t)/n_{i,t}}$.
+- $n_{i,t}$ is the number of times arm $i$ has been pulled until time $t$.
+*** Thompson (posterior) sampling
+Input: a prior $\bel_1$ over $\MDPs$.
+- At time $t$:
+- Sample from the posterior $\mdp^{(t)} \mid a_1, r_t, \ldots, a_{t-1}, r_{t-1} \sim \bel_t(\mdp)$
+- Choose best action for sample: $a_t = \argmax_{i} \E_{\mdp^{(t)}}[r_t \mid a_t = i]$.
+- Observe $r_t$.
+- Calculate new posterior $\bel_{t+1}(\mdp) = \bel_t(\mdp \mid a_t, r_t)$.
+** Other bandit problems
+
+*** Adversarial bandits
+- Rewards are arbitrary.
+- Compare with best arm in hindsight.
+
+*** Continuous bandits
+- Actions $a_t \in \Reals^d$
+- Example: Lipschitz bandits where $|\rho(a) - \rho(a')| \leq \|a - a'\|$.
+
+*** Contextual bandits (in particular linear)
+- Contexts $x_t \in \Reals^d$
+- Unknown parameters $\theta_a \in \Reals^d$
+- For the linear case $\rho(x, a) = x^\top \theta_a$.
+
+
 
 * Markov decision processes
 ** The Markov decision process
-- Transition kernel $s_{t+1} \mid s_t, a_t \sim P_\mdp(s_{t+1} \mid s_t, a_t)$
+Bandit problems are not dynamic. We can generalise reinforcement learning to dynamical systems through the MDP formalism:
+- Action space $A$.
+- State space $S$.
+- Transition kernel $s_{t+1} = j \mid s_t = s, a_t = a \sim P_\mdp(j \mid s, a)$.
 - Reward $r_t = \rho(s_t, a_t)$ (can also be random).
-
-** Value functions
+- Utility
 \[
+U_t = \sum_{k=t}^T r_t.
 \]
+** Value functions
+*** The state value function
+For any given MDP $\mdp$ and policy $\pol$ we define
+\[
+V^\pol_{\mdp, t}(s) \defn \E^\pol_{\mdp, t} \left[ U_t ~\middle|~ s_t = s \right]
+\]
+*** The state-action value function
+\[
+Q^\pol_{\mdp, t}(s, a) \defn \E^\pol_{\mdp, t} \left[ U_t ~\middle|~ s_t = s, a_t = a \right]
+\]
+*** The optimal value functions
+For an optimal policy $\pol^*$
+\[
+V^*_{\mdp, t}(s) \defn V^{\pol^*}_{\mdp, t}(s) \geq V^\pol_{\mdp, t}(s),
+\qquad
+Q^*_{\mdp, t}(s,a) \defn Q^{\pol^*}_{\mdp, t}(s,a) \geq V^\pol_{\mdp, t}(s,a) 
+\]
+** The Bellman equations
+*** State value function
+\begin{align*}
+V^\pol_{\mdp, t}(s)
+& \defn \E^\pol_{\mdp, t}[U_{t}\mid s_t = s] \\
+& = \E^\pol_{\mdp, t}[r_t + U_{t+1}\mid s_t = s] \\
+& = \E^\pol_{\mdp}[r_t \mid s_t = s] + \E^\pol_{\mdp}[U_{t+1} \mid s_t = s]\\
+& = \E^\pol_{\mdp}[r_t \mid s_t = s] + \sum_{j \in S} \E^\pol_{\mdp}[U_{t+1} \mid s_{t+1} = j] \Pr^\pol_\mdp(s_{t+1} = j \mid s_t = s)\\
+& = \E^\pol_{\mdp}[r_t \mid s_t = s] + \sum_{j \in S} V^\pol_{\mdp, t+1}(j)  \Pr^\pol_\mdp(s_{t+1} = j \mid s_t = s)\\
+& = \E^\pol_{\mdp}[r_t \mid s_t = s] + \sum_{j \in S} V^\pol_{\mdp, t+1}(j) \sum_{a \in A} P_\mdp(j \mid s, a) \pol(a_t \mid s_t).
+\end{align*}
+*** State-action value function
+\begin{align*}
+Q^\pol_{\mdp, t}(s)
+&= [\rho(s,a) +  \sum_{j \in S} V^\pol_{\mdp, t+1}(j) P_\mdp(j \mid s, a)]
+\end{align*}
+
+** Optimal policies
+
+*** Bellman optimality condition
+The value function of the optimal policy satisfies this:
+\begin{align*}
+V^*_{\mdp, t}(s)
+& = 
+\max_{a}  [\rho(s,a) +  \sum_{j \in S} V^*_{\mdp, t+1}(j) P_\mdp(j \mid s, a)
+\end{align*}
+*** Dynamic programming 
+To find $V^*, Q^*$, first initialise $V^*_{\mdp, T}(s) &= \max_a \rho(s,a)$. 
+Then for $t = T-1, T-2, \ldots, 1$:
+\begin{align*}
+Q^*_{\mdp, t}(s,a) &= \rho(s,a) +  \sum_{j \in S} V^*_{\mdp, t+1}(j) P_\mdp(j \mid s, a).\\
+V^*_{\mdp, t}(s) &= \max_a Q^*_{\mdp, t}(s,a).
+\end{align*}
+*** The optimal policy
+The optimal policy is deterministic with:
+\[
+a_t = \argmax_a Q^*(s_t, a)
+\]
+
+
 * Reinforcement learning
+** The Reinforcement Learning Problem
+- Observe $x_t$
+- Take action $a_t$
+- Obtain reward $r_t$
+
+*** Requirement for learning
+- The model is not known
+- Our policies must be *adaptive*
+
+** Reinforcement learning settings
+*** Fully observable, discrete Markov problems
+- $x_t = s_t$, a Markovian state, $S, A$ finite.
+- Optimal policies are Markov
+- Can be solved efficiently with classical RL algorithms
+*** Continuous Markov problems
+- Requires function approximation
+- Even when the model is known, hard to compute
+*** Partially observable  problems
+- Sufficient statistics are not finite
+
+
 * External sources
 ** Further resources
-- The Sutton/Barto RL book http://incompleteideas.net/book/the-book-2nd.html
+- The Sutton/Barto RL intro book http://incompleteideas.net/book/the-book-2nd.html
 - The Lattimore/Szepesvari bandit book https://tor-lattimore.com/downloads/book/book.pdf
-- My book (on ILIAS)
+- The Dimitrakakis/Ortner RL book https://ilias.unibe.ch/goto_ilias3_unibe_file_2946650_download.html 
 - Reinforcement Learning Course at Neuchatel https://mcs.unibnf.ch/courses/reinforcement-learning-and-decision-making-under-uncertainty/
 - OpenAI Gym https://github.com/openai/gym/
 
