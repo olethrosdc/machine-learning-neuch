@@ -1,4 +1,4 @@
-#+TITLE: Machine Learning and Data Mining, Bachelor course
+#+TITLE: Machine Learning and Data Mining, Master course
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \usepackage{tikz}
@@ -54,24 +54,19 @@ learning.
 
 
 *** Schedule
-|------+-------+----------------------------+----------------------------------+-----------------------------+-----------------------------------------|
-| Week |  Date | Topic                      | Theory                           | Lab                         | Assignment                              |
-|------+-------+----------------------------+----------------------------------+-----------------------------+-----------------------------------------|
-|    1 | 09.26 | Supervisd Learning, kNN    | Decision theory                  | None                        |                                         |
-|    2 | 10.03 | XV, Bootstrapping          | Generalisation                   | Train/Test/XV               | XV/Bootstrapping                        |
-|    3 | 10.10 | Perceptron                 | SGD, Convergence                 | Perceptron, Classification  | Perceptron (Logistic Regression) vs kNN |
-|    4 | 10.17 | Discriminative models      | Linear Regression, Least-Squares | As Theory                   |                                         |
-|    5 | 10.24 | Regression lab             | Confidence Intervals             | Confidence Intervals        | Posteriors                              |
-|    6 | 10.31 | Generative Models          | Bayes Classifier, EM, GMMs       | EM                          | GMM Classifier                          |
-|    7 | 11.07 | Multi-Layer Neural Network | Backpropagation                  | Network architectures       | Architecture comparison                 |
-|    8 | 11.14 | Support Vector Machines    | Max-Margin, QP                   | SVMs                        |                                         |
-|    9 | 11.21 | Bayesian Inference         | Conjugate priors                 | Beta-Bernoulli/Normal-Gamma | Bayesian Linear Regression              |
-|   10 | 11.21 | Sequential Models          | HMM, MCMC                        | MCMC                        |                                         |
-|   11 | 12.05 | MCMC                       | Lab                              | LASSO ?                     |                                         |
-|   12 | 12.12 | Reinforcement Learning     | MDPs                             | RL Agent                    |                                         |
-|------+-------+----------------------------+----------------------------------+-----------------------------+-----------------------------------------|
-|   13 | 12.19 | Project Presentations      |                                  |                             |                                         |
-|------+-------+----------------------------+----------------------------------+-----------------------------+-----------------------------------------|
+
+1. Learning and generalisation. Concentration inequalities.
+2. Convergence of SGD.
+3. Prediction with expert advice.
+4. Bayesian learning.
+5. PAC-Bayes bounds.
+6. The minimum description length principle.
+7. Fairness and discrimination: conditional independence.
+8. Fairness and meritocracy: smoothness.
+9. Differential privacy and randomised response.
+10. Laplace and Exponential mechanisms.
+11. Privacy and generalisation.
+12. Experiment design and Bayesian optimisation.
 
 ** Material
 *** Textbooks
