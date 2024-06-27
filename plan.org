@@ -1,4 +1,4 @@
-#+TITLE: Machine Learning and Data Mining, Bachelor course
+#+TITLE: Introduction to Machine Learning, Bachelor course
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \usepackage{tikz}
@@ -53,25 +53,26 @@ optimisation-based learning, and the secondly on probabilistic
 learning.
 
 
-*** Schedule
-|------+-------+----------------------------+----------------------------------+-----------------------------+-----------------------------------------|
-| Week |  Date | Topic                      | Theory                           | Lab                         | Assignment                              |
-|------+-------+----------------------------+----------------------------------+-----------------------------+-----------------------------------------|
-|    1 | 09.26 | Supervisd Learning, kNN    | Decision theory                  | None                        |                                         |
-|    2 | 10.03 | XV, Bootstrapping          | Generalisation                   | Train/Test/XV               | XV/Bootstrapping                        |
-|    3 | 10.10 | Perceptron                 | SGD, Convergence                 | Perceptron, Classification  | Perceptron (Logistic Regression) vs kNN |
-|    4 | 10.17 | Discriminative models      | Linear Regression, Least-Squares | As Theory                   |                                         |
-|    5 | 10.24 | Regression lab             | Confidence Intervals             | Confidence Intervals        | Posteriors                              |
-|    6 | 10.31 | Generative Models          | Bayes Classifier, EM, GMMs       | EM                          | GMM Classifier                          |
-|    7 | 11.07 | Multi-Layer Neural Network | Backpropagation                  | Network architectures       | Architecture comparison                 |
-|    8 | 11.14 | Support Vector Machines    | Max-Margin, QP                   | SVMs                        |                                         |
-|    9 | 11.21 | Bayesian Inference         | Conjugate priors                 | Beta-Bernoulli/Normal-Gamma | Bayesian Linear Regression              |
-|   10 | 11.21 | Sequential Models          | HMM, MCMC                        | MCMC                        |                                         |
-|   11 | 12.05 | MCMC                       | Lab                              | LASSO ?                     |                                         |
-|   12 | 12.12 | Reinforcement Learning     | MDPs                             | RL Agent                    |                                         |
-|------+-------+----------------------------+----------------------------------+-----------------------------+-----------------------------------------|
-|   13 | 12.19 | Project Presentations      |                                  |                             |                                         |
-|------+-------+----------------------------+----------------------------------+-----------------------------+-----------------------------------------|
+** Schedule
+|--------+-------+----------------------------+-------------------+------------------------------+-----------------------------------------|
+| Module |  Date | Topic                      | Theory            | Lab                          | Assignment                              |
+|--------+-------+----------------------------+-------------------+------------------------------+-----------------------------------------|
+|      1 | 09.17 | k Nearest neighbours       | Decision theory   | Train/Test/XV                | XV on a simple classifier               |
+|      2 | 09.24 | The Perceptron             | Generalisation    | Bootstrapping and simulation | Simulation and real data                |
+|      3 | 10.01 | The Perceptron             | SGD               | Perceptron, Classification   | Perceptron (Logistic Regression) vs kNN |
+|      4 | 10.08 | Linear Regression          | Linear Regression | Linear Regression            | OLS vs SGD                              |
+|      5 | 10.15 | Neural networks            | Backpropagation   |                              |                                         |
+|      6 | 10.22 | Graphical models           | Bayes Classifier  | Bayes's theorem              |                                         |
+|      7 | 10.29 | Probabilistic modelling    | Conjugate priors  | Beta-Bernoulli               |                                         |
+|      9 | 11.05 | Sequence prediction        | Experiment design |                              |                                         |
+|     10 | 11.12 | Latent variable estimation | Latent variables  |                              |                                         |
+|     11 | 11.19 |                            |                   |                              |                                         |
+|     12 | 11.26 | Fairness and Privacy       |                   |                              |                                         |
+|     13 | 12.03 |                            |                   |                              |                                         |
+|     14 | 12.10 | Project Presentations      |                   |                              |                                         |
+|--------+-------+----------------------------+-------------------+------------------------------+-----------------------------------------|
+|     13 | 12.17 | Project Presentations      |                   |                              |                                         |
+|--------+-------+----------------------------+-------------------+------------------------------+-----------------------------------------|
 
 ** Material
 *** Textbooks

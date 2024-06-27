@@ -59,9 +59,10 @@ $\neg, \wedge, \vee, \Rightarrow, \Leftrightarrow$
 
 
 *** Set theory
-- First, consider some universal set $\Omega$.
+- First, consider some universal set $\Omega$ and the empty set $\emptyset$
 - A set $A$ is a collection of points $x$ in $\Omega$.
-- $\{x \in \Omega : f(x)\}$: the set of points in $\Omega$ with the property that $f(x)$ is true.
+- $\{x \in \Omega : f(x)\}$: the set of points in $\Omega$ for which $f(x)$ is true.
+
 
 **** Unary operators
 - $\neg A =  \{x \in \Omega : x \notin A\}$.
@@ -73,6 +74,9 @@ $\neg, \wedge, \vee, \Rightarrow, \Leftrightarrow$
 - $A = B$ if $x \in A \Leftrightarrow x \in B$ - (c.f. $A \Leftrightarrow B$)
 
 
+**** Interesting cases
+- If $A \cap B = \emptyset$, then they are \alert{disjoint}, or mutually exclusive.
+- If $A \cap B = A$ only if $A \subset B$.
 ** Probability facts
 *** Probability fundamentals
 **** Probability measure $P$
@@ -82,8 +86,11 @@ $\neg, \wedge, \vee, \Rightarrow, \Leftrightarrow$
 **** Axioms of probability
 - $P(\Omega) = 1$
 - For $A, B \subset \Omega$, if $A \cap B = \emptyset$ then $P(A \cup B) = P(A) + P(B)$.
+**** Partition
+$\{A_i\}$ is a partition of $\Omega$ if $A_i \cap A_j = \emptyset$  $\forall i \neq j$ and $\bigcup_{i=1}^n A_i = \Omega$. A partition of $\Omega$ defines a \alert{complete set of mutually exclusive alternatives.}
+
 **** Marginalisation
-If $A_1, \ldots, A_n \subset \Omega$ are a partition of $\Omega$
+Let $A_1, \ldots, A_n \subset \Omega$ be a \alert{partition} of $\Omega$. Then
 \[
 P(B) = \sum_{i = 1}^n P(B \cap A_i).
 \]
@@ -151,25 +158,23 @@ P(f \in A \wedge g \in B) = P(f \in A) P(g \in B) = P_f(A) P_g(B).
 \]
 In that sense, $f \sim P_f$ and $g \sim P_g$.
 
+**** IID (Independent and Identically Distributed) random variables
+A sequence $x_t$ of r.v.s is IID if $x_t \sim P$
+$(x_1, \ldots, x_t, \ldots, x_T) \sim P^T$.
+
+
 *** Expectation
 For any real-valued random variable $f: \Omega \to \Reals$, the expectation with respect to a probability measure $P$ is
 \[
 \E_P(f) = \sum_{\omega \in \Omega} f(\omega) P(\omega).
 \]
 **** Linearity of expectations
-For any RVs $x, y$:
-\[
-\E_P(x + y) = \E_P(x) + \E_P(y)
-\]
-**** Independence
-If $x,y$ are independent RVs then $\E_P(xy) = \E(x)\E(y)$.
+For any RVs $x, y$, $\E_P(x + y) = \E_P(x) + \E_P(y)$
 **** Correlation
 If $x,y$ are *not* correlated then $\E_P(xy) = \E(x)\E(y)$.
-**** IID (Independent and Identically Distributed) random variables
-A sequence $x_t$ of r.v.s is IID if $x_t \sim P$
-$(x_1, \ldots, x_t, \ldots, x_T) \sim P^T$.
-
-*** Conditional expectation
+**** Independence
+If $x,y$ are independent RVs then they are also uncorrelated (but not vice-versa)
+**** Conditional expectation
 The conditional expectation of a random variable $f: \Omega \to \Reals$, with respect to a probability measure $P$ conditioned on some event $B$ is simply
 \[
 \E_P(f | B) = \sum_{\omega \in \Omega} f(\omega) P(\omega | B).
@@ -194,9 +199,14 @@ If $f,g$ are independent RVs
 
 
 
+
+
 * Linear algebra
 ** Vectors
 *** Vector space $F$ axioms
+Here we consider a vector space $F$. Typically, it is a subset of the Euclidean d-dimensional space, ie. $F \subset \Reals^d$.
+
+
 - $(x + y) + z = x + (y + z)$, for all $x, y, z \in F$.
 - $x + y = y + x$, for all $x, y \in F$.
 - There is a zero element $0 \in F$ such that $x + 0 = 0$ for all $x \in F$.
