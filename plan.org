@@ -54,26 +54,41 @@ learning.
 
 
 ** Schedule
-|--------+-------+----------------------------+-------------------+------------------------------+-----------------------------------------|
-| Module |  Date | Topic                      | Theory            | Lab                          | Assignment                              |
-|--------+-------+----------------------------+-------------------+------------------------------+-----------------------------------------|
-|      1 | 09.17 | k Nearest neighbours       | Decision theory   | Train/Test/XV                | XV on a simple classifier               |
-|      2 | 09.24 | The Perceptron             | Generalisation    | Bootstrapping and simulation | Simulation and real data                |
-|      3 | 10.01 | The Perceptron             | SGD               | Perceptron, Classification   | Perceptron (Logistic Regression) vs kNN |
-|      4 | 10.08 | Linear Regression          | Linear Regression | Linear Regression            | OLS vs SGD                              |
-|      5 | 10.15 | Neural networks            | Backpropagation   |                              |                                         |
-|      6 | 10.22 | Graphical models           | Bayes Classifier  | Bayes's theorem              |                                         |
-|      7 | 10.29 | Probabilistic modelling    | Conjugate priors  | Beta-Bernoulli               |                                         |
-|      9 | 11.05 | Sequence prediction        | Experiment design |                              |                                         |
-|     10 | 11.12 | Latent variable estimation | Latent variables  |                              |                                         |
-|     11 | 11.19 |                            |                   |                              |                                         |
-|     12 | 11.26 | Fairness and Privacy       |                   |                              |                                         |
-|     13 | 12.03 |                            |                   |                              |                                         |
-|     14 | 12.10 | Project Presentations      |                   |                              |                                         |
-|--------+-------+----------------------------+-------------------+------------------------------+-----------------------------------------|
-|     13 | 12.17 | Project Presentations      |                   |                              |                                         |
-|--------+-------+----------------------------+-------------------+------------------------------+-----------------------------------------|
-
+*** 2024
+|--------+-------+-------------------------+---------------------+------------------------------+-----------------------------------------|
+| Module |  Date | Topic                   | Theory              | Lab                          | Assignment                              |
+|--------+-------+-------------------------+---------------------+------------------------------+-----------------------------------------|
+|      1 | 09.20 | k Nearest neighbours    | Decision theory     | Train/Test/XV                | XV on a simple classifier               |
+|      2 | 09.27 | Methodology             | Generalisation      | Bootstrapping and simulation | Simulation and real data                |
+|      3 | 10.04 | The Perceptron          | SGD                 | Perceptron, Classification   | Perceptron (Logistic Regression) vs kNN |
+|      4 | 10.11 | Linear Regression       | Linear Regression   | Linear Regression            | OLS vs SGD                              |
+|      5 | 10.18 | Neural networks         | Backpropagation     |                              |                                         |
+|      6 | 10.25 | Graphical models        | Bayes Classifier    | Bayes's theorem              |                                         |
+|      7 | 11.01 | Probabilistic modelling | Conjugate priors    | Beta-Bernoulli               |                                         |
+|      9 | 11.08 | Group Fairness          | Experiment design   |                              |                                         |
+|     10 | 11.15 | Inidividual Fairness    | Latent variables    |                              |                                         |
+|     11 | 11.22 | Differential Privacy  1 | Randomised Response |                              |                                         |
+|     12 | 11.29 | Differential Privacy  2 | Laplace Mechanism   |                              |                                         |
+|     13 | 12.06 |                         |                     |                              |                                         |
+|     14 | 12.13 | Project Presentations   |                     |                              |                                         |
+|--------+-------+-------------------------+---------------------+------------------------------+-----------------------------------------|
+|     13 | 12.17 | Project Presentations   |                     |                              |                                         |
+|--------+-------+-------------------------+---------------------+------------------------------+-----------------------------------------|
+*** 2023
+1. Introduction: Classification, kNN
+2. Learning and generalisation: Train/Validate/Test, Cross-Validation, Bootstrapping
+3. The Perceptron: Simple and Large Margin
+4. Regression: Linear regression, Gradient Descent, Least-Squares
+5. Project discussion, Hypothesis testing, Linear Regression Lab,
+6. Generative Models: Naive Bayes, Density Estimation, Histograms, Expectation-Maxiisation
+7. Multi-Layer Perceptrons: Features, Derivatives, Random Projections, Backpropagation
+8. SVMs
+9. Bayesian INference and Discrete Bayesian Networks
+10. Bangging, Monte Carlo, Markov Chains
+11. Image Processing
+12. Reinforcement Learning
+13. Project Presentations
+	
 ** Material
 *** Textbooks
 **** Primary
