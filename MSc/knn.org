@@ -1,0 +1,149 @@
+#+TITLE: Nearest Neighbour Algorithms
+#+AUTHOR: Christos Dimitrakakis
+#+EMAIL:christos.dimitrakakis@unine.ch
+#+LaTeX_HEADER: \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
+#+LaTeX_HEADER: \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
+#+LaTeX_HEADER: \DeclareMathOperator*{\argmax}{arg\,max}
+#+LaTeX_HEADER: \DeclareMathOperator*{\argmin}{arg\,min}
+#+LaTeX_HEADER: \newcommand \defn {\mathrel{\triangleq}}
+#+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
+#+LaTeX_HEADER: \newcommand \Param {\Theta}
+#+LaTeX_HEADER: \newcommand \param {\theta}
+#+TAGS: activity advanced definition exercise homework project example theory code
+#+OPTIONS:   H:3 num:t toc:t \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+
+* Introduction
+** The hidden secret of machine learning
+*** Supervised learning
+
+- Given labelled training examples $(x_1, y_1), \ldots (x_T, y_T)$ where
+- $x_t \in \Reals^n$ are *features*
+- $y_t \in Y$ are *labels*
+**** Classification
+- $Y = \{1, \ldots, m\}$ are *discrete* labels
+**** Regression
+- $Y = \Reals^m$ are *continuous* values
+
+*** The kNN algorithm idea
+
+- Assume an unknown example is similar to its neighbours
+- Smoothness allows us to make predictions
+- Lots of other algortihms
+
+*** Performance of KNN on image classification
+[[./fig/knn-image-performance.png]]
+
+- Really simple!
+- Can outperform really complex models!
+
+* The algorithm
+  
+** $k$ Nearest Neighbours
+*** The Nearest Neighbour algorithm
+
+**** Pseudocode
+- Input: Data $(x_t, y_t)_{t=1}^T$, test point $x$, distance $d$ 
+- $t^* = \argmin_t d(x_t, x)$ /// How do we implement this?
+- Return $\hat{y}_t = y_{t^*}$
+
+**** Classification
+     $\hat{y}_t  \in [m] \equiv \{1, \ldots, m\}$
+     
+**** Regression
+$\hat{y}_t  \in \Reals^m$
+
+*** The k-Nearest Neighbour algorithm
+
+**** Pseudocode
+- Input: Data $(x_t, y_t)_{t=1}^T$, test point $x$, distance $d$, neighbours \(k\)
+- Calculate $h_t = d(x_t, x)$ for all $t$.
+- Get sorted indices $s = \texttt{argsort}(h)$ so that $d(x_{s_i}, x) \leq d(x_{s_{i+1}}, x)$ for all $i$. (How?)
+- Return $\sum_{i=1}^k y_{s_i} / k$.
+
+**** Classification
+- It is not convenient to work with discrete labels.
+- We use a *one-hot encoding* (0, \ldots, 0, 1, 0, \ldots, 0)$.
+- $y_t \in \{0,1\}^m$ with $\|y_t\|_1 = 1$, so that the class of the \(t\)-th example is $j$ iff $y_{t,j} = 1$.
+
+**** Regression
+- $y_t  \in \Reals^m$, so we need do nothing
+
+*** Making a decision
+**** kNN Output
+- Given features $x$, we get a vector
+- $p_i = \hat{\Pr}(y = i | x)$.
+**** Accuracy
+- Predicted label $a$
+- Actual label $y$
+- $U(a, y) = \ind{a = y}$
+**** Classification decision to maximise accuracy
+- $a_t = \argmax_i p_i$
+
+** Extensions and parameters
+*** The number of neighbours
+**** $k=1$
+- How does it perform on the training data?
+- How might it perform on unseen data?
+**** $k = T$
+- How does it perform on the training data?
+- How might it perform on unseen data?
+
+*** Distance function
+**** For data in $\Reals^n$, \(p\)-norm
+\[
+d(x,y) = \|x - y\|_p
+\]
+**** Scaled norms
+When features having varying scales:
+\[
+d(x,y) = \|S x - S y\|_p
+\]
+Or pre-scale the data
+
+**** Complex data
+- Manifold distances
+- Graph distance
+
+*** Distances 
+**** A distance $d(\cdot, \cdot)$:
+- Identity $d(x,x) = 0$.
+- Positivity $d(x,y) > 0$ if $x \neq y$.
+- Symmetry $d(y,x) = d(x,y)$.
+- Triangle inequality $d(x,y) \leq d(x,z) + d(z,y)$.
+**** For data in $\Reals^n$, $p$-norm
+\[
+d(x,y) = \|x - y\|_p
+\]
+*** Norms;
+**** A norm $\|\cdot\|$
+- Zero element $\|0\| = 0$.
+- Homogeneity $\|cx\| = c \|x\|$ for any scalar $a$.
+- Triangle inequality $\|x + y\| \leq \|x\| + \|y\|$.
+**** $p$-norm
+\[
+\|z\|_p = \left(\sum_i z_i^p\right)^{1/p}
+\]
+*** Neighbourhood calculation
+If we have $T$ datapoints
+**** Sort and top $K$.
+- Requires $O(T \ln T)$ time
+**** Use the Cover-Tree or KD-Tree algorithm
+- Requires $O(c K \ln T)$ time.
+- $c$ depends on the data distribution.
+
+
+* Activities
+*** Class data
+Fill in the class data
+#+CAPTION: Link to spreadsheet
+#+NAME:   fig:class-qr
+#+ATTR_LATEX: :width 0.5\textwidth
+#+ATTR_HTML: :width 300px
+[[./fig/class_data_QR.png]]
+
+*** KNN activity
+- Implement nearest neighbours
+- Introduction to scikitlearn nearest neighbours
+

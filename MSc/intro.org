@@ -1,0 +1,197 @@
+#+TITLE: Machine Learning and Data Mining
+#+AUTHOR: Christos Dimitrakakis
+#+EMAIL:christos.dimitrakakis@unine.ch
+#+LaTeX_HEADER: \usepackage{tikz}
+#+LaTeX_HEADER: \usepackage{amsmath}
+#+LaTeX_HEADER: \usepackage{amssymb}
+#+LaTeX_HEADER: \usepackage{isomath}
+#+LaTeX_HEADER: \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand \Var {\mathop{\mbox{\ensuremath{\mathbb{V}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand \Bias {\mathop{\mbox{\ensuremath{\mathbb{B}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
+#+LaTeX_HEADER: \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
+#+LaTeX_HEADER: \DeclareMathOperator*{\argmax}{arg\,max}
+#+LaTeX_HEADER: \DeclareMathOperator*{\argmin}{arg\,min}
+#+LaTeX_HEADER: \DeclareMathOperator*{\sgn}{sgn}
+#+LaTeX_HEADER: \newcommand \defn {\mathrel{\triangleq}}
+#+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
+#+LaTeX_HEADER: \newcommand \Param {\Theta}
+#+LaTeX_HEADER: \newcommand \param {\theta}
+#+LaTeX_HEADER: \newcommand \vparam {\vectorsym{\theta}}
+#+LaTeX_HEADER: \newcommand \mparam {\matrixsym{\Theta}}
+#+LaTeX_HEADER: \newcommand \bW {\matrixsym{W}}
+#+LaTeX_HEADER: \newcommand \bw {\vectorsym{w}}
+#+LaTeX_HEADER: \newcommand \wi {\vectorsym{w}_i}
+#+LaTeX_HEADER: \newcommand \wij {w_{i,j}}
+#+LaTeX_HEADER: \newcommand \bA {\matrixsym{A}}
+#+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
+#+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
+#+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
+#+LaTeX_HEADER: \newcommand \bel {\beta}
+#+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
+#+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
+#+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
+#+LaTeX_CLASS_OPTIONS: [smaller]
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+#+TAGS: activity advanced definition exercise homework project example theory code
+#+OPTIONS:   H:3
+
+* The problems of Machine Learning (1 week)
+  #+TOC: headlines [currentsection,hideothersubsections]
+** Introduction
+*** Machine Learning And Data Mining
+**** The nuts and bolts
+- Models
+- Algorithms
+- Theory
+- Practice
+**** Problems
+- Data collection
+- Classification
+- Regression
+- Clustering
+- Compression
+- Reinforcement learning
+
+*** Machine learning
+**** Data Collection
+- Downloading a clean dataset from a repository
+- Performing a survey
+- Scraping data from the web
+- Deploying sensors, performing experiments, and obtaining measurements.
+**** Modelling (what we focus on this course)
+- Simple: the bias of a coin
+- Complex:  a language model.
+- The model depends on the data and the problem
+**** Algorithms and Decision Making
+- We want to use models to make decisions.
+- Decisions are made every step of the way.
+- Decisions are automated algorithmically.
+  
+*** The main problems in machine learning and statistics
+**** Prediction
+- Will it rain tomorrow?
+- How much will bitcoin be worth next year?
+  
+**** Inference
+- Does my poker opponent have two aces?
+- What is the mass of the moon?
+- What is the law of gravitation?
+
+**** Decision Making
+- Should I go hiking tomorrow?
+- Should I buy some bitcoins?
+- Should I fold, call, or raise in my poker game?
+- How can I get a spaceship to orbit the moon?
+
+*** The need to learn from data
+**** Problem definition
+- What problem do we need to solve?
+- How can we formalise it?
+- What properties of the problem can we learn from data?
+
+**** Data collection
+- Why do we need data?
+- What data do we need?
+- How much data do we want?
+- How will we collect the data?
+
+**** Modelling and decision making
+- How will we compute something useful?
+
+
+
+*** Learning from data
+**** Unsupervised learning
+- Given data $x_1, \ldots, x_T$.
+- Learn about the data-generating process.
+  
+**** Supervised learning
+- Given data $(x_1, y_1), \ldots, (x_T, y_T)$
+- Learn about the relationship between $x_t$ and $y_t$.
+- Example: Classification, Regression
+**** Online learning
+- Sequence prediction: At each step $t$, predict $x_{t+1}$ from $x_1, \ldots, x_t$.
+- Conditional prediction: At each step $t$, predict $y_{t+1}$ from $x_1, y_1 \ldots, x_t, y_t, \alert{x_{t+1}}$
+**** Reinforcement learning
+ Learn to act in an *unknown* world through interaction and rewards
+
+
+
+
+
+
+** Course Contents
+
+*** Course Contents
+**** Models
+- k-Nearest Neighbours.
+- Linear models and perceptrons.
+- Multi-layer perceptrons (aka deep neural networks).
+- Trees.
+- Mixture models (bagging, boosting).
+- Support vector machines.
+
+**** Algorithms
+- (Stochastic) Gradient Descent.
+- Linear programming.
+- Quadratic programming
+- Bayesian inference.
+- Expectation maximisation.
+- Monte Carlo Methods.
+
+
+*** Supervised learning
+The general goal is learning a function $f: X \to Y$.
+**** Classification
+- Input data $x_t \in \Reals$, $y_t \in [m] = \{1, 2, \ldots, m\}$
+- Learn a mapping $f$ so that $f(x_t) = y_t$ for unseen data
+**** Regression
+- Input data $x_t, y_t$
+- Learn a mapping $f$ so that $f(x_t) = \E[y_t]$ for unseen data
+*** Unsupervised learning
+The general goal is learning the data distribution.
+**** Compression
+- Learn two mappings $c, d$
+- $c(x)$ compresses an image $x$ to a small representation $z$.
+- $d(z)$ decompresses to an approximate image $\hat{x}$.
+**** Density estimation
+- Input data $x_1, \ldots, x_T$ from distribution with density $p$
+- Problem: Estimate $p$.
+**** Clustering
+- Input data $x_1, \ldots, x_T$ 
+- Assign each data $x_t$. to  cluster label $c_t$.
+** Objective functions
+*** Supervised learning objectives
+- Data $(x_t, y_t)$, $x_t \in X$, $y_t \in Y$, $t \in [T]$.
+- i.i.d assumption: $(x_t, y_t) \sim P$ for all $t$.
+- Supervised decision rule $\pi(a_t | x_t)$
+**** Classification
+- Predict the labels correctly, i.e. $a_t = y_t$.
+- Have an appropriate confidence level
+
+**** Regression
+- Predict the mean correctly
+- Have an appropriate variance around the mean
+*** Unsupervised learning objectives
+- Reconstruct the data well
+- Be able to generate data
+*** Reinforcement learning objectives
+- Maximise total reward
+
+  
+** Pitfalls
+*** Pitfalls
+**** Reproducibility
+- Modelling assumptions
+- Distribution shift
+- Interactions and feedback
+**** Fairness
+- Implicit biases in training data
+- Fair decision rules and meritocracy
+**** Privacy
+- Accidental data disclosure
+- Re-identification risk
+
+
+

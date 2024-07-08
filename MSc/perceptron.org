@@ -1,0 +1,222 @@
+#+TITLE: The perceptron algorithm
+#+AUTHOR: Christos Dimitrakakis
+#+EMAIL:christos.dimitrakakis@unine.ch
+#+LaTeX_HEADER: \usepackage{tikz}
+#+LaTeX_HEADER: \usepackage{amsmath}
+#+LaTeX_HEADER: \usepackage{amssymb}
+#+LaTeX_HEADER: \usepackage{isomath}
+#+LaTeX_HEADER: \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand \Var {\mathop{\mbox{\ensuremath{\mathbb{V}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand \Bias {\mathop{\mbox{\ensuremath{\mathbb{B}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
+#+LaTeX_HEADER: \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
+#+LaTeX_HEADER: \DeclareMathOperator*{\argmax}{arg\,max}
+#+LaTeX_HEADER: \DeclareMathOperator*{\argmin}{arg\,min}
+#+LaTeX_HEADER: \DeclareMathOperator*{\sgn}{sgn}
+#+LaTeX_HEADER: \newcommand \defn {\mathrel{\triangleq}}
+#+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
+#+LaTeX_HEADER: \newcommand \Param {\Theta}
+#+LaTeX_HEADER: \newcommand \param {\theta}
+#+LaTeX_HEADER: \newcommand \vparam {\vectorsym{\theta}}
+#+LaTeX_HEADER: \newcommand \mparam {\matrixsym{\Theta}}
+#+LaTeX_HEADER: \newcommand \bW {\matrixsym{W}}
+#+LaTeX_HEADER: \newcommand \bw {\vectorsym{w}}
+#+LaTeX_HEADER: \newcommand \wi {\vectorsym{w}_i}
+#+LaTeX_HEADER: \newcommand \wij {w_{i,j}}
+#+LaTeX_HEADER: \newcommand \bA {\matrixsym{A}}
+#+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
+#+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
+#+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
+#+LaTeX_HEADER: \newcommand \bel {\beta}
+#+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
+#+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
+#+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
+#+LaTeX_CLASS_OPTIONS: [smaller]
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+#+TAGS: activity advanced definition exercise homework project example theory code
+#+OPTIONS:   H:3
+
+* The Perceptron
+*** The perceptron algorithm
+**** Input
+- Feature space $X \subset \Reals^n$.
+- Label space $Y = \{-1, 1\}$.
+- Data $(x_t, y_t)$, $t \in [T]$,  with $x_t \in X, y_t \in Y$.
+**** Algorithm
+- $w_1 = w_0$.
+
+- For $t = 1, \ldots, T$.
+  - $a_t = \sgn(w_t^\top x_t)$.
+  - If $a_t \neq y_t$
+    - $w_{t+1} = w_t + y_t x_t$
+  - Else
+    - $w_{t+1} = w_t$
+  - EndIf
+- Return $w_{T+1}$
+	 
+*** Perceptron examples
+**** Example 1: One-dimensional data
+- Done on the board
+- Shows how the algorithm works.
+- Demonstrates the idea of a margin
+
+**** Example 2: Two-dimensional data
+- See [[file:src/NeuralNetworks/perceptron.py][in-class programming exercise]]
+
+  
+*** The Perceptron Theorem
+ The number of mistakes made by the perceptron algorithm is bounded by
+ $\rho^{-2}$, where $\|x_t\|\leq 1$, $\rho \leq y_t (x_t^top w^*)$ for some *margin* $\rho$ and *hyperplane* $w^*$ with $\|w^*\|=1$.
+
+**** Hyperplane $w^*$
+Separates the examples
+**** Margin $\rho$
+The minimum distance $\rho$ between the hyperplane and any point.
+
+*** Simple proof
+- Scale data: $\|x\| \leq 1$
+- Separating plane: $y_t(x_t^\top w^*) > 0$, $\|w^*\| = 1$.
+- When we make an update: $y_t(x_t^\top w_t) \leq 0$.
+- At each mistake, $w^\top w^*$ grows *by at least $\rho$*
+\[
+(w + yx)^\top w^* = w^\top w^* + y(x^\top w^*) \geq w^\top w^* + \rho
+\]
+- At each mistake, $w^\top w$ grows by *at most 1.*
+\[
+(w + yx)^\top (w + yx) = w^\top w + 2y(w^\top x) + y^2(x^\top x) \leq w^\top w + 1
+\]
+**** Putting it together
+After $M$ mistakes:
+- $w^\top w^* \geq M \rho$
+- $w^\top w \leq M$
+So $M \rho \leq w^\top w^* \leq \|w\| = \sqrt{w^\top w} \leq \sqrt{M}$.
+
+- Thus, $M \leq \rho^{-2}$.
+
+*** Why doesn't the perceptron always work?
+- Classes must be linearly separable
+**** Example: XOR
+
+* Gradient methods
+** Gradients for optimisation
+*** The gradient method
+- Function to minimise $f(\theta)$.
+- Derivative $\nabla_\theta f(\theta)$.
+**** Gradient descent algorithm
+- Input: initial value $\theta_0$, learning rate schedule $\alpha_t$
+- For $t=1, \ldots, T$
+  - $\theta_{t+1} = \theta_t - \alpha_t \nabla_\theta f(\theta_t)$
+- Return $\theta_T$
+
+**** Properties
+- If $\sum_t \alpha_t = \infty$ and $\sum_t \alpha_t^2 < \infty$, it finds a local minimum $\theta_T$, i.e. there is $\epsilon > 0$ so that
+\[
+f(\theta_T) < f(\theta), \forall \theta: \|\theta_T - \theta\| < \epsilon.
+\]
+*** Stochastic gradient method
+This is the same as the gradient method, but with added noise:
+- $\theta_{t+1} = \theta_t - \alpha_t [\nabla_\theta f(\theta_t) + \omega_t]$
+- $\E[\omega_t] = 0$ is sufficient for convergence.
+
+**** Example: When the cost is an expectation
+In machine learning, the cost is frequently an expectation of some function $\ell$, 
+\[
+f(\theta) = \int_X dP(x) \ell(x, \theta)
+\]
+This can be approximated with a sample
+\[
+f(\theta) \approx \frac{1}{T} \sum_t \ell(x_t, \theta)
+\]
+The same holds for the gradient:
+\[
+\nabla_\theta f(\theta) = \int_X dP(x) \nabla_\theta \ell(x, \theta)
+\approx \frac{1}{T} \sum_t \nabla_\theta \ell(x_t, \theta)
+\]
+
+*** Gradient methods for expected value :example:
+**** Estimate the expected value
+$x_t \sim P$ with $\E_P[x_t] = \mu$.
+**** Objective: mean squared error
+Here $\ell(x, \theta) = (x - \theta)^2$.
+\[
+\min_\param \E_P[(x_t - \param)^2].
+\]
+**** Derivative
+Idea: at the minimum the derivative should be zero.
+\[
+d/d\param \E_P[(x_t - \param)^2]
+= \E_P[d/d\param(x_t - \param)^2]
+= \E_P[-(x_t - \param)]
+= \E_P[x_t] - \param.
+\]
+
+Setting the derivative to 0, we have $\param = \E_P[x_t]$. This is a simple solution.
+**** Real-world setting
+- The objective function does not result in a simple solution
+- The distribution $P$ is not known.
+- We can sample $x \sim P$.
+
+*** Stochastic gradient for mean estimation
+- The gradient is zero when the parameter is the expected value
+\begin{align*}
+ \frac{d}{d\param} \E_P [(x - \param)^2] 
+&= \int_{-\infty}^\infty dP(x) \frac{d}{d\param} (x - \param)^2
+\\
+&=  \int_{-\infty}^\infty dP(x) 2(x - \param)
+\\
+&=  2 \E_P[x] - 2\param.
+\end{align*}
+- If we sample $x$ we approximate the gradient:
+\begin{align*}
+ \frac{d}{d\param} \E_P [(x - \param)^2] 
+&= \int_{-\infty}^\infty dP(x) \frac{d}{d\param} (x - \param)^2
+\\
+&\approx \frac{1}{T} \sum_{t=1}^T \frac{d}{d\param} (x_t - \param)^2
+= \frac{1}{T} \sum_{t=1}^T 2(x_t - \param)
+\end{align*}
+
+
+** The perceptron as a gradient algorithm
+*** Perceptron algorithm as gradient descent
+- Target error function $\E_P^w[\ell] = \int_X dP(x) \sum_y P(y|x) \ell(x, y, w)$
+- Empirical error function $\frac{1}{T} \sum_{t=1}^T \ell(x_t, y_t, w)$, $x_t, y_t \sim P$.
+**** Perceptron cost function
+The cost of each example
+\[
+\ell(x,y, w) = - \ind{y(x^\top w) < 0} y (x^\top w)
+\]
+**** Derivative: Chain rule
+- $\nabla_w \ell(x,y, w) = - \ind{y(x^\top w) > 0} \nabla_w [y(x^\top w)]$.
+- $\partial w / \partial{w^i} [y(x_t^\top w)] = y x_{t,i}$
+- Gradient update: $w_{t+1} = w_t - \nabla_w \ell(x,y, w) = w_t + y x_{t}$
+**** Classification error cost function
+This is not differentiable :(
+
+*** Logistic regression
+**** Output as a measure of confidence
+- $P_w(y = 1| x) = \frac{1}{1 + \exp(- x_t^\top w)}$
+**** Negative Log likelihood
+- $\ell(x_t, y_t, w) = - \ln P_w( y_t | x_t) = \ln(1 + \exp(- y_t x_t^\top w))$
+\begin{align*}
+\nabla_w \ell(x_t, y_t, w) 
+&= \frac{1}{1 + \exp(- y x_t^\top w)} \nabla_w[1 + \exp(-y x_t^\top w)]
+\\
+&= \frac{1}{1 + \exp(- y x_t^\top w)} \exp(-y x_t^\top w) [\nabla_w (-y_t x_t^\top w)]
+\\
+&= - \frac{1}{1 + \exp(x_t^\top w)} (x_{t,i})_{i=1}^ne
+\end{align*}
+- $\E_P(\ell) = \int_X dP(x) \sum_{y \in Y} P(y|x) P_w(y_t + x_t)$
+* Lab and Assignment
+
+*** Lab demonstration
+
+- How to use kNN and LogisticRegression with sklearn (and perhaps statsmodels, time permitting)
+- Use an example where there is no default 'class' label
+
+*** Assignment
+
+1. Find a dataset with some categorical variable of interest that we want to predict from the UCI repository.
+2. Formulate the appropriate classification problem.
+3. Perform model selection through train/validate or crossvalidation to find the best model and hyperparameters
+4. Measure the model's final performance on the test set.
+5. Discuss anything of interest in the data such as: feature scaling/selection, missing data, outliers.
