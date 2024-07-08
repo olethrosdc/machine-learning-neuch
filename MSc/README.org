@@ -55,18 +55,19 @@ learning.
 
 *** Schedule
 
-1. Learning and generalisation. Concentration inequalities.
-2. Convergence of SGD.
-3. Prediction with expert advice.
+1. kNN, learning and generalisation.
+2. The Perceptron algorithm. Gradient Descent Convergence.
+3. Pandas/scikit lab
 4. Bayesian learning.
-5. PAC-Bayes bounds.
-6. The minimum description length principle.
-7. Fairness and discrimination: conditional independence.
-8. Fairness and meritocracy: smoothness.
-9. Differential privacy and randomised response.
-10. Laplace and Exponential mechanisms.
-11. Privacy and generalisation.
-12. Experiment design and Bayesian optimisation.
+5. Bayesian networks.
+6. Online learning: Prediction with expert advice.
+7. Concentration inequalities and learning theory.
+8. Fairness and discrimination: conditional independence.
+9. Fairness and meritocracy: smoothness.
+10. Differential privacy and randomised response.
+11. Laplace and Exponential mechanisms.
+12. Experiment design lab
+13. Project presentations.
 
 ** Material
 *** Textbooks
