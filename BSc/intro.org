@@ -1,4 +1,4 @@
-#+TITLE: Machine Learning and Data Mining
+#+TITLE: Introduction to Machine Learning
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \usepackage{tikz}
@@ -102,10 +102,11 @@
 
 
 *** Learning from data
+
 **** Unsupervised learning
 - Given data $x_1, \ldots, x_T$.
 - Learn about the data-generating process.
-  
+- Example: Estimation, compression, text/image generation  
 **** Supervised learning
 - Given data $(x_1, y_1), \ldots, (x_T, y_T)$
 - Learn about the relationship between $x_t$ and $y_t$.
@@ -116,11 +117,6 @@
 **** Reinforcement learning
  Learn to act in an *unknown* world through interaction and rewards
 
-
-
-
-
-
 ** Course Contents
 
 *** Course Contents
@@ -128,21 +124,13 @@
 - k-Nearest Neighbours.
 - Linear models and perceptrons.
 - Multi-layer perceptrons (aka deep neural networks).
-- Trees.
-- Mixture models (bagging, boosting).
-- Support vector machines.
-
+- Bayesian Networks
 **** Algorithms
 - (Stochastic) Gradient Descent.
-- Linear programming.
-- Quadratic programming
 - Bayesian inference.
-- Expectation maximisation.
-- Monte Carlo Methods.
-
-
+  
 *** Supervised learning
-The general goal is learning a function $f: X \to Y$.
+    The general goal is learning a function $f: X \to Y$.
 **** Classification
 - Input data $x_t \in \Reals$, $y_t \in [m] = \{1, 2, \ldots, m\}$
 - Learn a mapping $f$ so that $f(x_t) = y_t$ for unseen data
@@ -194,4 +182,4 @@ The general goal is learning the data distribution.
 - Re-identification risk
 
 
-
+* Estimation
