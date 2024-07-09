@@ -183,3 +183,41 @@ The general goal is learning the data distribution.
 
 
 * Estimation
+*** Class data                                                     :activity:
+- The class enters their data into [[https://docs.google.com/spreadsheets/d/1xRpo1LuMz62Yu57ABxtkvbvCebuew3VUh387ElXNoGU/edit?usp=sharing][excel file]]. 
+- We perform simple histograms
+- We then discuss mean estimation, classification, regression, and density estimation.
+
+**** Mean estimation
+- What is the average height?
+- What is the expected height of people drawn from the same population?
+
+**** Classification
+- Can we predict gender from height/weight?
+
+**** Regression 
+- Can we predict weight from height and gender?
+
+*** Models
+**** Models as summaries
+- They summarise what we can see in the data
+- The ultimate model of the data *is* the data
+**** Models as predictors
+- They make predictions about *out of sample* data
+- This requires some *assumptions about the data distribution*.
+**** Example models
+- A numerical mean
+- A linear classifier
+- A linear regressor
+- A deep neural network
+- A Gaussian process
+- A large language model
+
+*** Validating models
+**** Training data
+**** Validation data
+**** Test data
+
+*** The simplest model: k-Nearest Neighbour
+**** nearest-neighbour classifier
+- Here we develop pseudocode and actual code for the kNN
