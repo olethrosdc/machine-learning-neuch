@@ -221,3 +221,5 @@ The general goal is learning the data distribution.
 *** The simplest model: k-Nearest Neighbour
 **** nearest-neighbour classifier
 - Here we develop pseudocode and actual code for the kNN
+- We see how performance changes as we have more data.
+- How *good* is kNN? How can we measure its quality just based on the class data??
