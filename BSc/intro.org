@@ -189,15 +189,23 @@ The general goal is learning the data distribution.
 - We perform simple histograms
 - We then discuss mean estimation, classification, regression, and density estimation.
 
+
 **** Mean estimation
 - What is the average height?
 - What is the expected height of people drawn from the same population?
 
-**** Classification
-- Can we predict gender from height/weight?
+**** Supervised learning problems:
+- Classification: Can we predict gender from height/weight?
+- Regression: Can we predict weight from height and gender?
+- In both cases we predict *output* variables from *input* variables
+**** *Input* variables
+Also called features, predictors, independent variables
 
-**** Regression 
-- Can we predict weight from height and gender?
+**** *Output* variables
+Also called response, or dependent variables.
+
+
+
 
 *** Features
 The class data looks like this

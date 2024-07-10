@@ -1,0 +1,6 @@
+Outline and materials for Bachelor and Masters courses in machine learning.
+
+* Directories
+- BSc/ Materials for the Bachelor course. Check [[file:BSc/README.org][the Bachelor overview]] for details
+- MSc/ Materials for the MSc course. Check [[file:MSc/README.org][the Masters overview]] for details
+- src/ source code (common to both courses).
