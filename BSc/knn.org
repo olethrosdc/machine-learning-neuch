@@ -13,14 +13,17 @@
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3 num:t toc:t \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
 #+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
-
+a
 * Introduction
 ** The hidden secret of machine learning
 *** Supervised learning
 
 - Given labelled training examples $(x_1, y_1), \ldots (x_T, y_T)$ where
-- $x_t \in \Reals^n$ are *features*
-- $y_t \in Y$ are *labels*
+- $x_t \in X$ are *features* 
+- $y_t \in Y$ are *labels*..
+**** Feature space X$
+- Usually $X = \Reals^n$: the $n$-dimensional Euclidean space
+- How do we use your class data?
 **** Classification
 - $Y = \{1, \ldots, m\}$ are *discrete* labels
 **** Regression

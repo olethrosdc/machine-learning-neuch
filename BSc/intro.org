@@ -27,6 +27,7 @@
 #+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
 #+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
 #+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
+#+LaTeX_HEADER: \newcommand \bX {\matrixsym{X}}
 #+LaTeX_HEADER: \newcommand \bel {\beta}
 #+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
 #+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
@@ -198,6 +199,40 @@ The general goal is learning the data distribution.
 **** Regression 
 - Can we predict weight from height and gender?
 
+*** Features
+The class data looks like this
+|------------+--------+--------+--------+-----+-------------+---------|
+| First Name | Gender | Height | Weight | Age | Nationality | Smoking |
+|------------+--------+--------+--------+-----+-------------+---------|
+| Lee        | M      |    170 |     80 |  20 | Chinese     |      10 |
+| Fatemeh    | F      |    150 |     65 |  25 | Turkey      |       0 |
+| Ali        | Male   |    174 |     82 |  19 | Turkish     |       0 |
+| Joan       | N      |   5'11 |    180 |  21 | Brtish      |       4 |
+|------------+--------+--------+--------+-----+-------------+---------|
+
+- $\bX$: Everybody's data
+- $x_t$: The $t$-th person's data
+- $x_{t,k}$: The $k$-th feature of the $t$-th person.
+- $\bx_k$: Everybody's $k$-th feature
+
+**** Real-valued versus actual data
+- We assume $x_t \in \Reals^n$
+- Actual data is sometimes text, graphs, etc. It should be converted.
+
+**** Reading class data
+#+BEGIN_SRC python
+import pandas as pd
+X = pd.read_excel("data/class.xlsx")
+X["First Name"]
+#+END_SRC
+**** Summarising class data
+#+BEGIN_SRC python
+X.hist()
+import matplotlib.pyplot as plt
+plt.show()
+#+END_SRC
+
+
 *** Models
 **** Models as summaries
 - They summarise what we can see in the data
@@ -215,11 +250,10 @@ The general goal is learning the data distribution.
 
 *** Validating models
 **** Training data
+Used to calculate the model.
 **** Validation data
+Used t
 **** Test data
 
-*** The simplest model: k-Nearest Neighbour
-**** nearest-neighbour classifier
-- Here we develop pseudocode and actual code for the kNN
-- We see how performance changes as we have more data.
-- How *good* is kNN? How can we measure its quality just based on the class data??
+*** The simplest model: A mean
+
