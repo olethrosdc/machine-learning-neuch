@@ -99,7 +99,9 @@
 
 **** Modelling and decision making
 - How will we compute something useful?
+- How can we use the model to make decisions?
 
+*** Simple learning from data
 
 
 *** Learning from data
@@ -117,6 +119,98 @@
 - Conditional prediction: At each step $t$, predict $y_{t+1}$ from $x_1, y_1 \ldots, x_t, y_t, \alert{x_{t+1}}$
 **** Reinforcement learning
  Learn to act in an *unknown* world through interaction and rewards
+
+
+
+* Estimation
+*** Class data                                                     :activity:
+- The class enters their data into [[https://docs.google.com/spreadsheets/d/1xRpo1LuMz62Yu57ABxtkvbvCebuew3VUh387ElXNoGU/edit?usp=sharing][excel file]]. 
+- We perform simple histograms
+- We then discuss mean estimation, classification, regression, and density estimation.
+
+
+**** Mean estimation
+- What is the average height?
+- What is the expected height of people drawn from the same population?
+
+**** Supervised learning problems:
+- Classification: Can we predict gender from height/weight?
+- Regression: Can we predict weight from height and gender?
+- In both cases we predict *output* variables from *input* variables
+**** *Input* variables
+Also called features, predictors, independent variables
+
+**** *Output* variables
+Also called response, or dependent variables.
+
+
+
+
+*** Variables
+The class data looks like this
+
+|------------+--------+--------+--------+-----+-------------+---------|
+| First Name | Gender | Height | Weight | Age | Nationality | Smoking |
+|------------+--------+--------+--------+-----+-------------+---------|
+| Lee        | M      |    170 |     80 |  20 | Chinese     |      10 |
+| Fatemeh    | F      |    150 |     65 |  25 | Turkey      |       0 |
+| Ali        | Male   |    174 |     82 |  19 | Turkish     |       0 |
+| Joan       | N      |   5'11 |    180 |  21 | Brtish      |       4 |
+|------------+--------+--------+--------+-----+-------------+---------|
+
+- $\bX$: Everybody's data
+- $x_t$: The t-th person's data
+- $x_{t,k}$: The k-th feature of the $t$-th person.
+- $\bx_k$: Everybody's k-th feature
+
+**** Raw versus neat data
+- Neat data: $x_t \in \Reals^n$
+- Raw data: text, graphs, missing values, etc
+
+*** Python example
+**** Reading class data
+#+BEGIN_SRC python
+import pandas as pd
+X = pd.read_excel("data/class.xlsx")
+X["First Name"]
+#+END_SRC
+- Array columns correspond to features
+- Columns can be accessed through namesx
+
+**** Summarising class data
+#+BEGIN_SRC python
+X.hist()
+import matplotlib.pyplot as plt
+plt.show()
+#+END_SRC
+
+
+*** Models
+**** Models as summaries
+- They summarise what we can see in the data
+- The ultimate model of the data *is* the data
+**** Models as predictors
+- They make predictions about *out of sample* data
+- This requires some *assumptions about the data distribution*.
+**** Example models
+- A numerical mean
+- A linear classifier
+- A linear regressor
+- A deep neural network
+- A Gaussian process
+- A large language model
+
+*** Validating models
+**** Training data
+Used to calculate the model.
+**** Validation data
+Used t
+**** Test data
+
+*** The simplest model: A mean
+
+
+* Course summary
 
 ** Course Contents
 
@@ -182,86 +276,6 @@ The general goal is learning the data distribution.
 - Accidental data disclosure
 - Re-identification risk
 
+* Reading
 
-* Estimation
-*** Class data                                                     :activity:
-- The class enters their data into [[https://docs.google.com/spreadsheets/d/1xRpo1LuMz62Yu57ABxtkvbvCebuew3VUh387ElXNoGU/edit?usp=sharing][excel file]]. 
-- We perform simple histograms
-- We then discuss mean estimation, classification, regression, and density estimation.
-
-
-**** Mean estimation
-- What is the average height?
-- What is the expected height of people drawn from the same population?
-
-**** Supervised learning problems:
-- Classification: Can we predict gender from height/weight?
-- Regression: Can we predict weight from height and gender?
-- In both cases we predict *output* variables from *input* variables
-**** *Input* variables
-Also called features, predictors, independent variables
-
-**** *Output* variables
-Also called response, or dependent variables.
-
-
-
-
-*** Features
-The class data looks like this
-|------------+--------+--------+--------+-----+-------------+---------|
-| First Name | Gender | Height | Weight | Age | Nationality | Smoking |
-|------------+--------+--------+--------+-----+-------------+---------|
-| Lee        | M      |    170 |     80 |  20 | Chinese     |      10 |
-| Fatemeh    | F      |    150 |     65 |  25 | Turkey      |       0 |
-| Ali        | Male   |    174 |     82 |  19 | Turkish     |       0 |
-| Joan       | N      |   5'11 |    180 |  21 | Brtish      |       4 |
-|------------+--------+--------+--------+-----+-------------+---------|
-
-- $\bX$: Everybody's data
-- $x_t$: The $t$-th person's data
-- $x_{t,k}$: The $k$-th feature of the $t$-th person.
-- $\bx_k$: Everybody's $k$-th feature
-
-**** Real-valued versus actual data
-- We assume $x_t \in \Reals^n$
-- Actual data is sometimes text, graphs, etc. It should be converted.
-
-**** Reading class data
-#+BEGIN_SRC python
-import pandas as pd
-X = pd.read_excel("data/class.xlsx")
-X["First Name"]
-#+END_SRC
-**** Summarising class data
-#+BEGIN_SRC python
-X.hist()
-import matplotlib.pyplot as plt
-plt.show()
-#+END_SRC
-
-
-*** Models
-**** Models as summaries
-- They summarise what we can see in the data
-- The ultimate model of the data *is* the data
-**** Models as predictors
-- They make predictions about *out of sample* data
-- This requires some *assumptions about the data distribution*.
-**** Example models
-- A numerical mean
-- A linear classifier
-- A linear regressor
-- A deep neural network
-- A Gaussian process
-- A large language model
-
-*** Validating models
-**** Training data
-Used to calculate the model.
-**** Validation data
-Used t
-**** Test data
-
-*** The simplest model: A mean
-
+ISLP Chapter 1
