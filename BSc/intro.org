@@ -46,12 +46,16 @@
 - Algorithms
 - Theory
 - Practice
-**** Problems
+**** Workflow
+- Scientific question
+- Formalisation of the problem
 - Data collection
+- Analysis and model selection
+**** Types of machine learning / statistics problems
 - Classification
 - Regression
+- Density estimation
 - Clustering
-- Compression
 - Reinforcement learning
 
 *** Machine learning
@@ -101,37 +105,35 @@
 - How will we compute something useful?
 - How can we use the model to make decisions?
 
-*** Simple learning from data
-
-
-*** Learning from data
-
-**** Unsupervised learning
-- Given data $x_1, \ldots, x_T$.
-- Learn about the data-generating process.
-- Example: Estimation, compression, text/image generation  
-**** Supervised learning
-- Given data $(x_1, y_1), \ldots, (x_T, y_T)$
-- Learn about the relationship between $x_t$ and $y_t$.
-- Example: Classification, Regression
-**** Online learning
-- Sequence prediction: At each step $t$, predict $x_{t+1}$ from $x_1, \ldots, x_t$.
-- Conditional prediction: At each step $t$, predict $y_{t+1}$ from $x_1, y_1 \ldots, x_t, y_t, \alert{x_{t+1}}$
-**** Reinforcement learning
- Learn to act in an *unknown* world through interaction and rewards
-
-
 
 * Estimation
+** Answering a scientific problem
+*** Problem definition
+- Health, weight and height
+****  Health questions regarding height and weight
+- What is a normal height and weight?
+- How are they related to health?
+- What variables affect height and weight?
+
+*** Data collection
+Think about which variables we need to collect to answer our research question.
+
+**** Necessary variables
+The variables we need to know about
+- Weight
+- Height
+- Health issue:
+**** Auxiliary variables
+Factors related to height, weight and health
+
+**** Possible confounders
+Other factors that might affect health outcomes, unrelated to height and weight
+
 *** Class data                                                     :activity:
-- The class enters their data into [[https://docs.google.com/spreadsheets/d/1xRpo1LuMz62Yu57ABxtkvbvCebuew3VUh387ElXNoGU/edit?usp=sharing][excel file]]. 
-- We perform simple histograms
-- We then discuss mean estimation, classification, regression, and density estimation.
-
-
+- The class enters their data into the [[https://docs.google.com/spreadsheets/d/1xRpo1LuMz62Yu57ABxtkvbvCebuew3VUh387ElXNoGU/edit?usp=sharing][excel file]]. 
 **** Mean estimation
-- What is the average height?
-- What is the expected height of people drawn from the same population?
+- What is the average height/disease prevalence?
+- What is the expected height/disease prevalence in the general population?
 
 **** Supervised learning problems:
 - Classification: Can we predict gender from height/weight?
@@ -174,6 +176,10 @@ import pandas as pd
 X = pd.read_excel("data/class.xlsx")
 X["First Name"]
 #+END_SRC
+
+#+RESULTS:
+: None
+
 - Array columns correspond to features
 - Columns can be accessed through namesx
 
@@ -183,6 +189,46 @@ X.hist()
 import matplotlib.pyplot as plt
 plt.show()
 #+END_SRC
+
+#+RESULTS:
+
+
+** Simple modelling
+*** One variable: expectations and distributions
+**** Modelling the height 
+- Mean: models the expected value of the population
+- Variance: models the variance of the population
+- Empirical distribution: models the distribution of the population
+**** The expected value and the mean
+Assume $x_t : \Omega \to \Reals$, and $\omega \sim p$
+\[
+\E[x] 
+= \int_{-\infty}^\infty x(\omega) p(\omega) d\omega
+\approx
+\frac{1}{T} \sum_{t=1}^T x_{t}
+\]
+
+*** Two variables: conditional expectation
+**** The height of different genders
+
+*** Learning from data
+    
+**** Unsupervised learning
+- Given data $x_1, \ldots, x_T$.
+- Learn about the data-generating process.
+- Example: Estimation, compression, text/image generation  
+**** Supervised learning
+- Given data $(x_1, y_1), \ldots, (x_T, y_T)$
+- Learn about the relationship between $x_t$ and $y_t$.
+- Example: Classification, Regression
+**** Online learning
+- Sequence prediction: At each step $t$, predict $x_{t+1}$ from $x_1, \ldots, x_t$.
+- Conditional prediction: At each step $t$, predict $y_{t+1}$ from $x_1, y_1 \ldots, x_t, y_t, \alert{x_{t+1}}$
+**** Reinforcement learning
+ Learn to act in an *unknown* world through interaction and rewards
+
+
+
 
 
 *** Models
@@ -202,10 +248,19 @@ plt.show()
 
 *** Validating models
 **** Training data
-Used to calculate the model.
+- Calculations
+- Optimisation
+- Data exploration
 **** Validation data
-Used t
+- Fine-tuning
+- Model selection
 **** Test data
+- Performance comparison
+**** Simulation
+- Interactive performance comparison
+- White box testing
+**** Real-world testing
+- Actual performance measurement
 
 *** The simplest model: A mean
 
