@@ -74,16 +74,20 @@
 - Decisions are automated algorithmically.
   
 *** The main problems in machine learning and statistics
-**** Prediction
+- Prediction
+- Inference
+- Decision making
+*** Prediction
+[[./fig/meteo.png]]
 - Will it rain tomorrow?
 - How much will bitcoin be worth next year?
   
-**** Inference
+*** Inference
 - Does my poker opponent have two aces?
 - What is the mass of the moon?
 - What is the law of gravitation?
 
-**** Decision Making
+*** Decision Making
 - Should I go hiking tomorrow?
 - Should I buy some bitcoins?
 - Should I fold, call, or raise in my poker game?
@@ -169,7 +173,7 @@ The class data looks like this
 - Neat data: $x_t \in \Reals^n$
 - Raw data: text, graphs, missing values, etc
 
-*** Python example
+*** Python pandas for data wrangling
 **** Reading class data
 #+BEGIN_SRC python
 import pandas as pd
@@ -184,7 +188,7 @@ X["First Name"]
 - Columns can be accessed through namesx
 
 **** Summarising class data
-#+BEGIN_SRC python
+#+BEGIN_SRC python :exports code
 X.hist()
 import matplotlib.pyplot as plt
 plt.show()
@@ -192,21 +196,134 @@ plt.show()
 
 #+RESULTS:
 
+*** Pandas and DataFrames
+- Data in pandas is stored in a *DataFrame*
+- DataFrame is *not the same* as a numpy array.
+**** Core libraries
+#+BEGIN_SRC python :exports code
+import pandas as pd
+import numpy as np
+#+END_SRC
+
+**** Series: A sequence of values
+     :PROPERTIES:
+     :BEAMER_opt:   [shrink=15]
+     :END:
+#+BEGIN_SRC python :exports code
+# From numpy array:
+s = pd.Series(np.random.randn(3),  index=["a", "b", "c"])
+# From dict:
+d = {"a": 1, "b": 0, "c": 2}
+s = pd.Series(d)
+# accessing elemets
+s.iloc[2] #element 2
+s.iloc[1:2] #elements 1,2
+s.array # gets the array object 
+s.to_numpy() # gets the underlying numpy array
+#+END_SRC
+
+*** DataFrames
+
+
+**** Constructing from a numpy array
+#+BEGIN_SRC python :exports code
+data = np.random.uniform(size = [3,2])
+df = pd.DataFrame(data, index=["John", "Ali", "Sumi"],
+         columns=["X1", "X2"])
+#+END_SRC
+
+**** Constructing from a dictionary
+#+BEGIN_SRC python :exports code
+d = {  "one": pd.Series([1, 2], index=["a", "b"]),
+       "two": pd.Series([1, 2, 3], index=["a", "b", "c"])}
+df = pd.DataFrame(d)
+#+END_SRC
+
+
+
+**** Access
+#+BEGIN_SRC python :exports code
+X["First Name"] # get a column
+X.loc[2] # get a row
+X.at[2, "First Name"] # row 2, column 'first name'
+X.loc[2].at["First Name"] # row 2, element 'first name' of the series
+X.iat[2,0] # row 2, column 0
+#+END_SRC
+
+
 
 ** Simple modelling
+*** Means using python
+**** Calculating the mean of a random variable
+#+BEGIN_SRC python
+import numpy as np
+X = np.random.gamma(170, 1, size=20)
+X.mean()
+np.mean(X)
+#+END_SRC
+
+**** Calculating the mean of our class data
+#+BEGIN_SRC python
+X.mean() # gives the mean of all the variables through pandas.core.frame.DataFrame
+X["Height"].mean()
+np.mean(X["Weight"])
+#+END_SRC
+
+
 *** One variable: expectations and distributions
 **** Modelling the height 
-- Mean: models the expected value of the population
-- Variance: models the variance of the population
-- Empirical distribution: models the distribution of the population
+- Mean: models the expected value
+- Variance: models the \ldots variance
+- Empirical distribution: models the distribution
 **** The expected value and the mean
-Assume $x_t : \Omega \to \Reals$, and $\omega \sim p$
+Assume $x_t : \Omega \to \Reals$, and $\omega \sim P$
+- $x_1, \ldots, x_t, \ldots, x_T$: random i.i.d. variables
+- $\Omega$: random outcome space
+- $P$: distribution of outcomes $\omega \in \Omega$
+- $\E_p[x]$: expectation of $x$ under $P$
 \[
-\E[x] 
-= \int_{-\infty}^\infty x(\omega) p(\omega) d\omega
+\E_P[x_t] 
+= \sum_{\omega \in \Omega}  x_t(\omega) P(\omega) 
 \approx
 \frac{1}{T} \sum_{t=1}^T x_{t}
 \]
+- The sample mean is \(O(1/\sqrt{T})\)-close to the expected value.
+
+*** Reminder: expectations of random variables
+**** A gambling game
+What are the expected winnings if you play this game?
+- [a] With probability 1%, you win 100 CHF
+- [b] With probability 40%, you win 20 CHF.
+- [c] Otherwise, you win nothing
+**** Solution
+#+BEAMER: \pause
+- Let $x$ be the amount won, then $x(a) = 100, x(b) = 20, x(c) = 0$.
+- We need to calculate
+\[
+\E_P(x) = \sum_{\omega \in \{a, b, c\}} \!\!\! x(\omega) P(\omega) =
+x(a) P(a) + x(b) P(b) + x(c) P(c) 
+\]
+- $P(c) = 59\%$, as $P(\Omega) = 1$. Substituting,
+\[
+\E_P(x) = 1 + 8 + 0 = 9.
+\]
+*** Populations, samples, and distributions
+**** The world
+    :PROPERTIES:
+    :BEAMER_col: 0.6
+    :END:
+#+CAPTION: The world population
+#+NAME:   fig:world
+[[./fig/population.png]]
+**** A sample
+    :PROPERTIES:
+    :BEAMER_col: 0.4
+    :END:
+#+CAPTION: A sample
+#+NAME:   fig:sample
+[[./fig/sample.png]]
+*** Statistical assumptions
+We usually assume that individuals
 
 *** Two variables: conditional expectation
 **** The height of different genders
@@ -248,8 +365,7 @@ Assume $x_t : \Omega \to \Reals$, and $\omega \sim p$
 
 *** Validating models
 **** Training data
-- Calculations
-- Optimisation
+- Calculations, optimisation
 - Data exploration
 **** Validation data
 - Fine-tuning
@@ -264,6 +380,14 @@ Assume $x_t : \Omega \to \Reals$, and $\omega \sim p$
 
 *** The simplest model: A mean
 
+
+* Validating models
+*** Robust models of the mean
+
+*** Model selection
+- Train/Test/Validate
+- Cross-validation
+- Simulation
 
 * Course summary
 
