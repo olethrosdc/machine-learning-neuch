@@ -91,7 +91,9 @@ Sometimes each problem can be solved in isolation, but we usually have to partia
 - What is the law of gravitation?
 
 *** Decision Making
+[[./fig/lunar.png]]
 [[./fig/artemis.gif]]
+
 - Should I go hiking tomorrow?
 - Should I buy some bitcoins?
 - Should I fold, call, or raise in my poker game?
@@ -132,7 +134,7 @@ The variables we need to know about
 - Height
 - Health issue:
 **** Auxiliary variables
-Factors related to height, weight and health
+Factors related to height, weight a aitnd health
 
 **** Possible confounders
 Other factors that might affect health outcomes, unrelated to height and weight
