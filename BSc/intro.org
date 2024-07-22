@@ -74,24 +74,28 @@
 - Decisions are automated algorithmically.
   
 *** The main problems in machine learning and statistics
-- Prediction
-- Inference
-- Decision making
+- Inference (what is going on now? what happened in the past?)
+- Prediction (of the future, from the past)
+- Decision making (what should we do to achieve our goals?)
+
+Sometimes each problem can be solved in isolation, but we usually have to partially solve all problems at the same time.
 *** Prediction
 [[./fig/meteo.png]]
 - Will it rain tomorrow?
 - How much will bitcoin be worth next year?
-  
+- When is the next solar eclipse?
+
 *** Inference
+[[./fig/gravity.jpg]]
 - Does my poker opponent have two aces?
-- What is the mass of the moon?
 - What is the law of gravitation?
 
 *** Decision Making
+[[./fig/artemis.gif]]
 - Should I go hiking tomorrow?
 - Should I buy some bitcoins?
 - Should I fold, call, or raise in my poker game?
-- How can I get a spaceship to orbit the moon?
+- How can I get a spaceship to the moon and back?
 
 *** The need to learn from data
 **** Problem definition
