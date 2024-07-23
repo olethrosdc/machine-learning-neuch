@@ -329,7 +329,16 @@ x(a) P(a) + x(b) P(b) + x(c) P(c)
 #+NAME:   fig:sample
 [[./fig/sample.png]]
 *** Statistical assumptions
-We usually assume that individuals
+
+**** Independent, Identically Distributed
+- Population $\omega_1, \omega_2, \ldots$ with $\omega_t \in \Omega$
+- $\omega_t \sim P$: individuals $\omega_t \in \Omega$ are drawn from some underlying distribution $P$
+- $\bx_t \defn \bx(\omega_t)$ are some features of the $t$-th individual
+**** Representative sample
+- We observe a sample of $T$ individuals through their features $\bx$
+- This sample is uniformly selected at random
+
+e can treat a sample of $T$ individuals as just an 
 
 *** Two variables: conditional expectation
 **** The height of different genders
