@@ -330,18 +330,40 @@ x(a) P(a) + x(b) P(b) + x(c) P(c)
 [[./fig/sample.png]]
 *** Statistical assumptions
 
-**** Independent, Identically Distributed
+**** Independent, Identically Distributed data
 - Population $\omega_1, \omega_2, \ldots$ with $\omega_t \in \Omega$
 - $\omega_t \sim P$: individuals $\omega_t \in \Omega$ are drawn from some underlying distribution $P$
 - $\bx_t \defn \bx(\omega_t)$ are some features of the $t$-th individual
-**** Representative sample
-- We observe a sample of $T$ individuals through their features $\bx$
-- This sample is uniformly selected at random
 
-e can treat a sample of $T$ individuals as just an 
+**** Representative sample from a fixed population
+- Finite population $\Omega = \{\omega_1, \omega_2, \ldots, \omega_N\}$
+- A subset $S \subset \Omega$ of size $T < N$ is selected with a *uniform distribution*, i.e. so that
+\[
+P(S) = T/N
+\]
+for every subset $S$.
+
+We *can* treat both cases the same way.
 
 *** Two variables: conditional expectation
 **** The height of different genders
+The conditional expected height
+\[
+\E[h \mid g = 1] = \sum_{\omega \in \Omega} h(\omega) P[\omega \mid g(\omega) = 1]
+\]
+The empirical conditional expectation
+\[
+\E[h \mid g = 1] \approx \frac{ \sum_{t : g(\omega_t) = 1} h(\omega_t)}{ |\{t : g(\omega_t) = 1\}|}
+\]
+**** Python implementation
+#+BEAMER: \pause
+
+#+BEGIN_SRC python
+  h[g==1] / sum(g==1)
+  ## alternative
+  import numpy as np
+  np.mean(h[g==1])
+#+END_SRC
 
 *** Learning from data
     
@@ -368,8 +390,8 @@ e can treat a sample of $T$ individuals as just an
 - They summarise what we can see in the data
 - The ultimate model of the data *is* the data
 **** Models as predictors
-- They make predictions about *out of sample* data
-- This requires some *assumptions about the data distribution*.
+- They make predictions about things *beyond* the data
+- This requires some assumptions about the *data-generating process*.
 **** Example models
 - A numerical mean
 - A linear classifier
