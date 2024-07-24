@@ -5,6 +5,7 @@
 #+LaTeX_HEADER: \usepackage{amsmath}
 #+LaTeX_HEADER: \usepackage{amssymb}
 #+LaTeX_HEADER: \usepackage{isomath}
+#+LaTeX_HEADER: \usepackage{fontawesome}
 #+LaTeX_HEADER: \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
 #+LaTeX_HEADER: \newcommand \Var {\mathop{\mbox{\ensuremath{\mathbb{V}}}}\nolimits}
 #+LaTeX_HEADER: \newcommand \Bias {\mathop{\mbox{\ensuremath{\mathbb{B}}}}\nolimits}
@@ -41,22 +42,27 @@
   #+TOC: headlines [currentsection,hideothersubsections]
 ** Introduction
 *** Machine Learning And Data Mining
-**** The nuts and bolts
+**** \faGear \faWrench The nuts and bolts 
 - Models
 - Algorithms
 - Theory
 - Practice
-**** Workflow
+**** \faList Workflow 
 - Scientific question
 - Formalisation of the problem
 - Data collection
 - Analysis and model selection
-**** Types of machine learning / statistics problems
-- Classification
-- Regression
+**** Types of \faBarChart \quad statistics / \faMagic \quad machine learning problems  
+- *Classification*
+- *Regression*
 - Density estimation
-- Clustering
 - Reinforcement learning
+*** \faGear \faWrench The nuts and bolts 
+
+- Models
+- Algorithms
+- Theory
+- Practice
 
 *** Machine learning
 **** Data Collection
@@ -74,11 +80,7 @@
 - Decisions are automated algorithmically.
   
 *** The main problems in machine learning and statistics
-- Inference (what is going on now? what happened in the past?)
-- Prediction (of the future, from the past)
-- Decision making (what should we do to achieve our goals?)
 
-Sometimes each problem can be solved in isolation, but we usually have to partially solve all problems at the same time.
 *** Prediction
 [[./fig/meteo.png]]
 - Will it rain tomorrow?
@@ -94,8 +96,8 @@ Sometimes each problem can be solved in isolation, but we usually have to partia
 [[./fig/lunar.png]]
 [[./fig/artemis.gif]]
 
-- Should I go hiking tomorrow?
-- Should I buy some bitcoins?
+- What data should I collect?
+- Which model should I use?
 - Should I fold, call, or raise in my poker game?
 - How can I get a spaceship to the moon and back?
 
@@ -106,21 +108,24 @@ Sometimes each problem can be solved in isolation, but we usually have to partia
 - What properties of the problem can we learn from data?
 
 **** Data collection
-- Why do we need data?
-- What data do we need?
-- How much data do we want?
-- How will we collect the data?
+- *Why* do we need data?
+- *What* data do we need?
+- How *much* data do we want?
+- *How* will we collect the data?
 
 **** Modelling and decision making
-- How will we compute something useful?
-- How can we use the model to make decisions?
+- How will we *compute* something useful?
+- How can we use the model to make *decisions*?
 
 
 * Estimation
 ** Answering a scientific problem
 *** Problem definition
-- Health, weight and height
-****  Health questions regarding height and weight
+- Example: Health, weight and height
+****  Health questions regarding height and weight :B_example:
+     :PROPERTIES:
+     :BEAMER_env: example
+     :END:
 - What is a normal height and weight?
 - How are they related to health?
 - What variables affect height and weight?
@@ -132,12 +137,12 @@ Think about which variables we need to collect to answer our research question.
 The variables we need to know about
 - Weight
 - Height
-- Health issue:
+- Dependent: (health/vote/opinion/salary)
 **** Auxiliary variables
-Factors related to height, weight a aitnd health
+Measurable factors related to the variables of interest
 
 **** Possible confounders
-Other factors that might affect health outcomes, unrelated to height and weight
+Hidden factors that might affect variables
 
 *** Class data                                                     :activity:
 - The class enters their data into the [[https://docs.google.com/spreadsheets/d/1xRpo1LuMz62Yu57ABxtkvbvCebuew3VUh387ElXNoGU/edit?usp=sharing][excel file]]. 
@@ -172,7 +177,7 @@ The class data looks like this
 
 - $\bX$: Everybody's data
 - $x_t$: The t-th person's data
-- $x_{t,k}$: The k-th feature of the $t$-th person.
+- $x_{t,k}$: The k-th feature of the \(t\)-th person.
 - $\bx_k$: Everybody's k-th feature
 
 **** Raw versus neat data
@@ -260,43 +265,60 @@ X.iat[2,0] # row 2, column 0
 
 ** Simple modelling
 *** Means using python
-**** Calculating the mean of a random variable
+**** Calculating the mean of our class data :B_example:
+     :PROPERTIES:
+     :BEAMER_env: example
+     :END:
+#+BEGIN_SRC python
+X.mean() # gives the mean of all the variables through pandas.core.frame.DataFrame
+X["Height"].mean()
+np.mean(X["Weight"])
+#+END_SRC
+- The mean here is *fixed* because we calculate it on the same data.
+- If we were to *collect new data* then the answer would be different.
+
+**** Calculating the mean of a random variable :B_example:
+     :PROPERTIES:
+     :BEAMER_env: example
+     :END:
 #+BEGIN_SRC python
 import numpy as np
 X = np.random.gamma(170, 1, size=20)
 X.mean()
 np.mean(X)
 #+END_SRC
+- The mean is *random*, so we get a different answer everytime.
 
-**** Calculating the mean of our class data
-#+BEGIN_SRC python
-X.mean() # gives the mean of all the variables through pandas.core.frame.DataFrame
-X["Height"].mean()
-np.mean(X["Weight"])
-#+END_SRC
+*** One variable: expectations and distributions 
 
-
-*** One variable: expectations and distributions
-**** Modelling the height 
-- Mean: models the expected value
-- Variance: models the \ldots variance
-- Empirical distribution: models the distribution
-**** The expected value and the mean
-Assume $x_t : \Omega \to \Reals$, and $\omega \sim P$
-- $x_1, \ldots, x_t, \ldots, x_T$: random i.i.d. variables
+**** The expected value :B_definition:
+     :PROPERTIES:
+     :BEAMER_env: definition
+     :END:
+Assume $x : \Omega \to \Reals$, and $\omega_t \sim P$
+- $x_1, \ldots, x_t, \ldots, x_T$: random i.i.d. variables with $x_t = x(\omega_t)$
 - $\Omega$: random outcome space
 - $P$: distribution of outcomes $\omega \in \Omega$
 - $\E_p[x]$: expectation of $x$ under $P$
 \[
 \E_P[x_t] 
 = \sum_{\omega \in \Omega}  x_t(\omega) P(\omega) 
-\approx
+\]
+**** The sample mean :B_definition:
+     :PROPERTIES:
+     :BEAMER_env: definition
+     :END:
+The sample mean of $x_1, \ldots, x_T$ is
+\[
 \frac{1}{T} \sum_{t=1}^T x_{t}
 \]
-- The sample mean is \(O(1/\sqrt{T})\)-close to the expected value.
+Under $P$, the sample mean is \(O(1/\sqrt{T})\)-close to the expected value $\E_P[x_t]$.
 
 *** Reminder: expectations of random variables
-**** A gambling game
+**** A gambling game :B_exampleblock:
+     :PROPERTIES:
+     :BEAMER_env: exampleblock
+     :END:
 What are the expected winnings if you play this game?
 - [a] With probability 1%, you win 100 CHF
 - [b] With probability 40%, you win 20 CHF.
@@ -331,19 +353,84 @@ x(a) P(a) + x(b) P(b) + x(c) P(c)
 *** Statistical assumptions
 
 **** Independent, Identically Distributed data
-- Population $\omega_1, \omega_2, \ldots$ with $\omega_t \in \Omega$
-- $\omega_t \sim P$: individuals $\omega_t \in \Omega$ are drawn from some underlying distribution $P$
-- $\bx_t \defn \bx(\omega_t)$ are some features of the $t$-th individual
-
+- $\omega_t \sim P$: individuals $\omega_t \in \Omega$ are drawn from some *distribution* $P$
+- $\bx_t \defn \bx(\omega_t)$ are some *features* of the \(t\)-th individual
+- Here we are interested in properties of the *unknown* distribution $P$.
 **** Representative sample from a fixed population
 - Finite population $\Omega = \{\omega_1, \omega_2, \ldots, \omega_N\}$
 - A subset $S \subset \Omega$ of size $T < N$ is selected with a *uniform distribution*, i.e. so that
 \[
-P(S) = T/N
+P(S) = T/N, \qquad \forall S \subset \Omega.
 \]
-for every subset $S$.
+- Here we are interested in statistics of the *unknown* population $\Omega$.
+- We assume an underlying distribution $P$ for convenience.
+- We can tried both cases essentially the same.
+*** Learning from data
+    
+**** Unsupervised learning
+- Given data $x_1, \ldots, x_T$.
+- Learn about the data-generating process.
+- Example: Estimation, compression, text/image generation  
+**** Supervised learning
+- Given data $(x_1, y_1), \ldots, (x_T, y_T)$
+- Learn about the relationship between $x_t$ and $y_t$.
+- Example: Classification, Regression
+**** Online learning
+- Sequence prediction: At each step $t$, predict $x_{t+1}$ from $x_1, \ldots, x_t$.
+- Conditional prediction: At each step $t$, predict $y_{t+1}$ from $x_1, y_1 \ldots, x_t, y_t, \alert{x_{t+1}}$
+**** Reinforcement learning
+ Learn to act in an *unknown* world through interaction and rewards
 
-We *can* treat both cases the same way.
+
+
+ 
+*** Models
+**** Models as summaries
+- They summarise what we can see in the data
+- The ultimate model of the data *is* the data
+**** Models as predictors
+- They make predictions about things *beyond* the data
+- This requires some assumptions about the *data-generating process*.
+**** Example models
+- A numerical mean
+- A linear classifier
+- A linear regressor
+- A deep neural network
+- A Gaussian process
+- A large language model
+
+
+
+*** The simplest model: A mean
+
+** Two variables
+*** Predicting $y$ from $x$.
+Consider two variables, $x, y$. We can either care about
+- $\E[y | x]$ the expectation of $y$ for all $x$.
+- $\Pr[y | x]$ the distribution of $y$ for all $x$.
+**** Models  $x$ discrete, $y$ discrete
+- Conditional probability table for $P(y | x)$
+|---------------+-------+-------|
+| $P(x, y)$     | y = 0 | y = 1 |
+|---------------+-------+-------|
+| x = 0         |   30% |   10% |
+| x = 1         |   40% |   60% |
+|---------------+-------+-------|
+- Conditional probability table for $P(x, y)$
+|---------------+-------+-------|
+| $P(y \mid x)$ | y = 0 | y = 1 |
+|---------------+-------+-------|
+| x = 0         |   90% |   10% |
+| x = 1         |   40% |   60% |
+|---------------+-------+-------|
+
+**** $x$ discrete, $y$ continuous
+- Collection of probability distributions.
+**** $x$ continuous, $y$ discrete
+- Classification.
+**** $x$ continuous, $y$ discrete
+- Regression.
+
 
 *** Two variables: conditional expectation
 **** The height of different genders
@@ -365,41 +452,10 @@ The empirical conditional expectation
   np.mean(h[g==1])
 #+END_SRC
 
-*** Learning from data
+
     
-**** Unsupervised learning
-- Given data $x_1, \ldots, x_T$.
-- Learn about the data-generating process.
-- Example: Estimation, compression, text/image generation  
-**** Supervised learning
-- Given data $(x_1, y_1), \ldots, (x_T, y_T)$
-- Learn about the relationship between $x_t$ and $y_t$.
-- Example: Classification, Regression
-**** Online learning
-- Sequence prediction: At each step $t$, predict $x_{t+1}$ from $x_1, \ldots, x_t$.
-- Conditional prediction: At each step $t$, predict $y_{t+1}$ from $x_1, y_1 \ldots, x_t, y_t, \alert{x_{t+1}}$
-**** Reinforcement learning
- Learn to act in an *unknown* world through interaction and rewards
-
-
-
-
-
-*** Models
-**** Models as summaries
-- They summarise what we can see in the data
-- The ultimate model of the data *is* the data
-**** Models as predictors
-- They make predictions about things *beyond* the data
-- This requires some assumptions about the *data-generating process*.
-**** Example models
-- A numerical mean
-- A linear classifier
-- A linear regressor
-- A deep neural network
-- A Gaussian process
-- A large language model
-
+* Validating models
+*** Robust models of the mean
 *** Validating models
 **** Training data
 - Calculations, optimisation
@@ -414,12 +470,6 @@ The empirical conditional expectation
 - White box testing
 **** Real-world testing
 - Actual performance measurement
-
-*** The simplest model: A mean
-
-
-* Validating models
-*** Robust models of the mean
 
 *** Model selection
 - Train/Test/Validate
@@ -492,6 +542,7 @@ The general goal is learning the data distribution.
 - Accidental data disclosure
 - Re-identification risk
 
-* Reading
-
+* Reading for this week
+** Reading
+*** Reading for this week
 ISLP Chapter 1
