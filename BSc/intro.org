@@ -33,6 +33,11 @@
 #+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
 #+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
 #+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
+#+LaTeX_HEADER: \tikzstyle{utility}=[diamond,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=8mm]
+#+LaTeX_HEADER: \tikzstyle{select}=[rectangle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
+#+LaTeX_HEADER: \tikzstyle{hidden}=[dashed,draw=black,fill=red!10]
+#+LaTeX_HEADER: \tikzstyle{RV}=[circle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
+
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
@@ -144,13 +149,14 @@ Measurable factors related to the variables of interest
 **** Possible confounders
 Hidden factors that might affect variables
 
-*** Class data                                                     :activity:
+*** Class data and variables                                       :activity:
 - The class enters their data into the [[https://docs.google.com/spreadsheets/d/1xRpo1LuMz62Yu57ABxtkvbvCebuew3VUh387ElXNoGU/edit?usp=sharing][excel file]]. 
-**** Mean estimation
-- What is the average height/disease prevalence?
-- What is the expected height/disease prevalence in the general population?
+**** Unsupervised learning (unconditional estimation)
+- Predict the \alert{gender} of an unknown individual.
+- Predict the \alert{height}.
+- Predict the \alert{height and weight}?
 
-**** Supervised learning problems:
+**** Supervised learning problems (conditional estimation)
 - Classification: Can we predict gender from height/weight?
 - Regression: Can we predict weight from height and gender?
 - In both cases we predict *output* variables from *input* variables
@@ -158,9 +164,13 @@ Hidden factors that might affect variables
 Also called features, predictors, independent variables
 
 **** *Output* variables
-Also called response, or dependent variables.
+Also called response, dependent variables, labels, or targets.
 
-
+**** General problems :B_alertblock:
+     :PROPERTIES:
+     :BEAMER_env: alertblock
+     :END:
+The input/output dichotomy only exists in some problems.
 
 
 *** Variables
@@ -184,6 +194,32 @@ The class data looks like this
 - Neat data: $x_t \in \Reals^n$
 - Raw data: text, graphs, missing values, etc
 
+*** Modelling variables
+#+CAPTION: Basic learning problems 
+#+NAME:   fig:learning-problems
+#+ATTR_LATEX: :width 1.1\textwidth
+[[./fig/learning-problems.pdf]]
+*** Directed graphs for modelling relationships
+We can always summarise the type of model we want through a graph.
+In directed graphs we always have to specify a direction between linked variables.
+**** Single variable
+\begin{tikzpicture}
+\node[RV] at (1,0) (x) {$x$};
+\end{tikzpicture}
+**** Regression
+\begin{tikzpicture}
+\node[RV] at (0,0) (w) {$w$};
+\node[RV] at (1,0) (h) {$h$};
+\draw[->] (w) to (h);
+\end{tikzpicture}
+**** Classification
+\begin{tikzpicture}
+\node[RV] at (0,0) (w) {$w$};
+\node[RV] at (1,0) (g) {$g$};
+\draw[->] (w) to (g);
+\end{tikzpicture}
+
+** Pandas and dataframes
 *** Python pandas for data wrangling
 **** Reading class data
 #+BEGIN_SRC python
@@ -263,7 +299,7 @@ X.iat[2,0] # row 2, column 0
 
 
 
-** Simple modelling
+** Single variable models
 *** Means using python
 **** Calculating the mean of our class data :B_example:
      :PROPERTIES:
@@ -304,6 +340,7 @@ Assume $x : \Omega \to \Reals$, and $\omega_t \sim P$
 \E_P[x_t] 
 = \sum_{\omega \in \Omega}  x_t(\omega) P(\omega) 
 \]
+#+BEAMER: \pause
 **** The sample mean :B_definition:
      :PROPERTIES:
      :BEAMER_env: definition
@@ -335,6 +372,79 @@ x(a) P(a) + x(b) P(b) + x(c) P(c)
 \[
 \E_P(x) = 1 + 8 + 0 = 9.
 \]
+
+*** Models
+**** Models as summaries
+- They summarise what we can see in the data
+- The ultimate model of the data *is* the data
+**** Models as predictors
+- They make predictions about things *beyond* the data
+- This requires some assumptions about the *data-generating process*.
+**** Example models
+- A numerical mean
+- A linear classifier
+- A linear regressor
+- A deep neural network
+- A Gaussian process
+- A large language model
+
+
+
+*** The simplest model: A mean
+
+** Two variable models
+*** Predicting $y$ from $x$.
+Consider two variables, $x, y$. We can either care about
+- $\E[y | x]$ the expectation of $y$ for all $x$.
+- $\Pr[y | x]$ the distribution of $y$ for all $x$.
+**** Models  $x$ discrete, $y$ discrete
+- Conditional probability table for $P(y | x)$
+|-----------+-------+-------|
+| $P(x, y)$ | y = 0 | y = 1 |
+|-----------+-------+-------|
+| x = 0     |   54% |    6% |
+| x = 1     |   16% |   24% |
+|-----------+-------+-------|
+- Conditional probability table for $P(x, y)$
+|---------------+-------+-------|
+| $P(y \mid x)$ | y = 0 | y = 1 |
+|---------------+-------+-------|
+| x = 0         |   90% |   10% |
+| x = 1         |   40% |   60% |
+|---------------+-------+-------|
+- What is $P(x)$?
+
+**** $x$ discrete, $y$ continuous
+- Collection of probability distributions.
+**** $x$ continuous, $y$ discrete
+- Classification.
+**** $x$ continuous, $y$ discrete
+- Regression.
+
+
+*** Two variables: conditional expectation
+**** The height of different genders
+The conditional expected height
+\[
+\E[h \mid g = 1] = \sum_{\omega \in \Omega} h(\omega) P[\omega \mid g(\omega) = 1]
+\]
+The empirical conditional expectation
+\[
+\E[h \mid g = 1] \approx \frac{ \sum_{t : g(\omega_t) = 1} h(\omega_t)}{ |\{t : g(\omega_t) = 1\}|}
+\]
+**** Python implementation
+#+BEAMER: \pause
+
+#+BEGIN_SRC python
+  h[g==1] / sum(g==1)
+  ## alternative
+  import numpy as np
+  np.mean(h[g==1])
+#+END_SRC
+
+
+    
+* Statistics, validation and model selection
 *** Populations, samples, and distributions
 **** The world
     :PROPERTIES:
@@ -383,78 +493,7 @@ P(S) = T/N, \qquad \forall S \subset \Omega.
 
 
 
- 
-*** Models
-**** Models as summaries
-- They summarise what we can see in the data
-- The ultimate model of the data *is* the data
-**** Models as predictors
-- They make predictions about things *beyond* the data
-- This requires some assumptions about the *data-generating process*.
-**** Example models
-- A numerical mean
-- A linear classifier
-- A linear regressor
-- A deep neural network
-- A Gaussian process
-- A large language model
 
-
-
-*** The simplest model: A mean
-
-** Two variables
-*** Predicting $y$ from $x$.
-Consider two variables, $x, y$. We can either care about
-- $\E[y | x]$ the expectation of $y$ for all $x$.
-- $\Pr[y | x]$ the distribution of $y$ for all $x$.
-**** Models  $x$ discrete, $y$ discrete
-- Conditional probability table for $P(y | x)$
-|---------------+-------+-------|
-| $P(x, y)$     | y = 0 | y = 1 |
-|---------------+-------+-------|
-| x = 0         |   30% |   10% |
-| x = 1         |   40% |   60% |
-|---------------+-------+-------|
-- Conditional probability table for $P(x, y)$
-|---------------+-------+-------|
-| $P(y \mid x)$ | y = 0 | y = 1 |
-|---------------+-------+-------|
-| x = 0         |   90% |   10% |
-| x = 1         |   40% |   60% |
-|---------------+-------+-------|
-
-**** $x$ discrete, $y$ continuous
-- Collection of probability distributions.
-**** $x$ continuous, $y$ discrete
-- Classification.
-**** $x$ continuous, $y$ discrete
-- Regression.
-
-
-*** Two variables: conditional expectation
-**** The height of different genders
-The conditional expected height
-\[
-\E[h \mid g = 1] = \sum_{\omega \in \Omega} h(\omega) P[\omega \mid g(\omega) = 1]
-\]
-The empirical conditional expectation
-\[
-\E[h \mid g = 1] \approx \frac{ \sum_{t : g(\omega_t) = 1} h(\omega_t)}{ |\{t : g(\omega_t) = 1\}|}
-\]
-**** Python implementation
-#+BEAMER: \pause
-
-#+BEGIN_SRC python
-  h[g==1] / sum(g==1)
-  ## alternative
-  import numpy as np
-  np.mean(h[g==1])
-#+END_SRC
-
-
-    
-* Validating models
 *** Robust models of the mean
 *** Validating models
 **** Training data
@@ -498,18 +537,25 @@ The empirical conditional expectation
 **** Regression
 - Input data $x_t, y_t$
 - Learn a mapping $f$ so that $f(x_t) = \E[y_t]$ for unseen data
+- Can be mapped into classification by binning.
 *** Unsupervised learning
 The general goal is learning the data distribution.
-**** Compression
-- Learn two mappings $c, d$
-- $c(x)$ compresses an image $x$ to a small representation $z$.
-- $d(z)$ decompresses to an approximate image $\hat{x}$.
 **** Density estimation
 - Input data $x_1, \ldots, x_T$ from distribution with density $p$
 - Problem: Estimate $p$.
-**** Clustering
-- Input data $x_1, \ldots, x_T$ 
-- Assign each data $x_t$. to  cluster label $c_t$.
+**** Special case: Compression
+- Learn two mappings $c, d$
+- $c(x)$ compresses an image $x$ to a small representation $z$.
+- $d(z)$ decompresses to an approximate datapoint $\hat{x}$.
+
+**** Special case: Clustering
+- Input data $x_1, \ldots, x_T$.
+- Estimate latent cluster labels $c_t$ to model the distribution of $x$ as
+a mix over densities $p_c$.
+\[
+p(x_t) = \sum_c P(c_t = c) p_c(x_t)
+\]
+
 ** Objective functions
 *** Supervised learning objectives
 - Data $(x_t, y_t)$, $x_t \in X$, $y_t \in Y$, $t \in [T]$.
