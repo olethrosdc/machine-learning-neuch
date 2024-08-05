@@ -16,6 +16,7 @@
 #+LaTeX_HEADER: \DeclareMathOperator*{\sgn}{sgn}
 #+LaTeX_HEADER: \newcommand \defn {\mathrel{\triangleq}}
 #+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
+#+LaTeX_HEADER: \newcommand \Naturals {\mathbb{N}}
 #+LaTeX_HEADER: \newcommand \Param {\Theta}
 #+LaTeX_HEADER: \newcommand \param {\theta}
 #+LaTeX_HEADER: \newcommand \vparam {\vectorsym{\theta}}
@@ -160,17 +161,10 @@ Hidden factors that might affect variables
 - Classification: Can we predict gender from height/weight?
 - Regression: Can we predict weight from height and gender?
 - In both cases we predict *output* variables from *input* variables
-**** *Input* variables
-Also called features, predictors, independent variables
-
-**** *Output* variables
-Also called response, dependent variables, labels, or targets.
-
-**** General problems :B_alertblock:
-     :PROPERTIES:
-     :BEAMER_env: alertblock
-     :END:
-The input/output dichotomy only exists in some problems.
+**** Variables
+- *Input* variables: aka features, predictors, independent variables
+- *Output* variables: aka response, dependent variables, labels, or targets.
+- The input/output dichotomy only exists in *some prediction problems*.
 
 
 *** Variables
@@ -193,31 +187,6 @@ The class data looks like this
 **** Raw versus neat data
 - Neat data: $x_t \in \Reals^n$
 - Raw data: text, graphs, missing values, etc
-
-*** Modelling variables
-#+CAPTION: Basic learning problems 
-#+NAME:   fig:learning-problems
-#+ATTR_LATEX: :width 1.1\textwidth
-[[./fig/learning-problems.pdf]]
-*** Directed graphs for modelling relationships
-We can always summarise the type of model we want through a graph.
-In directed graphs we always have to specify a direction between linked variables.
-**** Single variable
-\begin{tikzpicture}
-\node[RV] at (1,0) (x) {$x$};
-\end{tikzpicture}
-**** Regression
-\begin{tikzpicture}
-\node[RV] at (0,0) (w) {$w$};
-\node[RV] at (1,0) (h) {$h$};
-\draw[->] (w) to (h);
-\end{tikzpicture}
-**** Classification
-\begin{tikzpicture}
-\node[RV] at (0,0) (w) {$w$};
-\node[RV] at (1,0) (g) {$g$};
-\draw[->] (w) to (g);
-\end{tikzpicture}
 
 ** Pandas and dataframes
 *** Python pandas for data wrangling
@@ -300,6 +269,60 @@ X.iat[2,0] # row 2, column 0
 
 
 ** Single variable models
+*** Modelling variables
+**** A :B_columns:
+     :PROPERTIES:
+     :BEAMER_env: columns
+     :END:
+***** Discrete                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+CAPTION:  $x \in \Naturals$
+#+NAME:   fig:barplot
+[[./fig/discrete.pdf]]
+***** Continuous                                                      :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+CAPTION: $x \in \Reals$
+#+NAME:   fig:density
+[[./fig/density.pdf]]
+***** Two Continuous                                                  :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+CAPTION: $x \in \Reals^2$
+#+NAME:   fig:joint
+[[./fig/joint.pdf]]
+
+**** B :B_columns:
+     :PROPERTIES:
+     :BEAMER_env: columns
+     :END:
+***** Continuous $\to$ Discete                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+CAPTION: $x \in \Reals \to y \in \Naturals$
+#+NAME: fig:classification
+[[./fig/classification.pdf]]
+***** Discrete $\to$ Continuous                                       :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+CAPTION:  $x \in \Naturals \to y \in \Reals$
+#+NAME: fig:classification
+[[./fig/cdensity.pdf]]
+***** Continuous $\to$ Continuous                                     :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+CAPTION: $x \in \Reals \to y \in  \Reals$ 
+#+NAME: fig:regression
+[[./fig/regression.pdf]]
+
+
 *** Means using python
 **** Calculating the mean of our class data :B_example:
      :PROPERTIES:
@@ -393,19 +416,95 @@ x(a) P(a) + x(b) P(b) + x(c) P(c)
 *** The simplest model: A mean
 
 ** Two variable models
+*** Modelling variables
+**** A :B_columns:
+     :PROPERTIES:
+     :BEAMER_env: columns
+     :END:
+***** Discrete                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+CAPTION:  $x \in \Naturals$
+#+NAME:   fig:barplot
+[[./fig/discrete.pdf]]
+***** Continuous                                                      :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+CAPTION: $x \in \Reals$
+#+NAME:   fig:density
+[[./fig/density.pdf]]
+***** Two Continuous                                                  :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+CAPTION: $x \in \Reals^2$
+#+NAME:   fig:joint
+[[./fig/joint.pdf]]
+
+**** B :B_columns:
+     :PROPERTIES:
+     :BEAMER_env: columns
+     :END:
+***** Continuous $\to$ Discete                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+CAPTION: $x \in \Reals \to y \in \Naturals$
+#+NAME: fig:classification
+[[./fig/classification.pdf]]
+***** Discrete $\to$ Continuous                                       :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+CAPTION:  $x \in \Naturals \to y \in \Reals$
+#+NAME: fig:classification
+[[./fig/cdensity.pdf]]
+***** Continuous $\to$ Continuous                                     :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+CAPTION: $x \in \Reals \to y \in  \Reals$ 
+#+NAME: fig:regression
+[[./fig/regression.pdf]]
+
+
+*** The Bernoulli distribution
+**** Bernoulli distribution :B_definition:
+     :PROPERTIES:
+     :BEAMER_env: definition
+     :END:
+We say that $x \in \{0, 1\}$ has Bernoulli distribution with parameter $\theta$ and write
+\[
+x \mid \theta \sim \Ber(\theta),
+\]
+when
+\[
+\Pr(x) = \begin{cases}
+\theta & x = 1\\
+1 - \theta & x = 0.
+\end{cases}
+\]
+**** Applications of the Bernoulli distribution :B_example:
+     :PROPERTIES:
+     :BEAMER_env: example
+     :END:
+- A biased coin flip.
+- Classification errors.
 *** Predicting $y$ from $x$.
 Consider two variables, $x, y$. We can either care about
 - $\E[y | x]$ the expectation of $y$ for all $x$.
 - $\Pr[y | x]$ the distribution of $y$ for all $x$.
 **** Models  $x$ discrete, $y$ discrete
-- Conditional probability table for $P(y | x)$
+- Probability table for $P(x, y)$
 |-----------+-------+-------|
 | $P(x, y)$ | y = 0 | y = 1 |
 |-----------+-------+-------|
 | x = 0     |   54% |    6% |
 | x = 1     |   16% |   24% |
 |-----------+-------+-------|
-- Conditional probability table for $P(x, y)$
+- Conditional probability table for $P(y | x)$
 |---------------+-------+-------|
 | $P(y \mid x)$ | y = 0 | y = 1 |
 |---------------+-------+-------|
@@ -413,14 +512,26 @@ Consider two variables, $x, y$. We can either care about
 | x = 1         |   40% |   60% |
 |---------------+-------+-------|
 - What is $P(x)$?
+- What is $\E[y \mid x]$?
+
+*** Homework
+**** Models  $x$ discrete, $y$ discrete
+- Conditional probability table for $P(y | x)$
+|-----------+--------+-------+-------|
+| $P(x, y)$ | y = -1 | y = 0 | y = 1 |
+|-----------+--------+-------+-------|
+| x = 0     |    10% |   20% |  10%  |
+| x = 1     |    30% |   20% |  10%  |
+|-----------+--------+-------+-------|
+
 
 **** $x$ discrete, $y$ continuous
 - Collection of probability distributions.
+*** Predicting $y$ from $x$ 
 **** $x$ continuous, $y$ discrete
 - Classification.
 **** $x$ continuous, $y$ discrete
 - Regression.
-
 
 *** Two variables: conditional expectation
 **** The height of different genders
