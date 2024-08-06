@@ -477,7 +477,7 @@ x(a) P(a) + x(b) P(b) + x(c) P(c)
      :END:
 We say that $x \in \{0, 1\}$ has Bernoulli distribution with parameter $\theta$ and write
 \[
-x \mid \theta \sim \Ber(\theta),
+x \sim \Ber(\theta),
 \]
 when
 \[
@@ -492,46 +492,46 @@ when
      :END:
 - A biased coin flip.
 - Classification errors.
-*** Predicting $y$ from $x$.
+*** Predicting $y$ from $x$, discrete case.
 Consider two variables, $x, y$. We can either care about
 - $\E[y | x]$ the expectation of $y$ for all $x$.
 - $\Pr[y | x]$ the distribution of $y$ for all $x$.
-**** Models  $x$ discrete, $y$ discrete
-- Probability table for $P(x, y)$
+**** Probability table for $P(x, y)$ 
 |-----------+-------+-------|
 | $P(x, y)$ | y = 0 | y = 1 |
 |-----------+-------+-------|
 | x = 0     |   54% |    6% |
 | x = 1     |   16% |   24% |
 |-----------+-------+-------|
-- Conditional probability table for $P(y | x)$
+- What is $P(x)$?
+**** Conditional probability table for $P(y | x)$
 |---------------+-------+-------|
 | $P(y \mid x)$ | y = 0 | y = 1 |
 |---------------+-------+-------|
 | x = 0         |   90% |   10% |
 | x = 1         |   40% |   60% |
 |---------------+-------+-------|
-- What is $P(x)$?
 - What is $\E[y \mid x]$?
+*** Distributions of two variables
+In this setting, both $x$ and $y$ have a Bernoulli distribution. If we use a model whereby $x$ is sampled first, and then $y$, then we can define two Bernoulli distributions. The first, for $x$ is unconditional, while the second, for $y$, depends on the value of $x$:
+\begin{align*}
+x &\sim \Ber(\theta)\\
+y \mid x &\sim \Ber(\phi_x).
+\end{align*}
+In our example, $\phi_0 = 0.1$ and $\phi_1 = 0.6$.
 
 *** Homework
-**** Models  $x$ discrete, $y$ discrete
-- Conditional probability table for $P(y | x)$
+**** Probability table for $P(x, y)$
 |-----------+--------+-------+-------|
 | $P(x, y)$ | y = -1 | y = 0 | y = 1 |
 |-----------+--------+-------+-------|
 | x = 0     |    10% |   20% |  10%  |
 | x = 1     |    30% |   20% |  10%  |
 |-----------+--------+-------+-------|
-
-
-**** $x$ discrete, $y$ continuous
-- Collection of probability distributions.
-*** Predicting $y$ from $x$ 
-**** $x$ continuous, $y$ discrete
-- Classification.
-**** $x$ continuous, $y$ discrete
-- Regression.
+Given the above table, calculate
+- $P(x)$
+- The conditional probability table for $P(y | x)$.
+- $\E[y | x]$ for all values of $x$.
 
 *** Two variables: conditional expectation
 **** The height of different genders
