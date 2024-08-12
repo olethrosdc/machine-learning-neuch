@@ -61,7 +61,7 @@ learning.
 | Module |  Date | Topic                              | Details                                          | Python              | Type    |
 |--------+-------+------------------------------------+--------------------------------------------------+---------------------+---------|
 |      1 | 09.17 | Introduction                       | Mean estimation, kNN, Train/Test                 | nympy, pandas       | Mixed   |
-|      2 | 09.24 | Classification                     | The Perceptron, Generalisation, Simulataion      | pandas, scikitlearn | Lecture |
+|      2 | 09.24 | The Perceptron and Generalisation  | The Perceptron, Generalisation, Simulation       | pandas, scikitlearn | Lecture |
 |      3 | 10.01 | Model Comparison                   | Cross-Validation, Bootstrapping, Model Selection | scikit learn        | Lab (1) |
 |      4 | 10.08 | Regression                         | Linear regression, SGD                           |                     | Mix     |
 |      5 | 10.15 | Regression lab                     | Lab, Feature Selection for Regression            |                     | Lab (2) |
@@ -84,33 +84,42 @@ learning.
 https://hastie.su.domains/ISLP/ISLP_website.pdf
 
 
-* Detailed schedule
+* Activities
+** Introduction/kNN
+*** Science and Data
+**** Preparation
+1. Formulate a question
+2. What data do we need?
+3. How will we analyse it?
+**** Reproducibility
+We now have data and an analysis.
+1. How good is this analysis?
+2. Will get the same results if we repeat the experiment?
+*** Variables
+1. What variables do we have?
+2. What relationship do we need to consider?
+3. Can we ignore some variables?
+4. Does the type of the variable make a difference?
 
-** Introduction
-*** Learning problems
-- *Estimation*
-- *Classification*
-- *Regression*
-- *Clustering*
-- Sequence prediction
-- Filtering
-- Recommendation
-- Reinforcement learning
-- Games
-*** Methods
-**** Optimisation and Inference
-- Stochastic gradient descent
-- Bayes rule
-**** Learning
-- Cost-minimising
-- Probabilistic
-**** Methodology
-- Train, Validate and Test
-- Crossvalidation
-- Bootstrapping
-- Simulation
-*** The simplest learning problem
-- Mean estimation
+*** Modelling problems
+
+
+*** kNN
+
+** Perceptron/Generalisation
+*** Model Selection
+** Regression
+*** Linear Regression
+** Probabilistic Models
+*** Uncertainty
+**** Aleatory uncertainty
+**** Epistemic uncertainty
+*** Bernoulli-Beta
+**** Bernoulli: The distribution of coin flips
+**** Beta: The distribution of coin biases
+*** Naive Bayes
+**** Multiple variables
+
 
 * Assignments
 ** Assignment 1: Classification, model comparison
