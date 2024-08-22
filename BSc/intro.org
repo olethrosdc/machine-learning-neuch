@@ -43,6 +43,8 @@
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}}
+
 
 * The problems of Machine Learning (1 week)
   #+TOC: headlines [currentsection,hideothersubsections]
@@ -85,7 +87,23 @@
 - Decisions are made every step of the way.
 - Decisions are automated algorithmically.
   
-*** The main problems in machine learning and statistics
+*** The main problems in machine learning and statistics          
+
+**** A                                                             :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+#+ATTR_LATEX: :width 0.8\textwidth
+[[./fig/dark_matter.png]]
+[[./fig/Protein_folding.png]]
+
+**** B                                                             :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+#+ATTR_LATEX: :width 0.8\textwidth
+[[./fig/climate.png]]
+[[./fig/econ.jpg]]
 
 *** Prediction
 [[./fig/meteo.png]]
@@ -107,6 +125,8 @@
 - Should I fold, call, or raise in my poker game?
 - How can I get a spaceship to the moon and back?
 
+
+
 *** The need to learn from data
 **** Problem definition
 - What problem do we need to solve?
@@ -123,32 +143,31 @@
 - How will we *compute* something useful?
 - How can we use the model to make *decisions*?
 
-** Course organisation
-*** Moodle
-Everybody must be on the Moodle for
-- Assignments
-- Group project
+*** Course Material
+**** Moodle
+- Assignments and proejct
 - Additional reading material
 - Asking questions
-*** Course Github https://github.com/olethrosdc/machine-learning-neuch/tree/main/BSc
-- .org files same content as slide PDF, but with different format and clickable URLs
+**** Course Github https://github.com/olethrosdc/machine-learning-neuch/tree/main/BSc
+- .org files for notes, PDF for slides
 - source code for examples
-*** Course literature
+**** Course literature
 - An Introduction to Statistical Learning with Python
   https://hastie.su.domains/ISLP/ISLP_website.pdf.download.html
 book chapters will be mentioned in the course
-*** Assignments and project
+*** Assignment, teaching and questions
+**** Assignments and project
 - Indidivual Weekly assignments in the first half
 - Group project in the second half
 - Project presentation
 - No exam.
-*** Other questions
+**** Other questions
 - Use Moodle for technical/administrative questions: That way everybody gets the same information.
 - Use email for personal problems or extra help, if the moodle is not enough.
 - Complicated questions can be answered at the next lecture
-*** Office hours
-- Fridays 13:00-14:00
-- Please email me for an appointment.
+**** Office hours
+- Fridays 13:00-14:00: book with an email to avoid clashes.
+- Email me for an appointment outside those hours.
 
 * Estimation
 ** Answering a scientific problem

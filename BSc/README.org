@@ -42,20 +42,16 @@ This course gives an introduction to the algorithms and theory of
 machine learning. Application is in the form of a course project.
 During the course, you will be able to:
 
-- Formulate machine learning problems in terms of opimisation or probabilistic inference.
-- Understand the fundamental machine learning algorithms.
-- Be able to implement some of the simplest algorithms.
-- Apply off-the-shelf algorithms from scikit-learn to problems.
-- Develop custom models using the pyTorch library.
+- Formalise a scientific question and answer it using machine learning.
+- Distinguish between different variable types and their relations.
+- Perform experiment design, data collection and analysis.
+- Understand core machine learning principles.
+- Implement and understand some of the simplest algorithms.
+- Apply off-the-shelf algorithms from existing Python libraries.
 
-The course focuses on algorithms and models, firstly on
-optimisation-based learning, and the secondly on probabilistic
-learning.
+The course focuses on fundamental modelling problems and general machine learning methodology. Theory is only briefly mentioned.
 
-*** Course goals
-- Learn to use numpy/pandas/scikitlearn
-- Understand different types of machine learning problems (classification, regression, density estimation)
-- 
+
 ** Schedule
 |--------+-------+------------------------------------+--------------------------------------------------+---------------------+---------|
 | Module |  Date | Topic                              | Details                                          | Python              | Type    |
