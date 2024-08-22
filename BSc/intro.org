@@ -123,6 +123,32 @@
 - How will we *compute* something useful?
 - How can we use the model to make *decisions*?
 
+** Course organisation
+*** Moodle
+Everybody must be on the Moodle for
+- Assignments
+- Group project
+- Additional reading material
+- Asking questions
+*** Course Github https://github.com/olethrosdc/machine-learning-neuch/tree/main/BSc
+- .org files same content as slide PDF, but with different format and clickable URLs
+- source code for examples
+*** Course literature
+- An Introduction to Statistical Learning with Python
+  https://hastie.su.domains/ISLP/ISLP_website.pdf.download.html
+book chapters will be mentioned in the course
+*** Assignments and project
+- Indidivual Weekly assignments in the first half
+- Group project in the second half
+- Project presentation
+- No exam.
+*** Other questions
+- Use Moodle for technical/administrative questions: That way everybody gets the same information.
+- Use email for personal problems or extra help, if the moodle is not enough.
+- Complicated questions can be answered at the next lecture
+*** Office hours
+- Fridays 13:00-14:00
+- Please email me for an appointment.
 
 * Estimation
 ** Answering a scientific problem
@@ -151,7 +177,18 @@ Measurable factors related to the variables of interest
 Hidden factors that might affect variables
 
 *** Class data and variables                                       :activity:
-- The class enters their data into the [[https://docs.google.com/spreadsheets/d/1xRpo1LuMz62Yu57ABxtkvbvCebuew3VUh387ElXNoGU/edit?usp=sharing][excel file]]. 
+- The class enters their data into the [[https://docs.google.com/spreadsheets/d/1xRpo1LuMz62Yu57ABxtkvbvCebuew3VUh387ElXNoGU/edit?usp=sharing][excel file]].
+#+ATTR_LATEX: :width 0.5\textwidth
+  [[./fig/class_data_QR.png]]
+- Pay attention to the variables we wish to measure
+
+**** Privacy                                                   :B_alertblock:
+:PROPERTIES:
+:BEAMER_env: alertblock
+:END:
+- Is the use of a pseudonym sufficient to hide your identity?
+
+*** Types of learning problems
 **** Unsupervised learning (unconditional estimation)
 - Predict the \alert{gender} of an unknown individual.
 - Predict the \alert{height}.
@@ -169,7 +206,6 @@ Hidden factors that might affect variables
 
 *** Variables
 The class data looks like this
-
 |------------+--------+--------+--------+-----+-------------+---------|
 | First Name | Gender | Height | Weight | Age | Nationality | Smoking |
 |------------+--------+--------+--------+-----+-------------+---------|
