@@ -94,7 +94,7 @@
 :BEAMER_col: 0.5
 :END:
 #+ATTR_LATEX: :width 0.8\textwidth
-#+ATTR_LATEX: :caption Dark Matter Mapping
+#+ATTR_LATEX: :caption Dark Matter
 [[./fig/dark_matter.png]]
 #+ATTR_LATEX: :caption Protein Folding
 [[./fig/Protein_folding.png]]
@@ -103,7 +103,7 @@
 :PROPERTIES:
 :BEAMER_col: 0.5
 :END:
-#+ATTR_LATEX: :width 0.8\textwidth
+#+ATTR_LATEX: :width 0.6\textwidth
 #+ATTR_LATEX: :caption Climate Modelling
 [[./fig/climate.png]]
 #+ATTR_LATEX: :caption Economic Policy
