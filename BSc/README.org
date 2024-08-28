@@ -53,25 +53,25 @@ The course focuses on fundamental modelling problems and general machine learnin
 
 
 ** Schedule
-|--------+-------+------------------------------------+--------------------------------------------------+---------------------+---------|
-| Module |  Date | Topic                              | Details                                          | Python              | Type    |
-|--------+-------+------------------------------------+--------------------------------------------------+---------------------+---------|
-|      1 | 09.17 | Introduction                       | Mean estimation, kNN, Train/Test                 | nympy, pandas       | Mixed   |
-|      2 | 09.24 | The Perceptron and Generalisation  | The Perceptron, Generalisation, Simulation       | pandas, scikitlearn | Lecture |
-|      3 | 10.01 | Model Comparison                   | Cross-Validation, Bootstrapping, Model Selection | scikit learn        | Lab (1) |
-|      4 | 10.08 | Regression                         | Linear regression, SGD                           |                     | Mix     |
-|      5 | 10.15 | Regression lab                     | Lab, Feature Selection for Regression            |                     | Lab (2) |
-|      6 | 10.22 | Probabilistic models               | Linear regression as linear-Gaussian model       |                     | Lecture |
-|      7 | 10.29 | Probabilistic lab                  | Mean estimation                                  |                     | Lab (3) |
-|      9 | 11.05 | Multi-layer Perceptrons            | SGD                                              |                     | Mix     |
-|     10 | 11.12 | Image processing lab               |                                                  |                     | Lab (4) |
-|     11 | 11.19 | Sequence Prediction                |                                                  |                     | Lecture |
-|     12 | 11.26 | Text prediction lab                |                                                  |                     | Lab     |
-|     13 | 12.03 | Other problems in Machine Learning |                                                  |                     | Lecture |
-|     14 | 12.10 | Project Presentations              |                                                  |                     | Lab     |
-|--------+-------+------------------------------------+--------------------------------------------------+---------------------+---------|
-|     13 | 12.17 | Project Presentations              |                                                  |                     |         |
-|--------+-------+------------------------------------+--------------------------------------------------+---------------------+---------|
+|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
+| Module |  Date | Topic                             | Details                                          | Python              | Type    |
+|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
+|      1 | 09.17 | Introduction                      | Mean estimation, kNN, Train/Test                 | nympy, pandas       | Mixed   |
+|      2 | 09.24 | The Perceptron and Generalisation | The Perceptron, Generalisation, Simulation       | pandas, scikitlearn | Lecture |
+|      3 | 10.01 | Model Comparison                  | Cross-Validation, Bootstrapping, Model Selection | scikit learn        | Lab (1) |
+|      4 | 10.08 | Regression                        | Linear regression, SGD                           |                     | Mix     |
+|      5 | 10.15 | Regression lab                    | Lab, Feature Selection for Regression            |                     | Lab (2) |
+|      6 | 10.22 | Probabilistic models: ML          | Maximum Likelihood, SGD for Linear Regression    |                     | Lecture |
+|      7 | 10.29 | Generative Models                 | Beta-Bernoulli, Naive Bayes and Beyond           |                     | Lab (3) |
+|      9 | 11.05 | Multi-Layer Perceptrons           | Backpropagation, Softmax, RELU                   |                     | Mix     |
+|     10 | 11.12 | MLP2: Image Lab                   | Convolutional Networks, Image applications       |                     | Lab (4) |
+|     11 | 11.19 | Sequence Prediction               | Markov models, text prediction, LLMs             |                     | Mixed   |
+|     12 | 11.26 | Reinforcement Learning            |                                                  |                     | Mixed   |
+|     13 | 12.03 | Fairness and Privacy              |                                                  |                     | Mixed   |
+|     14 | 12.10 | Project Presentations             |                                                  |                     | Lab     |
+|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
+|     13 | 12.17 | Project Presentations             |                                                  |                     |         |
+|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
 
 ** Material
 *** Textbooks
