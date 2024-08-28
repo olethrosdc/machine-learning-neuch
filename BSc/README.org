@@ -57,7 +57,7 @@ The course focuses on fundamental modelling problems and general machine learnin
 | Module |  Date | Topic                              | Details                                          | Python              | Type    |
 |--------+-------+------------------------------------+--------------------------------------------------+---------------------+---------|
 |      1 | 09.17 | Introduction                       | Mean estimation, kNN, Train/Test                 | nympy, pandas       | Mixed   |
-|      2 | 09.24 | The Perceptron and Generalisation  | The Perceptron, Generalisation, Simulation       | pandas, scikitlearn | Lecture |
+|      2 | 09.24 | The Perceptron and Generalisation  | The Perceptron, Generalisation, zzzzzzSimulation | pandas, scikitlearn | Lecture |
 |      3 | 10.01 | Model Comparison                   | Cross-Validation, Bootstrapping, Model Selection | scikit learn        | Lab (1) |
 |      4 | 10.08 | Regression                         | Linear regression, SGD                           |                     | Mix     |
 |      5 | 10.15 | Regression lab                     | Lab, Feature Selection for Regression            |                     | Lab (2) |
