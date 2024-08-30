@@ -37,6 +37,22 @@
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 * Regression
+** Regression
+*** Regression example
+
+*** Simple regression
+**** Input and output
+- Data pairs $(\bx_t, y_t)$, $t = 1, \ldots, T$.
+- Input $\bx_t \in \Reals^n$
+- Output $y_t \in \Reals$.
+**** What is a good prediction
+- At time step $t > T$
+- Observe $x_t$.
+- Make a prediction $a_t$.
+- Observe the actual $y_t$
+- Suffer a loss $\ell(a_t, y_t) = r(a_t, y_t)$.
+**** Goal
+- Find a policy to make predictions to minimise the loss!
 
 * The Linear Model
 ** Test
@@ -51,6 +67,28 @@
 \[
 f_\vparam(\bx_t) = \vparam^\top \bx_{t} = \sum_{i=1}^n \vparam_i x_{t,i}
 \]
+
+*** Python implementation
+**** statsmodels
+#+BEGIN_SRC python
+import statsmodels.api as sm
+Xa = sm.add_constant(X) # we need to add a bias term here
+model = sm.OLS(Y, Xa)
+results = model.fit() 
+prediction = results.get_prediction(Xa[0]) # get prediction
+prediction.predicted_mean # this is a point predictio
+#+END_SRC
+
+**** scikitlearn 
+#+BEGIN_SRC python
+from sklearn.linear_model import LinearRegression
+X = X.reshape(-1,1)  # if there is only one feature, you must do this ...
+Y = Y.reshape(-1,1)  # if there is only one target, you must do this ...
+model = LinearRegression().fit(X, Y) 
+Z = model.predict(X) # you can get all the predictions
+
+#+END_SRC
+
 
 ***  Two views of the problem
 
