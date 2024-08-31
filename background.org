@@ -318,7 +318,7 @@ We consider functions operating in multi-dimensional Euclidean spaces.
 *** Derivatives in many dimensions
     
 **** Partial derivative
-The partial derivative of $f$ with respect to its \(i\)-th argument is:
+The partial derivative of $f : \Reals^n \to \Reals$ with respect to its \(i\)-th argument is:
 $\frac{\partial}{\partial x_i} f(x)$,
 where we see all $x_j$ with $j \neq i$ as fixed.
 
@@ -334,8 +334,10 @@ This is the vector of all its partial derivatives:
 \frac{\partial}{\partial x_n} f(x)
 \right)^\top
 \]
+When $f : \Reals^n \to \Reals^m$, the gradient is an $n \times m$ matrix called *the Jacobian*.
 **** Directional derivative
+We can also define the derivative with respect to a *direction \delta \in \Reals^n$*:
 \[
 D_\delta f(x) = \lim_{\epsilon \to 0} \frac{f(x + \epsilon \delta) - f(x)}{\epsilon}.
 \]
-
+For simplicity say that $\|\delta\| = 1$.
