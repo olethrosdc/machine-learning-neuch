@@ -55,6 +55,14 @@
 - Find a policy to make predictions to minimise the loss!
 
 * The Linear Model
+** Single-variable models
+*** Single-variable regression
+- $x$: height
+- $y$: weight
+\[
+y \approx \param_0 + \param_1 x
+\]
+
 ** Test
 *** Simple linear regression
 **** Input and output
