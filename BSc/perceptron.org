@@ -11,13 +11,13 @@
 
 * The Perceptron
 ** Introduction
-*** Simple Example
+*** Guessing gender from height
 - Feature space $\CX \subset \Reals$: e.g. height
 - Label space $\CY = \{-1, 1\}$: e.g. gender
-- Can we find some $\param$ and a direction so as to separate the genders?
+- Can we find some $\param \in \Reals$ and a direction (+/-) so as to separate the genders?
 **** Online learning
 - At each step, we observe one datapoint
-- We adjust our datapoints.
+- We adjust our separator $\beta$.
 
 *** More complex example
 - Feature space $\CX \subset \Reals^2$: e.g. height and weight
