@@ -2,6 +2,7 @@
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \include{preamble}
+#+LaTeX_HEADER: \usetikzlibrary{datavisualization}
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
@@ -18,7 +19,17 @@
 **** Online learning
 - At each step, we observe one datapoint
 - We adjust our datapoints.
+*** Activity
 
+\begin{tikzpicture}
+\datavisualization[school book axes,
+visualize as scatter,
+x axis = {length=8cm},
+y axis = {length=3cm}]
+ data [read from file=file1.csv];
+ 
+};
+\end{tikzpicture}
 *** More complex example
 - Feature space $\CX \subset \Reals^2$: e.g. height and weight
 - Label space $\CY = \{-1, 1\}$: e.g. gender
