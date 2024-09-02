@@ -206,6 +206,8 @@ The class data looks like this
 - $x_{t,k}$: The k-th feature of the \(t\)-th person.
 - $\bx_k$: Everybody's k-th feature
 
+*We will not use special symbols to distinguis random variables from their realisations*
+
 **** Raw versus neat data
 - Neat data: $x_t \in \Reals^n$
 - Raw data: text, graphs, missing values, etc

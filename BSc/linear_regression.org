@@ -67,7 +67,7 @@ y \approx \param_0 + \param_1 x
 *** Simple linear regression
 **** Input and output
 - Data pairs $(\bx_t, y_t)$, $t = 1, \ldots, T$.
-- Input $\bx_t \in \Reals^n$
+- Input $x_t \in \Reals^n$
 - Output $y_t \in \Reals$.
 **** Predicting the conditional mean $\E[y_t | \bx_t]$
 - Parameters $\vparam \in \Reals^n$
@@ -96,6 +96,7 @@ model = LinearRegression().fit(X, Y)
 Z = model.predict(X) # you can get all the predictions
 
 #+END_SRC
+
 
 
 ***  Two views of the problem
@@ -232,11 +233,22 @@ So we can use the left-pseudo inverse $\tilde{X}^{-1}$ to obtain
 \vparam = \tilde{X}^{-1} \by
 \]
 
-* Interpretation of the problem
+* Interpretation and practical use
 ** Problem parameters
 *** The coefficients
 - $\param_i$ tells us how much $y$ is correlated with $x_{t,i}$
 - However, multiple correlations might be evident.
+** When the assumptions to do not fit the model
+*** Nonlinear relations
+- Maybe the actual function linking $x,y$ is not linear:
+  \[
+  \]
+*** Correlation of error terms
+*** Non-constant variance
+*** Outliers
+*** High leverage points
+*** Colinearity
+
 ** Exercises
 *** Linear regression exercises
 - Exercises 8, 13 from ISLP

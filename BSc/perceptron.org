@@ -66,6 +66,9 @@ So $M \rho \leq w^\top w^* \leq \|w\| = \sqrt{w^\top w} \leq \sqrt{M}$.
 - Classes must be linearly separable
 **** Example: XOR
 
+** The model
+
+
 * Gradient methods
 ** Gradients for optimisation
 *** The gradient method
