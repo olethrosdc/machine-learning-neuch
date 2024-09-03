@@ -2,6 +2,9 @@
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \include{preamble}
+#+LaTeX_HEADER: \usepackage{tikz}
+#+LaTeX_HEADER: \usepackage{pgfplots}
+#+LaTeX_HEADER: \usetikzlibrary{datavisualization}
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
@@ -18,6 +21,133 @@
 **** Online learning
 - At each step, we observe one datapoint
 - We adjust our separator $\beta$.
+
+*** Activity
+
+\begin{tikzpicture}
+\begin{axis}[xmin=150,xmax=210, ymin=-1,ymax=2,enlargelimits=false]
+    \addplot[only marks] coordinates {
+        (180, 1)
+    };
+\end{axis}
+\end{tikzpicture}
+
+*** Activity
+
+\begin{tikzpicture}
+\begin{axis}[xmin=150,xmax=210, ymin=-1,ymax=2,enlargelimits=false]
+    \addplot[only marks] coordinates {
+        (180, 1)
+    };
+    \addplot coordinates {
+        (160, -1)
+        (160, 2)
+    };
+
+\end{axis}
+\end{tikzpicture}
+
+
+*** Activity
+
+\begin{tikzpicture}
+\begin{axis}[xmin=150,xmax=210, ymin=-1,ymax=2,enlargelimits=false]
+    \addplot[only marks] coordinates {
+        (180, 1)
+        (165, 0)
+    };
+    \addplot coordinates {
+        (160, -1)
+        (160, 2)
+    };
+\end{axis}
+\end{tikzpicture}
+*** Activity
+
+\begin{tikzpicture}
+\begin{axis}[xmin=150,xmax=210, ymin=-1,ymax=2,enlargelimits=false]
+    \addplot[only marks] coordinates {
+        (180, 1)
+        (165, 0)
+    };
+    \addplot coordinates {
+        (165, -1)
+        (165, 2)
+    };
+\end{axis}
+\end{tikzpicture}
+
+
+
+*** Activity
+
+\begin{tikzpicture}
+\begin{axis}[xmin=150,xmax=210, ymin=-1,ymax=2,enlargelimits=false]
+    \addplot[only marks] coordinates {
+        (180, 1)
+        (165, 0)
+        (190, 1)
+    };
+    \addplot coordinates {
+        (165, -1)
+        (165, 2)
+    };
+\end{axis}
+\end{tikzpicture}
+
+
+*** Activity
+
+\begin{tikzpicture}
+\begin{axis}[xmin=150,xmax=210, ymin=-1,ymax=2,enlargelimits=false]
+    \addplot[only marks] coordinates {
+        (180, 1)
+        (165, 0)
+        (190, 1)
+        (175, 0)
+    };
+    \addplot coordinates {
+        (165, -1)
+        (165, 2)
+    };
+\end{axis}
+\end{tikzpicture}
+
+*** Activity
+
+\begin{tikzpicture}
+\begin{axis}[xmin=150,xmax=210, ymin=-1,ymax=2,enlargelimits=false]
+    \addplot[only marks] coordinates {
+        (180, 1)
+        (165, 0)
+        (190, 1)
+        (175, 0)
+    };
+    \addplot coordinates {
+        (175, -1)
+        (175, 2)
+    };
+\end{axis}
+\end{tikzpicture}
+
+
+*** Activity
+
+\begin{tikzpicture}
+\begin{axis}[xmin=150,xmax=210, ymin=-1,ymax=2,enlargelimits=false]
+    \addplot[only marks] coordinates {
+        (180, 1)
+        (175, 0)
+        (190, 1)
+        (165, 0)
+        (195, 0)
+        (185, 1)
+        (205, 0)
+    };
+\end{axis}
+\end{tikzpicture}
+
+
 
 *** More complex example
 - Feature space $\CX \subset \Reals^2$: e.g. height and weight
