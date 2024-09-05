@@ -21,13 +21,13 @@
 **** Online learning
 - At each step, we observe one datapoint
 - We adjust our separator $\beta$.
-**** Example
+**** Working Example
 [[./src/Perceptron/perceptron_simple.py]]
 
 *** Non-separable classes
 [[./src/Perceptron/histogram_heights.png]]
 - In general, we cannot perfectly classify everything
-- Later we deal with this using Bayes decision rules.
+- But we can estimate $\Pr(y \mid x)$ \ldots more on this later.
 
 *** More complex example
 - Feature space $\CX \subset \Reals^2$: e.g. height and weight
