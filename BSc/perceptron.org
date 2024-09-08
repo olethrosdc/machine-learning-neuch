@@ -82,44 +82,44 @@ So $M \rho \leq w^\top w^* \leq \|w\| = \sqrt{w^\top w} \leq \sqrt{M}$.
 * Gradient methods
 ** Gradients for optimisation
 *** The gradient method
-- Function to minimise $f(\theta)$.
-- Derivative $\nabla_\theta f(\theta)$.
+- Function to minimise $f(\param)$.
+- Derivative $\nabla_\param f(\param)$.
 **** Gradient descent algorithm
-- Input: initial value $\theta_0$, learning rate schedule $\alpha_t$
+- Input: initial value $\param_0$, learning rate schedule $\alpha_t$
 - For $t=1, \ldots, T$
-  - $\theta_{t+1} = \theta_t - \alpha_t \nabla_\theta f(\theta_t)$
-- Return $\theta_T$
+  - $\param_{t+1} = \param_t - \alpha_t \nabla_\param f(\param_t)$
+- Return $\param_T$
 
 **** Properties
-- If $\sum_t \alpha_t = \infty$ and $\sum_t \alpha_t^2 < \infty$, it finds a local minimum $\theta_T$, i.e. there is $\epsilon > 0$ so that
+- If $\sum_t \alpha_t = \infty$ and $\sum_t \alpha_t^2 < \infty$, it finds a local minimum $\param_T$, i.e. there is $\epsilon > 0$ so that
 \[
-f(\theta_T) < f(\theta), \forall \theta: \|\theta_T - \theta\| < \epsilon.
+f(\param_T) < f(\param), \forall \param: \|\param_T - \param\| < \epsilon.
 \]
 *** Stochastic gradient method
 This is the same as the gradient method, but with added noise:
-- $\theta_{t+1} = \theta_t - \alpha_t [\nabla_\theta f(\theta_t) + \omega_t]$
+- $\param_{t+1} = \param_t - \alpha_t [\nabla_\param f(\param_t) + \omega_t]$
 - $\E[\omega_t] = 0$ is sufficient for convergence.
 
 **** Example: When the cost is an expectation
 In machine learning, the cost is frequently an expectation of some function $\ell$, 
 \[
-f(\theta) = \int_X dP(x) \ell(x, \theta)
+f(\param) = \int_X dP(x) \ell(x, \param)
 \]
 This can be approximated with a sample
 \[
-f(\theta) \approx \frac{1}{T} \sum_t \ell(x_t, \theta)
+f(\param) \approx \frac{1}{T} \sum_t \ell(x_t, \param)
 \]
 The same holds for the gradient:
 \[
-\nabla_\theta f(\theta) = \int_X dP(x) \nabla_\theta \ell(x, \theta)
-\approx \frac{1}{T} \sum_t \nabla_\theta \ell(x_t, \theta)
+\nabla_\param f(\param) = \int_X dP(x) \nabla_\param \ell(x, \param)
+\approx \frac{1}{T} \sum_t \nabla_\param \ell(x_t, \param)
 \]
 
 *** Gradient methods for expected value :example:
 **** Estimate the expected value
 $x_t \sim P$ with $\E_P[x_t] = \mu$.
 **** Objective: mean squared error
-Here $\ell(x, \theta) = (x - \theta)^2$.
+Here $\ell(x, \param) = (x - \param)^2$.
 \[
 \min_\param \E_P[(x_t - \param)^2].
 \]
@@ -168,26 +168,30 @@ The cost of each example
 \ell(x,y, w) = - \ind{y(x^\top w) < 0} y (x^\top w)
 \]
 **** Derivative: Chain rule
-- $\nabla_w \ell(x,y, w) = - \ind{y(x^\top w) > 0} \nabla_w [y(x^\top w)]$.
+- $\nabla_\param \ell(x,y, w) = - \ind{y(x^\top w) > 0} \nabla_\param [y(x^\top w)]$.
 - $\partial w / \partial{w^i} [y(x_t^\top w)] = y x_{t,i}$
-- Gradient update: $w_{t+1} = w_t - \nabla_w \ell(x,y, w) = w_t + y x_{t}$
+- Gradient update: $\param_{t+1} = \param_t - \nabla_\param \ell(x,y, w) = w_t + y x_{t}$
 **** Classification error cost function
 This is not differentiable :(
-
+*** Margins and confidences
+- We can think of the output of the network as a measure of confidence
+- In particular, we want to the output so that it is
+\[
+\]
 *** Logistic regression
 **** Output as a measure of confidence
-- $P_w(y = 1| x) = \frac{1}{1 + \exp(- x_t^\top w)}$
+- $P_\param(y = 1| x) = \frac{1}{1 + \exp(- x_t^\top \param)}$
 **** Negative Log likelihood
-- $\ell(x_t, y_t, w) = - \ln P_w( y_t | x_t) = \ln(1 + \exp(- y_t x_t^\top w))$
+- $\ell(x_t, y_t, \param) = - \ln P_\param( y_t | x_t) = \ln(1 + \exp(- y_t x_t^\top \param))$
 \begin{align*}
-\nabla_w \ell(x_t, y_t, w) 
-&= \frac{1}{1 + \exp(- y x_t^\top w)} \nabla_w[1 + \exp(-y x_t^\top w)]
+\nabla_\param \ell(x_t, y_t, \param) 
+&= \frac{1}{1 + \exp(- y x_t^\top \param)} \nabla_\param[1 + \exp(-y x_t^\top \param)]
 \\
-&= \frac{1}{1 + \exp(- y x_t^\top w)} \exp(-y x_t^\top w) [\nabla_w (-y_t x_t^\top w)]
+&= \frac{1}{1 + \exp(- y x_t^\top \param)} \exp(-y x_t^\top \param) [\nabla_\param (-y_t x_t^\top \param)]
 \\
-&= - \frac{1}{1 + \exp(x_t^\top w)} (x_{t,i})_{i=1}^ne
+&= - \frac{1}{1 + \exp(x_t^\top \param)} (x_{t,i})_{i=1}^ne
 \end{align*}
-- $\E_P(\ell) = \int_X dP(x) \sum_{y \in Y} P(y|x) P_w(y_t + x_t)$
+- $\E_P(\ell) = \int_X dP(x) \sum_{y \in Y} P(y|x) P_\param(y_t + x_t)$
 * Lab and Assignment
 
 *** Lab demonstration
