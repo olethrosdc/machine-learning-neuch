@@ -123,12 +123,23 @@ In this assignment we compare classification models.
 We apply the basic ideas of train, test, validation, cross-validation and bootstrapping.
 ** Assignment 2: Regression, simulations
 In this assignment we further develop the idea of simulation.
+Here the students should perform a project
 ** Assignment 3: Probabilistic Models
 Here we focus on simulation from a known probabilistic model.
 ** Assignment 4: Sequential prediction
 - Compare a variable order Markov chain, a hidden Markov model and a recurrent neural network.
 
-* Project grading
+* Projects
+
+The students will develop a data analysis project that includes the following:
+
+1. Selection of a scientific question that can be answered through data collection and analysis.
+2. Choice of variables that can answer this question.
+3. Simulation of the data generating process to select a data analysis methodology.
+4. Collection of data guided by the simulation.
+5. Data analysis guided by the simulation
+   
+** Grading
 Criteria for full marks in each part of the project are the following. 
 
 1. Documenting of the work in a way that enables reproduction.
