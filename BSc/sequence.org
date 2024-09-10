@@ -13,9 +13,19 @@
 
 * The problem of sequence prediction
 ** Examples
-*** Stock market
 *** Weather
-*** 
+[[./fig/meteo.png]]
+*** Climate
+[[./fig/climate.png]]
+*** Stock market
+[[./fig/us-stocks.png]]
+*** Inflation
+[[./fig/swiss-inflation.png]]
+** Common themes
+*** Assumptions for sequence prediction
+**** We cannot influence observations
+**** Future observations depend on past observations
+
 ** Formalising sequence prediction
 *** The problem of sequence prediction
 - Data $x_1, x_2, x_3, \ldots$
