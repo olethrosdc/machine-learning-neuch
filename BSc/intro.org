@@ -66,7 +66,7 @@
 :PROPERTIES:
 :BEAMER_col: 0.5
 :END:
-#+ATTR_LATEX: :width 0.6\textwidth
+#+ATTR_LATEX: :width \textwidth
 #+ATTR_LATEX: :caption Climate Modelling
 [[./fig/climate.png]]
 #+ATTR_LATEX: :caption Economic Policy
@@ -206,7 +206,7 @@ The class data looks like this
 - $x_{t,k}$: The k-th feature of the \(t\)-th person.
 - $\bx_k$: Everybody's k-th feature
 
-*We will not use special symbols to distinguis random variables from their realisations*
+*We will not use special symbols to distinguish random variables from their realisations*
 
 **** Raw versus neat data
 - Neat data: $x_t \in \Reals^n$
@@ -293,11 +293,7 @@ X.iat[2,0] # row 2, column 0
 
 
 ** Single variable models
-*** Modelling variables
-**** A :B_columns:
-     :PROPERTIES:
-     :BEAMER_env: columns
-     :END:
+*** Modelling single variables
 ***** Discrete                                                        :BMCOL:
      :PROPERTIES:
      :BEAMER_col: 0.3
@@ -312,39 +308,6 @@ X.iat[2,0] # row 2, column 0
 #+CAPTION: $x \in \Reals$
 #+NAME:   fig:density
 [[./fig/density.pdf]]
-***** Two Continuous                                                  :BMCOL:
-     :PROPERTIES:
-     :BEAMER_col: 0.3
-     :END:
-#+CAPTION: $x \in \Reals^2$
-#+NAME:   fig:joint
-[[./fig/joint.pdf]]
-
-**** B :B_columns:
-     :PROPERTIES:
-     :BEAMER_env: columns
-     :END:
-***** Continuous $\to$ Discete                                        :BMCOL:
-     :PROPERTIES:
-     :BEAMER_col: 0.3
-     :END:
-#+CAPTION: $x \in \Reals \to y \in \Naturals$
-#+NAME: fig:classification
-[[./fig/classification.pdf]]
-***** Discrete $\to$ Continuous                                       :BMCOL:
-     :PROPERTIES:
-     :BEAMER_col: 0.3
-     :END:
-#+CAPTION:  $x \in \Naturals \to y \in \Reals$
-#+NAME: fig:classification
-[[./fig/cdensity.pdf]]
-***** Continuous $\to$ Continuous                                     :BMCOL:
-     :PROPERTIES:
-     :BEAMER_col: 0.3
-     :END:
-#+CAPTION: $x \in \Reals \to y \in  \Reals$ 
-#+NAME: fig:regression
-[[./fig/regression.pdf]]
 
 
 *** Means using python
@@ -440,25 +403,11 @@ x(a) P(a) + x(b) P(b) + x(c) P(c)
 *** The simplest model: A mean
 
 ** Two variable models
-*** Modelling variables
+*** Two-variable models
 **** A :B_columns:
      :PROPERTIES:
      :BEAMER_env: columns
      :END:
-***** Discrete                                                        :BMCOL:
-     :PROPERTIES:
-     :BEAMER_col: 0.3
-     :END:
-#+CAPTION:  $x \in \Naturals$
-#+NAME:   fig:barplot
-[[./fig/discrete.pdf]]
-***** Continuous                                                      :BMCOL:
-     :PROPERTIES:
-     :BEAMER_col: 0.3
-     :END:
-#+CAPTION: $x \in \Reals$
-#+NAME:   fig:density
-[[./fig/density.pdf]]
 ***** Two Continuous                                                  :BMCOL:
      :PROPERTIES:
      :BEAMER_col: 0.3
@@ -467,10 +416,6 @@ x(a) P(a) + x(b) P(b) + x(c) P(c)
 #+NAME:   fig:joint
 [[./fig/joint.pdf]]
 
-**** B :B_columns:
-     :PROPERTIES:
-     :BEAMER_env: columns
-     :END:
 ***** Continuous $\to$ Discete                                        :BMCOL:
      :PROPERTIES:
      :BEAMER_col: 0.3
@@ -478,6 +423,11 @@ x(a) P(a) + x(b) P(b) + x(c) P(c)
 #+CAPTION: $x \in \Reals \to y \in \Naturals$
 #+NAME: fig:classification
 [[./fig/classification.pdf]]
+**** B :B_columns:
+     :PROPERTIES:
+     :BEAMER_env: columns
+     :END:
+
 ***** Discrete $\to$ Continuous                                       :BMCOL:
      :PROPERTIES:
      :BEAMER_col: 0.3
