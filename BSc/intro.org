@@ -300,6 +300,7 @@ X.iat[2,0] # row 2, column 0
      :END:
 #+CAPTION:  $x \in \Naturals$
 #+NAME:   fig:barplot
+#+ATTR_LATEX: :width 1.6\textwidth
 [[./fig/discrete.pdf]]
 ***** Continuous                                                      :BMCOL:
      :PROPERTIES:
@@ -307,6 +308,7 @@ X.iat[2,0] # row 2, column 0
      :END:
 #+CAPTION: $x \in \Reals$
 #+NAME:   fig:density
+#+ATTR_LATEX: :width 1.4\textwidth
 [[./fig/density.pdf]]
 
 
