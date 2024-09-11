@@ -375,12 +375,15 @@ What are the expected winnings if you play this game?
 **** Solution
 #+BEAMER: \pause
 - Let $x$ be the amount won, then $x(a) = 100, x(b) = 20, x(c) = 0$.
+#+BEAMER: \pause
 - We need to calculate
 \[
 \E_P(x) = \sum_{\omega \in \{a, b, c\}} \!\!\! x(\omega) P(\omega) =
 x(a) P(a) + x(b) P(b) + x(c) P(c) 
 \]
+#+BEAMER: \pause
 - $P(c) = 59\%$, as $P(\Omega) = 1$. Substituting,
+#+BEAMER: \pause
 \[
 \E_P(x) = 1 + 8 + 0 = 9.
 \]
