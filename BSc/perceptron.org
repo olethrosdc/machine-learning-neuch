@@ -33,7 +33,8 @@
 - Feature space $\CX \subset \Reals^2$: e.g. height and weight
 - Label space $\CY = \{-1, 1\}$: e.g. gender
 - Can we find some line so as to separate the genders?
-- [[src/Perceptron/show_class_data_labels.py]]
+- [[./src/Perceptron/show_class_data_labels.py]]
+
 
 *** What is the optimal decision threshold?
 
@@ -79,7 +80,7 @@ So $M \rho \leq w^\top w^* \leq \|w\| = \sqrt{w^\top w} \leq \sqrt{M}$.
 
 ** The model
 
-
+   
 * Gradient methods
 ** Gradients for optimisation
 *** The gradient method
@@ -149,6 +150,7 @@ Setting the derivative to 0, we have $\param = \E_P[x_t]$. This is a simple solu
 \\
 &=  2 \E_P[x] - 2\param.
 \end{align*}
+#+BEAMER: \pause
 - If we sample $x$ we approximate the gradient:
 \begin{align*}
  \frac{d}{d\param} \E_P [(x - \param)^2] 
@@ -158,26 +160,36 @@ Setting the derivative to 0, we have $\param = \E_P[x_t]$. This is a simple solu
 = \frac{1}{T} \sum_{t=1}^T 2(x_t - \param)
 \end{align*}
 
-yes
 ** The perceptron as a gradient algorithm
 *** Perceptron algorithm as gradient descent
 - Target error function $\E_P^w[\ell] = \int_X dP(x) \sum_y P(y|x) \ell(x, y, w)$
+#+BEAMER: \pause
 - Empirical error function $\frac{1}{T} \sum_{t=1}^T \ell(x_t, y_t, w)$, $x_t, y_t \sim P$.
+#+BEAMER: \pause
 **** Perceptron cost function
 The cost of each example
 \[
 \ell(x,y, w) = - \ind{y(x^\top w) < 0} y (x^\top w)
 \]
+#+BEAMER: \pause
 **** Derivative: Chain rule
+#+ATTR_BEAMER: :overlay <+->
 - $\nabla_\param \ell(x,y, w) = - \ind{y(x^\top w) > 0} \nabla_\param [y(x^\top w)]$.
 - $\partial w / \partial{w^i} [y(x_t^\top w)] = y x_{t,i}$
 - Gradient update: $\param_{t+1} = \param_t - \nabla_\param \ell(x,y, w) = w_t + y x_{t}$
+#+BEAMER: \pause
 **** Classification error cost function
 This is not differentiable :(
 *** Margins and confidences
+#+ATTR_BEAMER: :overlay <+->
 - We can think of the output of the network as a measure of confidence
-- In particular, we want to the output so that it is
+- The further away the output is from 0, the more confident we should be
+#+attr_html: :width 100px
+#+attr_latex: :width 100px
+[[./fig/margin.pdf]]
+- By applying the *logistic* function, we can bound a real number $x$ to $[0,1]$:
 \[
+f(x) = \frac{e^x}{1 + e^x}.
 \]
 *** Logistic regression
 **** Output as a measure of confidence
@@ -199,7 +211,7 @@ This is not differentiable :(
 
 - How to use kNN and LogisticRegression with sklearn (and perhaps statsmodels, time permitting)
 - Use an example where there is no default 'class' label
-
+  
 *** Assignment
 
 1. Find a dataset with some categorical variable of interest that we want to predict from the UCI repository.
