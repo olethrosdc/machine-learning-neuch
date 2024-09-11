@@ -6,7 +6,7 @@
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
-#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}}
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
 
 
 * The problems of Machine Learning (1 week)
@@ -66,7 +66,7 @@
 :PROPERTIES:
 :BEAMER_col: 0.5
 :END:
-#+ATTR_LATEX: :width 0.6\textwidth
+#+ATTR_LATEX: :width \textwidth
 #+ATTR_LATEX: :caption Climate Modelling
 [[./fig/climate.png]]
 #+ATTR_LATEX: :caption Economic Policy
@@ -206,7 +206,7 @@ The class data looks like this
 - $x_{t,k}$: The k-th feature of the \(t\)-th person.
 - $\bx_k$: Everybody's k-th feature
 
-*We will not use special symbols to distinguis random variables from their realisations*
+*We will not use special symbols to distinguish random variables from their realisations*
 
 **** Raw versus neat data
 - Neat data: $x_t \in \Reals^n$
@@ -293,11 +293,7 @@ X.iat[2,0] # row 2, column 0
 
 
 ** Single variable models
-*** Modelling variables
-**** A :B_columns:
-     :PROPERTIES:
-     :BEAMER_env: columns
-     :END:
+*** Modelling single variables
 ***** Discrete                                                        :BMCOL:
      :PROPERTIES:
      :BEAMER_col: 0.3
@@ -312,39 +308,6 @@ X.iat[2,0] # row 2, column 0
 #+CAPTION: $x \in \Reals$
 #+NAME:   fig:density
 [[./fig/density.pdf]]
-***** Two Continuous                                                  :BMCOL:
-     :PROPERTIES:
-     :BEAMER_col: 0.3
-     :END:
-#+CAPTION: $x \in \Reals^2$
-#+NAME:   fig:joint
-[[./fig/joint.pdf]]
-
-**** B :B_columns:
-     :PROPERTIES:
-     :BEAMER_env: columns
-     :END:
-***** Continuous $\to$ Discete                                        :BMCOL:
-     :PROPERTIES:
-     :BEAMER_col: 0.3
-     :END:
-#+CAPTION: $x \in \Reals \to y \in \Naturals$
-#+NAME: fig:classification
-[[./fig/classification.pdf]]
-***** Discrete $\to$ Continuous                                       :BMCOL:
-     :PROPERTIES:
-     :BEAMER_col: 0.3
-     :END:
-#+CAPTION:  $x \in \Naturals \to y \in \Reals$
-#+NAME: fig:classification
-[[./fig/cdensity.pdf]]
-***** Continuous $\to$ Continuous                                     :BMCOL:
-     :PROPERTIES:
-     :BEAMER_col: 0.3
-     :END:
-#+CAPTION: $x \in \Reals \to y \in  \Reals$ 
-#+NAME: fig:regression
-[[./fig/regression.pdf]]
 
 
 *** Means using python
@@ -437,63 +400,6 @@ x(a) P(a) + x(b) P(b) + x(c) P(c)
 
 
 
-*** The simplest model: A mean
-
-** Two variable models
-*** Modelling variables
-**** A :B_columns:
-     :PROPERTIES:
-     :BEAMER_env: columns
-     :END:
-***** Discrete                                                        :BMCOL:
-     :PROPERTIES:
-     :BEAMER_col: 0.3
-     :END:
-#+CAPTION:  $x \in \Naturals$
-#+NAME:   fig:barplot
-[[./fig/discrete.pdf]]
-***** Continuous                                                      :BMCOL:
-     :PROPERTIES:
-     :BEAMER_col: 0.3
-     :END:
-#+CAPTION: $x \in \Reals$
-#+NAME:   fig:density
-[[./fig/density.pdf]]
-***** Two Continuous                                                  :BMCOL:
-     :PROPERTIES:
-     :BEAMER_col: 0.3
-     :END:
-#+CAPTION: $x \in \Reals^2$
-#+NAME:   fig:joint
-[[./fig/joint.pdf]]
-
-**** B :B_columns:
-     :PROPERTIES:
-     :BEAMER_env: columns
-     :END:
-***** Continuous $\to$ Discete                                        :BMCOL:
-     :PROPERTIES:
-     :BEAMER_col: 0.3
-     :END:
-#+CAPTION: $x \in \Reals \to y \in \Naturals$
-#+NAME: fig:classification
-[[./fig/classification.pdf]]
-***** Discrete $\to$ Continuous                                       :BMCOL:
-     :PROPERTIES:
-     :BEAMER_col: 0.3
-     :END:
-#+CAPTION:  $x \in \Naturals \to y \in \Reals$
-#+NAME: fig:classification
-[[./fig/cdensity.pdf]]
-***** Continuous $\to$ Continuous                                     :BMCOL:
-     :PROPERTIES:
-     :BEAMER_col: 0.3
-     :END:
-#+CAPTION: $x \in \Reals \to y \in  \Reals$ 
-#+NAME: fig:regression
-[[./fig/regression.pdf]]
-
-
 *** The Bernoulli distribution
 **** Bernoulli distribution :B_definition:
      :PROPERTIES:
@@ -516,6 +422,57 @@ when
      :END:
 - A biased coin flip.
 - Classification errors.
+**** Exercise: The expected value                              :B_alertblock:
+:PROPERTIES:
+:BEAMER_env: alertblock
+:END:
+If x is Bernoulli with parameter $\theta$, then what is the expected value of
+- The variable $f(x) = x$?
+- The variable $g(x) = x^2$?
+
+** Two variable models
+*** Two-variable models
+**** A :B_columns:
+     :PROPERTIES:
+     :BEAMER_env: columns
+     :END:
+***** Two Continuous                                                  :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+CAPTION: $x \in \Reals^2$
+#+NAME:   fig:joint
+[[./fig/joint.pdf]]
+
+***** Continuous $\to$ Discete                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+CAPTION: $x \in \Reals \to y \in \Naturals$
+#+NAME: fig:classification
+[[./fig/classification.pdf]]
+**** B :B_columns:
+     :PROPERTIES:
+     :BEAMER_env: columns
+     :END:
+
+***** Discrete $\to$ Continuous                                       :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+CAPTION:  $x \in \Naturals \to y \in \Reals$
+#+NAME: fig:classification
+[[./fig/cdensity.pdf]]
+***** Continuous $\to$ Continuous                                     :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+CAPTION: $x \in \Reals \to y \in  \Reals$ 
+#+NAME: fig:regression
+[[./fig/regression.pdf]]
+
+
+
 *** Predicting $y$ from $x$, discrete case.
 Consider two variables, $x, y$. We can either care about
 - $\E[y | x]$ the expectation of $y$ for all $x$.
@@ -527,6 +484,7 @@ Consider two variables, $x, y$. We can either care about
 | x = 0     |   54% |    6% |
 | x = 1     |   16% |   24% |
 |-----------+-------+-------|
+- How can we graph this?
 - What is $P(x)$?
 **** Conditional probability table for $P(y | x)$
 |---------------+-------+-------|
@@ -629,7 +587,6 @@ P(S) = T/N, \qquad \forall S \subset \Omega.
 
 
 
-*** Robust models of the mean
 *** Validating models
 **** Training data
 - Calculations, optimisation
@@ -664,57 +621,8 @@ P(S) = T/N, \qquad \forall S \subset \Omega.
 - (Stochastic) Gradient Descent.
 - Bayesian inference.
   
-*** Supervised learning
-    The general goal is learning a function $f: X \to Y$.
-**** Classification
-- Input data $x_t \in \Reals$, $y_t \in [m] = \{1, 2, \ldots, m\}$
-- Learn a mapping $f$ so that $f(x_t) = y_t$ for unseen data
-**** Regression
-- Input data $x_t, y_t$
-- Learn a mapping $f$ so that $f(x_t) = \E[y_t]$ for unseen data
-- Can be mapped into classification by binning.
-*** Unsupervised learning
-The general goal is learning the data distribution.
-**** Density estimation
-- Input data $x_1, \ldots, x_T$ from distribution with density $p$
-- Problem: Estimate $p$.
-**** Special case: Compression
-- Learn two mappings $c, d$
-- $c(x)$ compresses an image $x$ to a small representation $z$.
-- $d(z)$ decompresses to an approximate datapoint $\hat{x}$.
-
-**** Special case: Clustering
-- Input data $x_1, \ldots, x_T$.
-- Estimate latent cluster labels $c_t$ to model the distribution of $x$ as
-a mix over densities $p_c$.
-\[
-p(x_t) = \sum_c P(c_t = c) p_c(x_t)
-\]
-
-** Objective functions
-*** Supervised learning objectives
-- Data $(x_t, y_t)$, $x_t \in X$, $y_t \in Y$, $t \in [T]$.
-- i.i.d assumption: $(x_t, y_t) \sim P$ for all $t$.
-- Supervised decision rule $\pi(a_t | x_t)$
-**** Classification
-- Predict the labels correctly, i.e. $a_t = y_t$.
-- Have an appropriate confidence level
-
-**** Regression
-- Predict the mean correctly
-- Have an appropriate variance around the mean
-*** Unsupervised learning objectives
-- Reconstruct the data well
-- Be able to generate data
-*** Reinforcement learning objectives
-- Maximise total reward
-
-  
-** Pitfalls
-*** Pitfalls
 **** Reproducibility
 - Modelling assumptions
-- Distribution shift
 - Interactions and feedback
 **** Fairness
 - Implicit biases in training data

@@ -1,0 +1,35 @@
+#+TITLE: Data Science
+#+AUTHOR: Christos Dimitrakakis
+#+EMAIL:christos.dimitrakakis@unine.ch
+#+LaTeX_HEADER: \include{preamble}
+#+LaTeX_HEADER: \usepackage{tikz}
+#+LaTeX_HEADER: \usepackage{pgfplots}
+#+LaTeX_HEADER: \usetikzlibrary{datavisualization}
+#+LaTeX_CLASS_OPTIONS: [smaller]
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+#+TAGS: activity advanced definition exercise homework project example theory code
+#+OPTIONS:   H:3
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}}
+
+
+* The scientific question
+** Problem definition
+***
+** Data sources requirements
+*** Use existing data
+**** Data repositories
+- Can be used directly
+- May not be useful for the question
+- Multiple sources may be needed.
+
+**** Web crawling
+*** Collect observational data
+*** Collect experimental data
+* Variable selection
+
+* Simulation
+
+* Data collection
+
+* Data analysis
+

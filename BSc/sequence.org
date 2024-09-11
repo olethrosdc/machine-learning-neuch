@@ -1,4 +1,32 @@
-** Sequence prediction
+#+TITLE: Sequence prediction
+#+AUTHOR: Christos Dimitrakakis
+#+EMAIL:christos.dimitrakakis@unine.ch
+#+LaTeX_HEADER: \include{preamble}
+#+LaTeX_HEADER: \usepackage{tikz}
+#+LaTeX_HEADER: \usepackage{pgfplots}
+#+LaTeX_HEADER: \usetikzlibrary{datavisualization}
+#+LaTeX_CLASS_OPTIONS: [smaller]
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+#+TAGS: activity advanced definition exercise homework project example theory code
+#+OPTIONS:   H:3
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}}
+
+* The problem of sequence prediction
+** Examples
+*** Weather
+[[./fig/meteo.png]]
+*** Climate
+[[./fig/climate.png]]
+*** Stock market
+[[./fig/us-stocks.png]]
+*** Inflation
+[[./fig/swiss-inflation.png]]
+** Common themes
+*** Assumptions for sequence prediction
+**** We cannot influence observations
+**** Future observations depend on past observations
+
+** Formalising sequence prediction
 *** The problem of sequence prediction
 - Data $x_1, x_2, x_3, \ldots$
 - At time $t$, make a prediction $a_t$ for $x_t$.
