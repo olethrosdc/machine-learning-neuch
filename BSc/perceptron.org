@@ -33,6 +33,7 @@
 - Feature space $\CX \subset \Reals^2$: e.g. height and weight
 - Label space $\CY = \{-1, 1\}$: e.g. gender
 - Can we find some line so as to separate the genders?
+- [[src/Perceptron/show_class_data_labels.py]]
 
 *** What is the optimal decision threshold?
 
