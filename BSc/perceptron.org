@@ -162,40 +162,58 @@ Setting the derivative to 0, we have $\param = \E_P[x_t]$. This is a simple solu
 
 ** The perceptron as a gradient algorithm
 *** Perceptron algorithm as gradient descent
-- Target error function $\E_P^w[\ell] = \int_X dP(x) \sum_y P(y|x) \ell(x, y, w)$
+**** Target error function
+\[
+\E_{\alert{P}}^\param[\ell] = \int_{\CX} d\alert{P}(x) \sum_y \alert{P}(y|x) \ell(x, y, \param)
+\]
+Minimises the error on the true distribution.
 #+BEAMER: \pause
-- Empirical error function $\frac{1}{T} \sum_{t=1}^T \ell(x_t, y_t, w)$, $x_t, y_t \sim P$.
+**** Empirical error function
+\[
+\E_{\alert{D}}^\param[\ell]= \frac{1}{T} \sum_{t=1}^T \ell(x_t, y_t, \param),
+\qquad\alert{D} = (x_t, y_t)_{t=1}^T, \quad x_t, y_t \sim P.
+\]
+Minimises the error on the empirical distribution.
 #+BEAMER: \pause
 **** Perceptron cost function
 The cost of each example
-\[
-\ell(x,y, w) = - \ind{y(x^\top w) < 0} y (x^\top w)
-\]
+\begin{align}
+\ell(x,y, \param) 
+&= \overbrace{\ind{y(x^\top \param) < 0}}^{\textrm{misclassified?}} \overbrace{[ - y (x^\top \param)]}^{\textrm{margin of error}}
+\\
+&= \overbrace{\ind{y(x^\top \param) < 0}}^{\textrm{misclassified?}} \overbrace{[ - y (x^\top \param)]}^{\textrm{margin of error}}
+\end{align}
+where the *indicator function $\ind{A}$* is  1 when $A$ is true and $0$ otherwise.
 #+BEAMER: \pause
 **** Derivative: Chain rule
 #+ATTR_BEAMER: :overlay <+->
-- $\nabla_\param \ell(x,y, w) = - \ind{y(x^\top w) > 0} \nabla_\param [y(x^\top w)]$.
-- $\partial w / \partial{w^i} [y(x_t^\top w)] = y x_{t,i}$
-- Gradient update: $\param_{t+1} = \param_t - \nabla_\param \ell(x,y, w) = w_t + y x_{t}$
+- $\nabla_\param \ell(x,y, \param) = - \ind{y(x^\top \param) > 0} \nabla_\param [y(x^\top \param)]$.
+- $\partial \param / \partial{\param^i} [y(x_t^\top \param)] = y x_{t,i}$
+- Gradient update: $\param_{t+1} = \param_t - \nabla_\param \ell(x,y, \param) = \param_t + y x_{t}$
 #+BEAMER: \pause
 **** Classification error cost function
 This is not differentiable :(
 *** Margins and confidences
 #+ATTR_BEAMER: :overlay <+->
-- We can think of the output of the network as a measure of confidence
-- The further away the output is from 0, the more confident we should be
+We can think of the output of the network as a measure of confidence
 #+attr_html: :width 100px
 #+attr_latex: :width 100px
 [[./fig/margin.pdf]]
-- By applying the *logistic* function, we can bound a real number $x$ to $[0,1]$:
+#+BEAMER: \pause
+By applying the *logit* function, we can bound a real number $x$ to $[0,1]$:
 \[
-f(x) = \frac{e^x}{1 + e^x}.
+f(x) = \frac{e^x}{1 + e^x} = \frac{1}{1 + e^{-x}}
 \]
 *** Logistic regression
-**** Output as a measure of confidence
-- $P_\param(y = 1| x) = \frac{1}{1 + \exp(- x_t^\top \param)}$
+**** Output as a measure of confidence, given the parameter $\param$
+\[
+P_\param(y = 1| x) = \frac{1}{1 + \exp(- x_t^\top \param)}
+\]
+The original output $x_t^\top \param$ is now passed through the logit function.
+#+BEAMER: \pause
 **** Negative Log likelihood
-- $\ell(x_t, y_t, \param) = - \ln P_\param( y_t | x_t) = \ln(1 + \exp(- y_t x_t^\top \param))$
+#+ATTR_BEAMER: :overlay <+->
+$\ell(x_t, y_t, \param) = - \ln P_\param( y_t | x_t) = \ln(1 + \exp(- y_t x_t^\top \param))$
 \begin{align*}
 \nabla_\param \ell(x_t, y_t, \param) 
 &= \frac{1}{1 + \exp(- y x_t^\top \param)} \nabla_\param[1 + \exp(-y x_t^\top \param)]
