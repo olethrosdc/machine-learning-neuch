@@ -449,18 +449,6 @@ If x is Bernoulli with parameter $\theta$, then what is the expected value of
 #+NAME:   fig:joint
 [[./fig/joint.pdf]]
 
-***** Continuous $\to$ Discete                                        :BMCOL:
-     :PROPERTIES:
-     :BEAMER_col: 0.3
-     :END:
-#+CAPTION: $x \in \Reals \to y \in \Naturals$
-#+NAME: fig:classification
-[[./fig/classification.pdf]]
-**** B :B_columns:
-     :PROPERTIES:
-     :BEAMER_env: columns
-     :END:
-
 ***** Discrete $\to$ Continuous                                       :BMCOL:
      :PROPERTIES:
      :BEAMER_col: 0.3
@@ -468,6 +456,13 @@ If x is Bernoulli with parameter $\theta$, then what is the expected value of
 #+CAPTION:  $x \in \Naturals \to y \in \Reals$
 #+NAME: fig:classification
 [[./fig/cdensity.pdf]]
+
+
+**** B :B_columns:
+     :PROPERTIES:
+     :BEAMER_env: columns
+     :END:
+
 ***** Continuous $\to$ Continuous                                     :BMCOL:
      :PROPERTIES:
      :BEAMER_col: 0.3
@@ -475,7 +470,13 @@ If x is Bernoulli with parameter $\theta$, then what is the expected value of
 #+CAPTION: $x \in \Reals \to y \in  \Reals$ 
 #+NAME: fig:regression
 [[./fig/regression.pdf]]
-
+***** Continuous $\to$ Discete                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+CAPTION: $x \in \Reals \to y \in \Naturals$
+#+NAME: fig:classification
+[[./fig/classification.pdf]]
 
 
 *** Predicting $y$ from $x$, discrete case.
