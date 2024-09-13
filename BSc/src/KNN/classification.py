@@ -1,5 +1,6 @@
 import numpy as np
 import scipy
+import scipy.stats
 
 # generate data
 n_training_data = 100
