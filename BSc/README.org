@@ -63,14 +63,14 @@ The course focuses on fundamental modelling problems and general machine learnin
 |      5 | 10.15 | Regression lab                    | Lab, Feature Selection for Regression            |                     | Lab (2) |
 |      6 | 10.22 | Probabilistic models: ML          | Maximum Likelihood, SGD for Linear Regression    |                     | Lecture |
 |      7 | 10.29 | Generative Models                 | Beta-Bernoulli, Naive Bayes and Beyond           |                     | Lab (3) |
-|      9 | 11.05 | Multi-Layer Perceptrons           | Backpropagation, Softmax, RELU                   |                     | Mix     |
-|     10 | 11.12 | MLP2: Image Lab                   | Convolutional Networks, Image applications       |                     | Lab (4) |
-|     11 | 11.19 | Sequence Prediction               | Markov models, text prediction, LLMs             |                     | Mixed   |
-|     12 | 11.26 | Reinforcement Learning            |                                                  |                     | Mixed   |
-|     13 | 12.03 | Fairness and Privacy              |                                                  |                     | Mixed   |
-|     14 | 12.10 | Project Presentations             |                                                  |                     | Lab     |
+|      8 | 11.05 | Multi-Layer Perceptrons           | Backpropagation, Softmax, RELU                   |                     | Mix     |
+|      9 | 11.12 | MLP2: Image Lab                   | Convolutional Networks, Image applications       |                     | Lab (4) |
+|     10 | 11.19 | Sequence Prediction               | Markov models, text prediction, LLMs             |                     | Mixed   |
+|     11 | 11.26 | Project lab day                   |                                                  |                     | Mixed   |
+|     12 | 12.03 | Fairness and Privacy              |                                                  |                     | Mixed   |
+|     13 | 12.10 | Project Presentations             |                                                  |                     | Lab     |
 |--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
-|     13 | 12.17 | Project Presentations             |                                                  |                     |         |
+|     14 | 12.17 | Project Presentations             |                                                  |                     |         |
 |--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
 
 ** Material
