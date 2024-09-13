@@ -1,4 +1,4 @@
-#+TITLE: Machine Learning and Data Mining
+#+TITLE: Machine Learning: Theory, Fairness, Privacy
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \usepackage{tikz}

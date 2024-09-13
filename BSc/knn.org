@@ -2,9 +2,11 @@
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \include{preamble}
+#+LaTeX_CLASS_OPTIONS: [10pt]
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
-#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}}
-
+#+OPTIONS:   H:3
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
 * Introduction
 ** The hidden secret of machine learning
 *** Supervised learning
@@ -12,8 +14,8 @@
 - Given labelled training examples $(x_1, y_1), \ldots (x_T, y_T)$ where
 - $x_t \in X$ are *features* 
 - $y_t \in Y$ are *labels*..
-**** Feature space X$
-- Usually $X = \Reals^n$: the $n$-dimensional Euclidean space
+**** Feature space $\CX$
+- Usually $\CX = \Reals^n$: the n-dimensional Euclidean space
 - How do we use your class data?
 **** Classification
 - $Y = \{1, \ldots, m\}$ are *discrete* labels
@@ -24,7 +26,27 @@
 
 - Assume an unknown example is similar to its neighbours
 - Smoothness allows us to make predictions
-- Lots of other algortihms
+
+/Discriminatory analysis-nonparametric discrimination: consistency properties/, Evelyn Fix and Joseph L.  Hodges Jr, 1951.
+
+**** Evelyn :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+#+CAPTION: Evelyn Fix
+#+ATTR_LATEX: :width 0.5\textwidth
+[[../fig/fix_evelyn2.jpg]]
+**** Joseph :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+#+CAPTION: Joseph Hodges
+#+ATTR_LATEX: :width 0.5\textwidth
+[[../fig/Hodges.jpg]]
+
+
+
+
 
 *** Performance of KNN on image classification
 [[./fig/knn-image-performance.png]]
@@ -33,10 +55,9 @@
 - Can outperform really complex models!
 
 * The algorithm
-  
 ** $k$ Nearest Neighbours
-*** The Nearest Neighbour algorithm
 
+*** The Nearest Neighbour algorithm
 **** Pseudocode
 - Input: Data $(x_t, y_t)_{t=1}^T$, test point $x$, distance $d$ 
 - $t^* = \argmin_t d(x_t, x)$ /// How do we implement this?
