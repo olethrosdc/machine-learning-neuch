@@ -51,7 +51,7 @@ class NearestNeighbourClassifier:
     ## predict the most likely label for a data point x
     def predict(self, x):
         """ 
-        A method that preicts the most likely label.
+        A method that predicts the most likely label.
 
         :param x: the test point
         :return: the label y with the highest probability P(y|x)
@@ -72,22 +72,11 @@ class NearestNeighbourClassifier:
         :return: a vector p so that p[i] is the probability of label i.
 
         """
-        # calculate distances
-        distances = np.zeros(self.n_points)
-        for t in range(self.n_points):
-            distances[t] = self.metric(x, self.data[t])
-        # sort data
-
-        indices = np.argsort(distances)
-        # get K closest neighbours
-        proportions = np.zeros(self.n_classes)
-        for i in range(self.K):
-            index = indices[i]
-            label = self.labels[index]
-            proportions[label - 1] += 1
-        proportions /= self.K
-
-        # get the proportion of each label
+        # 1. Calculate distances to all points
+        # 2. Sort the points
+        # 3. Calculate the proportion of labels for the K closest points 
+        
+        # return the proportion of each label
         return proportions
 
 

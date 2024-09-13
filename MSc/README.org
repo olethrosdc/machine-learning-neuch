@@ -55,9 +55,35 @@ learning.
 
 *** Schedule
 
+
+|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
+| Module |  Date | Topic                             | Details                                          | Python              | Type    |
+|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
+|      1 | 09.20 | Introduction                      | Mean estimation, kNN, Train/Test                 | nympy, pandas       | Mixed   |
+|      2 | 09.27 | The Perceptron and Generalisation | The Perceptron, Generalisation, Simulation       | pandas, scikitlearn | Lecture |
+|      3 | 10.04 | Model Comparison                  | Cross-Validation, Bootstrapping, Model Selection | scikit learn        | Lab (1) |
+|      4 | 10.11 | Regression                        | Linear regression, SGD                           |                     | Mix     |
+|      5 | 10.18 | Multi-Layer Perceptrons           | Backpropagation, Softmax, RELU                   |                     | Mix     |
+|      6 | 10.25 | Generative Models                 | Beta-Bernoulli, Naive Bayes and Beyond           |                     | Lecture |
+|      7 | 11.01 | Bayes Nets                        |                                                  |                     | Mix     |
+|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
+|      8 | 11.08 | Fairness 1                        |                                                  |                     |         |
+|      9 | 11.15 | Fairness 2                        |                                                  |                     |         |
+|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
+|     10 | 11.22 | Privacy 1                         |                                                  |                     |         |
+|     11 | 11.29 | Privacy 2                         |                                                  |                     |         |
+|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
+|     12 | 11.06 | Project Work                      |                                                  |                     |         |
+|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
+|     13 | 12.13 | Project Presentations             |                                                  |                     | Lab     |
+|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
+|     14 | 12.20 | NA                                |                                                  |                     |         |
+|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
+
+
 1. kNN, learning and generalisation.
-2. The Perceptron algorithm. Gradient Descent Convergence.
-3. Pandas/scikit lab
+2. The Perceptron algorithm. Gradient Descent Convergence. Pandas/scikit.
+3. MLP
 4. Bayesian learning.
 5. Bayesian networks.
 6. Online learning: Prediction with expert advice.
