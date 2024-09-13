@@ -1,0 +1,662 @@
+#+TITLE: Introduction to Machine Learning
+#+AUTHOR: Christos Dimitrakakis
+#+EMAIL:christos.dimitrakakis@unine.ch
+#+LaTeX_HEADER: \include{preamble}
+#+LaTeX_CLASS_OPTIONS: [10pt]
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+#+TAGS: activity advanced definition exercise homework project example theory code
+#+OPTIONS:   H:3
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
+
+
+* The problems of Machine Learning (1 week)
+** Introduction
+*** Machine Learning And Data Mining
+**** \faGear \faWrench The nuts and bolts 
+- Models
+- Algorithms
+- Theory
+- Practice
+**** \faList Workflow 
+- Scientific question
+- Formalisation of the problem
+- Data collection
+- Analysis and model selection
+**** Types of \faBarChart \quad statistics / \faMagic \quad machine learning problems  
+- *Classification*
+- *Regression*
+- Density estimation
+- Reinforcement learning
+*** Machine learning
+**** Data Collection
+- Downloading a clean dataset from a *repository*
+- *Scraping* data from the web
+- Conducting a *survey*
+- Performing *experiments*, and obtaining measurements.
+**** Modelling
+- Simple: the bias of a coin
+- Complex:  a language model.
+- The model depends on the data and the problem
+**** Algorithms and Decision Making
+- We want to use models to make decisions.
+- Decisions are made every step of the way.
+- Both humans and algorithms can make decisions.
+  
+*** The main problems in machine learning and statistics          
+
+**** A                                                             :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+#+ATTR_LATEX: :width 0.8\textwidth
+#+ATTR_LATEX: :caption Dark Matter
+[[./fig/dark_matter.png]]
+#+ATTR_LATEX: :caption Protein Folding
+[[./fig/Protein_folding.png]]
+
+**** B                                                             :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+#+ATTR_LATEX: :width \textwidth
+#+ATTR_LATEX: :caption Climate Modelling
+[[./fig/climate.png]]
+#+ATTR_LATEX: :caption Economic Policy
+[[./fig/econ.jpg]]
+
+*** Prediction
+[[./fig/meteo.png]]
+- Will it rain tomorrow?
+- How much will bitcoin be worth next year?
+- When is the next solar eclipse?
+
+*** Inference
+[[./fig/gravity.jpg]]
+- Does my poker opponent have two aces?
+- What is the law of gravitation?
+
+*** Decision Making
+[[./fig/lunar.png]]
+[[./fig/artemis.gif]]
+
+- What data should I collect?
+- Which model should I use?
+- Should I fold, call, or raise in my poker game?
+- How can I get a spaceship to the moon and back?
+
+
+
+*** The need to learn from data
+**** Problem definition
+- What problem do we need to solve?
+- How can we formalise it?
+- What properties of the problem can we learn from data?
+
+**** Data collection
+- *Why* do we need data?
+- *What* data do we need?
+- How *much* data do we want?
+- *How* will we collect the data?
+
+**** Modelling and decision making
+- How will we *compute* something useful?
+- How can we use the model to make *decisions*?
+
+*** Course Material
+**** Moodle
+- Assignments and proejct
+- Additional reading material
+- Asking questions
+**** Course Github https://github.com/olethrosdc/machine-learning-neuch/tree/main/BSc
+- .org files for notes, PDF for slides
+- source code for examples
+**** Course literature
+- An Introduction to Statistical Learning with Python
+  https://hastie.su.domains/ISLP/ISLP_website.pdf.download.html
+book chapters will be mentioned in the course
+*** Assignment, teaching and questions
+**** Assignments and project
+- Indidivual Weekly assignments in the first half
+- Group project in the second half
+- Project presentation
+- No exam.
+**** Other questions
+- Use Moodle for technical/administrative questions: That way everybody gets the same information.
+- Use email for personal problems or extra help, if the moodle is not enough.
+- Complicated questions can be answered at the next lecture
+**** Office hours
+- Fridays 13:00-14:00: book with an email to avoid clashes.
+- Email me for an appointment outside those hours.
+
+* Estimation
+** Answering a scientific problem
+*** Problem definition
+- Example: Health, weight and height
+****  Health questions regarding height and weight :B_example:
+     :PROPERTIES:
+     :BEAMER_env: example
+     :END:
+- What is a normal height and weight?
+- How are they related to health?
+- What variables affect height and weight?
+**** Define a research question                                :B_alertblock:activity:
+:PROPERTIES:
+:BEAMER_env: alertblock
+:END:
+Find a *non-sensitive* variable that we can easily measure via a survey, e.g. related to sleep, smoking, exercise, food, politics, sports, hobbies etc.
+- Discuss in small groups and post suggestions
+- We then vote for what to measure
+  
+*** Data collection :activity:
+
+Think about *which variables* we need to collect to answer our *research question*.
+
+**** Necessary variables
+The variables we need to know about
+- Weight
+- Height
+- Dependent: (health/vote/opinion/salary)
+**** Auxiliary variables
+Measurable factors related to the variables of interest
+
+**** Possible confounders
+Hidden factors that might affect variables
+
+*** Class data and variables                                       :activity:
+- The class enters their data into the [[https://docs.google.com/spreadsheets/d/1xRpo1LuMz62Yu57ABxtkvbvCebuew3VUh387ElXNoGU/edit?usp=sharing][excel file]].
+#+ATTR_LATEX: :width 0.3\textwidth
+  [[./fig/class_data_QR.png]]
+- Pay attention to the variables we wish to measure
+
+**** Privacy                                                   :B_alertblock:
+:PROPERTIES:
+:BEAMER_env: alertblock
+:END:
+- Is the use of a pseudonym sufficient to hide your identity?
+
+*** Variables
+The class data looks like this
+|------------+--------+--------+--------+-----+-------------+---------|
+| First Name | Gender | Height | Weight | Age | Nationality | Smoking |
+|------------+--------+--------+--------+-----+-------------+---------|
+| Lee        | M      |    170 |     80 |  20 | Chinese     |      10 |
+| Fatemeh    | F      |    150 |     65 |  25 | Turkey      |       0 |
+| Ali        | Male   |    174 |     82 |  19 | Turkish     |       0 |
+| Joan       | N      |   5'11 |    180 |  21 | American    |       4 |
+|------------+--------+--------+--------+-----+-------------+---------|
+
+- $\bX$: Everybody's data
+- $x_t$: The t-th person's data
+- $x_{t,k}$: The k-th feature of the \(t\)-th person.
+- $\bx_k$: Everybody's k-th feature
+
+
+**** Raw versus neat data
+- Neat data: $x_t \in \Reals^n$
+- Raw data: web pages, handwritten text, graphs, data packets, with missing/incorrect values, etc
+*** Types of learning problems
+**** Unsupervised learning (unconditional estimation)
+- Predict the \alert{gender} of an unknown individual.
+- Predict the \alert{height}.
+- Predict the \alert{height and weight}?
+
+**** Supervised learning problems (conditional estimation)
+- Classification: Can we predict gender from height/weight?
+- Regression: Can we predict weight from height and gender?
+- In both cases we predict *output* variables from *input* variables
+**** Variables
+- *Input* variables: aka features, predictors, independent variables
+- *Output* variables: aka response, dependent variables, labels, or targets.
+- The input/output dichotomy only exists in *some prediction problems*.
+
+** Pandas and dataframes
+*** Python pandas for data wrangling
+**** Reading class data
+#+BEGIN_SRC python
+import pandas as pd
+X = pd.read_excel("data/class.xlsx")
+X["First Name"]
+#+END_SRC
+
+#+RESULTS:
+: None
+
+- Array columns correspond to features
+- Columns can be accessed through namesx
+
+**** Summarising class data
+#+BEGIN_SRC python :exports code
+X.hist()
+import matplotlib.pyplot as plt
+plt.show()
+#+END_SRC
+
+#+RESULTS:
+
+*** Pandas and DataFrames
+- Data in pandas is stored in a *DataFrame*
+- DataFrame is *not the same* as a numpy array.
+**** Core libraries
+#+BEGIN_SRC python :exports code
+import pandas as pd
+import numpy as np
+#+END_SRC
+
+**** Series: A sequence of values
+     :PROPERTIES:
+     :BEAMER_opt:   [shrink=15]
+     :END:
+#+BEGIN_SRC python :exports code
+# From numpy array:
+s = pd.Series(np.random.randn(3),  index=["a", "b", "c"])
+# From dict:
+d = {"a": 1, "b": 0, "c": 2}
+s = pd.Series(d)
+# accessing elemets
+s.iloc[2] #element 2
+s.iloc[1:2] #elements 1,2
+s.array # gets the array object 
+s.to_numpy() # gets the underlying numpy array
+#+END_SRC
+
+*** DataFrames
+
+
+**** Constructing from a numpy array
+#+BEGIN_SRC python :exports code
+data = np.random.uniform(size = [3,2])
+df = pd.DataFrame(data, index=["John", "Ali", "Sumi"],
+         columns=["X1", "X2"])
+#+END_SRC
+
+**** Constructing from a dictionary
+#+BEGIN_SRC python :exports code
+d = {  "one": pd.Series([1, 2], index=["a", "b"]),
+       "two": pd.Series([1, 2, 3], index=["a", "b", "c"])}
+df = pd.DataFrame(d)
+#+END_SRC
+
+
+
+**** Access
+#+BEGIN_SRC python :exports code
+X["First Name"] # get a column
+X.loc[2] # get a row
+X.at[2, "First Name"] # row 2, column 'first name'
+X.loc[2].at["First Name"] # row 2, element 'first name' of the series
+X.iat[2,0] # row 2, column 0
+#+END_SRC
+
+
+
+** Single variable models
+*** Modelling single variables
+***** Discrete                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+CAPTION:  $x \in \Naturals$
+#+NAME:   fig:barplot
+#+ATTR_LATEX: :width 1.6\textwidth
+[[./fig/discrete.pdf]]
+***** Continuous                                                      :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+CAPTION: $x \in \Reals$
+#+NAME:   fig:density
+#+ATTR_LATEX: :width 1.4\textwidth
+[[./fig/density.pdf]]
+
+
+*** Means using python
+**** Calculating the mean of our class data :B_example:
+     :PROPERTIES:
+     :BEAMER_env: example
+     :END:
+#+BEGIN_SRC python
+X.mean() # gives the mean of all the variables through pandas.core.frame.DataFrame
+X["Height"].mean()
+np.mean(X["Weight"])
+#+END_SRC
+- The mean here is *fixed* because we calculate it on the same data.
+- If we were to *collect new data* then the answer would be different.
+
+**** Calculating the mean of a random variable :B_example:
+     :PROPERTIES:
+     :BEAMER_env: example
+     :END:
+#+BEGIN_SRC python
+import numpy as np
+X = np.random.gamma(170, 1, size=20)
+X.mean()
+np.mean(X)
+#+END_SRC
+- The mean is *random*, so we get a different answer everytime.
+
+*** One variable: expectations and distributions 
+
+**** The expected value :B_definition:
+     :PROPERTIES:
+     :BEAMER_env: definition
+     :END:
+#+ATTR_BEAMER: :overlay +-
+- $\Omega$: random outcome space
+- $P$: distribution of outcomes $\omega \in \Omega$
+- Random variable $x : \Omega \to \Reals$, and $\omega \sim P$
+- $\E_P[x]$: expectation of $x$ under $P$ (is the same for all $t$)
+#+BEAMER: \pause
+\[
+\E_P[x] 
+= \sum_{\omega \in \Omega}  x(\omega) P(\omega) 
+\]
+#+BEAMER: \pause
+**** The sample mean :B_definition:
+     :PROPERTIES:
+     :BEAMER_env: definition
+     :END:
+- *i.i.d.* variables $x_1, \ldots, x_t, \ldots, x_T$:  with $x_t = x(\omega_t)$, $\omega_t \sim P$.
+#+BEAMER: \pause
+- The sample mean of $x_1, \ldots, x_T$ is
+\[
+\frac{1}{T} \sum_{t=1}^T x_{t}
+\]
+The sample mean is \(O(1/\sqrt{T})\)-close $\E_P[x_t]$ with high probability.
+
+*** Reminder: expectations of random variables
+**** A gambling game :B_exampleblock:
+     :PROPERTIES:
+     :BEAMER_env: exampleblock
+     :END:
+What are the expected winnings if you play this game?
+- [a] With probability 1%, you win 100 CHF
+- [b] With probability 40%, you win 20 CHF.
+- [c] Otherwise, you win nothing
+**** Solution
+#+BEAMER: \pause
+- Let $x$ be the amount won, then $x(a) = 100, x(b) = 20, x(c) = 0$.
+#+BEAMER: \pause
+- We need to calculate
+\[
+\E_P(x) = \sum_{\omega \in \{a, b, c\}} \!\!\! x(\omega) P(\omega) =
+x(a) P(a) + x(b) P(b) + x(c) P(c) 
+\]
+#+BEAMER: \pause
+- $P(c) = 59\%$, as $P(\Omega) = 1$. Substituting,
+#+BEAMER: \pause
+\[
+\E_P(x) = 1 + 8 + 0 = 9.
+\]
+
+*** Models
+**** Models as summaries
+- They summarise what we can see in the data
+- The ultimate model of the data *is* the data
+**** Models as predictors
+- They make predictions about things *beyond* the data
+- This requires some assumptions about the *data-generating process*.
+**** Example models
+- A numerical mean
+- A linear classifier
+- A linear regressor
+- A deep neural network
+- A Gaussian process
+- A large language model
+
+
+*** Estimates and decisions
+We always need to make decisions based on some *estimates*.
+
+**** Estimate the bias of a coin :activity:
+- I give you a coin that, lands with some fixed probability on heads.
+- You are allowed to experiment with the coin.
+- I will pay you *1 CHF* if you guess the throw correctly
+- Otherwise you pay me *x CHF*.
+- How much should I ask you to *pay* for the bet to be *fair*?
+- What do you need to *know* to determine this?
+**** If the coin is fair                                          :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+- If the coin is fair, then you only have 50% proability of guessing correctly.
+- If you bet $x$ CHF, your expected return is $x$
+
+
+
+*** The Bernoulli distribution
+**** Bernoulli distribution :B_definition:
+     :PROPERTIES:
+     :BEAMER_env: definition
+     :END:
+We say that $x \in \{0, 1\}$ has Bernoulli distribution with parameter $\theta$ and write
+\[
+x \sim \Ber(\theta),
+\]
+when
+\[
+\Pr(x) = \begin{cases}
+\theta & x = 1\\
+1 - \theta & x = 0.
+\end{cases}
+\]
+**** Applications of the Bernoulli distribution :B_example:
+     :PROPERTIES:
+     :BEAMER_env: example
+     :END:
+- A biased coin flip.
+- Classification errors.
+**** Exercise: The expected value                              :B_alertblock:
+:PROPERTIES:
+:BEAMER_env: alertblock
+:END:
+If x is Bernoulli with parameter $\theta$, then what is the expected value of
+- The variable $f(x) = x$?
+- The variable $g(x) = x^2$?
+
+
+** Two variable models
+*** Two-variable models
+**** A :B_columns:
+     :PROPERTIES:
+     :BEAMER_env: columns
+     :END:
+***** Two Continuous                                                  :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+CAPTION: $x \in \Reals^2$
+#+NAME:   fig:joint
+[[./fig/joint.pdf]]
+
+***** Discrete $\to$ Continuous                                       :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+CAPTION:  $x \in \Naturals \to y \in \Reals$
+#+NAME: fig:classification
+[[./fig/cdensity.pdf]]
+
+
+**** B :B_columns:
+     :PROPERTIES:
+     :BEAMER_env: columns
+     :END:
+
+***** Continuous $\to$ Continuous                                     :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+CAPTION: $x \in \Reals \to y \in  \Reals$ 
+#+NAME: fig:regression
+[[./fig/regression.pdf]]
+***** Continuous $\to$ Discete                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+CAPTION: $x \in \Reals \to y \in \Naturals$
+#+NAME: fig:classification
+[[./fig/classification.pdf]]
+
+
+*** Predicting $y$ from $x$, discrete case.
+Consider two variables, $x, y$. We can either care about
+- $\E[y | x]$ the expectation of $y$ for all $x$.
+- $\Pr[y | x]$ the distribution of $y$ for all $x$.
+**** Probability table for $P(x, y)$ 
+|-----------+-------+-------|
+| $P(x, y)$ | y = 0 | y = 1 |
+|-----------+-------+-------|
+| x = 0     |   54% |    6% |
+| x = 1     |   16% |   24% |
+|-----------+-------+-------|
+- How can we graph this?
+- What is $P(x)$?
+**** Conditional probability table for $P(y | x)$
+|---------------+-------+-------|
+| $P(y \mid x)$ | y = 0 | y = 1 |
+|---------------+-------+-------|
+| x = 0         |   90% |   10% |
+| x = 1         |   40% |   60% |
+|---------------+-------+-------|
+- What is $\E[y \mid x]$?
+*** Distributions of two variables
+In this setting, both $x$ and $y$ have a Bernoulli distribution. If we use a model whereby $x$ is sampled first, and then $y$, then we can define two Bernoulli distributions. The first, for $x$ is unconditional, while the second, for $y$, depends on the value of $x$:
+\begin{align*}
+x &\sim \Ber(\theta)\\
+y \mid x &\sim \Ber(\phi_x).
+\end{align*}
+In our example, $\phi_0 = 0.1$ and $\phi_1 = 0.6$.
+
+*** Homework
+**** Probability table for $P(x, y)$
+|-----------+--------+-------+-------|
+| $P(x, y)$ | y = -1 | y = 0 | y = 1 |
+|-----------+--------+-------+-------|
+| x = 0     |    10% |   20% |  10%  |
+| x = 1     |    30% |   20% |  10%  |
+|-----------+--------+-------+-------|
+Given the above table, calculate
+- $P(x)$
+- The conditional probability table for $P(y | x)$.
+- $\E[y | x]$ for all values of $x$.
+
+*** Two variables: conditional expectation
+**** The height of different genders
+The conditional expected height
+\[
+\E[h \mid g = 1] = \sum_{\omega \in \Omega} h(\omega) P[\omega \mid g(\omega) = 1]
+\]
+The empirical conditional expectation
+\[
+\E[h \mid g = 1] \approx \frac{ \sum_{t : g(\omega_t) = 1} h(\omega_t)}{ |\{t : g(\omega_t) = 1\}|}
+\]
+**** Python implementation
+#+BEAMER: \pause
+
+#+BEGIN_SRC python
+  h[g==1] / sum(g==1)
+  ## alternative
+  import numpy as np
+  np.mean(h[g==1])
+#+END_SRC
+
+
+    
+* Statistics, validation and model selection
+*** Populations, samples, and distributions
+**** The world
+    :PROPERTIES:
+    :BEAMER_col: 0.6
+    :END:
+#+CAPTION: The world population
+#+NAME:   fig:world
+[[./fig/population.png]]
+**** A sample
+    :PROPERTIES:
+    :BEAMER_col: 0.4
+    :END:
+#+CAPTION: A sample
+#+NAME:   fig:sample
+[[./fig/sample.png]]
+*** Statistical assumptions
+
+**** Independent, Identically Distributed data
+- $\omega_t \sim P$: individuals $\omega_t \in \Omega$ are drawn from some *distribution* $P$
+- $\bx_t \defn \bx(\omega_t)$ are some *features* of the \(t\)-th individual
+- Here we are interested in properties of the *unknown* distribution $P$.
+**** Representative sample from a fixed population
+- Finite population $\Omega = \{\omega_1, \omega_2, \ldots, \omega_N\}$
+- A subset $S \subset \Omega$ of size $T < N$ is selected with a *uniform distribution*, i.e. so that
+\[
+P(S) = T/N, \qquad \forall S \subset \Omega.
+\]
+- Here we are interested in statistics of the *unknown* population $\Omega$.
+- We assume an underlying distribution $P$ for convenience.
+- We can tried both cases essentially the same.
+*** Learning from data
+    
+**** Unsupervised learning
+- Given data $x_1, \ldots, x_T$.
+- Learn about the data-generating process.
+- Example: Estimation, compression, text/image generation  
+**** Supervised learning
+- Given data $(x_1, y_1), \ldots, (x_T, y_T)$
+- Learn about the relationship between $x_t$ and $y_t$.
+- Example: Classification, Regression
+**** Online learning
+- Sequence prediction: At each step $t$, predict $x_{t+1}$ from $x_1, \ldots, x_t$.
+- Conditional prediction: At each step $t$, predict $y_{t+1}$ from $x_1, y_1 \ldots, x_t, y_t, \alert{x_{t+1}}$
+**** Reinforcement learning
+ Learn to act in an *unknown* world through interaction and rewards
+
+
+
+
+*** Validating models
+**** Training data
+- Calculations, optimisation
+- Data exploration
+**** Validation data
+- Fine-tuning
+- Model selection
+**** Test data
+- Performance comparison
+**** Simulation
+- Interactive performance comparison
+- White box testing
+**** Real-world testing
+- Actual performance measurement
+
+*** Model selection
+- Train/Test/Validate
+- Cross-validation
+- Simulation
+
+* Course summary
+
+** Course Contents
+
+*** Course Contents
+**** Models
+- k-Nearest Neighbours.
+- Linear models and perceptrons.
+- Multi-layer perceptrons (aka deep neural networks).
+- Bayesian Networks
+**** Algorithms
+- (Stochastic) Gradient Descent.
+- Bayesian inference.
+  
+**** Reproducibility
+- Modelling assumptions
+- Interactions and feedback
+**** Fairness
+- Implicit biases in training data
+- Fair decision rules and meritocracy
+**** Privacy
+- Accidental data disclosure
+- Re-identification risk
+
+* Reading for this week
+** Reading
+*** Reading for this week
+ISLP Chapter 1

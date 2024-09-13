@@ -1,0 +1,207 @@
+#+TITLE: Introduction to Machine Learning, Bachelor course
+#+AUTHOR: Christos Dimitrakakis
+#+EMAIL:christos.dimitrakakis@unine.ch
+#+LaTeX_HEADER: \usepackage{tikz}
+#+LaTeX_HEADER: \usepackage{amsmath}
+#+LaTeX_HEADER: \usepackage{amssymb}
+#+LaTeX_HEADER: \usepackage{isomath}
+#+LaTeX_HEADER: \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand \Var {\mathop{\mbox{\ensuremath{\mathbb{V}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand \Bias {\mathop{\mbox{\ensuremath{\mathbb{B}}}}\nolimits}
+#+LaTeX_HEADER: \newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
+#+LaTeX_HEADER: \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
+#+LaTeX_HEADER: \DeclareMathOperator*{\argmax}{arg\,max}
+#+LaTeX_HEADER: \DeclareMathOperator*{\argmin}{arg\,min}
+#+LaTeX_HEADER: \DeclareMathOperator*{\sgn}{sgn}
+#+LaTeX_HEADER: \newcommand \defn {\mathrel{\triangleq}}
+#+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
+#+LaTeX_HEADER: \newcommand \Param {\Theta}
+#+LaTeX_HEADER: \newcommand \param {\theta}
+#+LaTeX_HEADER: \newcommand \vparam {\vectorsym{\theta}}
+#+LaTeX_HEADER: \newcommand \mparam {\matrixsym{\Theta}}
+#+LaTeX_HEADER: \newcommand \bW {\matrixsym{W}}
+#+LaTeX_HEADER: \newcommand \bw {\vectorsym{w}}
+#+LaTeX_HEADER: \newcommand \wi {\vectorsym{w}_i}
+#+LaTeX_HEADER: \newcommand \wij {w_{i,j}}
+#+LaTeX_HEADER: \newcommand \bA {\matrixsym{A}}
+#+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
+#+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
+#+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
+#+LaTeX_HEADER: \newcommand \bel {\beta}
+#+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
+#+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
+#+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
+#+LaTeX_CLASS_OPTIONS: [smaller]
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+#+TAGS: activity advanced definition exercise homework project example theory code
+#+OPTIONS:   H:3
+* General
+** Introduction
+*** Summary
+This course gives an introduction to the algorithms and theory of
+machine learning. Application is in the form of a course project.
+During the course, you will be able to:
+
+- Formalise a scientific question and answer it using machine learning.
+- Distinguish between different variable types and their relations.
+- Perform experiment design, data collection and analysis.
+- Understand core machine learning principles.
+- Implement and understand some of the simplest algorithms.
+- Apply off-the-shelf algorithms from existing Python libraries.
+
+The course focuses on fundamental modelling problems and general machine learning methodology. Theory is only briefly mentioned.
+
+
+** Schedule
+|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
+| Module |  Date | Topic                             | Details                                          | Python              | Type    |
+|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
+|      1 | 09.17 | Introduction                      | Mean estimation, kNN, Train/Test                 | nympy, pandas       | Mixed   |
+|      2 | 09.24 | The Perceptron and Generalisation | The Perceptron, Generalisation, Simulation       | pandas, scikitlearn | Lecture |
+|      3 | 10.01 | Model Comparison                  | Cross-Validation, Bootstrapping, Model Selection | scikit learn        | Lab (1) |
+|      4 | 10.08 | Regression                        | Linear regression, SGD                           |                     | Mix     |
+|      5 | 10.15 | Regression lab                    | Lab, Feature Selection for Regression            |                     | Lab (2) |
+|      6 | 10.22 | Probabilistic models: ML          | Maximum Likelihood, SGD for Linear Regression    |                     | Lecture |
+|      7 | 10.29 | Generative Models                 | Beta-Bernoulli, Naive Bayes and Beyond           |                     | Lab (3) |
+|      9 | 11.05 | Multi-Layer Perceptrons           | Backpropagation, Softmax, RELU                   |                     | Mix     |
+|     10 | 11.12 | MLP2: Image Lab                   | Convolutional Networks, Image applications       |                     | Lab (4) |
+|     11 | 11.19 | Sequence Prediction               | Markov models, text prediction, LLMs             |                     | Mixed   |
+|     12 | 11.26 | Reinforcement Learning            |                                                  |                     | Mixed   |
+|     13 | 12.03 | Fairness and Privacy              |                                                  |                     | Mixed   |
+|     14 | 12.10 | Project Presentations             |                                                  |                     | Lab     |
+|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
+|     13 | 12.17 | Project Presentations             |                                                  |                     |         |
+|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
+
+** Material
+*** Textbooks
+**** Primary
+- Introduction to Statistical Learning with Python
+https://hastie.su.domains/ISLP/ISLP_website.pdf
+
+
+* Activities
+** Introduction/kNN
+*** Science and Data
+**** Preparation
+1. Formulate a question
+2. What data do we need?
+3. How will we analyse it?
+**** Reproducibility
+We now have data and an analysis.
+1. How good is this analysis?
+2. Will get the same results if we repeat the experiment?
+*** Variables
+1. What variables do we have?
+2. What relationship do we need to consider?
+3. Can we ignore some variables?
+4. Does the type of the variable make a difference?
+
+*** Modelling problems
+
+
+*** kNN
+
+** Perceptron/Generalisation
+*** Model Selection
+** Regression
+*** Linear Regression
+** Probabilistic Models
+*** Uncertainty
+**** Aleatory uncertainty
+**** Epistemic uncertainty
+*** Bernoulli-Beta
+**** Bernoulli: The distribution of coin flips
+**** Beta: The distribution of coin biases
+*** Naive Bayes
+**** Multiple variables
+
+
+* Assignments
+** Assignment 1: Classification, model comparison
+In this assignment we compare classification models.
+We apply the basic ideas of train, test, validation, cross-validation and bootstrapping.
+** Assignment 2: Regression, simulations
+In this assignment we further develop the idea of simulation.
+Here the students should perform a project
+** Assignment 3: Probabilistic Models
+Here we focus on simulation from a known probabilistic model.
+** Assignment 4: Sequential prediction
+- Compare a variable order Markov chain, a hidden Markov model and a recurrent neural network.
+
+* Projects
+
+The students will develop a data analysis project that includes the following:
+
+1. Selection of a scientific question that can be answered through data collection and analysis.
+2. Choice of variables that can answer this question.
+3. Simulation of the data generating process to select a data analysis methodology.
+4. Collection of data guided by the simulation.
+5. Data analysis guided by the simulation
+   
+** Grading
+Criteria for full marks in each part of the project are the following. 
+
+1. Documenting of the work in a way that enables reproduction.
+2. Technical correctness of their analysis.
+3. Demonstrating that they have understood the assumptions underlying their analysis.
+4. Addressing issues of reproducibility in research.
+5. Addressing scientific and ethical questions where applicable, and if not, clearly explain why they are not.
+6. Consulting additional resources beyond the source material with proper citations.
+
+The follow marking guidelines are what one would expect from students attaining each grade. 
+
+
+*** A (6)
+
+
+1. Submission of a detailed report from which one can definitely reconstruct their work without referring to their code. There should be no ambiguities in the described methodology. Well-documented code where design decisions are explained. 
+2. Extensive analysis and discussion. Technical correctness of their analysis. Nearly error-free implementation.
+3. The report should detail what models are used and what the assumptions are behind them. The conclusions of the should include appropriate caveats.  When the problem includes simple decision making, the optimality metric should be well-defined and justified. Simiarly, when well-defined optimality criteria should given for the experiment design, when necessary. The design should be (to some degree of approximation, depending on problem complexity) optimal according to this criteria.
+4. Appropriate methods to measure reproducibility. Use of cross-validation or hold-out sets to measure performance. Use of an unbiased methodology for algorithm, model or parameter selection. Appropriate reporting of a confidence level (e.g. using bootstrapping) in their analytical results. Relevant assumptions are mentioned when required.
+5. A clear definition of a scientific question. When dealing with data relating to humans, ethical concerns, such as privacy and/or fairness should be addressed.
+6. The report contains some independent thinking, or includes additional resources beyond the source material with proper citations. The students go beyond their way to research material and implement methods not discussed in the course.
+
+*** B (5.5)
+
+1. Submission of a report from which one can plausibly reconstruct their work without referring to their code. There should be no major ambiguities in the described methodology. 
+2. Technical correctness of their analysis, with a good discussion. Possibly minor errors in the implementation.
+3. The report should detail what models are used, as well as the optimality criteria, including for the experiment design. The conclusions of the report must contain appropriate caveats. 
+4. Use of cross-validation or hold-out sets to measure performance. Use of an unbiased methodology for algorithm, model or parameter selection. 
+5. When dealing with data relating to humans, ethical concerns such as privacy and/or fairness should be addressed. While an analysis of this issue may not be performed, there is a substantial discussion of the issue that clearly shows understanding by the student.
+6. The report contains some independent thinking, or the students mention other methods beyond the source material, with proper citations, but do not further investigate them.
+   
+*** C (5)
+
+1. Submission of a report from which one can partially reconstruct most of their work without referring to their code. There might be some ambiguities in parts of the described methodology. 
+2. Technical correctness of their analysis, with an adequate discussion. Some errors in a part of the implementation.
+3. The report should detail what models are used, as well as the optimality criteria and the choice of experiment design. Analysis caveats are not included.
+4. Either use of cross-validation or hold-out sets to measure performance, or use of an unbiased methodology for algorithm, model or parameter selection - but in a possibly inconsistent manner.
+5. When dealing with data relating to humans, ethical issues are addressed superficially.
+6. There is little mention of methods beyond the source material or independent thinking.
+
+*** D (4.5)
+
+1. Submission of a report from which one can partially reconstruct most of their work without referring to their code. There might be serious ambiguities in parts of the described methodology. 
+2. Technical correctness of their analysis with limited discussion. Possibly major errors in a part of the implementation.
+3. The report should detail what models are used, as well as the optimality criteria. Analysis caveats are not included.
+4. Either use of cross-validation or hold-out sets to measure performance, or use of an unbiased methodology for algorithm, model or parameter selection - but in a possibly inconsistent manner.
+5. When dealing with data relating to humans, ethical issues are addressed superficially or not at all.
+6. There is little mention of methods beyond the source material or independent thinking.
+
+*** E (4)
+1. Submission of a report from which one can obtain a high-level idea of their work without referring to their code. There might be serious ambiguities in all of the described methodology. 
+2. Technical correctness of their analysis with very little discussion. Possibly major errors in only a part of the implementation.
+3. The report might mention what models are used or the optimality criteria, but not in sufficient detail and caveats are not mentioned.
+4. Use of cross-validation or hold-out sets to simultaneously measure performance and optimise hyperparameters, but possibly in a way that introduces some bias.
+5. When dealing with data relating to humans, ethical issues are not discussed.
+6. There is no mention of methods beyond the source material or independent thinking.
+
+*** F (<3)
+
+1. The report does not adequately explain their work.
+2. There is very little discussion and major parts of the analysis are technically incorrect, or there are errors in the implementation.
+3. The models used might be mentioned, but not any other details.
+4. There is no effort to ensure reproducibility or robustness.
+5. When applicable: Ethical issues are not mentioned.
+6. There is no mention of methods beyond the source material or independent thinking.

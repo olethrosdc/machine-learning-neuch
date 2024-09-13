@@ -1,0 +1,239 @@
+#+TITLE: The perceptron algorithm
+#+AUTHOR: Christos Dimitrakakis
+#+EMAIL:christos.dimitrakakis@unine.ch
+#+LaTeX_HEADER: \include{preamble}
+#+LaTeX_HEADER: \usepackage{tikz}
+#+LaTeX_HEADER: \usepackage{pgfplots}
+#+LaTeX_HEADER: \usetikzlibrary{datavisualization}
+#+LaTeX_CLASS_OPTIONS: [smaller]
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+#+TAGS: activity advanced definition exercise homework project example theory code
+#+OPTIONS:   H:3
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}}
+
+
+* The Perceptron
+** Introduction
+*** Guessing gender from height
+- Feature space $\CX \subset \Reals$: e.g. height
+- Label space $\CY = \{-1, 1\}$: e.g. gender
+- Can we find some $\param \in \Reals$ and a direction  $\param_0 \in \{-1, +1\}$ so as to separate the genders?
+**** Online learning
+- At each step, we observe one datapoint
+- We adjust our separator $\beta$.
+**** Working Example
+[[./src/Perceptron/perceptron_simple.py]]
+
+*** Non-separable classes
+[[./src/Perceptron/histogram_heights.png]]
+- In general, we cannot perfectly classify everything
+- But we can estimate $\Pr(y \mid x)$ \ldots more on this later.
+
+*** More complex example
+- Feature space $\CX \subset \Reals^2$: e.g. height and weight
+- Label space $\CY = \{-1, 1\}$: e.g. gender
+- Can we find some line so as to separate the genders?
+- [[./src/Perceptron/show_class_data_labels.py]]
+
+
+*** What is the optimal decision threshold?
+
+
+** The algorithm
+*** The perceptron algorithm
+**** Input
+- Feature space $X \subset \Reals^n$.
+- Label space $Y = \{-1, 1\}$.
+- Data $(x_t, y_t)$, $t \in [T]$,  with $x_t \in X, y_t \in Y$.
+**** Algorithm
+- $w_1 = w_0$.
+
+- For $t = 1, \ldots, T$.
+  - $a_t = \sgn(w_t^\top x_t)$.
+  - If $a_t \neq y_t$
+    - $w_{t+1} = w_t + y_t x_t$
+  - Else
+    - $w_{t+1} = w_t$
+  - EndIf
+- Return $w_{T+1}$
+	 
+*** Perceptron examples
+**** Example 1: One-dimensional data
+- Done on the board
+- Shows how the algorithm works.
+- Demonstrates the idea of a margin
+
+**** Example 2: Two-dimensional data
+- See [[file:src/NeuralNetworks/perceptron.py][in-class programming exercise]]
+
+**** Putting it together
+After $M$ mistakes:
+- $w^\top w^* \geq M \rho$
+- $w^\top w \leq M$
+So $M \rho \leq w^\top w^* \leq \|w\| = \sqrt{w^\top w} \leq \sqrt{M}$.
+
+- Thus, $M \leq \rho^{-2}$.
+
+*** Why doesn't the perceptron always work?
+- Classes must be linearly separable
+**** Example: XOR
+
+** The model
+
+   
+* Gradient methods
+** Gradients for optimisation
+*** The gradient method
+- Function to minimise $f(\param)$.
+- Derivative $\nabla_\param f(\param)$.
+**** Gradient descent algorithm
+- Input: initial value $\param_0$, learning rate schedule $\alpha_t$
+- For $t=1, \ldots, T$
+  - $\param_{t+1} = \param_t - \alpha_t \nabla_\param f(\param_t)$
+- Return $\param_T$
+
+**** Properties
+- If $\sum_t \alpha_t = \infty$ and $\sum_t \alpha_t^2 < \infty$, it finds a local minimum $\param_T$, i.e. there is $\epsilon > 0$ so that
+\[
+f(\param_T) < f(\param), \forall \param: \|\param_T - \param\| < \epsilon.
+\]
+*** Stochastic gradient method
+This is the same as the gradient method, but with added noise:
+- $\param_{t+1} = \param_t - \alpha_t [\nabla_\param f(\param_t) + \omega_t]$
+- $\E[\omega_t] = 0$ is sufficient for convergence.
+
+**** Example: When the cost is an expectation
+In machine learning, the cost is frequently an expectation of some function $\ell$, 
+\[
+f(\param) = \int_X dP(x) \ell(x, \param)
+\]
+This can be approximated with a sample
+\[
+f(\param) \approx \frac{1}{T} \sum_t \ell(x_t, \param)
+\]
+The same holds for the gradient:
+\[
+\nabla_\param f(\param) = \int_X dP(x) \nabla_\param \ell(x, \param)
+\approx \frac{1}{T} \sum_t \nabla_\param \ell(x_t, \param)
+\]
+
+*** Gradient methods for expected value :example:
+**** Estimate the expected value
+$x_t \sim P$ with $\E_P[x_t] = \mu$.
+**** Objective: mean squared error
+Here $\ell(x, \param) = (x - \param)^2$.
+\[
+\min_\param \E_P[(x_t - \param)^2].
+\]
+**** Derivative
+Idea: at the minimum the derivative should be zero.
+\[
+d/d\param \E_P[(x_t - \param)^2]
+= \E_P[d/d\param(x_t - \param)^2]
+= \E_P[-(x_t - \param)]
+= \E_P[x_t] - \param.
+\]
+
+Setting the derivative to 0, we have $\param = \E_P[x_t]$. This is a simple solution.
+**** Real-world setting
+- The objective function does not result in a simple solution
+- The distribution $P$ is not known.
+- We can sample $x \sim P$.
+
+*** Stochastic gradient for mean estimation
+- The gradient is zero when the parameter is the expected value
+\begin{align*}
+ \frac{d}{d\param} \E_P [(x - \param)^2] 
+&= \int_{-\infty}^\infty dP(x) \frac{d}{d\param} (x - \param)^2
+\\
+&=  \int_{-\infty}^\infty dP(x) 2(x - \param)
+\\
+&=  2 \E_P[x] - 2\param.
+\end{align*}
+#+BEAMER: \pause
+- If we sample $x$ we approximate the gradient:
+\begin{align*}
+ \frac{d}{d\param} \E_P [(x - \param)^2] 
+&= \int_{-\infty}^\infty dP(x) \frac{d}{d\param} (x - \param)^2
+\\
+&\approx \frac{1}{T} \sum_{t=1}^T \frac{d}{d\param} (x_t - \param)^2
+= \frac{1}{T} \sum_{t=1}^T 2(x_t - \param)
+\end{align*}
+
+** The perceptron as a gradient algorithm
+*** Perceptron algorithm as gradient descent
+**** Target error function
+\[
+\E_{\alert{P}}^\param[\ell] = \int_{\CX} d\alert{P}(x) \sum_y \alert{P}(y|x) \ell(x, y, \param)
+\]
+Minimises the error on the true distribution.
+#+BEAMER: \pause
+**** Empirical error function
+\[
+\E_{\alert{D}}^\param[\ell]= \frac{1}{T} \sum_{t=1}^T \ell(x_t, y_t, \param),
+\qquad\alert{D} = (x_t, y_t)_{t=1}^T, \quad x_t, y_t \sim P.
+\]
+Minimises the error on the empirical distribution.
+#+BEAMER: \pause
+**** Perceptron cost function
+The cost of each example
+\begin{align}
+\ell(x,y, \param) 
+&= \overbrace{\ind{y(x^\top \param) < 0}}^{\textrm{misclassified?}} \overbrace{[ - y (x^\top \param)]}^{\textrm{margin of error}}
+\\
+&= \overbrace{\ind{y(x^\top \param) < 0}}^{\textrm{misclassified?}} \overbrace{[ - y (x^\top \param)]}^{\textrm{margin of error}}
+\end{align}
+where the *indicator function $\ind{A}$* is  1 when $A$ is true and $0$ otherwise.
+#+BEAMER: \pause
+**** Derivative: Chain rule
+#+ATTR_BEAMER: :overlay <+->
+- $\nabla_\param \ell(x,y, \param) = - \ind{y(x^\top \param) > 0} \nabla_\param [y(x^\top \param)]$.
+- $\partial \param / \partial{\param^i} [y(x_t^\top \param)] = y x_{t,i}$
+- Gradient update: $\param_{t+1} = \param_t - \nabla_\param \ell(x,y, \param) = \param_t + y x_{t}$
+#+BEAMER: \pause
+**** Classification error cost function
+This is not differentiable :(
+*** Margins and confidences
+#+ATTR_BEAMER: :overlay <+->
+We can think of the output of the network as a measure of confidence
+#+attr_html: :width 100px
+#+attr_latex: :width 100px
+[[./fig/margin.pdf]]
+#+BEAMER: \pause
+By applying the *logit* function, we can bound a real number $x$ to $[0,1]$:
+\[
+f(x) = \frac{e^x}{1 + e^x} = \frac{1}{1 + e^{-x}}
+\]
+*** Logistic regression
+**** Output as a measure of confidence, given the parameter $\param$
+\[
+P_\param(y = 1| x) = \frac{1}{1 + \exp(- x_t^\top \param)}
+\]
+The original output $x_t^\top \param$ is now passed through the logit function.
+#+BEAMER: \pause
+**** Negative Log likelihood
+#+ATTR_BEAMER: :overlay <+->
+$\ell(x_t, y_t, \param) = - \ln P_\param( y_t | x_t) = \ln(1 + \exp(- y_t x_t^\top \param))$
+\begin{align*}
+\nabla_\param \ell(x_t, y_t, \param) 
+&= \frac{1}{1 + \exp(- y x_t^\top \param)} \nabla_\param[1 + \exp(-y x_t^\top \param)]
+\\
+&= \frac{1}{1 + \exp(- y x_t^\top \param)} \exp(-y x_t^\top \param) [\nabla_\param (-y_t x_t^\top \param)]
+\\
+&= - \frac{1}{1 + \exp(x_t^\top \param)} (x_{t,i})_{i=1}^ne
+\end{align*}
+- $\E_P(\ell) = \int_X dP(x) \sum_{y \in Y} P(y|x) P_\param(y_t + x_t)$
+* Lab and Assignment
+
+*** Lab demonstration
+
+- How to use kNN and LogisticRegression with sklearn (and perhaps statsmodels, time permitting)
+- Use an example where there is no default 'class' label
+  
+*** Assignment
+
+1. Find a dataset with some categorical variable of interest that we want to predict from the UCI repository.
+2. Formulate the appropriate classification problem.
+3. Perform model selection through train/validate or crossvalidation to find the best model and hyperparameters
+4. Measure the model's final performance on the test set.
+5. Discuss anything of interest in the data such as: feature scaling/selection, missing data, outliers.

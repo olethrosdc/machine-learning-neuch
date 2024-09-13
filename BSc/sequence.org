@@ -1,0 +1,125 @@
+#+TITLE: Sequence prediction
+#+AUTHOR: Christos Dimitrakakis
+#+EMAIL:christos.dimitrakakis@unine.ch
+#+LaTeX_HEADER: \include{preamble}
+#+LaTeX_HEADER: \usepackage{tikz}
+#+LaTeX_HEADER: \usepackage{pgfplots}
+#+LaTeX_HEADER: \usetikzlibrary{datavisualization}
+#+LaTeX_CLASS_OPTIONS: [smaller]
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+#+TAGS: activity advanced definition exercise homework project example theory code
+#+OPTIONS:   H:3
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}}
+
+* The problem of sequence prediction
+** Examples
+*** Weather
+[[./fig/meteo.png]]
+*** Climate
+[[./fig/climate.png]]
+*** Stock market
+[[./fig/us-stocks.png]]
+*** Inflation
+[[./fig/swiss-inflation.png]]
+** Common themes
+*** Assumptions for sequence prediction
+**** We cannot influence observations
+**** Future observations depend on past observations
+
+** Formalising sequence prediction
+*** The problem of sequence prediction
+- Data $x_1, x_2, x_3, \ldots$
+- At time $t$, make a prediction $a_t$ for $x_t$.
+*** Auto-regressive models
+**** General idea
+- Predict $x_{t}$ from the last $k$ inputs
+\[
+x_t \approx g(x_{t-k}, \ldots, x_{t-1})
+\]
+**** Optimisation view
+We wish to minimise the difference between our predictions $a_t$ and the next symbol
+\[
+\sum_t (a_t - x_t)^2
+\]
+**** Probabilistic view
+We wish to model
+\[
+P(x_t | x_{t-k}, \ldots, x_{t-1})
+\]
+*** Linear auto-regression
+**** Simple time-series data
+- Observations $x_t \in \Reals$
+- Parameters $\vparam \in \Reals^k$
+\[
+\hat{x}_t = \sum_i \param_i x_{t-i}.
+\]
+**** Multi-dimensional time-series data
+- Observations $x_t \in \Reals^n$
+- Parameters $\mparam \in \Reals^{k \times n}$
+\[
+\hat{x}_t
+= \sum_i \param^\top_i x_{t-i}.
+= \sum_{i,j} \param_{i,j} x_{t-i}.
+\]
+
+
+*** Recursive models
+**** General idea
+- Maintain an /internal state/ $z_t$, which summarises what has been seen.
+\[
+z_t = f(z_{t-1}, x_{t-1}) \tag{change state}
+\]
+- Make predictions using the internal state
+\[
+\hat{x}_t = g(z_t) \tag{predict}
+\]
+
+**** Examples
+- Hidden Markov models
+- Recurrent Neural Networks
+
+*** Hidden Markov Models: General setting
+**** Variables
+- State $z_t$
+- Observations $x_t$
+**** Parameters
+- Transition $\theta$
+- Observation $\psi$
+**** Distributions
+- Transition distribution $P_\theta(z_{t+1} | z_t)$
+- Observation distribution $P_\psi(x_t | z_t)$.
+*** HMMs: Discrete case
+**** Variables
+- State $z_t \in [n]$
+- Observation $x_t \in [m]$
+**** Transition distribution
+Multinomial with 
+\[
+P_\theta(z_{t+1} = j | z_t = i) = \param_{i,j}
+\]
+**** Observation distribution
+Multinomial with 
+\[
+P_\theta(x_t = j | z_t = i) = \psi_{i,j}
+\]
+*** HMM State estimation
+- 
+*** HMM Disribution estimation
+- The problem is that for HMMs we need the complete data.
+
+*** EM for HMMs
+*** HMMs: Continuous case
+**** Variables
+- State $z_t \in [n]$
+- Observation $x_t \in \Reals^m$
+**** Transition distribution
+Multinomial with 
+\[
+P_\theta(z_{t+1} = j | z_t = i) = \param_{i,j}
+\]
+**** Observation distribution
+Gaussian with 
+\[
+P_\theta(x_t = x | z_t = i) \propto \exp\left(-\|x - \psi_{i}\|\right)
+\]
+
