@@ -108,9 +108,13 @@
 - Assignments and proejct
 - Additional reading material
 - Asking questions
-**** Course Github https://github.com/olethrosdc/machine-learning-neuch/tree/main/BSc
+**** Course Github 
+- https://github.com/olethrosdc/machine-learning-neuch/tree/main/BSc
 - .org files for notes, PDF for slides
 - source code for examples
+#+ATTR_LATEX: :caption Climate Modelling
+[[./fig/github-qr.png]]
+
 **** Course literature
 - An Introduction to Statistical Learning with Python
   https://hastie.su.domains/ISLP/ISLP_website.pdf.download.html
