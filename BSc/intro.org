@@ -71,19 +71,20 @@
 - When is the next solar eclipse?
 
 *** Inference
+#+ATTR_LATEX: :width 0.7\textwidth
 [[./fig/gravity.jpg]]
-- Does my poker opponent have two aces?
 - What is the law of gravitation?
+- Where is the spaceship now?
+- Does my poker opponent have two aces?
+
 
 *** Decision Making
 [[./fig/lunar.png]]
-[[./fig/artemis.gif]]
-
 - What data should I collect?
 - Which model should I use?
 - Should I fold, call, or raise in my poker game?
 - How can I get a spaceship to the moon and back?
-
+[[./fig/artemis.gif]]
 
 
 *** The need to learn from data
