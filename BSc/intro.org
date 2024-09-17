@@ -109,21 +109,38 @@
 - Additional reading material
 - Asking questions
 **** Course Github 
-- https://github.com/olethrosdc/machine-learning-neuch/tree/main/BSc
+***** A                                                               :BMCOL:
+      :PROPERTIES:
+      :BEAMER_col: 0.5\textwidth
+      :END:
 - .org files for notes, PDF for slides
 - source code for examples
-#+ATTR_LATEX: :caption Climate Modelling
+***** B                                                               :BMCOL:
+      :PROPERTIES:
+      :BEAMER_col: 0.5\textwidth
+      :END:
+#+ATTR_LATEX: :width 0.25\textwidth
 [[./fig/github-qr.png]]
 
 **** Course literature
+***** A                                                               :BMCOL:
+      :PROPERTIES:
+      :BEAMER_col: 0.5\textwidth
+      :END:
 - An Introduction to Statistical Learning with Python
-  https://hastie.su.domains/ISLP/ISLP_website.pdf.download.html
-book chapters will be mentioned in the course
+- Book chapters will be mentioned in the course
+***** B                                                               :BMCOL:
+      :PROPERTIES:
+      :BEAMER_col: 0.5\textwidth
+      :END:
+#+ATTR_LATEX: :width 0.25\textwidth
+[[./fig/islp-book-qr.png]]
+
 *** Assignment, teaching and questions
 **** Assignments and project
-- Indidivual Weekly assignments in the first half
-- Group project in the second half
-- Project presentation
+- Indidivual *weekly* assignments in the first half
+- *Group project* in the second half
+- Project *presentation*
 - No exam.
 **** Other questions
 - Use Moodle for technical/administrative questions: That way everybody gets the same information.
@@ -664,4 +681,4 @@ P(S) = T/N, \qquad \forall S \subset \Omega.
 * Reading for this week
 ** Reading
 *** Reading for this week
-ISLP Chapter 1
+ISLP Chapters 1, 2
