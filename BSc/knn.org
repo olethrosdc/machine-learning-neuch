@@ -150,14 +150,6 @@ If we have $T$ datapoints
 
 
 * Activities
-*** Class data
-Fill in the class data
-#+CAPTION: Link to spreadsheet
-#+NAME:   fig:class-qr
-#+ATTR_LATEX: :width 0.5\textwidth
-#+ATTR_HTML: :width 300px
-[[./fig/class_data_QR.png]]
-
 *** KNN activity
 - Implement nearest neighbours
 - Introduction to scikitlearn nearest neighbours
