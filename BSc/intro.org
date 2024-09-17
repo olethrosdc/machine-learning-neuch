@@ -119,7 +119,7 @@
       :PROPERTIES:
       :BEAMER_col: 0.5\textwidth
       :END:
-#+ATTR_LATEX: :width 0.25\textwidth
+#+ATTR_LATEX: :width 0.25
 [[./fig/github-qr.png]]
 
 **** Course literature
@@ -133,7 +133,7 @@
       :PROPERTIES:
       :BEAMER_col: 0.5\textwidth
       :END:
-#+ATTR_LATEX: :width 0.25\textwidth
+#+ATTR_LATEX: :width 0.25
 [[./fig/islp-book-qr.png]]
 
 *** Assignment, teaching and questions
