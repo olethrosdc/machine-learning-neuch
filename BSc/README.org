@@ -118,16 +118,24 @@ We now have data and an analysis.
 
 
 * Assignments
+** Assignment 0: Probability exercise, classificaiton/regression
+
 ** Assignment 1: Classification, model comparison
-In this assignment we compare classification models.
-We apply the basic ideas of train, test, validation, cross-validation and bootstrapping.
+In this assignment we compare classification models. 
+We apply the basic ideas of train, test, validation, cross-validation and bootstrapping. 
+They should develop this using scikitlearn.
 ** Assignment 2: Regression, simulations
+We first perform regression using both statsmodels and scikitlearn (slightly different)
 In this assignment we further develop the idea of simulation.
-Here the students should perform a project
+Here the students should already implement some project ideas
 ** Assignment 3: Probabilistic Models
-Here we focus on simulation from a known probabilistic model.
-** Assignment 4: Sequential prediction
-- Compare a variable order Markov chain, a hidden Markov model and a recurrent neural network.
+Here we focus on simulation from a known probabilistic model. We show
+how we can use a probabilistic model to define a simulation, and how
+we can learn the model from simulation data. 
+** Assignment 4: Neural networks
+Image classification example.
+** Assignment 5: Sequential prediction
+Compare a variable order Markov chain, a hidden Markov model and a recurrent neural network.
 
 * Projects
 
