@@ -77,7 +77,7 @@ The course focuses on fundamental modelling problems and general machine learnin
 *** Textbooks
 **** Primary
 - Introduction to Statistical Learning with Python
-https://hastie.su.domains/ISLP/ISLP_website.pdf
+https://hastie.su.domains/ISLP/ISLP_website.pdf.download.html
 
 
 * Activities
