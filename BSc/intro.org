@@ -681,4 +681,4 @@ P(S) = T/N, \qquad \forall S \subset \Omega.
 * Reading for this week
 ** Reading
 *** Reading for this week
-ISLP Chapters 1, 2
+ISLP Chapter 1
