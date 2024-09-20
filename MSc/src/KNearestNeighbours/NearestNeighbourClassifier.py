@@ -39,19 +39,15 @@ class NearestNeighbourClassifier:
         # Need to use the get_probabilities function to return the action with the highest
         # expected utility
         # i.e. maximising sum_y P(y|x) U(a,y)
-        #P = self.get_probabilities(x)
-        
+        P = self.get_probabilities(x)
         return np.argmax(np.dot(U, P))
     
     ## predict the most likely label
     def predict(self, x):
-        # calculate distances for every point
-        distances = [self.metric(x, self.data[t]) for t in range(self.n_points)] 
-        # get the closest point
-        t = np.argmin(distances)
-        
+        # calculate the probabilities of different clases
+        p = self.get_probabilities(x)
         # return the y value for the closest point
-        return self.labels[t]
+        return np.argmax(p)
     
 
     ## return a vector of probabilities, one for each label
@@ -61,7 +57,13 @@ class NearestNeighbourClassifier:
         distances = [self.metric(x, self.data[t]) for t in range(self.n_points)] 
         # sort data using argsort
         # get K closest neighbours
+        neighbours = np.argsort(distances)[0:self.K]
+        proportions = np.zeros(self.n_classes)
         # get the proportion of each label
+        for k in range(self.K):
+            label = int(self.labels[neighbours[k]])
+            proportions[label] += 1
+        proportions /= self.K
         return proportions
 
 
@@ -90,7 +92,6 @@ if __name__== "__main__":
         x_t = x[t]
         p = kNN.get_probabilities(x_t)
         print(y[t], p)
-
         print(p[y[t] - 1])
 
     # Assignment 1
