@@ -40,17 +40,25 @@ class NearestNeighbourClassifier:
         # expected utility
         # i.e. maximising sum_y P(y|x) U(a,y)
         #P = self.get_probabilities(x)
+        
         return np.argmax(np.dot(U, P))
     
     ## predict the most likely label
     def predict(self, x):
-        proportions = self.get_probabilities(x)
-        return np.argmax(proportions)  # is that a good idea?
+        # calculate distances for every point
+        distances = [self.metric(x, self.data[t]) for t in range(self.n_points)] 
+        # get the closest point
+        t = np.argmin(distances)
+        
+        # return the y value for the closest point
+        return self.labels[t]
+    
 
     ## return a vector of probabilities, one for each label
     ## Each component of the vector corresponds to the ratio of that same label in the set of neighbours
     def get_probabilities(self, x):
         # calculate distances
+        pass
         # sort data
         # get K closest neighbours
         # get the proportion of each label
