@@ -12,8 +12,8 @@
 *** Supervised learning
 
 - Given labelled training examples $(x_1, y_1), \ldots (x_T, y_T)$ where
-- $x_t \in X$ are *features* 
-- $y_t \in Y$ are *labels*..
+- $x_t \in X$, the *input* variables (or *features*)
+- $y_t \in Y$, the *output* variables (or *labels*)
 **** Feature space $\CX$
 - Usually $\CX = \Reals^n$: the n-dimensional Euclidean space
 - How do we use your class data?
@@ -79,22 +79,23 @@ $\hat{y}_t  \in \Reals^m$
 
 **** Classification
 - It is not convenient to work with discrete labels.
-- We use a *one-hot encoding* (0, \ldots, 0, 1, 0, \ldots, 0)$.
+- We use a *one-hot encoding* $(0, \ldots, 0, 1, 0, \ldots, 0)$.
 - $y_t \in \{0,1\}^m$ with $\|y_t\|_1 = 1$, so that the class of the \(t\)-th example is $j$ iff $y_{t,j} = 1$.
 
 **** Regression
 - $y_t  \in \Reals^m$, so we need do nothing
 
 *** Making a decision
-**** kNN Output
+**** kNN: A *model* of the conditional distribution $P(y | x)$
 - Given features $x$, we get a vector
 - $p_i = \hat{\Pr}(y = i | x)$.
-**** Accuracy
-- Predicted label $a$
-- Actual label $y$
-- $U(a, y) = \ind{a = y}$
-**** Classification decision to maximise accuracy
-- $a_t = \argmax_i p_i$
+**** The optimal decision rule $\pi$ derived from kNN
+- Classification decision $a_t \sim \pi(a | x_t)$
+- $a_t \in \CA$ but $\CA \neq \CY$, e.g. can include "Do not Know", or "Alert" etc.
+- Actual label $y_t$
+- $U(a_t, y_t)$: utility function depending on the application.
+**** Decision rule maximising accuracy
+- $a_t = \argmax_i \hat{\Pr}(y = i | x)$.
 
 ** Extensions and parameters
 *** The number of neighbours
@@ -127,7 +128,7 @@ Or pre-scale the data
 - Positivity $d(x,y) > 0$ if $x \neq y$.
 - Symmetry $d(y,x) = d(x,y)$.
 - Triangle inequality $d(x,y) \leq d(x,z) + d(z,y)$.
-**** For data in $\Reals^n$, $p$-norm
+**** For data in $\Reals^n$, \(p\)-norm
 \[
 d(x,y) = \|x - y\|_p
 \]
@@ -153,4 +154,4 @@ If we have $T$ datapoints
 *** KNN activity
 - Implement nearest neighbours
 - Introduction to scikitlearn nearest neighbours
-
+- Introduction to generalisation errors

@@ -120,6 +120,12 @@ If $(x, y) \sim P$, the expected MSE of a deterministic decision rule $\pi : X \
 = 
 \max_\pi \sum_{(x,y) \in D} \sum_a \pi(a | x) U(a,y)
 \]
+*** Estimating the quality of a classifier
+The measured accuracy $U(\pi, D)$ is not the same as the actual accuracy $U(\pi, P)$.
+
+If $|U(\pi, D) - U(\pi, P)| \leq \epsilon$, how good is our decision rule?
+
+
 
 * Estimating quality
 ** Methodology
