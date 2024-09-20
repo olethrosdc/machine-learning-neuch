@@ -13,7 +13,7 @@ class NearestNeighbourClassifier:
         self.metric = metric
         self.data = data
         self.labels = labels
-        self.n_classes = int(max(labels))  # VERY CRUDE
+        self.n_classes = len(np.unique(labels))  # Counts actual number of labels
         self.K = K
         self.n_points = data.shape[0]
         self.n_features = data.shape[1]
@@ -58,8 +58,8 @@ class NearestNeighbourClassifier:
     ## Each component of the vector corresponds to the ratio of that same label in the set of neighbours
     def get_probabilities(self, x):
         # calculate distances
-        pass
-        # sort data
+        distances = [self.metric(x, self.data[t]) for t in range(self.n_points)] 
+        # sort data using argsort
         # get K closest neighbours
         # get the proportion of each label
         return proportions
