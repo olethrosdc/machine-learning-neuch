@@ -13,7 +13,7 @@ class NearestNeighbourClassifier:
         self.metric = metric
         self.data = data
         self.labels = labels
-        self.n_classes = int(max(labels))  # VERY CRUDE
+        self.n_classes = len(np.unique(labels))  # Counts actual number of labels
         self.K = K
         self.n_points = data.shape[0]
         self.n_features = data.shape[1]
@@ -44,63 +44,62 @@ class NearestNeighbourClassifier:
     
     ## predict the most likely label
     def predict(self, x):
-        proportions = self.get_probabilities(x)
-        return np.argmax(proportions)  # is that a good idea?
+        # calculate the probabilities of different clases
+        p = self.get_probabilities(x)
+        # return the y value for the closest point
+        return np.argmax(p)
+    
 
     ## return a vector of probabilities, one for each label
     ## Each component of the vector corresponds to the ratio of that same label in the set of neighbours
     def get_probabilities(self, x):
         # calculate distances
-        distances = np.zeros(self.n_points)
-        for t in range(self.n_points):
-            distances[t] = self.metric(x, self.data[t])
-        # sort data
-
-        indices = np.argsort(distances)
+        distances = [self.metric(x, self.data[t]) for t in range(self.n_points)] 
+        # sort data using argsort
         # get K closest neighbours
+        neighbours = np.argsort(distances)[0:self.K]
         proportions = np.zeros(self.n_classes)
-        for i in range(self.K):
-            index = indices[i]
-            label = self.labels[index]
-            proportions[label - 1] += 1
-        proportions /= self.K
-
         # get the proportion of each label
+        for k in range(self.K):
+            label = int(self.labels[neighbours[k]])
+            proportions[label] += 1
+        proportions /= self.K
         return proportions
 
 
-x = np.random.uniform(size=[10, 4])
-y = 1 + np.random.choice(2, size=10)
+if __name__== "__main__":
+    
+    x = np.random.uniform(size=[10, 4])
+    y = 1 + np.random.choice(2, size=10)
 
-kNN = NearestNeighbourClassifier(x, y, euclidean_metric, 10)
+    kNN = NearestNeighbourClassifier(x, y, euclidean_metric, 10)
 
-kNN.get_probabilities(x[0])
+    kNN.get_probabilities(x[0])
 
-import pandas as pd
+    import pandas as pd
 
-data = pd.read_csv("./class.csv")
-x = data[["Height (cm)", "Weight (kg)"]].to_numpy()
-y = data["Biking (0/1)"].to_numpy()
-print(y)
-y[np.isnan(y)] = 0
-y += 1
-y = y.astype(int)
-print(y)
+    data = pd.read_csv("./class.csv")
+    x = data[["Height (cm)", "Weight (kg)"]].to_numpy()
+    y = data["Biking (0/1)"].to_numpy()
+    print(y)
+    y[np.isnan(y)] = 0
+    y += 1
+    y = y.astype(int)
+    print(y)
 
-kNN = NearestNeighbourClassifier(x, y, euclidean_metric, 3)
-for t in range(x.shape[0]):
-    x_t = x[t]
-    p = kNN.get_probabilities(x_t)
-    print(y[t], p)
+    kNN = NearestNeighbourClassifier(x, y, euclidean_metric, 3)
+    for t in range(x.shape[0]):
+        x_t = x[t]
+        p = kNN.get_probabilities(x_t)
+        print(y[t], p)
+        print(p[y[t] - 1])
 
-    print(p[y[t] - 1])
-
-# Assignment 1
-# fill the kNN.decide method of the knn class above.
-U = np.array([[1, -1000],
-              [-1, 0]])
-print("Utility matrix")
-print(U)
-final_decision = kNN.decide(U=U, x=x_t)
-print("final decision")
-print(final_decision)
+    # Assignment 1
+    # fill the kNN.decide method of the knn class above.
+    U = np.array([[1, -1000],
+                  [-1, 0]])
+    print("Utility matrix")
+    print(U)
+    final_decision = kNN.decide(U=U, x=x_t)
+    print("final decision")
+    print(final_decision)
