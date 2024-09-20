@@ -51,20 +51,8 @@ class NearestNeighbourClassifier:
     ## Each component of the vector corresponds to the ratio of that same label in the set of neighbours
     def get_probabilities(self, x):
         # calculate distances
-        distances = np.zeros(self.n_points)
-        for t in range(self.n_points):
-            distances[t] = self.metric(x, self.data[t])
         # sort data
-
-        indices = np.argsort(distances)
         # get K closest neighbours
-        proportions = np.zeros(self.n_classes)
-        for i in range(self.K):
-            index = indices[i]
-            label = self.labels[index]
-            proportions[label - 1] += 1
-        proportions /= self.K
-
         # get the proportion of each label
         return proportions
 
