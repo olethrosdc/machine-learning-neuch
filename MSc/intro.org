@@ -68,10 +68,9 @@ https://github.com/olethrosdc/ml-society-science/blob/master/book.pdf
 ** Theory
 - Estimation
 - Learning and generalisation
-** Models
-- Bayesian networks
-** Algorithms
-- Stochastic gradient descent
+** Algorithms and Models
+- Bayesian networks and Bayesian inference
+- Neural networks and stochastic gradient descent
 ** Fairness
 - Group: Equality
 - Individual: Meritocracy

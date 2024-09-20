@@ -49,7 +49,7 @@
 
 
 *** Performance of KNN on image classification
-[[./fig/knn-image-performance.png]]
+[[../fig/knn-image-performance.png]]
 
 - Really simple!
 - Can outperform really complex models!
