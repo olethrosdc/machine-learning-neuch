@@ -87,7 +87,7 @@ $\hat{y}_t  \in \Reals^m$
 - The class of the \(t\)-th example is $j$ $\Leftrightarrow$ $y_{t,j} = 1$.
 - Equivalently, return $p$ with 
 \[
-p_i = \sum_{t=1}^k (y_{s_t} = i)
+p_i = \sum_{t=1}^k \ind{y_{s_t} = i} / k
 \]
 #+BEAMER: \pause
 **** Regression
