@@ -72,7 +72,7 @@ U(a_t, y_t) = \ind{a_t = y_t}
 \]
 **** The accuracy on the training set
 \[
-U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \sum_{a=1}^m \pi(y_t | x_t)
+U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \pi(y_t | x_t)
 \]
 
 **** The expected accuracy of a decision rule
