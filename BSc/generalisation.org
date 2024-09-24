@@ -54,7 +54,7 @@ Here, we pick the most likely class:
 \[
 \pi(a | x_t) = \ind{a= \argmax_y P(y|x_t)}
 \]
-**** Deterministic predictions given a model $P(y|x)$
+**** Randomised predictions given a model $P(y|x)$
 Here, we randomly select a class according to our model:
 \[
 \pi(a | x_t) = P(y_t = a  | x_t)

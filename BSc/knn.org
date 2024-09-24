@@ -145,6 +145,7 @@ If we have $T$ datapoints
 - Requires $O(c K \ln T)$ time.
 - $c$ depends on the data distribution.
 
+
 *** Making a decision
 **** kNN as a *model*
 - Given features $x$, we get a vector $p$ of class probabilities:
@@ -197,14 +198,13 @@ a^* = \argmax_a \E[U | a, x]
 *** Homework
 The general idea is to measure utility on a test set.
 
-- First, create a function called utility_score(y, actions, U)
+- First, create a function called utilityScore(y, actions, U)
 This takes as input the actual labels, and actions (or predicted labels) of a classifier. It then returns the average utility on those labels.
-$\sum_t U(actions[t], y[t])/ T$.
+$\sum_t U(a_t, y_t)/ T$.
 
 - Calculate the utility_score of a kNN classifier for various values of k
 - Then, create a function called predict_util(clf, X, U)
 that takes a classifier clf, a dataset of features and a utility
 function as input. It calls clf.predict_proba() and returns a list of actions, one for each row of X.
-
-
+- Verify that using predict_util() givs you a higher utilityScore() than simply using predict()
 
