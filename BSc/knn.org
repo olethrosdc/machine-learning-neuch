@@ -49,7 +49,7 @@
 
 
 *** Performance of KNN on image classification
-[[./fig/knn-image-performance.png]]
+[[../fig/knn-image-performance.png]]
 
 - Really simple!
 - Can outperform really complex models!
@@ -74,14 +74,17 @@ $\hat{y}_t  \in \Reals^m$
 **** Pseudocode
 - Input: Data $(x_t, y_t)_{t=1}^T$, test point $x$, distance $d$, neighbours \(k\)
 - Calculate $h_t = d(x_t, x)$ for all $t$.
-- Get sorted indices $s = \texttt{argsort}(h)$ so that $d(x_{s_i}, x) \leq d(x_{s_{i+1}}, x)$ for all $i$. (How?)
+- Get sorted indices $s = \texttt{argsort}(h)$ so that $d(x_{s_i}, x) \leq d(x_{s_{i+1}}, x)$ for all $i$. 
 - Return $\sum_{i=1}^k y_{s_i} / k$.
-
+#+BEAMER: \pause
 **** Classification
-- It is not convenient to work with discrete labels.
-- We use a *one-hot encoding* (0, \ldots, 0, 1, 0, \ldots, 0)$.
-- $y_t \in \{0,1\}^m$ with $\|y_t\|_1 = 1$, so that the class of the \(t\)-th example is $j$ iff $y_{t,j} = 1$.
-
+- We use a *one-hot encoding* $(0, \ldots, 0, 1, 0, \ldots, 0)$, with $y_t \in \{0,1\}^m$.
+- The class of the \(t\)-th example is $j$ $\Leftrightarrow$ $y_{t,j} = 1$.
+- Equivalently, return $p$ with 
+\[
+p_i = \sum_{t=1}^k (y_{s_t} = i)
+\]
+#+BEAMER: \pause
 **** Regression
 - $y_t  \in \Reals^m$, so we need do nothing
 
@@ -96,6 +99,25 @@ $\hat{y}_t  \in \Reals^m$
 **** Classification decision to maximise accuracy
 - $a_t = \argmax_i p_i$
 
+*** Making a decision: spam
+**** kNN Output
+- Given features $x$, we get a vector
+- $p_i = \hat{\Pr}(y = i | x)$.
+**** Minimise spam annoyance
+What utility function would you use for the spam detection problem
+|----------+------+------+-------|
+| Utility  | Pass | Flag | Trash |
+|----------+------+------+-------|
+| Normal   |      |      |       |
+| Spam     |      |      |       |
+| Phishing |      |      |       |
+| Virus    |      |      |       |
+|----------+------+------+-------|
+
+**** Classification decision to maximise accuracy
+- $a_t = \argmax_i p_i$
+
+  
 ** Extensions and parameters
 *** The number of neighbours
 **** $k=1$
@@ -148,7 +170,7 @@ If we have $T$ datapoints
 - Requires $O(c K \ln T)$ time.
 - $c$ depends on the data distribution.
 
-
+  
 * Activities
 *** KNN activity
 - Implement nearest neighbours
