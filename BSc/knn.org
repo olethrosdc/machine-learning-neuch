@@ -59,23 +59,28 @@
 
 *** The Nearest Neighbour algorithm
 **** Pseudocode
+#+ATTR_BEAMER: :overlay <+->
 - Input: Data $(x_t, y_t)_{t=1}^T$, test point $x$, distance $d$ 
 - $t^* = \argmin_t d(x_t, x)$ /// How do we implement this?
 - Return $\hat{y}_t = y_{t^*}$
 
+#+BEAMER: \pause
 **** Classification
      $\hat{y}_t  \in [m] \equiv \{1, \ldots, m\}$
      
+#+BEAMER: \pause
 **** Regression
 $\hat{y}_t  \in \Reals^m$
 
 *** The k-Nearest Neighbour algorithm
 
 **** Pseudocode
+#+ATTR_BEAMER: :overlay <+->
 - Input: Data $(x_t, y_t)_{t=1}^T$, test point $x$, distance $d$, neighbours \(k\)
 - Calculate $h_t = d(x_t, x)$ for all $t$.
 - Get sorted indices $s = \texttt{argsort}(h)$ so that $d(x_{s_i}, x) \leq d(x_{s_{i+1}}, x)$ for all $i$. 
 - Return $\sum_{i=1}^k y_{s_i} / k$.
+
 #+BEAMER: \pause
 **** Classification
 - We use a *one-hot encoding* $(0, \ldots, 0, 1, 0, \ldots, 0)$, with $y_t \in \{0,1\}^m$.
@@ -88,36 +93,6 @@ p_i = \sum_{t=1}^k (y_{s_t} = i)
 **** Regression
 - $y_t  \in \Reals^m$, so we need do nothing
 
-*** Making a decision
-**** kNN Output
-- Given features $x$, we get a vector
-- $p_i = \hat{\Pr}(y = i | x)$.
-**** Accuracy
-- Predicted label $a$
-- Actual label $y$
-- $U(a, y) = \ind{a = y}$
-**** Classification decision to maximise accuracy
-- $a_t = \argmax_i p_i$
-
-*** Making a decision: spam
-**** kNN Output
-- Given features $x$, we get a vector
-- $p_i = \hat{\Pr}(y = i | x)$.
-**** Minimise spam annoyance
-What utility function would you use for the spam detection problem
-|----------+------+------+-------|
-| Utility  | Pass | Flag | Trash |
-|----------+------+------+-------|
-| Normal   |      |      |       |
-| Spam     |      |      |       |
-| Phishing |      |      |       |
-| Virus    |      |      |       |
-|----------+------+------+-------|
-
-**** Classification decision to maximise accuracy
-- $a_t = \argmax_i p_i$
-
-  
 ** Extensions and parameters
 *** The number of neighbours
 **** $k=1$
@@ -169,6 +144,50 @@ If we have $T$ datapoints
 **** Use the Cover-Tree or KD-Tree algorithm
 - Requires $O(c K \ln T)$ time.
 - $c$ depends on the data distribution.
+
+*** Making a decision
+**** kNN as a *model*
+- Given features $x$, we get a vector $p$ of class probabilities:
+\[
+p_i = P(y = i | x)
+\]
+
+**** Decisions to maximise accuracy
+At time $t$:
+#+ATTR_BEAMER: :overlay <+->
+- We observe features $x_t$
+- We *predict* label $a_t = \argmax_i P(y_t = i | x_t)$
+- We observe the actual label $y_t$.
+- We *win* if $y_t = a_t$ and *lose* otherwise
+- Can we generalise this?
+
+*** Decisions versus predictions
+- We frequently need to make a decision, instead of a prediction.
+- We use a utility function $U(y, a)$ to calculate how good different actions are
+**** Minimise spam annoyance                                 :B_exampleblock:
+	 :PROPERTIES:
+	 :BEAMER_env: exampleblock
+	 :END:
+What utility function would you use for the spam detection problem?
+|----------+------+------+-------|
+| Utility  | Pass | Flag | Trash |
+|----------+------+------+-------|
+| Normal   |      |      |       |
+| Spam     |      |      |       |
+| Virus    |      |      |       |
+|----------+------+------+-------|
+
+**** Classification decision to maximise expected utility
+- Expected utility of a single decision
+\[
+\E[U | a, x] = \sum_y P(y | x, a) U(y, a) = \sum_y P(y | x) U(y, a)
+\]
+- The decision maximising expected utility
+\[
+a^* = \argmax_a \E[U | a, x] 
+\]
+
+  
 
   
 * Activities
