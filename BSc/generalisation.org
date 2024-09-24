@@ -81,6 +81,28 @@ under the distribution $P$ is the probability it predicts correctly
 \[
 U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \pi(y | x)
 \]
+*** Taking into account the probability
+- For classification, it makes sense to look at the probability of the labels.
+- If we are not very confident about our prediction, this should be taken into account:
+- Define $P(y | x)$ to be our classifier's probability for label $y$, given features $x$. Then we can use two simple metrics:
+*** Precision
+The average probability of the actual class:
+\[
+\sum_{t=1}^T P(y_t | x_t) / T
+\]
+- If we always assign probability 1 to the correct label, this score is 1. 
+- If we always assign probability $1/m$ to all labels, the score is $1/m$.
+*** Negative Log-Loss
+Here we assign look at the *logarithm* of the probability. This really penalises bad guesses.
+\[
+\sum_{t=1}^T \ln P(y_t | x_t) / T
+\]
+- If we always assign probability 1 to the correct label, this score is 0.
+- If we assign probability 0 to even a single label, the score is $-\infty$.
+#+BEGIN_SRC python
+from sklearn.metrics import log_loss
+#+END_SRC
+in scikitlearn implements log-loss (*not* negative)
 *** Regression
 
 **** The regressor as a decision rule
