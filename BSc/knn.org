@@ -161,10 +161,14 @@ At time $t$:
 - We observe the actual label $y_t$.
 - We *win* if $y_t = a_t$ and *lose* otherwise
 - Can we generalise this?
-
+**** The model versus the prediction
+- The *model* $P$ tells us the probability of different classes.
+- When we *decide* what our prediction should be, we can *use* the model.
+- We will use $\pi$ to denote the *decision rule* or *policy*.
 *** Decisions versus predictions
-- We frequently need to make a decision, instead of a prediction.
-- We use a utility function $U(y, a)$ to calculate how good different actions are
+- We frequently need to make a decision, instead of just a prediction.
+- We use a utility function $U(y, a)$ to calculate how good different actions are.
+- The space of actions $A$ is not identical to the set of labels $A$.
 **** Minimise spam annoyance                                 :B_exampleblock:
 	 :PROPERTIES:
 	 :BEAMER_env: exampleblock
@@ -195,7 +199,10 @@ a^* = \argmax_a \E[U | a, x]
 *** KNN activity
 - Implement nearest neighbours
 - Introduction to scikitlearn nearest neighbours
+
 *** Homework
+- Measure performance
+
 The general idea is to measure utility on a test set.
 
 - First, create a function called utilityScore(y, actions, U)

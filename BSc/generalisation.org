@@ -70,7 +70,8 @@ U(a_t, y_t) = \ind{a_t = y_t}
 0, & \textrm{otherwise}
 \end{cases}
 \]
-**** The accuracy on the training set
+**** The accuracy on a dataset
+Let $D = \{(x_t, y_t) : t \in [T]\} be a dataset. We can measure the accuracy:
 \[
 U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \pi(y_t | x_t)
 \]
@@ -79,8 +80,68 @@ U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \pi(y_t | x_t)
 If $(x, y) \sim P$, the accuracy $U$ of a stochastic decision rule $\pi$
 under the distribution $P$ is the probability it predicts correctly
 \[
-U(\pi, P) \defn \int_X  dP(x) \sum_{y=1}^m P(y|x) \pi(y | x)
+U(\pi, P) \defn \int_\CX  dP(x) \sum_{y=1}^m P(y|x) \pi(y | x)
 \]
+*** Beyond classification: Generalised decision rules
+Consider a spam application, where the e-mail client can decide between different action for emails.
+Different actions being best for each type of e-mail. The quality of each action can be captured through a utility function.
+**** Utility of the spam decision problem                    :B_exampleblock:
+	 :PROPERTIES:
+	 :BEAMER_env: exampleblock
+	 :END:
+What utility function would you use for the spam detection problem?
+|----------+------+------+-------|
+| Utility  | Pass | Flag | Trash |
+|----------+------+------+-------|
+| Normal   |      |      |       |
+| Spam     |      |      |       |
+| Virus    |      |      |       |
+|----------+------+------+-------|
+**** The utility function $U : \CY \times \CA \to \Reals$
+The utility function $U(y, a)$ is a real-valued function so that, for a label $y$, we prefer taking action $a$ to $a'$ iff $U(y, a) > U(y, a')$.
+
+*** The optimal decision
+Given:
+- A model $P(y | x)$ of class probabilities
+- A utility $U(y, a)$ for each class and action combination
+
+**** Expected utility
+We can calculate the expected utility of any decision
+\[
+\E[U | a, x] = \sum_y P(y | x, a) U(y, a) = \sum_y P(y | x) U(y, a)
+\]
+Here the first equality follows from the definition of conditional expectation and 
+$P(y | x, a) = P(y | x)$ as the label does not depend on our actions.
+**** The optimal decision
+Consequently, for any observation $x$, we can take the action maximising expected utility:
+\[
+a^* = \argmax_a \E[U | a, x] 
+\]
+
+
+*** The optimal decision rule
+- A *model* $P(y | x)$ of class probabilities
+- A *utility* $U(y, a)$ for each class and action combination
+- A *decision rule* $\pi(a | x)$ assigning probability to action $a$ for every possible input $x$
+
+**** Expected utility over a dataset.
+We can calculate the expected utility of the *decision rule* by marginalising over all actions
+\[
+\E[U | \pi, D] = 
+\sum_{t=1}^T \E[U | \pi, x_t]
+= 
+\sum_{t=1}^T \sum_{a \in \CA} \E[U | \pi, x_t]
+\]
+Here the first equality follows from the definition of conditional expectation and 
+$P(y | x, a) = P(y | x)$ as the label does not depend on our actions.
+**** The optimal decision
+Consequently, for any observation $x$, we can take the action maximising expected utility:
+\[
+a^* = \argmax_a \E[U | a, x] 
+\]
+
+
+
 *** Taking into account the probability
 - For classification, it makes sense to look at the probability of the labels.
 - If we are not very confident about our prediction, this should be taken into account:
@@ -117,16 +178,16 @@ The mean-square error is simply the squared difference in predicted versus actua
 \]
 
 **** Expected MSE
-If $(x, y) \sim P$, the expected MSE of a deterministic decision rule $\pi : X \to \Reals$ is
+If $(x, y) \sim P$, the expected MSE of a deterministic decision rule $\pi : \CX \to \Reals$ is
 \[
-\int_X \int_Y dP(x,y) [y - \pi(x)]^2.
+\int_\CX \int_\CY dP(x,y) [y - \pi(x)]^2.
 \]
 
 * Generalisation
 *** Training and overfitting
 **** Training data
 - $D = ((x_t, y_t) : t = 1, \ldots, T)$.
-- $x_t \in X$, $y_t \in Y$.
+- $x_t \in \CX$, $y_t \in \CY$.
 **** Assumption: The data is generated i.i.d.
 - $(x_t, y_t) \sim P$ for all $t$ (identical)
 - $D \sim P^T$ (independent)
@@ -134,7 +195,7 @@ If $(x, y) \sim P$, the expected MSE of a deterministic decision rule $\pi : X \
 \[
 \max_\pi U(\pi, P)
 = 
-\max_\pi \int_{X \times Y} dP(x, y) \sum_a \pi(a | x) U(a,y)
+\max_\pi \int_{\CX \times \CY} dP(x, y) \sum_a \pi(a | x) U(a,y)
 \]
 **** The optimal decision rule for $D$
 \[
@@ -316,7 +377,7 @@ U(\hat{\pol}^*, P) - U(\hat{\pol}, P) \leq 2\epsilon
 - Let us now prove that, with high probability, $|U(\pol, P) - U(\pol, D)| \leq \epsilon$.
 *** Bounding the estimation error
   
-For any fixed rule $\pol \in \Pols$ and utility function $U : \Pols \times X^T \to [0,1]$,
+For any fixed rule $\pol \in \Pols$ and utility function $U : \Pols \times \CX^T \to [0,1]$,
 \[
 P^T(|U(\pol, D) - U(\pol, P)| \geq \epsilon) \leq 2\exp(-2T\epsilon^2).
 \]
@@ -350,9 +411,9 @@ U(\pol^*, P) - U(\hat{\pol}, P)
 - ML estimation: $U(\param, D) = P_\param(D)$ is the data likelihood.
 - Accuracy, etc: $U(\pol, D)$.
 *** VC Dimension
-Here we consider sets $\Pols$ of deterministic rules $\pol : X \to \{0, 1\}$.
+Here we consider sets $\Pols$ of deterministic rules $\pol : \CX \to \{0, 1\}$.
 **** Shattering
-If a $S \subset X$ can with $|S|=m$, can be assigned any labelling $y_1, 
+If a $S \subset \CX$ can with $|S|=m$, can be assigned any labelling $y_1, 
 \ldots, y_m$ by a $\pol \in \Pols$, then we say $\Pols$ shatters $S$.
 
 **** The VC dimension
@@ -376,7 +437,7 @@ This class has VC dimension 3 on the plane.
   L(\pol) = P(\{x : \pol(x) \neq \pol^*(x)\})
   \]
 **** Realisable PAC learner
-- $\lambda : (X \times Y)^* \to \Pols$ is \((\epsilon, \delta)\)-PAC, if for any $P$ and  $\epsilon, \delta > 0$, and any concept $\pol^* \in \Pols$, there is $T$ such that
+- $\lambda : (\CX \times \CY)^* \to \Pols$ is \((\epsilon, \delta)\)-PAC, if for any $P$ and  $\epsilon, \delta > 0$, and any concept $\pol^* \in \Pols$, there is $T$ such that
 \[
 P^T( \left\{ D : L[\lambda(D)] > \epsilon \right \}) < \delta,
 \qquad
