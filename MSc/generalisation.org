@@ -92,7 +92,7 @@ This defines a function $\CX \to \CA$, which is the Bayes-optimal decision rule.
 - A *decision rule* $\pi(a | x)$ assigning probability to action $a$ for every possible input $x$
 
 **** Expected utility over a dataset.
-We can calculate the expected utility of the *decision rule* by marginalising over all actions
+We obtain the expected utility of the *decision rule* by marginalising over all actions
 \[
 U(\pi, D) \defn \E[U | \pi, D]
 \overset{D = (x_t, y_t)_{t=1}^T}{=}
@@ -102,15 +102,15 @@ U(\pi, D) \defn \E[U | \pi, D]
 \]
 Here the first equality follows from the definition of conditional expectation and 
 $P(y | x, a) = P(y | x)$ as the label does not depend on our actions.
-**** The optimal decision rule
-For a given $P$, the optimal decision rule maximises $U(\pi, P)$:
+**** Expected utility over $P$
+We can marginalise over possible datasets $D$
 \[
 U(\pi, P) \defn 
 \E_P[U | \pi] 
-\overset{D \sim P}{=} \int_{\mathcal{D}} dP(D) U(\pi, D)
-\overset{\textrm{i.i.d.}}{=} \int_{\CX} dP(x) \sum_{Y} P(y | x) \sum_a \pi(a, y) U(y,a)
+= \int_{\mathcal{D}} \!\!dP(D) U(\pi, D)
+\overset{\textrm{i.i.d.}}{=} \!\! \int_{\CX} dP(x) \sum_{\CY} P(y | x) \sum_a \pi(a|x) U(y,a)
 \]
-We saw how to construct this rule in thie previous slide
+
 
 
 *** Taking into account the probability
@@ -233,7 +233,7 @@ Use to measure the final quality of a model
 **** Methodology
 - Split training set $D$ in $k$ different subsets
 - At iteration $i$
-- Use the $i$-th subset for validation
+- Use the \(i\)-th subset for validation
 - Use all the remaining $k-1$ subsets for training
 - Average results on validation sets
 
@@ -242,11 +242,13 @@ Use to measure the final quality of a model
 - How to take into account variability? 
 - Resample the data and repeat your calculations for each resample
 **** Boostrap samples
-- Input: Data $D$, of size $T$
-- For $t$ in $\{1, \ldots, T\}$
--- Select $i$ uniformly in $[T]$
--- Add the $i$-th point to $D_b$
-- Return $D_b$
+\begin{algorithmic}
+\State Input: Data $D$, of size $T$
+2. For $t$ in $\{1, \ldots, T\}$
+2.1. Select $i$ uniformly in $[T]$
+--2.2. Add the \(i\)-th point to $D_b$
+3. Return $D_b$
+\end{algorithmic}
 
 *** The wrong way to do XV for subset selection :activity:
 
@@ -319,6 +321,7 @@ The sample mean estimator $f(D) = \sum_{t} x_t / T$ is unbiased, as :
  &= U(\pi', P) 
 \end{align}
 i.e. the expected value of the training accuracy is higher than the accuracy of *any* classifier.
+
 *** The bias/variance trade-off
 - Dataset $D \sim P$.
 - Predictor $f_D(x)$
