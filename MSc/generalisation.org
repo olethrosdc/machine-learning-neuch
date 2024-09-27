@@ -6,6 +6,7 @@
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
 * Quality metrics
 ** Supervised machine learning problems
 *** Classification
@@ -198,7 +199,8 @@ We will later see a link between this metric, mean-square error and estimation.
 - Split $D$ in $D_{\textrm{train}}$, $D_{\textrm{test}}$
 - Obtain $\pi = \lambda(D_{\textrm{train}})$
 - Calculate $U(\pi, D_{\textrm{test}})$
-- We are guaranteed that $\E_P[U(\pi, D_{\textrm{test}})] = U(\pi, P)$
+- We are guaranteed that for all $\pi$ $\E_P[U(\pi, D_{\textrm{test}})] = U(\pi, P)$ (unbiased estimator)
+- However $\E_P[U(\lambda(D_{\textrm{\train}}, D_{\textrm{train}})] \geq U(\pi, P)$ (biased estimator)
 *** kNN Classifier Accuracy on a single dataset
 [[../fig/knn-gaussian-train.pdf]]
 *** kNN Classifier Accuracy on a single dataset
@@ -279,6 +281,44 @@ How well can decision rule perform?
 - Statistical error: How easy it is to choose the best rule in the class.
 
 ** Bias and variance
+*** Unbiased estimators
+**** Estimator :B_definition:
+     :PROPERTIES:
+     :BEAMER_env: definition
+     :END:
+An estimator is a function $f: \mathcal{D} \to \Theta$, where $\Theta$ is a set of parameters. For any given dataset $D \in \mathcal{D}$, it returns a single estimate $\hat{\theta} = f(D)$.
+
+**** Unbiased estimator :B_definition:
+     :PROPERTIES:
+     :BEAMER_env: definition
+     :END:
+An estimator is *unbiased* if, for the distribution $P(D | \theta)$, we have
+\[
+\E[f \mid \theta] = \sum_D f(D) P(D | \theta) = \theta.
+\]
+**** Sample mean estimator :B_example:
+     :PROPERTIES:
+     :BEAMER_env: example
+     :END:
+Consider $D = (x_1, \ldots, x_T)$ with $x_t \sim P$ being i.i.d samples with $\E[x_t] = \theta$.
+The sample mean estimator $f(D) = \sum_{t} x_t / T$ is unbiased, as :
+\[
+\E[f] = \E\left[\sum_{t=1} x_t / T\right] = \frac{1}{T} \sum_{t=1} \E[x_t] = \frac{1}{T} \sum_{t=1}^T \theta = \theta.
+\]
+
+*** Example of a biased and unbiased estimator: Training error
+- $U(\pi, D)$ is the measured accuracy of a classifier $\pi$ on $D$ 
+- $U(\pi, P) = \E_{D \sim P} [U(\pi, D)]$ is the actual accuracy. So $U(\pi, D)$ is unbiased.
+- $\lambda(D) = \argmax_\pi U(\pi, D)$ is a learning algorithm picking the best classifier for a dataset $D$.
+- Then $U(\lambda(D), D)$ is biased, as for any $\pi'$
+\begin{align}
+\E_{D \sim P} [U(\lambda(D), D)]
+ &= \int_{\CD} dP(D)  U(\lambda(D), D)\\
+ &= \int_{\CD} dP(D) \max_\pi U(\pi, D)\\
+ &\geq \int_{\CD} dP(D) U(\pi', D)\\
+ &= U(\pi', P) 
+\end{align}
+i.e. the expected value of the training accuracy is higher than the accuracy of *any* classifier.
 *** The bias/variance trade-off
 - Dataset $D \sim P$.
 - Predictor $f_D(x)$
@@ -310,7 +350,7 @@ To minimise the MSE, we use $f^* = \mu$. This gives us two ideas:
 **** Empirical mean estimator:
 - $f_D = \sum_{t=1}^T x_t / T$.
 - $\Var(f_D) = \E [f_D - \mu] = 1/\sqrt{T}$
-- $\Bias(f_D) = 0$.
+- $\Bias(f_D) = 0$. (unbiased estimator)
 **** Laplace mean estimator:
 - $f_D = \sum_{t=1}^T (\lambda + x_t) / T$.
 - $\Var(f_D) = \E [f_D - \mu] = \frac{1}{1 + \sqrt{T}}$
