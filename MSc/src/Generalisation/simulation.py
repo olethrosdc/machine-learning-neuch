@@ -1,10 +1,13 @@
+# Here we have a small experiment for 
+
 import numpy as np
 import scipy
+
 
 # generate data
 n_training_data = 100
 n_test_data = 100
-n_limit_data = 10000
+n_limit_data = 1000
 
 class GaussianGenerator:
     def __init__(self, n_dim, n_classes, class_prob):
@@ -66,9 +69,12 @@ def run_experiment(generator, n_training_data, n_test_data, n_limit_data):
 
     return acc_train, acc_test, acc_lim
 
-acc_train, acc_test, acc_lim = run_experiment(generator, n_training_data, n_test_data, n_limit_data)
 
 import matplotlib.pyplot as plt
+
+acc_train, acc_test, acc_lim = run_experiment(generator, n_training_data, n_test_data, n_limit_data)
+
+
 
 plt.clf()
 plt.plot(acc_train)
@@ -96,3 +102,44 @@ plt.plot(np.argmax(acc_lim), acc_lim[np.argmax(acc_lim)], 'o')
 plt.legend(["train", "test", "actual"])
 #plt.show()
 plt.savefig("knn-gaussian-all.pdf")
+
+max_neighbours = n_training_data
+av_acc_train = np.zeros(max_neighbours)
+av_acc_test  = np.zeros(max_neighbours)
+av_acc_lim  = np.zeros(max_neighbours)
+
+n_experiments = 100
+for experiment in range(n_experiments):
+    print("Experiment ", experiment)
+    acc_train, acc_test, acc_lim = run_experiment(generator, n_training_data, n_test_data, n_limit_data)
+    av_acc_train += acc_train / n_experiments
+    av_acc_test += acc_test / n_experiments
+    av_acc_lim += acc_lim / n_experiments
+
+
+plt.clf()
+plt.plot(av_acc_train)
+plt.plot(np.argmax(av_acc_train), av_acc_train[np.argmax(av_acc_train)], '*')
+plt.legend(["train"])
+#plt.show()
+plt.savefig("knn-gaussian-train-average.pdf")
+
+plt.clf()
+plt.plot(av_acc_train)
+plt.plot(av_acc_test)
+plt.plot(np.argmax(av_acc_train), av_acc_train[np.argmax(av_acc_train)], '*')
+plt.plot(np.argmax(av_acc_test), av_acc_test[np.argmax(av_acc_test)], 'x')
+plt.legend(["train", "test"])
+#plt.show()
+plt.savefig("knn-gaussian-test-average.pdf")
+
+plt.clf()
+plt.plot(av_acc_train)
+plt.plot(av_acc_test)
+plt.plot(av_acc_lim)
+plt.plot(np.argmax(av_acc_train), av_acc_train[np.argmax(av_acc_train)], '*')
+plt.plot(np.argmax(av_acc_test), av_acc_test[np.argmax(av_acc_test)], 'x')
+plt.plot(np.argmax(av_acc_lim), av_acc_lim[np.argmax(av_acc_lim)], 'o')
+plt.legend(["train", "test", "actual"])
+#plt.show()
+plt.savefig("knn-gaussian-all-average.pdf")

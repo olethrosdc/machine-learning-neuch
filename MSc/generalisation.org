@@ -12,17 +12,13 @@
 **** The classifier as a decision rule
 A decision rule $\pi(a | x)$ generates a *decision* $a \in [m]$. It is
 the conditional probability of $a$ given $x$.
-
-**** A note on conditional probabilities
-Even though normally conditional probabilities are defined as
-$P(A | B) = P(A \cap B) / P(B)$, the probability of the decision $a$
-is undefined without a given $x$. So it's better to think if $\pi(a | x)$ as a collection of distributions on $a$, one for each value of $x$.
-
+#+BEAMER: \pause
 **** Deterministic predictions given a model $P(y|x)$
 Here, we pick the most likely class:
 \[
 \pi(a | x_t) = \ind{a= \argmax_y P(y|x_t)}
 \]
+#+BEAMER: \pause
 **** Randomised predictions given a model $P(y|x)$
 Here, we randomly select a class according to our model:
 \[
@@ -31,6 +27,7 @@ Here, we randomly select a class according to our model:
 
 
 *** Accuracy as a classification metric
+#+BEAMER: \pause
 **** The accuracy of a single decision
 \[
 U(a_t, y_t) = \ind{a_t = y_t}
@@ -39,13 +36,15 @@ U(a_t, y_t) = \ind{a_t = y_t}
 0, & \textrm{otherwise}
 \end{cases}
 \]
+#+BEAMER: \pause
 **** The accuracy on a dataset
-Let $D = \{(x_t, y_t) : t \in [T]\} be a dataset. We can measure the accuracy:
+Let $D = \{(x_t, y_t) : t \in [T]\}$ be a dataset. We can measure the accuracy:
 \[
 U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \pi(y_t | x_t)
 \]
 
 **** The expected accuracy of a decision rule
+#+BEAMER: \pause
 If $(x, y) \sim P$, the accuracy $U$ of a stochastic decision rule $\pi$
 under the distribution $P$ is the probability it predicts correctly
 \[
@@ -70,10 +69,8 @@ What utility function would you use for the spam detection problem?
 The utility function $U(y, a)$ is a real-valued function so that, for a label $y$, we prefer taking action $a$ to $a'$ iff $U(y, a) > U(y, a')$.
 
 *** The optimal decision
-Given:
-- A model $P(y | x)$ of class probabilities
-- A utility $U(y, a)$ for each class and action combination
-
+- A *model* $P(y | x)$ of class probabilities
+- A *utility* $U(y, a)$ for each class and action combination
 **** Expected utility
 We can calculate the expected utility of any decision
 \[
@@ -82,11 +79,11 @@ We can calculate the expected utility of any decision
 Here the first equality follows from the definition of conditional expectation and 
 $P(y | x, a) = P(y | x)$ as the label does not depend on our actions.
 **** The optimal decision
-Consequently, for any observation $x$, we can take the action maximising expected utility:
+For any observation $x$, and $P$, we take the action maximising expected utility:
 \[
-a^* = \argmax_a \E[U | a, x] 
+a^* = \argmax_a \E_P[U | a, x] 
 \]
-
+This defines a function $\CX \to \CA$, which is the Bayes-optimal decision rule.
 
 *** The optimal decision rule
 - A *model* $P(y | x)$ of class probabilities
@@ -96,19 +93,23 @@ a^* = \argmax_a \E[U | a, x]
 **** Expected utility over a dataset.
 We can calculate the expected utility of the *decision rule* by marginalising over all actions
 \[
-\E[U | \pi, D] = 
+U(\pi, D) \defn \E[U | \pi, D]
+\overset{D = (x_t, y_t)_{t=1}^T}{=}
 \sum_{t=1}^T \E[U | \pi, x_t]
 = 
-\sum_{t=1}^T \sum_{a \in \CA} \E[U | \pi, x_t]
+\sum_{t=1}^T \sum_{a \in \CA} U(y_t, a)\pi(a | x_t)
 \]
 Here the first equality follows from the definition of conditional expectation and 
 $P(y | x, a) = P(y | x)$ as the label does not depend on our actions.
-**** The optimal decision
-Consequently, for any observation $x$, we can take the action maximising expected utility:
+**** The optimal decision rule
+For a given $P$, the optimal decision rule maximises $U(\pi, P)$:
 \[
-a^* = \argmax_a \E[U | a, x] 
+U(\pi, P) \defn 
+\E_P[U | \pi] 
+\overset{D \sim P}{=} \int_{\mathcal{D}} dP(D) U(\pi, D)
+\overset{\textrm{i.i.d.}}{=} \int_{\CX} dP(x) \sum_{Y} P(y | x) \sum_a \pi(a, y) U(y,a)
 \]
-
+We saw how to construct this rule in thie previous slide
 
 
 *** Taking into account the probability
@@ -187,9 +188,27 @@ We will later see a link between this metric, mean-square error and estimation.
 \]
 
 *** Generalisation
-The fundamental problem is that:
-- We can only measure $U(\pi, D)$
+**** The fundamental problem
 - We want to maximise $U(\pi, P)$
+- We can only measure $U(\pi, D)$
+- We have a *learning algorithm $\lambda$*
+- If $\pi = \lambda(D)$, then we instead measure $U(\lambda(D), D)$.
+#+BEAMER: \pause
+**** Training and testing
+- Split $D$ in $D_{\textrm{train}}$, $D_{\textrm{test}}$
+- Obtain $\pi = \lambda(D_{\textrm{train}})$
+- Calculate $U(\pi, D_{\textrm{test}})$
+- We are guaranteed that $\E_P[U(\pi, D_{\textrm{test}})] = U(\pi, P)$
+*** kNN Classifier Accuracy on a single dataset
+[[../fig/knn-gaussian-train.pdf]]
+*** kNN Classifier Accuracy on a single dataset
+[[../fig/knn-gaussian-test.pdf]]
+*** kNN Classifier Accuracy on a single dataset
+[[../fig/knn-gaussian-all.pdf]]
+*** Expected kNN Classifier Accuracy
+Expectation approximated over 100 experiments
+[[../fig/knn-gaussian-all-average.pdf]]
+
 
 * Estimating quality
 ** Methodology
@@ -378,7 +397,6 @@ Setting the right side equal to $\delta$ and re-arranging,
 P^T \left(\max_{\pol \in \hat{\Pols}} |U(\pol, D) - U(\pol, P)|
  \geq \sqrt{\frac{\ln(2|\hat{\Pols}|/\delta)}{2T}}\right) \leq \delta.
 \]
-
 **** Example: \(\epsilon\)-net.
 In a $n$ dimensional space we require $|\hat{\Pols}| = O(\epsilon^{-n})$. This means that our statistical error is $O(\sqrt{n \ln(1/\epsilon \delta)/T})$.
 
