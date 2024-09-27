@@ -208,8 +208,9 @@ We will later see a link between this metric, mean-square error and estimation.
 *** kNN Classifier Accuracy on a single dataset
 [[../fig/knn-gaussian-all.pdf]]
 *** Expected kNN Classifier Accuracy
-Expectation approximated over 100 experiments
+Expectation approximated over 100 datasets $D$ sampled from $P$.
 [[../fig/knn-gaussian-all-average.pdf]]
+
 
 
 * Estimating quality
@@ -238,17 +239,29 @@ Use to measure the final quality of a model
 - Average results on validation sets
 
 *** Bootstrapping
-**** Idea
-- How to take into account variability? 
-- Resample the data and repeat your calculations for each resample
-**** Boostrap samples
+- Express uncertainty by resampling the data.
+- Repeat your calculations for each resample
+
+**** BootstrapSample(D)
 \begin{algorithmic}
-\State Input: Data $D$, of size $T$
-2. For $t$ in $\{1, \ldots, T\}$
-2.1. Select $i$ uniformly in $[T]$
---2.2. Add the \(i\)-th point to $D_b$
-3. Return $D_b$
+\STATE \textbf{input} Data $D = (z_1, \ldots, z_T)$, of size $T$
+\FOR{$t \in \{1, \ldots, T\}$}
+\STATE Select $i$ uniformly in $[T]$
+\STATE Add the $i$-th point to $D_b$
+\ENDFOR
+\STATE \textbf{return} $D_b$
 \end{algorithmic}
+
+**** BootstrapEstimate($D, \lambda, N$)
+\begin{algorithmic}
+\STATE \textbf{input} Data $D \in \mathcal{D}$, algorithm $\lambda : \mathcal{D} \to \Theta$, $N > 0$ number of samples
+\FOR{$n \in \{1, \ldots, N\}$}
+\STATE $\theta_n = \lambda(\textrm{BootstrapSample}(D))$
+\ENDFOR
+\STATE \textbf{return} $\{\theta_n : n \in [N]\}$
+\end{algorithmic}
+
+*** Bootstrapping example: A mean estimate
 
 *** The wrong way to do XV for subset selection :activity:
 
