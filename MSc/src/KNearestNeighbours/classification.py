@@ -3,7 +3,8 @@ import scipy
 
 # generate data
 n_training_data = 100
-n_test_data = 10000
+n_test_data = 100
+n_limit_data = 10000
 
 class GaussianGenerator:
     def __init__(self, n_dim, n_classes, class_prob):
@@ -28,9 +29,70 @@ n_dim = 2
 n_classes = 2
 class_prob = [0.8, 0.2]
 generator = GaussianGenerator(n_dim, n_classes, class_prob)
+generator.mean[0] = np.array([1, 1])
+generator.mean[1] = np.array([-1, -1])
+generator.covariance[0] = np.array([[1,0],[0,1]])
+generator.covariance[1] = np.array([[2,0.5],[0.5,2]])
 
-train_X, train_y = generator.generate(n_training_data)
-test_X, test_y = generator.generate(n_test_data)
-            
-    
+from sklearn import neighbors
+from sklearn.metrics import accuracy_score
 
+def run_experiment(generator, n_training_data, n_test_data, n_limit_data):
+    train_X, train_y = generator.generate(n_training_data)
+    test_X, test_y = generator.generate(n_test_data)
+    X, y = generator.generate(n_limit_data)
+
+
+    max_neighbours = len(train_y)
+    acc_train = np.zeros(max_neighbours)
+    acc_test = np.zeros(max_neighbours)
+    acc_lim = np.zeros(max_neighbours)
+
+    for n_neighbours in range(1, max_neighbours + 1):
+        clf = neighbors.KNeighborsClassifier(n_neighbours)
+        clf.fit(train_X, train_y)
+
+        ## Calculate the accuracy score, based on the predicted labels 
+        y_predicted = clf.predict(train_X)
+        acc_train[n_neighbours - 1] = accuracy_score(train_y, y_predicted)
+
+        ## Calculate the test score
+        y_predicted = clf.predict(test_X)
+        acc_test[n_neighbours - 1] = accuracy_score(test_y, y_predicted)
+
+        ## Calculate the actual score
+        y_predicted = clf.predict(X)
+        acc_lim[n_neighbours - 1] = accuracy_score(y, y_predicted)
+
+    return acc_train, acc_test, acc_lim
+
+acc_train, acc_test, acc_lim = run_experiment(generator, n_training_data, n_test_data, n_limit_data)
+
+import matplotlib.pyplot as plt
+
+plt.clf()
+plt.plot(acc_train)
+plt.plot(np.argmax(acc_train), acc_train[np.argmax(acc_train)], '*')
+plt.legend(["train"])
+#plt.show()
+plt.savefig("knn-gaussian-train.pdf")
+
+plt.clf()
+plt.plot(acc_train)
+plt.plot(acc_test)
+plt.plot(np.argmax(acc_train), acc_train[np.argmax(acc_train)], '*')
+plt.plot(np.argmax(acc_test), acc_test[np.argmax(acc_test)], 'x')
+plt.legend(["train", "test"])
+#plt.show()
+plt.savefig("knn-gaussian-test.pdf")
+
+plt.clf()
+plt.plot(acc_train)
+plt.plot(acc_test)
+plt.plot(acc_lim)
+plt.plot(np.argmax(acc_train), acc_train[np.argmax(acc_train)], '*')
+plt.plot(np.argmax(acc_test), acc_test[np.argmax(acc_test)], 'x')
+plt.plot(np.argmax(acc_lim), acc_lim[np.argmax(acc_lim)], 'o')
+plt.legend(["train", "test", "actual"])
+#plt.show()
+plt.savefig("knn-gaussian-all.pdf")

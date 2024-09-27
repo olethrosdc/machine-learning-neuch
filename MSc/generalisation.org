@@ -187,7 +187,10 @@ We will later see a link between this metric, mean-square error and estimation.
 \]
 
 *** Generalisation
-Fundamentally, 
+The fundamental problem is that:
+- We can only measure $U(\pi, D)$
+- We want to maximise $U(\pi, P)$
+
 * Estimating quality
 ** Methodology
 *** The Train/Validation/Test methodology
