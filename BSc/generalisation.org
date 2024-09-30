@@ -6,23 +6,20 @@
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
 * Quality metrics
 ** Supervised machine learning problems
 *** Classification
 **** The classifier as a decision rule
 A decision rule $\pi(a | x)$ generates a *decision* $a \in [m]$. It is
 the conditional probability of $a$ given $x$.
-
-**** A note on conditional probabilities
-Even though normally conditional probabilities are defined as
-$P(A | B) = P(A \cap B) / P(B)$, the probability of the decision $a$
-is undefined without a given $x$. So it's better to think if $\pi(a | x)$ as a collection of distributions on $a$, one for each value of $x$.
-
+#+BEAMER: \pause
 **** Deterministic predictions given a model $P(y|x)$
 Here, we pick the most likely class:
 \[
 \pi(a | x_t) = \ind{a= \argmax_y P(y|x_t)}
 \]
+#+BEAMER: \pause
 **** Randomised predictions given a model $P(y|x)$
 Here, we randomly select a class according to our model:
 \[
@@ -31,6 +28,7 @@ Here, we randomly select a class according to our model:
 
 
 *** Accuracy as a classification metric
+#+BEAMER: \pause
 **** The accuracy of a single decision
 \[
 U(a_t, y_t) = \ind{a_t = y_t}
@@ -39,13 +37,15 @@ U(a_t, y_t) = \ind{a_t = y_t}
 0, & \textrm{otherwise}
 \end{cases}
 \]
+#+BEAMER: \pause
 **** The accuracy on a dataset
-Let $D = \{(x_t, y_t) : t \in [T]\} be a dataset. We can measure the accuracy:
+Let $D = \{(x_t, y_t) : t \in [T]\}$ be a dataset. We can measure the accuracy:
 \[
 U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \pi(y_t | x_t)
 \]
 
 **** The expected accuracy of a decision rule
+#+BEAMER: \pause
 If $(x, y) \sim P$, the accuracy $U$ of a stochastic decision rule $\pi$
 under the distribution $P$ is the probability it predicts correctly
 \[
@@ -70,10 +70,8 @@ What utility function would you use for the spam detection problem?
 The utility function $U(y, a)$ is a real-valued function so that, for a label $y$, we prefer taking action $a$ to $a'$ iff $U(y, a) > U(y, a')$.
 
 *** The optimal decision
-Given:
-- A model $P(y | x)$ of class probabilities
-- A utility $U(y, a)$ for each class and action combination
-
+- A *model* $P(y | x)$ of class probabilities
+- A *utility* $U(y, a)$ for each class and action combination
 **** Expected utility
 We can calculate the expected utility of any decision
 \[
@@ -82,11 +80,11 @@ We can calculate the expected utility of any decision
 Here the first equality follows from the definition of conditional expectation and 
 $P(y | x, a) = P(y | x)$ as the label does not depend on our actions.
 **** The optimal decision
-Consequently, for any observation $x$, we can take the action maximising expected utility:
+For any observation $x$, and $P$, we take the action maximising expected utility:
 \[
-a^* = \argmax_a \E[U | a, x] 
+a^* = \argmax_a \E_P[U | a, x] 
 \]
-
+This defines a function $\CX \to \CA$, which is the Bayes-optimal decision rule.
 
 *** The optimal decision rule
 - A *model* $P(y | x)$ of class probabilities
@@ -94,19 +92,23 @@ a^* = \argmax_a \E[U | a, x]
 - A *decision rule* $\pi(a | x)$ assigning probability to action $a$ for every possible input $x$
 
 **** Expected utility over a dataset.
-We can calculate the expected utility of the *decision rule* by marginalising over all actions
+We obtain the expected utility of the *decision rule* by marginalising over all actions
 \[
-\E[U | \pi, D] = 
+U(\pi, D) \defn \E[U | \pi, D]
+\overset{D = (x_t, y_t)_{t=1}^T}{=}
 \sum_{t=1}^T \E[U | \pi, x_t]
 = 
-\sum_{t=1}^T \sum_{a \in \CA} \E[U | \pi, x_t]
+\sum_{t=1}^T \sum_{a \in \CA} U(y_t, a)\pi(a | x_t)
 \]
 Here the first equality follows from the definition of conditional expectation and 
 $P(y | x, a) = P(y | x)$ as the label does not depend on our actions.
-**** The optimal decision
-Consequently, for any observation $x$, we can take the action maximising expected utility:
+**** Expected utility over $P$
+We can marginalise over possible datasets $D$
 \[
-a^* = \argmax_a \E[U | a, x] 
+U(\pi, P) \defn 
+\E_P[U | \pi] 
+= \int_{\mathcal{D}} \!\!dP(D) U(\pi, D)
+\overset{\textrm{i.i.d.}}{=} \!\! \int_{\CX} dP(x) \sum_{\CY} P(y | x) \sum_a \pi(a|x) U(y,a)
 \]
 
 
@@ -135,13 +137,13 @@ from sklearn.metrics import log_loss
 in scikitlearn implements log-loss (*not* negative)
 *** Regression
 
-**** The regressor as a decision rule
+**** The regressor as a deterministic decision rule
 A decision rule $\pi$ generates a *decision* $a \in \Reals^m$.
-- For *randomised* rules, $\pi(a | x)$ is the conditional density of $a$ given $x$.
 - For *deterministic* rules $\pi(x)$ is the prediction for $x$.
+- Since we can almost never guess correctly, we need to define the quality of our predictions somehow, either as a utility $U(y_t, a_t)$ or a loss function $\ell(y_t, a_t)$.
 
-**** Mean-Squared Error on a Dataset
-The mean-square error is simply the squared difference in predicted versus actual values:
+**** Mean-Squared Error Loss on a Dataset
+This is the squared difference in predicted versus actual values:
 \[
 \frac{1}{T} \sum_{t=1}^T [y_t - \pi(x_t)]^2  
 \]
@@ -151,6 +153,19 @@ If $(x, y) \sim P$, the expected MSE of a deterministic decision rule $\pi : \CX
 \[
 \int_\CX \int_\CY dP(x,y) [y - \pi(x)]^2.
 \]
+*** Probabilistic regression
+**** The regressor as a stochastic decision rule
+A decision rule $\pi$ generates a *decision* $a \in \Reals^m$.
+- For *stochastic* rules $\pi(a | x)$ defines a density over predictions.
+- In this case it is natural to define $\pi(y_t, x_t)$ as our metric.
+**** Likelihood on a Dataset
+The mean-square error is simply the squared difference in predicted versus actual values:
+\[
+\prod{t=1}^T \pi(y_t | x_t)
+\]
+
+We will later see a link between this metric, mean-square error and estimation.
+
 
 * Generalisation
 *** Training and overfitting
@@ -173,6 +188,31 @@ If $(x, y) \sim P$, the expected MSE of a deterministic decision rule $\pi : \CX
 \max_\pi \sum_{(x,y) \in D} \sum_a \pi(a | x) U(a,y)
 \]
 
+*** Generalisation
+**** The fundamental problem
+- We want to maximise $U(\pi, P)$
+- We can only measure $U(\pi, D)$
+- We have a *learning algorithm $\lambda$*
+- If $\pi = \lambda(D)$, then we instead measure $U(\lambda(D), D)$.
+#+BEAMER: \pause
+**** Training and testing
+- Split $D$ in $D_{\textrm{train}}$, $D_{\textrm{test}}$
+- Obtain $\pi = \lambda(D_{\textrm{train}})$
+- Calculate $U(\pi, D_{\textrm{test}})$
+- We are guaranteed that for all $\pi$ $\E_P[U(\pi, D_{\textrm{test}})] = U(\pi, P)$ (unbiased estimator)
+- However $\E_P[U(\lambda(D_{\textrm{train}}, D_{\textrm{train}})] \geq U(\pi, P)$ (biased estimator)
+*** kNN Classifier Accuracy on a single dataset
+[[../fig/knn-gaussian-train.pdf]]
+*** kNN Classifier Accuracy on a single dataset
+[[../fig/knn-gaussian-test.pdf]]
+*** kNN Classifier Accuracy on a single dataset
+[[../fig/knn-gaussian-all.pdf]]
+*** Expected kNN Classifier Accuracy
+Expectation approximated over 100 datasets $D$ sampled from $P$.
+[[../fig/knn-gaussian-all-average.pdf]]
+
+
+
 * Estimating quality
 ** Methodology
 *** The Train/Validation/Test methodology
@@ -194,20 +234,34 @@ Use to measure the final quality of a model
 **** Methodology
 - Split training set $D$ in $k$ different subsets
 - At iteration $i$
-- Use the $i$-th subset for validation
+- Use the \(i\)-th subset for validation
 - Use all the remaining $k-1$ subsets for training
 - Average results on validation sets
 
 *** Bootstrapping
-**** Idea
-- How to take into account variability? 
-- Resample the data and repeat your calculations for each resample
-**** Boostrap samples
-- Input: Data $D$, of size $T$
-- For $t$ in $\{1, \ldots, T\}$
--- Select $i$ uniformly in $[T]$
--- Add the $i$-th point to $D_b$
-- Return $D_b$
+- Express uncertainty by resampling the data.
+- Repeat your calculations for each resample
+
+**** BootstrapSample(D)
+\begin{algorithmic}
+\STATE \textbf{input} Data $D = (z_1, \ldots, z_T)$, of size $T$
+\FOR{$t \in \{1, \ldots, T\}$}
+\STATE Select $i$ uniformly in $[T]$
+\STATE Add the $i$-th point to $D_b$
+\ENDFOR
+\STATE \textbf{return} $D_b$
+\end{algorithmic}
+
+**** BootstrapEstimate($D, \lambda, N$)
+\begin{algorithmic}
+\STATE \textbf{input} Data $D \in \mathcal{D}$, algorithm $\lambda : \mathcal{D} \to \Theta$, $N > 0$ number of samples
+\FOR{$n \in \{1, \ldots, N\}$}
+\STATE $\theta_n = \lambda(\textrm{BootstrapSample}(D))$
+\ENDFOR
+\STATE \textbf{return} $\{\theta_n : n \in [N]\}$
+\end{algorithmic}
+
+*** Bootstrapping example: A mean estimate
 
 *** The wrong way to do XV for subset selection :activity:
 
@@ -242,6 +296,45 @@ How well can decision rule perform?
 - Statistical error: How easy it is to choose the best rule in the class.
 
 ** Bias and variance
+*** Unbiased estimators
+**** Estimator :B_definition:
+     :PROPERTIES:
+     :BEAMER_env: definition
+     :END:
+An estimator is a function $f: \mathcal{D} \to \Theta$, where $\Theta$ is a set of parameters. For any given dataset $D \in \mathcal{D}$, it returns a single estimate $\hat{\theta} = f(D)$.
+
+**** Unbiased estimator :B_definition:
+     :PROPERTIES:
+     :BEAMER_env: definition
+     :END:
+An estimator is *unbiased* if, for the distribution $P(D | \theta)$, we have
+\[
+\E[f \mid \theta] = \sum_D f(D) P(D | \theta) = \theta.
+\]
+**** Sample mean estimator :B_example:
+     :PROPERTIES:
+     :BEAMER_env: example
+     :END:
+Consider $D = (x_1, \ldots, x_T)$ with $x_t \sim P$ being i.i.d samples with $\E[x_t] = \theta$.
+The sample mean estimator $f(D) = \sum_{t} x_t / T$ is unbiased, as :
+\[
+\E[f] = \E\left[\sum_{t=1} x_t / T\right] = \frac{1}{T} \sum_{t=1} \E[x_t] = \frac{1}{T} \sum_{t=1}^T \theta = \theta.
+\]
+
+*** Example of a biased and unbiased estimator: Training error
+- $U(\pi, D)$ is the measured accuracy of a classifier $\pi$ on $D$ 
+- $U(\pi, P) = \E_{D \sim P} [U(\pi, D)]$ is the actual accuracy. So $U(\pi, D)$ is unbiased.
+- $\lambda(D) = \argmax_\pi U(\pi, D)$ is a learning algorithm picking the best classifier for a dataset $D$.
+- Then $U(\lambda(D), D)$ is biased, as for any $\pi'$
+\begin{align}
+\E_{D \sim P} [U(\lambda(D), D)]
+ &= \int_{\CD} dP(D)  U(\lambda(D), D)\\
+ &= \int_{\CD} dP(D) \max_\pi U(\pi, D)\\
+ &\geq \int_{\CD} dP(D) U(\pi', D)\\
+ &= U(\pi', P) 
+\end{align}
+i.e. the expected value of the training accuracy is higher than the accuracy of *any* classifier.
+
 *** The bias/variance trade-off
 - Dataset $D \sim P$.
 - Predictor $f_D(x)$
@@ -273,7 +366,7 @@ To minimise the MSE, we use $f^* = \mu$. This gives us two ideas:
 **** Empirical mean estimator:
 - $f_D = \sum_{t=1}^T x_t / T$.
 - $\Var(f_D) = \E [f_D - \mu] = 1/\sqrt{T}$
-- $\Bias(f_D) = 0$.
+- $\Bias(f_D) = 0$. (unbiased estimator)
 **** Laplace mean estimator:
 - $f_D = \sum_{t=1}^T (\lambda + x_t) / T$.
 - $\Var(f_D) = \E [f_D - \mu] = \frac{1}{1 + \sqrt{T}}$
@@ -360,7 +453,6 @@ Setting the right side equal to $\delta$ and re-arranging,
 P^T \left(\max_{\pol \in \hat{\Pols}} |U(\pol, D) - U(\pol, P)|
  \geq \sqrt{\frac{\ln(2|\hat{\Pols}|/\delta)}{2T}}\right) \leq \delta.
 \]
-
 **** Example: \(\epsilon\)-net.
 In a $n$ dimensional space we require $|\hat{\Pols}| = O(\epsilon^{-n})$. This means that our statistical error is $O(\sqrt{n \ln(1/\epsilon \delta)/T})$.
 

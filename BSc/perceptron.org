@@ -174,7 +174,7 @@ Minimises the error on the true distribution.
 \qquad\alert{D} = (x_t, y_t)_{t=1}^T, \quad x_t, y_t \sim P.
 \]
 Minimises the error on the empirical distribution.
-#+BEAMER: \pause
+*** Cost functions and the chain rule
 **** Perceptron cost function
 The cost of each example
 \begin{align}
@@ -184,7 +184,7 @@ The cost of each example
 &= \overbrace{\ind{y(x^\top \param) < 0}}^{\textrm{misclassified?}} \overbrace{[ - y (x^\top \param)]}^{\textrm{margin of error}}
 \end{align}
 where the *indicator function $\ind{A}$* is  1 when $A$ is true and $0$ otherwise.
-#+BEAMER: \pause
+
 **** Derivative: Chain rule
 #+ATTR_BEAMER: :overlay <+->
 - $\nabla_\param \ell(x,y, \param) = - \ind{y(x^\top \param) > 0} \nabla_\param [y(x^\top \param)]$.
@@ -232,8 +232,9 @@ $\ell(x_t, y_t, \param) = - \ln P_\param( y_t | x_t) = \ln(1 + \exp(- y_t x_t^\t
   
 *** Assignment
 
-1. Find a dataset with some categorical variable of interest that we want to predict from the UCI repository.
+1. In the class data, find one categorical variable of interest that we want to predict.
 2. Formulate the appropriate classification problem.
-3. Perform model selection through train/validate or crossvalidation to find the best model and hyperparameters
-4. Measure the model's final performance on the test set.
-5. Discuss anything of interest in the data such as: feature scaling/selection, missing data, outliers.
+3. Perform model selection through train/validate or crossvalidation to find the best model (kNN or perceptron) and hyperparameters  (k for the kNN)
+4. Discuss anything of interest in the data such as: feature scaling/selection, missing data, outliers.
+5. We cannot independently measure the quality of the model, as we have no test set. What can we do?
+
