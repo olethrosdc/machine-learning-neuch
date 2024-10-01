@@ -4,7 +4,7 @@ import pandas as pd
 
 import matplotlib.pyplot as plt
 
-data = pd.read_excel("../../data/class.xlsx")
+data = pd.read_excel("~/class.xlsx")
 data.head()
 
 F = data["Gender"]=="F"
