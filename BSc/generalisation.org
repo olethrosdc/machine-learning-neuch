@@ -1,0 +1,518 @@
+#+TITLE: Generalisation in theory and practice
+#+AUTHOR: Christos Dimitrakakis
+#+EMAIL:christos.dimitrakakis@unine.ch
+#+LaTeX_HEADER: \input{preamble}
+#+LaTeX_CLASS_OPTIONS: [smaller]
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+#+TAGS: activity advanced definition exercise homework project example theory code
+#+OPTIONS:   H:3
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
+* Quality metrics
+** Supervised machine learning problems
+*** Classification
+**** The classifier as a decision rule
+A decision rule $\pi(a | x)$ generates a *decision* $a \in [m]$. It is
+the conditional probability of $a$ given $x$.
+#+BEAMER: \pause
+**** Deterministic predictions given a model $P(y|x)$
+Here, we pick the most likely class:
+\[
+\pi(a | x_t) = \ind{a= \argmax_y P(y|x_t)}
+\]
+#+BEAMER: \pause
+**** Randomised predictions given a model $P(y|x)$
+Here, we randomly select a class according to our model:
+\[
+\pi(a | x_t) = P(y_t = a  | x_t)
+\]
+
+
+*** Accuracy as a classification metric
+#+BEAMER: \pause
+**** The accuracy of a single decision
+\[
+U(a_t, y_t) = \ind{a_t = y_t}
+ = \begin{cases}
+1, & \textrm{if $a_t = y_t$}\\
+0, & \textrm{otherwise}
+\end{cases}
+\]
+#+BEAMER: \pause
+**** The accuracy on a dataset
+Let $D = \{(x_t, y_t) : t \in [T]\}$ be a dataset. We can measure the accuracy:
+\[
+U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \pi(y_t | x_t)
+\]
+
+**** The expected accuracy of a decision rule
+#+BEAMER: \pause
+If $(x, y) \sim P$, the accuracy $U$ of a stochastic decision rule $\pi$
+under the distribution $P$ is the probability it predicts correctly
+\[
+U(\pi, P) \defn \int_\CX  dP(x) \sum_{y=1}^m P(y|x) \pi(y | x)
+\]
+*** Beyond classification: Generalised decision rules
+Consider a spam application, where the e-mail client can decide between different action for emails.
+Different actions being best for each type of e-mail. The quality of each action can be captured through a utility function.
+**** Utility of the spam decision problem                    :B_exampleblock:
+	 :PROPERTIES:
+	 :BEAMER_env: exampleblock
+	 :END:
+What utility function would you use for the spam detection problem?
+|----------+------+------+-------|
+| Utility  | Pass | Flag | Trash |
+|----------+------+------+-------|
+| Normal   |      |      |       |
+| Spam     |      |      |       |
+| Virus    |      |      |       |
+|----------+------+------+-------|
+**** The utility function $U : \CY \times \CA \to \Reals$
+The utility function $U(y, a)$ is a real-valued function so that, for a label $y$, we prefer taking action $a$ to $a'$ iff $U(y, a) > U(y, a')$.
+
+*** The optimal decision
+- A *model* $P(y | x)$ of class probabilities
+- A *utility* $U(y, a)$ for each class and action combination
+**** Expected utility
+We can calculate the expected utility of any decision
+\[
+\E[U | a, x] = \sum_y P(y | x, a) U(y, a) = \sum_y P(y | x) U(y, a)
+\]
+Here the first equality follows from the definition of conditional expectation and 
+$P(y | x, a) = P(y | x)$ as the label does not depend on our actions.
+**** The optimal decision
+For any observation $x$, and $P$, we take the action maximising expected utility:
+\[
+a^* = \argmax_a \E_P[U | a, x] 
+\]
+This defines a function $\CX \to \CA$, which is the Bayes-optimal decision rule.
+
+*** The optimal decision rule
+- A *model* $P(y | x)$ of class probabilities
+- A *utility* $U(y, a)$ for each class and action combination
+- A *decision rule* $\pi(a | x)$ assigning probability to action $a$ for every possible input $x$
+
+**** Expected utility over a dataset.
+We obtain the expected utility of the *decision rule* by marginalising over all actions
+\[
+U(\pi, D) \defn \E[U | \pi, D]
+\overset{D = (x_t, y_t)_{t=1}^T}{=}
+\sum_{t=1}^T \E[U | \pi, x_t]
+= 
+\sum_{t=1}^T \sum_{a \in \CA} U(y_t, a)\pi(a | x_t)
+\]
+Here the first equality follows from the definition of conditional expectation and 
+$P(y | x, a) = P(y | x)$ as the label does not depend on our actions.
+**** Expected utility over $P$
+We can marginalise over possible datasets $D$
+\[
+U(\pi, P) \defn 
+\E_P[U | \pi] 
+= \int_{\mathcal{D}} \!\!dP(D) U(\pi, D)
+\overset{\textrm{i.i.d.}}{=} \!\! \int_{\CX} dP(x) \sum_{\CY} P(y | x) \sum_a \pi(a|x) U(y,a)
+\]
+
+
+
+*** Taking into account the probability
+- For classification, it makes sense to look at the probability of the labels.
+- If we are not very confident about our prediction, this should be taken into account:
+- Define $P(y | x)$ to be our classifier's probability for label $y$, given features $x$. Then we can use two simple metrics:
+*** Precision
+The average probability of the actual class:
+\[
+\sum_{t=1}^T P(y_t | x_t) / T
+\]
+- If we always assign probability 1 to the correct label, this score is 1. 
+- If we always assign probability $1/m$ to all labels, the score is $1/m$.
+*** Negative Log-Loss
+Here we assign look at the *logarithm* of the probability. This really penalises bad guesses.
+\[
+\sum_{t=1}^T \ln P(y_t | x_t) / T
+\]
+- If we always assign probability 1 to the correct label, this score is 0.
+- If we assign probability 0 to even a single label, the score is $-\infty$.
+#+BEGIN_SRC python
+from sklearn.metrics import log_loss
+#+END_SRC
+in scikitlearn implements log-loss (*not* negative)
+*** Regression
+
+**** The regressor as a deterministic decision rule
+A decision rule $\pi$ generates a *decision* $a \in \Reals^m$.
+- For *deterministic* rules $\pi(x)$ is the prediction for $x$.
+- Since we can almost never guess correctly, we need to define the quality of our predictions somehow, either as a utility $U(y_t, a_t)$ or a loss function $\ell(y_t, a_t)$.
+
+**** Mean-Squared Error Loss on a Dataset
+This is the squared difference in predicted versus actual values:
+\[
+\frac{1}{T} \sum_{t=1}^T [y_t - \pi(x_t)]^2  
+\]
+
+**** Expected MSE
+If $(x, y) \sim P$, the expected MSE of a deterministic decision rule $\pi : \CX \to \Reals$ is
+\[
+\int_\CX \int_\CY dP(x,y) [y - \pi(x)]^2.
+\]
+*** Probabilistic regression
+**** The regressor as a stochastic decision rule
+A decision rule $\pi$ generates a *decision* $a \in \Reals^m$.
+- For *stochastic* rules $\pi(a | x)$ defines a density over predictions.
+- In this case it is natural to define $\pi(y_t, x_t)$ as our metric.
+**** Likelihood on a Dataset
+The mean-square error is simply the squared difference in predicted versus actual values:
+\[
+\prod{t=1}^T \pi(y_t | x_t)
+\]
+
+We will later see a link between this metric, mean-square error and estimation.
+
+
+* Generalisation
+*** Training and overfitting
+**** Training data
+- $D = ((x_t, y_t) : t = 1, \ldots, T)$.
+- $x_t \in \CX$, $y_t \in \CY$.
+**** Assumption: The data is generated i.i.d.
+- $(x_t, y_t) \sim P$ for all $t$ (identical)
+- $D \sim P^T$ (independent)
+**** The optimal decision rule for $P$
+\[
+\max_\pi U(\pi, P)
+= 
+\max_\pi \int_{\CX \times \CY} dP(x, y) \sum_a \pi(a | x) U(a,y)
+\]
+**** The optimal decision rule for $D$
+\[
+\max_\pi U(\pi, D)
+= 
+\max_\pi \sum_{(x,y) \in D} \sum_a \pi(a | x) U(a,y)
+\]
+
+*** Generalisation
+**** The fundamental problem
+- We want to maximise $U(\pi, P)$
+- We can only measure $U(\pi, D)$
+- We have a *learning algorithm $\lambda$*
+- If $\pi = \lambda(D)$, then we instead measure $U(\lambda(D), D)$.
+#+BEAMER: \pause
+**** Training and testing
+- Split $D$ in $D_{\textrm{train}}$, $D_{\textrm{test}}$
+- Obtain $\pi = \lambda(D_{\textrm{train}})$
+- Calculate $U(\pi, D_{\textrm{test}})$
+- We are guaranteed that for all $\pi$ $\E_P[U(\pi, D_{\textrm{test}})] = U(\pi, P)$ (unbiased estimator)
+- However $\E_P[U(\lambda(D_{\textrm{train}}, D_{\textrm{train}})] \geq U(\pi, P)$ (biased estimator)
+*** kNN Classifier Accuracy on a single dataset
+[[../fig/knn-gaussian-train.pdf]]
+*** kNN Classifier Accuracy on a single dataset
+[[../fig/knn-gaussian-test.pdf]]
+*** kNN Classifier Accuracy on a single dataset
+[[../fig/knn-gaussian-all.pdf]]
+*** Expected kNN Classifier Accuracy
+Expectation approximated over 100 datasets $D$ sampled from $P$.
+[[../fig/knn-gaussian-all-average.pdf]]
+
+
+
+* Estimating quality
+** Methodology
+*** The Train/Validation/Test methodology
+**** Main idea
+Use each piece of data once to make decisions and measure
+**** Training set
+Use to decide low-level model parameters
+**** Validation set
+Use to decide between:
+- different hyperparameters  (e.g. $K$ in nearest neighbours)
+- model (e.g. neural networks versus kNN)
+**** Test set
+Use to measure the final quality of a model
+
+
+*** Cross-validation (XV)
+**** Idea
+- Use XV to select hyperparameters instead of a single train/valid test.
+**** Methodology
+- Split training set $D$ in $k$ different subsets
+- At iteration $i$
+- Use the \(i\)-th subset for validation
+- Use all the remaining $k-1$ subsets for training
+- Average results on validation sets
+
+*** Bootstrapping
+- Express uncertainty by resampling the data.
+- Repeat your calculations for each resample
+
+**** BootstrapSample(D)
+\begin{algorithmic}
+\STATE \textbf{input} Data $D = (z_1, \ldots, z_T)$, of size $T$
+\FOR{$t \in \{1, \ldots, T\}$}
+\STATE Select $i$ uniformly in $[T]$
+\STATE Add the $i$-th point to $D_b$
+\ENDFOR
+\STATE \textbf{return} $D_b$
+\end{algorithmic}
+
+**** BootstrapEstimate($D, \lambda, N$)
+\begin{algorithmic}
+\STATE \textbf{input} Data $D \in \mathcal{D}$, algorithm $\lambda : \mathcal{D} \to \Theta$, $N > 0$ number of samples
+\FOR{$n \in \{1, \ldots, N\}$}
+\STATE $\theta_n = \lambda(\textrm{BootstrapSample}(D))$
+\ENDFOR
+\STATE \textbf{return} $\{\theta_n : n \in [N]\}$
+\end{algorithmic}
+
+*** Bootstrapping example: A mean estimate
+
+*** The wrong way to do XV for subset selection :activity:
+
+1. Screen the predictors: find a subset of “good” predictors that show fairly strong (univariate) correlation with the class labels.
+2. Using just this subset of predictors, build a multivariate classifier.
+3. Use cross-validation to estimate the unknown tuning parameters and to estimate the prediction error of the final model.
+
+**** Is this a correct application of cross-validation?
+Consider a scenario with N = 50 samples in two equal-sized classes,
+and p = 5000 quantitative predictors (standard Gaussian) that are
+independent of the class labels.  The true (test) error rate of any
+classifier is 50%.
+
+*** The right way to do XV for feature selection :activity:
+1. Divide the samples into K cross-validation folds (groups) at random.
+2. For each fold $k = 1, 2, \ldots, K$
+- Find a subset of “good” predictors that show fairly strong (univariate) correlation with the class labels, using all of the samples except those in fold k.
+- Using just this subset of predictors, build a multivariate classifier, using all of the samples except those in fold k.
+- Use the classifier to predict the class labels for the samples in fold k.
+
+
+* Learning and generalisation
+** Introduction
+*** Learning and generalisation
+How well can decision rule perform?
+
+**** Estimation theory view
+- Bias: The expected difference between the estimated value and the unknown parameter
+- Variance: The expected difference between the estimated value and the unknown parameter
+**** Learning theory view
+- Approximation ability: How well a class of rules can approximate the optimal one.
+- Statistical error: How easy it is to choose the best rule in the class.
+
+** Bias and variance
+*** Unbiased estimators
+**** Estimator :B_definition:
+     :PROPERTIES:
+     :BEAMER_env: definition
+     :END:
+An estimator is a function $f: \mathcal{D} \to \Theta$, where $\Theta$ is a set of parameters. For any given dataset $D \in \mathcal{D}$, it returns a single estimate $\hat{\theta} = f(D)$.
+
+**** Unbiased estimator :B_definition:
+     :PROPERTIES:
+     :BEAMER_env: definition
+     :END:
+An estimator is *unbiased* if, for the distribution $P(D | \theta)$, we have
+\[
+\E[f \mid \theta] = \sum_D f(D) P(D | \theta) = \theta.
+\]
+**** Sample mean estimator :B_example:
+     :PROPERTIES:
+     :BEAMER_env: example
+     :END:
+Consider $D = (x_1, \ldots, x_T)$ with $x_t \sim P$ being i.i.d samples with $\E[x_t] = \theta$.
+The sample mean estimator $f(D) = \sum_{t} x_t / T$ is unbiased, as :
+\[
+\E[f] = \E\left[\sum_{t=1} x_t / T\right] = \frac{1}{T} \sum_{t=1} \E[x_t] = \frac{1}{T} \sum_{t=1}^T \theta = \theta.
+\]
+
+*** Example of a biased and unbiased estimator: Training error
+- $U(\pi, D)$ is the measured accuracy of a classifier $\pi$ on $D$ 
+- $U(\pi, P) = \E_{D \sim P} [U(\pi, D)]$ is the actual accuracy. So $U(\pi, D)$ is unbiased.
+- $\lambda(D) = \argmax_\pi U(\pi, D)$ is a learning algorithm picking the best classifier for a dataset $D$.
+- Then $U(\lambda(D), D)$ is biased, as for any $\pi'$
+\begin{align}
+\E_{D \sim P} [U(\lambda(D), D)]
+ &= \int_{\CD} dP(D)  U(\lambda(D), D)\\
+ &= \int_{\CD} dP(D) \max_\pi U(\pi, D)\\
+ &\geq \int_{\CD} dP(D) U(\pi', D)\\
+ &= U(\pi', P) 
+\end{align}
+i.e. the expected value of the training accuracy is higher than the accuracy of *any* classifier.
+
+*** The bias/variance trade-off
+- Dataset $D \sim P$.
+- Predictor $f_D(x)$
+- Target function $y = f(x) + \epsilon$
+- $\E \epsilon = 0$ zero-mean noise with variance $\sigma^2 = \Var(\epsilon)$
+**** MSE decomposition
+\[
+\E[(f - f_D)^2]= \Var(f_D) + \Bias(f_D)^2 + \sigma^2
+\]
+**** Variance
+How sensitive the estimator is to the data
+\[
+\Var(f_D)
+ = \E[(f_D - \E(f_D))^2]
+% = \E(f_D)^2] + \E[f_D^2] - 2 \E[f_D \E(f_D)]
+% = \E[f_D^2] - \E[f_D]^2
+\]
+**** Bias
+What is the expected deviation from the true function
+\[
+\Bias(f_D) \defn \E[(f_D - f)]
+\]
+*** Example: mean estimation
+- Data $D = y_1, \ldots, y_T$ with $\E[y_t] = \mu$.
+- Goal: estimate $\mu$ with some estimator $f_D$ to minimise
+- MSE: $\E[(y - f_D)^2]$, the expected square difference between new samples our guess.
+**** Optimal estimate
+To minimise the MSE, we use $f^* = \mu$. This gives us two ideas:
+**** Empirical mean estimator:
+- $f_D = \sum_{t=1}^T x_t / T$.
+- $\Var(f_D) = \E [f_D - \mu] = 1/\sqrt{T}$
+- $\Bias(f_D) = 0$. (unbiased estimator)
+**** Laplace mean estimator:
+- $f_D = \sum_{t=1}^T (\lambda + x_t) / T$.
+- $\Var(f_D) = \E [f_D - \mu] = \frac{1}{1 + \sqrt{T}}$
+- $\Bias(f_D) = O(1/T)$.
+
+*** A proof of the bias/variance trade-off
+- RV's $y_t \sim P$, $\E[y_t] = \mu$, $y_t = \mu + \epsilon_t$.
+- Estimator $f_D$, $D = y_1, \ldots, y_{t-1}$.
+#+BEGIN_EXPORT latex
+\begin{align*}
+\E[(f_D - y_t)^2]
+&= \E[f_D^2] - 2 \E[f_D y_t] + \E[y_t^2]\\
+&= \Var[f_D] + \E[f_D]^2 - 2 \E[f_D y_t] + \E[y_t^2]\\
+&= \Var[f_D] + \E[f_D]^2 - 2 \E[f_D] \E[y_t] + \E[y_t^2]\\
+&= \Var[f_D] + \E[f_D]^2 - 2 \E[f_D] \mu + \E[y_t^2]\\
+&= \Var[f_D] + \E[f_D]^2 - 2 \E[f_D] \mu + \E[(\mu + \epsilon_t)^2]\\
+&= \Var[f_D] + \E[f_D]^2 - 2 \E[f_D] \mu + \E[\mu^2 + 2\mu\epsilon_t + \epsilon_t^2]\\
+&= \Var[f_D] + \E[f_D]^2 - 2 \E[f_D] \mu + \mu^2  + \sigma^2\\
+&= \Var[f_D] + \left(\E[f_D]  - \mu\right)^2 +  \sigma^2\\
+&= \Var(f_D) + \Bias(f_D)^2 + \sigma^2
+\end{align*}
+#+END_EXPORT
+** Generalisation
+*** Generalisation error
+**** Regret decomposition
+Let the optimal rule be $\pol^* \in \Pols$, the best approximate rule be $\hat{\pi}^* \in \Pols$ and our rule be $\hat{\pol} \in \hat{\Pols}$. We call
+the difference between the performance of $\pol^*$ and $\hat{\pol}$ our \alert{regret}:
+\[
+\underbrace{U(\pol^*, P) - U(\hat{\pol}, P)}_{\textrm{regret}} =
+\underbrace{U(\pol^*, P) - U(\hat{\pol}^*, P)}_{\textrm{approximation error}} +
+\underbrace{U(\hat{\pol}^*, P) - U(\hat{\pol}, P)}_{\textrm{estimation error}}
+\]
+We can bound the regret by bounding each term separately.
+- The \alert{approximation error} tells us how expressive our class of rules is, i.e. how much we lose by looking at a restricted class $\hat{\Pi}$ of rules. It is similar to estimator \alert{bias}.
+- The \alert{statistical error} tells us how well the empirical performance on $D$ approximates the true performance. It is similar to estimator \alert{variance}.
+- As a rule of thumb, the larger our class, the better the possible approximation but the higher the statistical error.
+*** Approximation error
+- Our model limits us to a set of decision rules $\hat{\Pi} \subset \Pi$.
+- The most we could do is find the best rule in $\hat{\Pi}$.
+- This still leaves a gap:
+\[
+\Delta \defn  \max_{\pi \in \Pi} U(\pi, P) -  \max_{\hat{\pi} \in \hat{\Pi}} U(\pi, P)
+\]
+The gap can be characterised in some cases.
+**** Example: \(\epsilon\)-net on Lipschitz $U(\cdot, P)$.
+- Assume $U(\pi, P)$ is a Lipschitz function of $\pi$ for all $P$, i.e.
+  $|U(\pi, P) - U(\pi', P)| \leq L d(\pi, \pi')$ for some metric $d$.
+- Let $\hat{\Pi}$ be an \(\epsilon\)-net on $\Pi$, i.e.
+  $\max_{\pi \in \Pi} \min_{\pi' \in \hat{\Pi}} d(\pi, \pi') = \epsilon$.
+- Then $\Delta \leq L \epsilon$.
+*** Estimation error
+
+- First, let us bound $U(\hat{\pol}^*, P) - U(\hat{\pol}, P)$ by making an assumption.
+- Then, we can prove that our assumption holds with high probability.
+
+**** Lemma
+Let $f, g : S \to \Reals$. If $\|f - g\|_\infty \leq \epsilon$ and $f(x) \geq f(z)$ , 
+while $g(y) \geq g(z)$, for all $z$, i.e. $x,y$ maximise $f, g$ respectively
+\[
+f(x) - f(y) \leq 2 \epsilon.
+\]
+This holds as: $f(x) - f(y) \leq g(x) + \epsilon - f(y) \leq g(y) + \epsilon - f(y) \leq 2 \epsilon$.
+
+**** Corollary
+If $|U(\pol, P) - U(\pol, D)| \leq \epsilon$ for all $\pi$ then 
+\[
+U(\hat{\pol}^*, P) - U(\hat{\pol}, P) \leq 2\epsilon
+\]
+
+- Let us now prove that, with high probability, $|U(\pol, P) - U(\pol, D)| \leq \epsilon$.
+*** Bounding the estimation error
+  
+For any fixed rule $\pol \in \Pols$ and utility function $U : \Pols \times \CX^T \to [0,1]$,
+\[
+P^T(|U(\pol, D) - U(\pol, P)| \geq \epsilon) \leq 2\exp(-2T\epsilon^2).
+\]
+This is a direct application of Hoeffding's inequality[fn:1].
+Taking the union bound over the set $\hat{\Pols}$ gives:
+\[
+P^T(\exists \pol \in \hat{\Pols} : |U(\pol, D) - U(\pol, P)| \geq \epsilon) \leq 2 |\hat{\Pols}| \exp(-2T\epsilon^2).
+\]
+Setting the right side equal to $\delta$ and re-arranging,
+\[
+P^T \left(\max_{\pol \in \hat{\Pols}} |U(\pol, D) - U(\pol, P)|
+ \geq \sqrt{\frac{\ln(2|\hat{\Pols}|/\delta)}{2T}}\right) \leq \delta.
+\]
+**** Example: \(\epsilon\)-net.
+In a $n$ dimensional space we require $|\hat{\Pols}| = O(\epsilon^{-n})$. This means that our statistical error is $O(\sqrt{n \ln(1/\epsilon \delta)/T})$.
+
+*** The finite hypothesis algorithm
+- Input: a finite set of rules $\hat{\Pols}$, data $D$, utility $U$
+- Return $\hat{\pol} \in \argmax_{\pol \in \hat{\Pols}} U(\pol, D)$.
+**** Regret of the finite hypothesis algorithm.
+With probability $1 - \delta$
+\begin{align}
+U(\hat{\pol}, P)
+&\geq U(\hat{\pol}^*, P) -  \sqrt{2\ln(2|\hat{\Pols}|/\delta)/T}
+\\
+U(\pol^*, P) - U(\hat{\pol}, P) 
+&\leq \Delta+  \sqrt{2\ln(2|\hat{\Pols}|/\delta)/T}
+\end{align}
+**** Examples
+- ML estimation: $U(\param, D) = P_\param(D)$ is the data likelihood.
+- Accuracy, etc: $U(\pol, D)$.
+*** VC Dimension
+Here we consider sets $\Pols$ of deterministic rules $\pol : \CX \to \{0, 1\}$.
+**** Shattering
+If a $S \subset \CX$ can with $|S|=m$, can be assigned any labelling $y_1, 
+\ldots, y_m$ by a $\pol \in \Pols$, then we say $\Pols$ shatters $S$.
+
+**** The VC dimension
+This is the largest-size set $S$ that $\Pols$ can shatter.
+
+**** Example: Perceptrons on $\Reals^2$
+This class has VC dimension 3 on the plane.
+
+
+* PAC Learning
+** The realisable setting
+*** Binary classification
+**** Learning algorithm $\lambda$
+- Takes data $D = \{(x_t, y_t)\}$ as input
+- Generates deterministic decision rules $\pol : X \to \{0,1\}$,
+**** The loss of a rule $\pol$.
+- Assume an existing concept class $\pol^* \in \Pols$
+- Distribution $x_t \sim P$ is i.i.d. and $x_1, \ldots, x_T \sim P^T$.
+- The loss under distribution $P$ is
+  \[
+  L(\pol) = P(\{x : \pol(x) \neq \pol^*(x)\})
+  \]
+**** Realisable PAC learner
+- $\lambda : (\CX \times \CY)^* \to \Pols$ is \((\epsilon, \delta)\)-PAC, if for any $P$ and  $\epsilon, \delta > 0$, and any concept $\pol^* \in \Pols$, there is $T$ such that
+\[
+P^T( \left\{ D : L[\lambda(D)] > \epsilon \right \}) < \delta,
+\qquad
+D = (\{x_t, \pol^*(x_t)\}), x_t \sim P.
+\]
+
+
+* Footnotes
+
+[fn:1] See Hoeffding's inequality in the confidence intervals presentation
+  
+
+
+
+
+
+
