@@ -46,8 +46,8 @@ U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \pi(y_t | x_t)
 
 **** The expected accuracy of a decision rule
 #+BEAMER: \pause
-If $(x, y) \sim P$, the accuracy $U$ of a stochastic decision rule $\pi$
-under the distribution $P$ is the probability it predicts correctly
+If $(x, y) \sim P$, the accuracy $U$ of a rule $\pi$
+under $P$ is the probability it predicts correctly
 \[
 U(\pi, P) \defn \int_\CX  dP(x) \sum_{y=1}^m P(y|x) \pi(y | x)
 \]
@@ -192,15 +192,15 @@ We will later see a link between this metric, mean-square error and estimation.
 **** The fundamental problem
 - We want to maximise $U(\pi, P)$
 - We can only measure $U(\pi, D)$
-- We have a *learning algorithm $\lambda$*
+- We have a *learning algorithm $\lambda : \CD \to \Pols$*
 - If $\pi = \lambda(D)$, then we instead measure $U(\lambda(D), D)$.
 #+BEAMER: \pause
 **** Training and testing
 - Split $D$ in $D_{\textrm{train}}$, $D_{\textrm{test}}$
-- Obtain $\pi = \lambda(D_{\textrm{train}})$
-- Calculate $U(\pi, D_{\textrm{test}})$
-- We are guaranteed that for all $\pi$ $\E_P[U(\pi, D_{\textrm{test}})] = U(\pi, P)$ (unbiased estimator)
-- However $\E_P[U(\lambda(D_{\textrm{train}}, D_{\textrm{train}})] \geq U(\pi, P)$ (biased estimator)
+- Obtain $\pol = \lambda(D_{\textrm{train}})$
+- Calculate $U(\pol, D_{\textrm{test}})$
+- $\E_P[U(\pol, D_{\textrm{test}})] \alert{=} U(\pol, P)$ for any fixed $\pol$ (unbiased estimator)
+- $\E_P[U(\lambda(D_{\textrm{train}}), D_{\textrm{train}})] \alert{\geq} U(\pi, P)$ (biased estimator)
 *** kNN Classifier Accuracy on a single dataset
 [[../fig/knn-gaussian-train.pdf]]
 *** kNN Classifier Accuracy on a single dataset
@@ -238,6 +238,25 @@ Use to measure the final quality of a model
 - Use all the remaining $k-1$ subsets for training
 - Average results on validation sets
 
+*** Cross-validation example: A mean estimate
+Live coding in Python:
+- Get a mean estimate
+- Perform cross-validation
+**** Hand-crafted 
+#+BEGIN_SRC python
+  def xv_shuffler(X, y, estimator, scoring):
+	  # shuffle data
+	  # for each fold:
+	  # 1. Run estimator on k-1 folds
+	  # 2. Score estimator on k-th set
+    
+#+END_SRC
+
+**** sklearn built-in method
+#+BEGIN_SRC python
+from sklearn.model_selection import cross_val_score
+scores = cross_val_score(classifier, X, y, cv = n_folds)
+#+END_SRC
 *** Bootstrapping
 - Express uncertainty by resampling the data.
 - Repeat your calculations for each resample
@@ -261,7 +280,6 @@ Use to measure the final quality of a model
 \STATE \textbf{return} $\{\theta_n : n \in [N]\}$
 \end{algorithmic}
 
-*** Bootstrapping example: A mean estimate
 
 *** The wrong way to do XV for subset selection :activity:
 
