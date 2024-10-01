@@ -244,12 +244,25 @@ Live coding in Python:
 - Perform cross-validation
 **** Hand-crafted 
 #+BEGIN_SRC python
-  def xv_shuffler(X, y, estimator, scoring):
+  def xv_shuffler(x, estimator, scoring, n_folds):
+	  rng = np.random.default_rng
 	  # shuffle data
+	  T = len(x)
+	  indices = np.arange(T)
+	  shuffle(indices)
+	  fold_size = np.ceil(T / n_folds)
+	  fold_start = np.zeros(n_folds)
+	  fold_end = np.zeros(n_folds)
+	  # create folds
+	  for k in range(n_folds):
+		  fold_start = k * fold_size
+		  fold_end = np.min((k+1) * fold_size, T)
 	  # for each fold:
 	  # 1. Run estimator on k-1 folds
+
+        
 	  # 2. Score estimator on k-th set
-    
+
 #+END_SRC
 
 **** sklearn built-in method
