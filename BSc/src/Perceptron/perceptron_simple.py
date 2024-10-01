@@ -1,3 +1,7 @@
+## Run this code to observe how the perceptron works
+## At each step, enter the location of the threshold
+## Use a + sign if you want to use the +1 label on the right.
+## Use a - sign if you want to use the -1 label on the right.
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -5,8 +9,8 @@ import matplotlib.pyplot as plt
 data = [[190, 1],
         [160, -1],
         [170, -1],
-        [180, 1],
-        [165, 1],
+        [18017, 1],
+        [175, 1],
         [185, -1],
         [191, -1],
         [195, -1],
