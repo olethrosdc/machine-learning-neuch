@@ -16,7 +16,7 @@ plt.show()
 
 ## Iterate
 def perceptron(features, classes, iterations=100):
-    # initialise parameters
+    # initialise parameters randomly
     w_t = np.random.uniform(size=1 + features.shape[1]) # add one more fake feature
     n_data = features.shape[0]
     labels = np.zeros(n_data)
@@ -24,17 +24,10 @@ def perceptron(features, classes, iterations=100):
         # calculate output
         n_errors = 0
         for t in range(n_data):
-            ## TO DO: fill in
+            # We add this feature to every data point
             x_t = np.concatenate([np.array([1]), features[t]])
+            ## TO DO: fill in
             #print(x_t)
-            labels[t] = np.sign(np.dot(w_t, x_t))
-            if (classes[t] == 0):
-                c = -1
-            else:
-                c = +1
-            if (c != labels[t]):
-                w_t += c * x_t
-                n_errors += 1
         print("error rate: ", n_errors / n_data)
     return w_t, labels
 
