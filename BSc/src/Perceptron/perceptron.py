@@ -4,18 +4,18 @@ import matplotlib.pyplot as plt
 ## Generate some random data of two clases
 mean = [0, 0]
 covariance = [[10,1], [1,10]]
-n_samples = 1000
+n_samples = 100
 features = np.random.multivariate_normal(mean, covariance, n_samples)
 classes = np.random.choice(2, size=n_samples)
 features[classes==1]+=5
-plt.plot(features[classes==0,0], features[classes==0,1], '.', alpha=0.5)
-plt.plot(features[classes==1,0], features[classes==1,1], '.', alpha=0.5)
-plt.axis('equal')
-plt.grid()
-plt.show()
 
-## Iterate
-def perceptron(features, classes, iterations=100):
+#plt.axis('equal')
+#plt.grid()
+#plt.show()
+
+## Iterate over all the examples
+## One iteration should be enough if the data is separable
+def perceptron(features, classes, iterations=1):
     # initialise parameters randomly
     w_t = np.random.uniform(size=1 + features.shape[1]) # add one more fake feature
     n_data = features.shape[0]
@@ -26,7 +26,12 @@ def perceptron(features, classes, iterations=100):
         for t in range(n_data):
             # We add this feature to every data point
             x_t = np.concatenate([np.array([1]), features[t]])
-            ## TO DO: fill in
+            ## TO DO: Fill in the from the pseudocode
+            ## - Classify example
+            ## - If the label is wrong...
+            ##   - Move the hyperplane w_t
+            ## - Else do nothing
+            ## Then save the label in labels
             #print(x_t)
         print("error rate: ", n_errors / n_data)
     return w_t, labels
@@ -37,13 +42,16 @@ w, labels = perceptron(features, classes, 100)
 
 ## plot the results
 
-plt.plot(features[labels==-1,0], features[labels==-1,1], 'r.', alpha=0.5)
-plt.plot(features[labels==1,0], features[labels==1,1], 'g.', alpha=0.5)
+
 X = np.linspace(-10,10)
 # in our parametrisation, we have
 # a = w[0] + x w[1] + y w[2] 
 # so as a = 0 is the decision boundary, we can solve for the y coordinate
 Y = - (w[0] + X * w[1])/w[2]
+plt.plot(features[classes==0,0], features[classes==0,1], '.', alpha=0.5)
+plt.plot(features[classes==1,0], features[classes==1,1], '.', alpha=0.5)
+plt.plot(features[labels==-1,0], features[labels==-1,1], 'r.', alpha=0.5)
+plt.plot(features[labels==1,0], features[labels==1,1], 'g.', alpha=0.5)
 plt.plot(X, Y)
 plt.axis([-10,10,-10,10])
 plt.grid()

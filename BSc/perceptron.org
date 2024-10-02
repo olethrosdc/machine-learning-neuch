@@ -9,7 +9,7 @@
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
-#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}}
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
 
 
 * The Perceptron
@@ -42,10 +42,16 @@
 -[[./src/Perceptron/show_class_data_labels.py]]
 #+BEAMER: \pause
 **** Linear separator
+We now have parameters $\param_0 \in \Reals$ and $\param \in \Reals^n$
+defining a *hyperplane* $f(x) = 0$ in $\Reals^n$
 \[
 f(x) = \param_0 + \param^\top x
  = \param_0 + \sum_{i=1}^n \param_i x_i.
 \]
+#+BEAMER: \pause
+- The *perceptron decision rule* is $\pi(x) = \textrm{sign}(f(x))$
+- If $f(x) > 0$, we assign class +1
+- If $f(x) < 0$, we assign class -1
 #+BEAMER: \pause
 If we augment $x$ an additional component $x_0 = 1$,  we can write
 \[
@@ -62,16 +68,15 @@ f(x) = \param^\top x
 - Label space $Y = \{-1, 1\}$.
 - Data $(x_t, y_t)$, $t \in [T]$,  with $x_t \in X, y_t \in Y$.
 **** Algorithm
-- $w_1 = w_0$.
-
-- For $t = 1, \ldots, T$.
-  - $a_t = \sgn(w_t^\top x_t)$.
++ $\param^0 \sim \Normal^n(0, I)$. % Initialise parameters
++ For $t = 1, \ldots, T$
+  - $a_t = \sgn(\param^t \cdot x_t)$. % Classify example
   - If $a_t \neq y_t$
-    - $w_{t+1} = w_t + y_t x_t$
+	- $\param^{t} = \param^{t-1} + y_t x_t$ % Move hyperplane
   - Else
-    - $w_{t+1} = w_t$
+	- $\param^{t} = \param^{t-1}$ % Do nothing for correct examples
   - EndIf
-- Return $w_{T+1}$
++ Return $\param^{T}$
 	 
 
 *** Perceptron examples
@@ -162,8 +167,11 @@ f(\param^T) < f(\param), \forall \param: \|\param^T - \param\| < \epsilon.
 This is the same as the gradient method, but with added noise:
 - $\param^{t+1} = \param^t - \alpha_t [\nabla_\param f(\param^t) + \omega_t]$
 - $\E[\omega_t] = 0$ is sufficient for convergence.
-
-**** Example: When the cost is an expectation
+#+BEAMER: \pause
+**** When the cost is an expectation                     :B_example:
+	 :PROPERTIES:
+	 :BEAMER_env: example
+	 :END:
 In machine learning, the cost is frequently an expectation of some function $\ell$, 
 \[
 f(\param) = \int_X dP(x) \ell(x, \param)
@@ -255,10 +263,10 @@ $\ell(x_t, y_t, \param) = - \ln P_\param( y_t | x_t) = \ln(1 + \exp(- y_t x_t^\t
 - $\E_P(\ell) = \int_X dP(x) \sum_{y \in Y} P(y|x) P_\param(y_t + x_t)$
 * Lab and Assignment
 
-*** Lab demonstration
+*** Example code
 
-- How to use kNN and LogisticRegression with sklearn (and perhaps statsmodels, time permitting)
-- Use an example where there is no default 'class' label
+- How to use kNN and Perceptron with sklearn (and perhaps statsmodels, time permitting)
+- How to perform gradient descent
   
 *** Assignment
 
