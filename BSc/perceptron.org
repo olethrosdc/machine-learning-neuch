@@ -265,9 +265,12 @@ $\ell(x_t, y_t, \param) = - \ln P_\param( y_t | x_t) = \ln(1 + \exp(- y_t x_t^\t
 
 *** Example code
 
-- How to use kNN and Perceptron with sklearn (and perhaps statsmodels, time permitting)
-- How to perform gradient descent
-  
+**** The Perceptron and Gradients
+[[./src/Perceptron/Perceptron_gd.ipynb]]
+- Perceptron implemenation to fill in
+- Gradient descent implementation
+- Experiment on the learning rate with sklearn
+
 *** Assignment
 
 1. In the class data, find one categorical variable of interest that we want to predict.

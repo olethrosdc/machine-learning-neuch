@@ -12,6 +12,21 @@ features[classes==1]+=5
 #plt.axis('equal')
 #plt.grid()
 #plt.show()
+def display_classifier(features, classes, w, labels):
+    X = np.linspace(-10,10)
+    # in our parametrisation, we have
+    # a = w[0] + x w[1] + y w[2] 
+    # so as a = 0 is the decision boundary, we can solve for the y coordinate
+    Y = - (w[0] + X * w[1])/w[2]
+    plt.plot(features[classes==0,0], features[classes==0,1], '.', alpha=0.5)
+    plt.plot(features[classes==1,0], features[classes==1,1], '.', alpha=0.5)
+    plt.plot(features[labels==-1,0], features[labels==-1,1], 'r.', alpha=0.5)
+    plt.plot(features[labels==1,0], features[labels==1,1], 'g.', alpha=0.5)
+    plt.plot(X, Y)
+    plt.axis([-10,10,-10,10])
+    plt.grid()
+    plt.show()
+
 
 ## Iterate over all the examples
 ## One iteration should be enough if the data is separable
@@ -33,6 +48,7 @@ def perceptron(features, classes, iterations=1):
             ## - Else do nothing
             ## Then save the label in labels
             #print(x_t)
+        display_classifier(features, classes, w_t, labels)
         print("error rate: ", n_errors / n_data)
     return w_t, labels
 
@@ -41,18 +57,6 @@ def perceptron(features, classes, iterations=1):
 w, labels = perceptron(features, classes, 100)
 
 ## plot the results
+display_classifier(features, classes, w, labels)
 
 
-X = np.linspace(-10,10)
-# in our parametrisation, we have
-# a = w[0] + x w[1] + y w[2] 
-# so as a = 0 is the decision boundary, we can solve for the y coordinate
-Y = - (w[0] + X * w[1])/w[2]
-plt.plot(features[classes==0,0], features[classes==0,1], '.', alpha=0.5)
-plt.plot(features[classes==1,0], features[classes==1,1], '.', alpha=0.5)
-plt.plot(features[labels==-1,0], features[labels==-1,1], 'r.', alpha=0.5)
-plt.plot(features[labels==1,0], features[labels==1,1], 'g.', alpha=0.5)
-plt.plot(X, Y)
-plt.axis([-10,10,-10,10])
-plt.grid()
-plt.show()
