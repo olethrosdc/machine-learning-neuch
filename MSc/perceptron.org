@@ -9,7 +9,7 @@
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
-#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}}
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
 
 
 * The Perceptron
@@ -31,7 +31,7 @@
 [[./src/Perceptron/perceptron_simple.py]]
 
 *** Non-separable classes
-[[./src/Perceptron/histogram_heights.png]]
+[[./fig/histogram_heights.png]]
 - In general, we cannot perfectly classify everything
 - But we can estimate $\Pr(y \mid x)$ \ldots more on this later.
 
@@ -42,10 +42,17 @@
 -[[./src/Perceptron/show_class_data_labels.py]]
 #+BEAMER: \pause
 **** Linear separator
+
+We now have parameters $\param_0 \in \Reals$ and $\param \in \Reals^n$
+defining a *hyperplane* $f(x) = 0$ in $\Reals^n$
 \[
 f(x) = \param_0 + \param^\top x
  = \param_0 + \sum_{i=1}^n \param_i x_i.
 \]
+#+BEAMER: \pause
+- The *perceptron decision rule* is $\pi(x) = \textrm{sign}(f(x))$
+- If $f(x) > 0$, we assign class +1
+- If $f(x) < 0$, we assign class -1
 #+BEAMER: \pause
 If we augment $x$ an additional component $x_0 = 1$,  we can write
 \[
@@ -62,16 +69,15 @@ f(x) = \param^\top x
 - Label space $Y = \{-1, 1\}$.
 - Data $(x_t, y_t)$, $t \in [T]$,  with $x_t \in X, y_t \in Y$.
 **** Algorithm
-- $w_1 = w_0$.
-
-- For $t = 1, \ldots, T$.
-  - $a_t = \sgn(w_t^\top x_t)$.
++ $\param^0 \sim \Normal^n(0, I)$. % Initialise parameters
++ For $t = 1, \ldots, T$
+  - $a_t = \sgn(\param^t \cdot x_t)$. % Classify example
   - If $a_t \neq y_t$
-    - $w_{t+1} = w_t + y_t x_t$
+	- $\param^{t} = \param^{t-1} + y_t x_t$ % Move hyperplane
   - Else
-    - $w_{t+1} = w_t$
+	- $\param^{t} = \param^{t-1}$ % Do nothing for correct examples
   - EndIf
-- Return $w_{T+1}$
++ Return $\param^{T}$
 	 
 
 *** Perceptron examples
@@ -95,9 +101,6 @@ f(x) = \param^\top x
  The number of mistakes is bounded by $\rho^{-2}$, where $\|x_t\|\leq
  1$, $\rho \leq y_t (x_t^\top \beta^*)$ for some *margin* $\rho$ and
  *hyperplane* $\beta^*$ with $\|\beta^*\|=1$.
-
-
-
 *** Simple proof
 #+ATTR_BEAMER: :overlay +-
 - Scale data: $\|x\| \leq 1$
@@ -126,7 +129,6 @@ So $M \rho \leq \param^\top \param^* \leq \|\param\| = \sqrt{\param^\top \param}
 
 
 
-** The model
 
    
 * Gradient methods
@@ -191,8 +193,11 @@ f(\param^T) < f(\param), \forall \param: \|\param^T - \param\| < \epsilon.
 This is the same as the gradient method, but with added noise:
 - $\param^{t+1} = \param^t - \alpha_t [\nabla_\param f(\param^t) + \omega_t]$
 - $\E[\omega_t] = 0$ is sufficient for convergence.
-
-**** Example: When the cost is an expectation
+#+BEAMER: \pause
+**** When the cost is an expectation                     :B_example:
+	 :PROPERTIES:
+	 :BEAMER_env: example
+	 :END:
 In machine learning, the cost is frequently an expectation of some function $\ell$, 
 \[
 f(\param) = \int_X dP(x) \ell(x, \param)
@@ -217,13 +222,29 @@ The same holds for the gradient:
 \\
 &=  2 \E_P[x] - 2\param.
 \end{align*}
-#+BEAMER: \pause
+*** Stochastic gradient for mean estimation
+**** Sampling :B_theorem:
+     :PROPERTIES:
+     :BEAMER_env: theorem
+     :END:
+For any bounded random variable $f$, 
+\[
+\E_P[f] = \int_{X} dP(x) f(x)
+ = 
+\lim_{T \to \infty} \frac{1}{T} \sum_{t=1}^T f(x_t)
+ = 
+\E_P \left[\frac{1}{T} \sum_{t=1}^T f(x_t)\right]
+, \qquad x_t \sim P
+\]
+**** Sampling :B_example:
+     :PROPERTIES:
+     :BEAMER_env: example
+     :END:
 - If we sample $x$ we approximate the gradient:
 \begin{align*}
  \frac{d}{d\param} \E_P [(x - \param)^2] 
-&= \int_{-\infty}^\infty dP(x) \frac{d}{d\param} (x - \param)^2
-\\
-&\approx \frac{1}{T} \sum_{t=1}^T \frac{d}{d\param} (x_t - \param)^2
+= \int_{-\infty}^\infty \!\!\!\! dP(x) \frac{d}{d\param} (x - \param)^2
+\approx \frac{1}{T} \sum_{t=1}^T \frac{d}{d\param} (x_t - \param)^2
 = \frac{1}{T} \sum_{t=1}^T 2(x_t - \param)
 \end{align*}
 #+BEAMER: \pause
@@ -253,13 +274,25 @@ The cost of each example
 &= \overbrace{\ind{y(x^\top \param) < 0}}^{\textrm{misclassified?}} \overbrace{[ - y (x^\top \param)]}^{\textrm{margin of error}}
 \end{align}
 where the *indicator function $\ind{A}$* is  1 when $A$ is true and $0$ otherwise.
+<<<<<<< variant A
 
+>>>>>>> variant B
+#+BEAMER: \pause
+======= end
 **** Reminder: The chain rule
 Let $z = g(y)$, $y = f(x)$ so that $z= g(f(x))$. Then $\frac{dz}{dx} = \frac{dz}{d\alert{y}}\frac{d\alert{y}}{dx}$
+<<<<<<< variant A
+>>>>>>> variant B
+#+BEAMER: \pause
+======= end
 **** Derivative: Chain rule
 #+ATTR_BEAMER: :overlay <+->
 - $\nabla_\param \ell(x,y, \param) = - \ind{y(x^\top \param) < 0} \nabla_\param [y(x^\top \param)]$.
+<<<<<<< variant A
 - $\frac{\partial \param}{\partial{\param_i}} [y(x_t^\top \param)] = y x_{t,i}$
+>>>>>>> variant B
+- $\frac{\partial \param}{\partial{\param_i}} [y(x_t^\top \param)] = y x_{t,i}$ (gradient of Perceptron's output)
+======= end
 - Gradient update: $\param^{t+1} = \param^t - \nabla_\param \ell(x,y, \param) = \param^t + y x_{t}$
 #+BEAMER: \pause
 The classification error cost function is *not* differentiable :(
@@ -295,16 +328,10 @@ $\ell(x_t, y_t, \param) = - \ln P_\param( y_t | x_t) = \ln(1 + \exp(- y_t x_t^\t
 - $\E_P(\ell) = \int_X dP(x) \sum_{y \in Y} P(y|x) P_\param(y_t + x_t)$
 * Lab and Assignment
 
-*** Lab demonstration
+**** The Perceptron and Gradients
+[[./src/Perceptron/Perceptron_gd.ipynb]]
+- Perceptron implemenation to fill in
+- Gradient descent implementation
+- Experiment on the learning rate with sklearn
 
-- How to use kNN and LogisticRegression with sklearn (and perhaps statsmodels, time permitting)
-- Use an example where there is no default 'class' label
-  
-*** Assignment
-
-1. In the class data, find one categorical variable of interest that we want to predict.
-2. Formulate the appropriate classification problem.
-3. Perform model selection through train/validate or crossvalidation to find the best model (kNN or perceptron) and hyperparameters  (k for the kNN)
-4. Discuss anything of interest in the data such as: feature scaling/selection, missing data, outliers.
-5. We cannot independently measure the quality of the model, as we have no test set. What can we do?
 
