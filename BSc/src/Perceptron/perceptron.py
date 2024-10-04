@@ -20,10 +20,10 @@ def display_classifier(features, classes, w_old, w, labels):
     Y = - (w[0] + X * w[1])/w[2]
     Y_old = - (w_old[0] + X * w_old[1])/w_old[2]
     plt.clf()
-    plt.plot(features[classes==-1,0], features[classes==-1,1], 'r^', alpha=0.5, s=1)
-    plt.plot(features[classes==1,0], features[classes==1,1], 'g^', alpha=0.5, s=2)
-    plt.plot(features[labels==-1,0], features[labels==-1,1], 'rx', alpha=0.5, s=4)
-    plt.plot(features[labels==1,0], features[labels==1,1], 'gx', alpha=0.5, s=8)
+    plt.scatter(features[classes==-1,0], features[classes==-1,1], 'r^', alpha=0.5, s=1)
+    plt.scatter(features[classes==1,0], features[classes==1,1], 'g^', alpha=0.5, s=2)
+    plt.scatter(features[labels==-1,0], features[labels==-1,1], 'rx', alpha=0.5, s=4)
+    plt.scatter(features[labels==1,0], features[labels==1,1], 'gx', alpha=0.5, s=8)
     plt.plot(X, Y)
     plt.plot(X, Y_old)
     plt.axis([-10,10,-10,10])
