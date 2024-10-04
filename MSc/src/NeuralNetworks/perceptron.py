@@ -29,7 +29,7 @@ def display_classifier(features, classes, w_old, w, labels):
     plt.plot(X, Y_old)
     plt.axis([-7.5,7.5,-5,5])
     plt.grid()
-    plt.pause(0.01)
+    plt.pause(0.1)
 
 
 ## Iterate over all the examples

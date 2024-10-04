@@ -63,6 +63,35 @@ f(x) = \param^\top x
 
 
 ** The algorithm
+*** The Perceptron
+**** Pitts and McCulloch                                              :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+#+attr_html: :width 60x
+#+attr_latex: :width 60px
+#+NAME: piits
+#+CAPTION: Pitts
+[[../fig/pitts.jpg]]
+#+attr_html: :width 60px
+#+attr_latex: :width 60px
+#+CAPTION: McCulloch
+[[../fig/McCulloch.jpeg]]
+
+**** Rosenblatt and the Perceptron                                    :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+#+attr_html: :width 60px
+#+attr_latex: :width 60px
+#+CAPTION: Rosenblatt
+[[../fig/rosenblatt.jpeg]]
+
+#+attr_html: :width 60px
+#+attr_latex: :width 60px
+#+CAPTION: Perceptron Mark I
+[[../fig/Mark_I_perceptron.jpeg]]
+
 *** The perceptron algorithm
 **** Input
 - Feature space $X \subset \Reals^n$.
@@ -104,33 +133,46 @@ f(x) = \param^\top x
 *** Simple proof
 #+ATTR_BEAMER: :overlay +-
 - Scale data: $\|x\| \leq 1$
-- Separating plane: $y_t(x_t^\top \param^*) > 0$, $\|\param^*\| = 1$.
-- When we make an update: $y_t(x_t^\top \param_t) \leq 0$.
-- At each mistake, $\param^\top \param^*$ grows *by at least $\rho$
+- Separating plane: $y_t(x_t \cdot \param^*) \geq \rho \forall t$, $\|\param^*\| = 1$.
+- When we make an update: $y_t(x_t \cdot \param^t) \leq 0$.
+- At each mistake, $\param^t \cdot \param^*$ grows by *at least $\rho$*.
 #+BEAMER: \pause
 \[
-(\param + yx)^\top \param^* = \param^\top \param^* + y(x^\top \param^*) \geq \param^\top \param^* + \rho
+\param^{t+1} \cdot \param^* = (\param^t + yx_t) \cdot \param^* = \param^t \cdot \param^* + y(x_t \cdot \param^*) \geq \param^t \cdot \param^* + \rho
 \]
 #+BEAMER: \pause
-- At each mistake, $\param^\top \param$ grows by *at most 1.*
+- At each mistake, $\param \cdot \param$ grows by *at most 1.*
 \[
-(\param + yx)^\top (\param + yx) = \param^\top \param + 2y(\param^\top x) + y^2(x^\top x) \leq \param^\top \param + 1
+\param^{t+1} \cdot \param^{t+1}
+ = (\param^t + yx_t) \cdot (\param^t + yx_t)
+= \param^t \cdot \param^t + 2y(\param^t \cdot x_t) + y^2(x_t \cdot x_t) \leq \param^t \cdot \param^t + 1
 \]
 #+BEAMER: \pause
 **** Putting it together
 After $M$ mistakes:
 #+ATTR_BEAMER: :overlay +-
-- $\param^\top \param^* \geq M \rho$
-- $\param^\top \param \leq M$
-#+BEAMER: \pause
-So $M \rho \leq \param^\top \param^* \leq \|\param\| = \sqrt{\param^\top \param} \leq \sqrt{M}$.
-
+- $\param^t \cdot \param^* \geq M \rho$
+- $\param^t \cdot \param^t \leq M$
+- So $M \rho \leq \param^t \cdot \param^* \leq \|\param^t\| = \sqrt{\param^t \cdot \param^t} \leq \sqrt{M}$.
 - Thus, $M \leq \rho^{-2}$.
 
 
 
 
-   
+*** Promise of the perceptron   
+[[../fig/nyt_perceptron.png]]
+*** Promise versus reality
+**** Focus on classification
+- Rosenblatt only consider classification problems
+- Many problems in learning and AI are not simply classification problems
+- Even if they are, a problem as classification requires labels. It is not clear who will provide them.
+**** Separable representation assumption
+- Rosenblatt assumed that there was a representation available that would allow us to distinguish classes.
+- However, it is not clear /a priori/ how to obtain such a representation from the data. Progress followed roughly these steps:
+  - Hand-crafted features
+  - Random features
+  - Multi-layer perceptrons and backpropagation
+  - Attention mechanisms
 * Gradient methods
 ** Gradients for optimisation
 *** The gradient descent method: one dimension
@@ -157,22 +199,58 @@ Here $\ell(x, \param) = (x - \param)^2$.
 \min_\param \E_P[(x_t - \param)^2].
 \]
 #+BEAMER: \pause
-**** Derivative
-Idea: at the minimum the derivative should be zero.
+**** Exact gradient update
+If we know $P$, then we can calculate
+\begin{align}
+\param^{t+1} &= \param^t - \alpha_t \frac{d}{d\param} \E_P[(x - \param^t)^2]\\
+\frac{d}{d\param} \E_P[(x - \param^t)^2] &= 2 \E_P[x] - \param^t
+\end{align}
+
+*** Gradient for mean estimation :example:
+- Let us show this in detail
+\begin{align*}
+ \frac{d}{d\param} \E_P [(x - \param)^2] 
+&= \int_{-\infty}^\infty dP(x) \frac{d}{d\param} (x - \param)^2
+\\
+&=  \int_{-\infty}^\infty dP(x) 2(x - \param)
+\\
+&=  2 \E_P[x] - 2\param.
+\end{align*}
+- If we set the derivative to zero, then we find the optimal solution:
 \[
-d/d\param \E_P[(x_t - \param)^2]
-= \E_P[d/d\param(x_t - \param)^2]
-= \E_P[-(x_t - \param)]
-= \E_P[x_t] - \param.
+\param^* = \E_P[x]
 \]
-
-Setting the derivative to 0, we have $\param = \E_P[x_t]$. This is a simple solution.
-**** Real-world setting
-- The objective function does not result in a simple solution
-- The distribution $P$ is not known.
-- We can sample $x \sim P$.
-
-
+- How can we do this if we only have data $x_t \sim P$?
+*** Stochastic gradient for mean estimation
+**** Sampling :B_theorem:
+     :PROPERTIES:
+     :BEAMER_env: theorem
+     :END:
+For any bounded random variable $f$, 
+\[
+\E_P[f] = \int_{X} dP(x) f(x)
+ = 
+\lim_{T \to \infty} \frac{1}{T} \sum_{t=1}^T f(x_t)
+ = 
+\E_P \left[\frac{1}{T} \sum_{t=1}^T f(x_t)\right]
+, \qquad x_t \sim P
+\]
+**** Sampling :B_example:
+     :PROPERTIES:
+     :BEAMER_env: example
+     :END:
+- If we sample $x$ we approximate the gradient:
+\begin{align*}
+ \frac{d}{d\param} \E_P [(x - \param)^2] 
+= \int_{-\infty}^\infty \!\!\!\! dP(x) \frac{d}{d\param} (x - \param)^2
+\approx \frac{1}{T} \sum_{t=1}^T \frac{d}{d\param} (x_t - \param)^2
+= \frac{1}{T} \sum_{t=1}^T 2(x_t - \param)
+\end{align*}
+#+BEAMER: \pause
+- If we update $\param$ after each new sample $x_t$, we obtain:
+\[
+\param^{t+1} = \param^t + 2 \alpha_t (x_t - \param^t)
+\]
 
 *** The gradient method
 - Function to minimise $f : \Reals^n \to \Reals$.
@@ -212,46 +290,6 @@ The same holds for the gradient:
 \approx \frac{1}{T} \sum_t \nabla_\param \ell(x_t, \param)
 \]
 
-*** Gradient for mean estimation
-- The gradient is zero when the parameter is the expected value
-\begin{align*}
- \frac{d}{d\param} \E_P [(x - \param)^2] 
-&= \int_{-\infty}^\infty dP(x) \frac{d}{d\param} (x - \param)^2
-\\
-&=  \int_{-\infty}^\infty dP(x) 2(x - \param)
-\\
-&=  2 \E_P[x] - 2\param.
-\end{align*}
-*** Stochastic gradient for mean estimation
-**** Sampling :B_theorem:
-     :PROPERTIES:
-     :BEAMER_env: theorem
-     :END:
-For any bounded random variable $f$, 
-\[
-\E_P[f] = \int_{X} dP(x) f(x)
- = 
-\lim_{T \to \infty} \frac{1}{T} \sum_{t=1}^T f(x_t)
- = 
-\E_P \left[\frac{1}{T} \sum_{t=1}^T f(x_t)\right]
-, \qquad x_t \sim P
-\]
-**** Sampling :B_example:
-     :PROPERTIES:
-     :BEAMER_env: example
-     :END:
-- If we sample $x$ we approximate the gradient:
-\begin{align*}
- \frac{d}{d\param} \E_P [(x - \param)^2] 
-= \int_{-\infty}^\infty \!\!\!\! dP(x) \frac{d}{d\param} (x - \param)^2
-\approx \frac{1}{T} \sum_{t=1}^T \frac{d}{d\param} (x_t - \param)^2
-= \frac{1}{T} \sum_{t=1}^T 2(x_t - \param)
-\end{align*}
-#+BEAMER: \pause
-- If we update $\param$ after each new sample $x_t$, we obtain:
-\[
-\param^{t+1} = \param^t + 2 \alpha_t (x_t - \param^t)
-\]
 ** The perceptron as a gradient algorithm
 *** Perceptron algorithm as gradient descent
 **** Target error function
@@ -274,25 +312,16 @@ The cost of each example
 &= \overbrace{\ind{y(x^\top \param) < 0}}^{\textrm{misclassified?}} \overbrace{[ - y (x^\top \param)]}^{\textrm{margin of error}}
 \end{align}
 where the *indicator function $\ind{A}$* is  1 when $A$ is true and $0$ otherwise.
-<<<<<<< variant A
 
->>>>>>> variant B
 #+BEAMER: \pause
-======= end
 **** Reminder: The chain rule
 Let $z = g(y)$, $y = f(x)$ so that $z= g(f(x))$. Then $\frac{dz}{dx} = \frac{dz}{d\alert{y}}\frac{d\alert{y}}{dx}$
-<<<<<<< variant A
->>>>>>> variant B
+
 #+BEAMER: \pause
-======= end
 **** Derivative: Chain rule
 #+ATTR_BEAMER: :overlay <+->
 - $\nabla_\param \ell(x,y, \param) = - \ind{y(x^\top \param) < 0} \nabla_\param [y(x^\top \param)]$.
-<<<<<<< variant A
-- $\frac{\partial \param}{\partial{\param_i}} [y(x_t^\top \param)] = y x_{t,i}$
->>>>>>> variant B
 - $\frac{\partial \param}{\partial{\param_i}} [y(x_t^\top \param)] = y x_{t,i}$ (gradient of Perceptron's output)
-======= end
 - Gradient update: $\param^{t+1} = \param^t - \nabla_\param \ell(x,y, \param) = \param^t + y x_{t}$
 #+BEAMER: \pause
 The classification error cost function is *not* differentiable :(
