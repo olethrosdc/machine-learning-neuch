@@ -44,10 +44,10 @@
 - Input $\bx_t \in \Reals^n$
 - Output $y_t \in \Reals$.
 **** Predicting the conditional mean $\E[y_t | \bx_t]$
-- Parameters $\vparam \in \Reals^n$
-- Function $f_\vparam : \Reals^n \to \Reals$, defined as
+- Parameters $\param \in \Reals^n$
+- Function $f_\param : \Reals^n \to \Reals$, defined as
 \[
-f_\vparam(\bx_t) = \vparam^\top \bx_{t} = \sum_{i=1}^n \vparam_i x_{t,i}
+f_\param(\bx_t) = \param^\top \bx_{t} = \sum_{i=1}^n \param_i x_{t,i}
 \]
 
 ***  Two views of the problem
@@ -55,7 +55,7 @@ f_\vparam(\bx_t) = \vparam^\top \bx_{t} = \sum_{i=1}^n \vparam_i x_{t,i}
 **** Learning as Optimisation 
 Miniminise mean-squared error.
 \[
-\min_\vparam \sum_{t=1}^T [y_t - f_\vparam(\bx_t)]^2
+\min_\param \sum_{t=1}^T [y_t - f_\param(\bx_t)]^2
 \]
 **** Learning as inference
 Assume a Gaussian noise model:
@@ -64,46 +64,46 @@ y_t = f(\bx_t) + \epsilon_t,  \qquad \epsilon_t \sim \Normal(0, \sigma)
 \]
 This leads to the conditional density
 \[
-p_\vparam(y_t| \bx_t) 
+p_\param(y_t| \bx_t) 
 \propto
-\exp(-[y_t - f_\vparam(\bx_t)]^2 / 2\sigma^2)
+\exp(-[y_t - f_\param(\bx_t)]^2 / 2\sigma^2)
 \]
 Maximising the log-likelihood is equivalent to minimising mean-squared error:
 \[
-\argmax_\vparam \sum \ln p_\vparam(y_t| \bx_t) = \argmin_\vparam \sum_t |y_t - f_\vparam(\bx_t)|^2
+\argmax_\param \sum \ln p_\param(y_t| \bx_t) = \argmin_\param \sum_t |y_t - f_\param(\bx_t)|^2
 \]
 * Optimisation algorithms
 ** Gradient Descent
 *** Gradient descent algorithm
 **** Minimising a function
 \[
-\min_\vparam f(\vparam) \geq f(\vparam') \forall \vparam',
-\qquad \vparam^* = \argmin_\vparam f(\vparam) \Rightarrow f(\vparam^*) = \min_\vparam f(\vparam)
+\min_\param f(\param) \geq f(\param') \forall \param',
+\qquad \param^* = \argmin_\param f(\param) \Rightarrow f(\param^*) = \min_\param f(\param)
 \]
 **** Gradient descent for minimisation
-- Input $\vparam_0$
+- Input $\param_0$
 - For $n = 0, \ldots, N$:
-- $\vparam_{n+1} = \vparam_n - \eta_n \nabla_\vparam f(\vparam_n)$
+- $\param_{n+1} = \param_n - \eta_n \nabla_\param f(\param_n)$
 **** Step-size $\eta_n$
 - $\eta_n$ fixed: for online learning
 - $\eta_n = c/[c + n]$ for asymptotic convergence
-- $\eta_n = \argmin_\eta f(\theta_n + \eta \nabla_\vparam)$: Line search.
+- $\eta_n = \argmin_\eta f(\theta_n + \eta \nabla_\param)$: Line search.
 
 *** Gradient desecnt for squared error
 **** Cost gradient
 Using the chain rule of differentiation:
 \begin{align*}
-\nabla_\vparam \ell(\vparam)
-&= \nabla \sum_{t=1}^T [y_t - \pi_\vparam(\bx_t)]^2
+\nabla_\param \ell(\param)
+&= \nabla \sum_{t=1}^T [y_t - \pi_\param(\bx_t)]^2
 \\
-&= \sum_{t=1}^T \nabla [y_t - \pi_\vparam(\bx_t)]^2
+&= \sum_{t=1}^T \nabla [y_t - \pi_\param(\bx_t)]^2
 \\
-&= \sum_{t=1}^T 2 [y_t - \pi_\vparam(\bx_t)] [- \nabla \pi_\vparam(\bx_t)]^2
+&= \sum_{t=1}^T 2 [y_t - \pi_\param(\bx_t)] [- \nabla \pi_\param(\bx_t)]^2
 \end{align*}
 **** Parameter gradient
 For a linear regressor:
 \[
-\frac{\partial}{\partial \vparam_j} \pi_\vparam(\bx_t) = x_{t,j}.
+\frac{\partial}{\partial \param_j} \pi_\param(\bx_t) = x_{t,j}.
 \]
 
 *** Stochastic gradient descent algorithm
@@ -115,13 +115,13 @@ For the general case, we got to do this.
 
 **** When $f$ is an expectation
 \[
-f(\vparam) = \int_X dP(x) g(x, \vparam).
+f(\param) = \int_X dP(x) g(x, \param).
 \]
 **** Replacing the expectation with a sample:
 \begin{align*}
-\nabla f(\vparam)
-&= \int_X dP(x) \nabla g(x, \vparam)\\
-&\approx \frac{1}{K} \sum_{k=1}^K \nabla g(x^{(k)}, \vparam), && x^{(k)} \sim P.
+\nabla f(\param)
+&= \int_X dP(x) \nabla g(x, \param)\\
+&\approx \frac{1}{K} \sum_{k=1}^K \nabla g(x^{(k)}, \param), && x^{(k)} \sim P.
 \end{align*}
 
 ** Least-Squares
@@ -149,11 +149,11 @@ $A^{-1}$ is called the inverse of $A$ if
 We need to solve the following equations for $A$:
 \begin{equation*}
 \begin{matrix}
-y_1 &= \bx_1^\top \vparam\\
+y_1 &= \bx_1^\top \param\\
 \cdots & \cdots\\
-y_t &= \bx_t^\top \vparam\\
+y_t &= \bx_t^\top \param\\
 \cdots & \cdots\\
-y_T &= \bx_T^\top \vparam
+y_T &= \bx_T^\top \param
 \end{matrix}
 \end{equation*}
 We can rewrite it in matrix form:
@@ -173,15 +173,15 @@ y_T
 \vdots\\
 \bx_T^\top
 \end{pmatrix}
-\vparam
+\param
 \end{equation*}
 Resulting in 
 \[
-\by = X \vparam
+\by = X \param
 \]
 So we can use the left-pseudo inverse $\tilde{X}^{-1}$ to obtain
 \[
-\vparam = \tilde{X}^{-1} \by
+\param = \tilde{X}^{-1} \by
 \]
 
 * Interpretation of the problem

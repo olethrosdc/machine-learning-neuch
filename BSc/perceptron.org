@@ -31,17 +31,19 @@
 [[./src/Perceptron/perceptron_simple.py]]
 
 *** Non-separable classes
-[[./src/Perceptron/histogram_heights.png]]
+[[./fig/histogram_heights.png]]
 - In general, we cannot perfectly classify everything
 - But we can estimate $\Pr(y \mid x)$ \ldots more on this later.
 
-*** More complex example
+*** A more complex example
 - Feature space $\CX \subset \Reals^n$: e.g. height and weight for $n=2$
 - Label space $\CY = \{-1, 1\}$: e.g. gender
 - Can we find some line so as to separate the genders?
 -[[./src/Perceptron/show_class_data_labels.py]]
-#+BEAMER: \pause
-**** Linear separator
+- Is there an algorithm for doing so?
+
+*** A linear classifier
+**** The separating hyperplane
 We now have parameters $\param_0 \in \Reals$ and $\param \in \Reals^n$
 defining a *hyperplane* $f(x) = 0$ in $\Reals^n$
 \[
@@ -49,19 +51,58 @@ f(x) = \param_0 + \param^\top x
  = \param_0 + \sum_{i=1}^n \param_i x_i.
 \]
 #+BEAMER: \pause
-- The *perceptron decision rule* is $\pi(x) = \textrm{sign}(f(x))$
-- If $f(x) > 0$, we assign class +1
-- If $f(x) < 0$, we assign class -1
-#+BEAMER: \pause
-If we augment $x$ an additional component $x_0 = 1$,  we can write
+If we augment $x$ with an additional component $x_0 = 1$,  we can write
 \[
 f(x) = \param^\top x
  =  \sum_{i=0}^n \param_i x_i.
 \]
+#+BEAMER: \pause
+**** The classifier
+The *perceptron decision rule* is $\pi(x) = \textrm{sign}(f(x))$
+- If $f(x) > 0$, we assign class +1
+- If $f(x) < 0$, we assign class -1
+*** Hyperplanes in 2 dimensions (lines)
 
+\begin{tikzpicture}[domain=-1:3]
+   \draw[dotted, color=gray] (-1.1,-3.1) grid (5.1,4.1);
+   \draw[->] (0,0) -- (4,0) node[right] {$x_1$};
+   \draw[->] (0,0) -- (0,4) node[above] {$x_2$};
+   \draw[thick, color=blue]   plot (\x, {0 + \x * 1/2})  node[right] {$\beta = (0, 1, 2)$};
+   \draw[--,thick, color=magenta]   plot (\x, {1 + \x * 1/1})  node[right] {$\beta = (1, 1, 1)$};
+   \draw[-.,thick, color=red]   plot (\x, {1 - \x * 1/1})  node[right] {$\beta = (1, 1, -1)$};
+\end{tikzpicture}
 
-
+These lines are the solution to $f(x) = 0$
 ** The algorithm
+*** The Perceptron
+**** Pitts and McCulloch                                              :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+#+attr_html: :width 60x
+#+attr_latex: :width 60px
+#+NAME: piits
+#+CAPTION: Pitts
+[[../fig/pitts.jpg]]
+#+attr_html: :width 60px
+#+attr_latex: :width 60px
+#+CAPTION: McCulloch
+[[../fig/McCulloch.jpeg]]
+
+**** Rosenblatt and the Perceptron                                    :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+#+attr_html: :width 60px
+#+attr_latex: :width 60px
+#+CAPTION: Rosenblatt
+[[../fig/rosenblatt.jpeg]]
+
+#+attr_html: :width 60px
+#+attr_latex: :width 60px
+#+CAPTION: Perceptron Mark I
+[[../fig/Mark_I_perceptron.jpeg]]
+
 *** The perceptron algorithm
 **** Input
 - Feature space $X \subset \Reals^n$.
@@ -100,11 +141,49 @@ f(x) = \param^\top x
  The number of mistakes is bounded by $\rho^{-2}$, where $\|x_t\|\leq
  1$, $\rho \leq y_t (x_t^\top \beta^*)$ for some *margin* $\rho$ and
  *hyperplane* $\beta^*$ with $\|\beta^*\|=1$.
+*** Simple proof
+#+ATTR_BEAMER: :overlay +-
+- Scale data: $\|x\| \leq 1$
+- Separating plane: $y_t(x_t \cdot \param^*) \geq \rho \forall t$, $\|\param^*\| = 1$.
+- When we make an update: $y_t(x_t \cdot \param^t) \leq 0$.
+- At each mistake, $\param^t \cdot \param^*$ grows by *at least $\rho$*.
+#+BEAMER: \pause
+\[
+\param^{t+1} \cdot \param^* = (\param^t + yx_t) \cdot \param^* = \param^t \cdot \param^* + y(x_t \cdot \param^*) \geq \param^t \cdot \param^* + \rho
+\]
+#+BEAMER: \pause
+- At each mistake, $\param \cdot \param$ grows by *at most 1.*
+\[
+\param^{t+1} \cdot \param^{t+1}
+ = (\param^t + yx_t) \cdot (\param^t + yx_t)
+= \param^t \cdot \param^t + 2y(\param^t \cdot x_t) + y^2(x_t \cdot x_t) \leq \param^t \cdot \param^t + 1
+\]
+#+BEAMER: \pause
+**** Putting it together
+After $M$ mistakes:
+#+ATTR_BEAMER: :overlay +-
+- $\param^t \cdot \param^* \geq M \rho$
+- $\param^t \cdot \param^t \leq M$
+- So $M \rho \leq \param^t \cdot \param^* \leq \|\param^t\| = \sqrt{\param^t \cdot \param^t} \leq \sqrt{M}$.
+- Thus, $M \leq \rho^{-2}$.
 
 
 
 
-   
+*** Promise of the perceptron   
+[[../fig/nyt_perceptron.png]]
+*** Promise versus reality
+**** Focus on classification
+- Rosenblatt only consider classification problems
+- Many problems in learning and AI are not simply classification problems
+- Classification requires labels. These are not always easily available.
+**** Separable representation assumption
+- Rosenblatt assumed that there was a representation available that would allow us to distinguish classes.
+- However, it is not clear /a priori/ how to obtain such a data representation from the data. Progress followed roughly these steps:
+  - Hand-crafted features
+  - Random features
+  -  Multi-layer perceptrons, hand-crafted architectures, and backpropagation
+  - Attention mechanisms
 * Gradient methods
 ** Gradients for optimisation
 *** The gradient descent method: one dimension
@@ -131,22 +210,67 @@ Here $\ell(x, \param) = (x - \param)^2$.
 \min_\param \E_P[(x_t - \param)^2].
 \]
 #+BEAMER: \pause
-**** Derivative
-Idea: at the minimum the derivative should be zero.
+**** Exact gradient update
+If we know $P$, then we can calculate
+\begin{align}
+\param^{t+1} &= \param^t - \alpha_t \frac{d}{d\param} \E_P[(x - \param^t)^2]\\
+\frac{d}{d\param} \E_P[(x - \param^t)^2] &= 2 \E_P[x] - \param^t
+\end{align}
+
+*** Gradient for mean estimation :example:
+- Let us show this in detail
+\begin{align*}
+ \frac{d}{d\param} \E_P [(x - \param)^2] 
+&= \int_{-\infty}^\infty dP(x) \frac{d}{d\param} (x - \param)^2
+\\
+&=  \int_{-\infty}^\infty dP(x) 2(x - \param)
+\\
+&=  2 \E_P[x] - 2\param.
+\end{align*}
+- If we set the derivative to zero, then we find the optimal solution:
 \[
-d/d\param \E_P[(x_t - \param)^2]
-= \E_P[d/d\param(x_t - \param)^2]
-= \E_P[-(x_t - \param)]
-= \E_P[x_t] - \param.
+\param^* = \E_P[x]
 \]
-
-Setting the derivative to 0, we have $\param = \E_P[x_t]$. This is a simple solution.
-**** Real-world setting
-- The objective function does not result in a simple solution
-- The distribution $P$ is not known.
-- We can sample $x \sim P$.
-
-
+- How can we do this if we only have data $x_t \sim P$?
+*** Mean-squared error cost function
+\begin{tikzpicture}[domain=-1:2, range=-1:2]
+   \draw[dotted, color=gray] (-1.1,-2.1) grid (3.1,4.1);
+   \draw[->] (0,0) -- (2,0) node[right] {$\beta$};
+   \draw[->] (0,0) -- (0,4) node[above] {$\ell$};
+   \draw[color=red] plot (\x, {(\x-1)^2})  node[right] {$\mu = 1$};
+   \draw[color=blue] plot (\x, {(\x)^2})  node[right] {$\mu = 0$};
+\end{tikzpicture}
+Here we see a plot of $\ell(\mu, \beta) = (\beta - \mu)^2$.
+*** Stochastic gradient for mean estimation
+**** Sampling :B_theorem:
+     :PROPERTIES:
+     :BEAMER_env: theorem
+     :END:
+For any bounded random variable $f$, 
+\[
+\E_P[f] = \int_{X} dP(x) f(x)
+ = 
+\lim_{T \to \infty} \frac{1}{T} \sum_{t=1}^T f(x_t)
+ = 
+\E_P \left[\frac{1}{T} \sum_{t=1}^T f(x_t)\right]
+, \qquad x_t \sim P
+\]
+**** Sampling :B_example:
+     :PROPERTIES:
+     :BEAMER_env: example
+     :END:
+- If we sample $x$ we approximate the gradient:
+\begin{align*}
+ \frac{d}{d\param} \E_P [(x - \param)^2] 
+= \int_{-\infty}^\infty \!\!\!\! dP(x) \frac{d}{d\param} (x - \param)^2
+\approx \frac{1}{T} \sum_{t=1}^T \frac{d}{d\param} (x_t - \param)^2
+= \frac{1}{T} \sum_{t=1}^T 2(x_t - \param)
+\end{align*}
+#+BEAMER: \pause
+- If we update $\param$ after each new sample $x_t$, we obtain:
+\[
+\param^{t+1} = \param^t + 2 \alpha_t (x_t - \param^t)
+\]
 
 *** The gradient method
 - Function to minimise $f : \Reals^n \to \Reals$.
@@ -186,18 +310,6 @@ The same holds for the gradient:
 \approx \frac{1}{T} \sum_t \nabla_\param \ell(x_t, \param)
 \]
 
-*** Stochastic gradient for mean estimation
-- If we sample $x$ we approximate the gradient:
-\begin{align*}
- \frac{d}{d\param} \E_P [(x - \param)^2] 
-&\approx \frac{1}{T} \sum_{t=1}^T \frac{d}{d\param} (x_t - \param)^2
-= \frac{1}{T} \sum_{t=1}^T 2(x_t - \param)
-\end{align*}
-#+BEAMER: \pause
-- If we update $\param$ after each new sample $x_t$, we obtain:
-\[
-\param^{t+1} = \param^t + 2 \alpha_t (x_t - \param^t)
-\]
 ** The perceptron as a gradient algorithm
 *** Perceptron algorithm as gradient descent
 **** Target error function
@@ -220,11 +332,34 @@ The cost of each example
 &= \overbrace{\ind{y(x^\top \param) < 0}}^{\textrm{misclassified?}} \overbrace{[ - y (x^\top \param)]}^{\textrm{margin of error}}
 \end{align}
 where the *indicator function $\ind{A}$* is  1 when $A$ is true and $0$ otherwise.
-#+BEAMER: \pause
+\begin{center}
+\begin{tikzpicture}[domain=-2:2, samples=200,range=-1:2]
+   \draw[dotted, color=gray] (-2.1,-2.1) grid (3.1,3.1);
+   \draw[->] (0,0) -- (2,0) node[right] {$f(x)$};
+   \draw[->] (0,0) -- (0,4) node[above] {$\ell$};
+   \draw[thick, color=red] plot (\x, {max(0, \x)}) node [right] {perceptron cost};
+   \draw[dashed, thick, color=blue] plot (\x, {\x >= 0)}) node [right] {classification cost};
+\end{tikzpicture}
+\end{center}
+
+Here we see a plot of $\ell(\mu, \beta) = (\beta - \mu)^2$.
+*** Derivative of the perceptron cost function
+The total cost over the data is defined as
+\[
+L(D, \param) = \sum_{(x, y) \in D} \ell(x, y, \param)
+\]
+Taking the derivative, we have
+\[
+\nabla_\param L(D, \param) = \nabla_\param \sum_{(x, y) \in D} \ell(x, y, \beta)
+  = \sum_{(x, y) \in D} \nabla_\param \ell(x, y, \param)
+\]
+
+
 **** Reminder: The chain rule
 Let $z = g(y)$, $y = f(x)$ so that $z= g(f(x))$. Then $\frac{dz}{dx} = \frac{dz}{d\alert{y}}\frac{d\alert{y}}{dx}$
+
 #+BEAMER: \pause
-**** Derivative: Chain rule
+**** Applying the chain rule to calculate the gradient
 #+ATTR_BEAMER: :overlay <+->
 - $\nabla_\param \ell(x,y, \param) = - \ind{y(x^\top \param) < 0} \nabla_\param [y(x^\top \param)]$.
 - $\frac{\partial \param}{\partial{\param_i}} [y(x_t^\top \param)] = y x_{t,i}$ (gradient of Perceptron's output)
@@ -263,19 +398,10 @@ $\ell(x_t, y_t, \param) = - \ln P_\param( y_t | x_t) = \ln(1 + \exp(- y_t x_t^\t
 - $\E_P(\ell) = \int_X dP(x) \sum_{y \in Y} P(y|x) P_\param(y_t + x_t)$
 * Lab and Assignment
 
-*** Example code
-
 **** The Perceptron and Gradients
 [[./src/Perceptron/Perceptron_gd.ipynb]]
 - Perceptron implemenation to fill in
 - Gradient descent implementation
 - Experiment on the learning rate with sklearn
 
-*** Assignment
-
-1. In the class data, find one categorical variable of interest that we want to predict.
-2. Formulate the appropriate classification problem.
-3. Perform model selection through train/validate or crossvalidation to find the best model (kNN or perceptron) and hyperparameters  (k for the kNN)
-4. Discuss anything of interest in the data such as: feature scaling/selection, missing data, outliers.
-5. We cannot independently measure the quality of the model, as we have no test set. What can we do?
 

@@ -35,14 +35,15 @@
 - In general, we cannot perfectly classify everything
 - But we can estimate $\Pr(y \mid x)$ \ldots more on this later.
 
-*** More complex example
+*** A more complex example
 - Feature space $\CX \subset \Reals^n$: e.g. height and weight for $n=2$
 - Label space $\CY = \{-1, 1\}$: e.g. gender
 - Can we find some line so as to separate the genders?
 -[[./src/Perceptron/show_class_data_labels.py]]
-#+BEAMER: \pause
-**** Linear separator
+- Is there an algorithm for doing so?
 
+*** A linear classifier
+**** The separating hyperplane
 We now have parameters $\param_0 \in \Reals$ and $\param \in \Reals^n$
 defining a *hyperplane* $f(x) = 0$ in $\Reals^n$
 \[
@@ -50,18 +51,28 @@ f(x) = \param_0 + \param^\top x
  = \param_0 + \sum_{i=1}^n \param_i x_i.
 \]
 #+BEAMER: \pause
-- The *perceptron decision rule* is $\pi(x) = \textrm{sign}(f(x))$
-- If $f(x) > 0$, we assign class +1
-- If $f(x) < 0$, we assign class -1
-#+BEAMER: \pause
-If we augment $x$ an additional component $x_0 = 1$,  we can write
+If we augment $x$ with an additional component $x_0 = 1$,  we can write
 \[
 f(x) = \param^\top x
  =  \sum_{i=0}^n \param_i x_i.
 \]
+#+BEAMER: \pause
+**** The classifier
+The *perceptron decision rule* is $\pi(x) = \textrm{sign}(f(x))$
+- If $f(x) > 0$, we assign class +1
+- If $f(x) < 0$, we assign class -1
+*** Hyperplanes in 2 dimensions (lines)
 
+\begin{tikzpicture}[domain=-1:3]
+   \draw[dotted, color=gray] (-1.1,-3.1) grid (5.1,4.1);
+   \draw[->] (0,0) -- (4,0) node[right] {$x_1$};
+   \draw[->] (0,0) -- (0,4) node[above] {$x_2$};
+   \draw[thick, color=blue]   plot (\x, {0 + \x * 1/2})  node[right] {$\beta = (0, 1, 2)$};
+   \draw[--,thick, color=magenta]   plot (\x, {1 + \x * 1/1})  node[right] {$\beta = (1, 1, 1)$};
+   \draw[-.,thick, color=red]   plot (\x, {1 - \x * 1/1})  node[right] {$\beta = (1, 1, -1)$};
+\end{tikzpicture}
 
-
+These lines are the solution to $f(x) = 0$
 ** The algorithm
 *** The Perceptron
 **** Pitts and McCulloch                                              :BMCOL:
@@ -165,13 +176,13 @@ After $M$ mistakes:
 **** Focus on classification
 - Rosenblatt only consider classification problems
 - Many problems in learning and AI are not simply classification problems
-- Even if they are, a problem as classification requires labels. It is not clear who will provide them.
+- Classification requires labels. These are not always easily available.
 **** Separable representation assumption
 - Rosenblatt assumed that there was a representation available that would allow us to distinguish classes.
-- However, it is not clear /a priori/ how to obtain such a representation from the data. Progress followed roughly these steps:
+- However, it is not clear /a priori/ how to obtain such a data representation from the data. Progress followed roughly these steps:
   - Hand-crafted features
   - Random features
-  - Multi-layer perceptrons and backpropagation
+  -  Multi-layer perceptrons, hand-crafted architectures, and backpropagation
   - Attention mechanisms
 * Gradient methods
 ** Gradients for optimisation
@@ -221,6 +232,15 @@ If we know $P$, then we can calculate
 \param^* = \E_P[x]
 \]
 - How can we do this if we only have data $x_t \sim P$?
+*** Mean-squared error cost function
+\begin{tikzpicture}[domain=-1:2, range=-1:2]
+   \draw[dotted, color=gray] (-1.1,-2.1) grid (3.1,4.1);
+   \draw[->] (0,0) -- (2,0) node[right] {$\beta$};
+   \draw[->] (0,0) -- (0,4) node[above] {$\ell$};
+   \draw[color=red] plot (\x, {(\x-1)^2})  node[right] {$\mu = 1$};
+   \draw[color=blue] plot (\x, {(\x)^2})  node[right] {$\mu = 0$};
+\end{tikzpicture}
+Here we see a plot of $\ell(\mu, \beta) = (\beta - \mu)^2$.
 *** Stochastic gradient for mean estimation
 **** Sampling :B_theorem:
      :PROPERTIES:
@@ -312,13 +332,34 @@ The cost of each example
 &= \overbrace{\ind{y(x^\top \param) < 0}}^{\textrm{misclassified?}} \overbrace{[ - y (x^\top \param)]}^{\textrm{margin of error}}
 \end{align}
 where the *indicator function $\ind{A}$* is  1 when $A$ is true and $0$ otherwise.
+\begin{center}
+\begin{tikzpicture}[domain=-2:2, samples=200,range=-1:2]
+   \draw[dotted, color=gray] (-2.1,-2.1) grid (3.1,3.1);
+   \draw[->] (0,0) -- (2,0) node[right] {$f(x)$};
+   \draw[->] (0,0) -- (0,4) node[above] {$\ell$};
+   \draw[thick, color=red] plot (\x, {max(0, \x)}) node [right] {perceptron cost};
+   \draw[dashed, thick, color=blue] plot (\x, {\x >= 0)}) node [right] {classification cost};
+\end{tikzpicture}
+\end{center}
 
-#+BEAMER: \pause
+Here we see a plot of $\ell(\mu, \beta) = (\beta - \mu)^2$.
+*** Derivative of the perceptron cost function
+The total cost over the data is defined as
+\[
+L(D, \param) = \sum_{(x, y) \in D} \ell(x, y, \param)
+\]
+Taking the derivative, we have
+\[
+\nabla_\param L(D, \param) = \nabla_\param \sum_{(x, y) \in D} \ell(x, y, \beta)
+  = \sum_{(x, y) \in D} \nabla_\param \ell(x, y, \param)
+\]
+
+
 **** Reminder: The chain rule
 Let $z = g(y)$, $y = f(x)$ so that $z= g(f(x))$. Then $\frac{dz}{dx} = \frac{dz}{d\alert{y}}\frac{d\alert{y}}{dx}$
 
 #+BEAMER: \pause
-**** Derivative: Chain rule
+**** Applying the chain rule to calculate the gradient
 #+ATTR_BEAMER: :overlay <+->
 - $\nabla_\param \ell(x,y, \param) = - \ind{y(x^\top \param) < 0} \nabla_\param [y(x^\top \param)]$.
 - $\frac{\partial \param}{\partial{\param_i}} [y(x_t^\top \param)] = y x_{t,i}$ (gradient of Perceptron's output)
