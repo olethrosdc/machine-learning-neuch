@@ -37,39 +37,17 @@
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 * The Linear Model
-** Introduction
-*** Origins
-**** Gauss Leg                                                        :BMCOL:
-     :PROPERTIES:
-     :BEAMER_col: 0.5
-     :END:
-#+caption: Gauss: originator
-#+attr_latex: :width 50px
-[[../fig/gauss.jpg]]
-#+caption: Legendre: first publication
-#+attr_latex: :width 50px
-[[../fig/Legendre.jpg]]
-**** First application                                                :BMCOL:
-    :PROPERTIES:
-    :BEAMER_col: 0.5
-    :END:
-#+caption: Quetelet: populariser
-#+attr_latex: :width 50px
-[[../fig/quetelet.jpg]]
-#+caption: The orbit of Ceres
-[[../fig/ceres.gif]]
-
 ** Simple linear regression
 *** Simple linear regression
 **** Input and output
 - Data pairs $(x_t, y_t)$, $t = 1, \ldots, T$.
-- Input $x_t \in \Reals^n$
+- Input $x_t \in \Reals$
 - Output $y_t \in \Reals$.
 **** Modelling the conditional expectation $\E[y_t | x_t]$
-- Parameters $\param \in \Reals^n$
-- Function $f_\param : \Reals^n \to \Reals$, defined as
+- Parameters $\param_0, \param_1 \in \Reals$
+- Function $\pi_\param : \Reals \to \Reals$, defined as
 \[
-f_\param(x_t) = \param^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
+\pi_\param(x_t) = \param_0 + param_1 x_{t,i}
 \]
 *** Linear models
 \begin{tikzpicture}[domain=-1:3]
@@ -81,13 +59,13 @@ f_\param(x_t) = \param^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
    \draw[thick, color=red]   plot (\x, {1 - \x * 0})  node[right] {$\beta = (1,  0)$};
 \end{tikzpicture}
 \[
-f_\param(x) = \param^\top x = \sum_{i=1}^n \param_i x_{i}
+\pi_\param(x) = \param_0 + \param_1 x = [\param_0, \param_1] \begin{bmatrix}1\\x\end{bmatrix}
 \]
 
 *** Two views of the problem
 **** Learning as optimisation
-- Each value $f_\param(x)$ is a *prediction* about the value of $y$
-- We suffer a loss $\ell(y, f_\param(x))$ for every example $(x,y)$ that we see.
+- Each value $\pi_\param(x)$ is a *prediction* about the value of $y$
+- We suffer a loss $\ell(y, \pi_\param(x))$ for every example $(x,y)$ that we see.
 - We want to minimise the average loss over the data 
 - Ideally, we want to minimise the expected loss, but the distribution $P$ is unknown.
 **** Learning as inference
@@ -98,77 +76,68 @@ f_\param(x) = \param^\top x = \sum_{i=1}^n \param_i x_{i}
 *** Learning as Optimisation 
 Find the parameters $\param$ minimising squared error
 \[
-\min_\param \frac{1}{T} \sum_{t=1}^T \big[\underbrace{y_t - f_\param(x_t)}_{\textrm{residual}}\big]^2
+\min_\param \frac{1}{T} \sum_{t=1}^T \big[\underbrace{y_t - \pi_\param(x_t)}_{\textrm{residual}}\big]^2
 \]
-[[./src/Regression/
+[[../fig/linear_regression_fit.pdf]]
 
-*** Learning as inference
-Assume a Gaussian noise model:
+** History
+*** Origins
+**** Gauss Leg                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+#+caption: Gauss: originator
+#+attr_latex: :width 100px
+[[../fig/gauss.jpg]]
+**** First application                                                :BMCOL:
+    :PROPERTIES:
+    :BEAMER_col: 0.5
+    :END:
+#+caption: Legendre: first publication
+#+attr_latex: :width 100px
+[[../fig/Legendre.jpg]]
+*** The orbit of Ceres
+[[../fig/ceres.jpg]]
+
+
+
+*** Maximum likelihood inference
+*Idea: For data $D$, find parameters maximising $P_\beta(D)$*
+**** Gaussian noise model:
 \[
 y_t = f(x_t) + \epsilon_t,  \qquad \epsilon_t \sim \Normal(0, \sigma)
 \]
-This leads to the conditional density
+With conditional density
 \[
 p_\param(y_t| x_t) 
 \propto
-\exp(-[y_t - f_\param(x_t)]^2 / 2\sigma^2)
+\exp(-[y_t - \pi_\param(x_t)]^2 / 2\sigma^2)
 \]
-Maximising the log-likelihood is equivalent to minimising mean-squared error:
-\[
-\argmax_\param \sum \ln p_\param(y_t| x_t) = \argmin_\param \sum_t |y_t - f_\param(x_t)|^2
-\]
+**** Maximum likelihood inference
+\begin{align*}
+\argmax_\param \sum \ln p_\param(y_t| x_t) 
+&= \argmax_\param \sum_t \ln\left\{\exp\left(-[y_t - \pi_\param(x_t)]^2 / 2\sigma^2\right)\right\}\\
+&= \argmax_\param \sum_t -[y_t - \pi_\param(x_t)]^2 / 2\sigma^2\\
+&= \argmin_\param \sum_t |y_t - \pi_\param(x_t)|^2
+\end{align*}
+*** Coding break 
+- Show implementation
+- Fit and residuals
+- Multiple draws from the distribution
+- Fit on non-linear data?
+
 ** Multiple linear regression
-*** Simple linear regression
+*** Multiple linear regression
 **** Input and output
 - Data pairs $(x_t, y_t)$, $t = 1, \ldots, T$.
 - Input $x_t \in \Reals^n$
 - Output $y_t \in \Reals^m$.
 **** Modelling the conditional expectation $\E[y_t | x_t]$
 - Parameters $\param \in \Reals^{n \times m}$
-- Function $f_\param : \Reals^n \to \Reals^m$, defined as
+- Function $\pi_\param : \Reals^n \to \Reals^m$, defined as
 \[
-f_\param(x_t) = \param^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
+\pi_\paramy(x_t) = \param^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
 \]
-*** Linear models
-\begin{tikzpicture}[domain=-1:3]
-   \draw[dotted, color=gray] (-1.1,-1.1) grid (5.1,4.1);
-   \draw[->] (0,0) -- (4,0) node[right] {$x$};
-   \draw[->] (0,0) -- (0,4) node[above] {$y$};
-   \draw[thick, color=blue]   plot (\x, {0 + \x * 1})  node[right] {$\beta = (0, 1)$};
-   \draw[thick, color=magenta]   plot (\x, {1 - \x * 1/2})  node[right] {$\beta = (1, - 1/2)$};
-   \draw[thick, color=red]   plot (\x, {1 - \x * 0})  node[right] {$\beta = (1,  0)$};
-\end{tikzpicture}
-\[
-f_\param(x) = \param^\top x = \sum_{i=1}^n \param_i x_{i}
-\]
-
-* Regression libraries in Python
-** sklearn
-*** sklearn
-#+BEGIN_SRC python
-**** Fitting a model to data
-from sklearn.linear_model import LinearRegression
-model = LinearRegression().fit(X, Y) # use X as is
-**** Getting predicitons
-Z = model.predict(X)
-
-
-#+END_SRC python
-** statsmodels
-*** Statsmodels
-**** Fitting a model to data X, Y
-#+BEGIN_SRC python
-  import statsmodels.api as sm
-  Xa = sm.add_constant(X) # adds a constant factor to the data
-  model = sm.OLS(Y, Xa)
-  results = model.fit() 
-#+END_SRC
-**** Getting predictions
-The prediction is not just a point!
-#+BEGIN_SRC python
-  z = results.get_prediction(Xa[t])
-  z.predicted_mean # This is E[y|x]
-#+END_SRC
 
 * Optimisation algorithms
 ** Gradient Descent
@@ -188,10 +157,12 @@ The prediction is not just a point!
 - $\eta_n = \argmin_\eta f(\theta_n + \eta \nabla_\param)$: Line search.
 
 *** Gradient desecnt for squared error
+**** The cost function
+$L(\param, D) = \sum_{t=1}^T (y_t - \pi_\param(x_t))^2$
 **** Cost gradient
 Using the chain rule of differentiation:
 \begin{align*}
-\nabla_\param \ell(\param)
+\nabla_\param L(\param, D)
 &= \nabla \sum_{t=1}^T [y_t - \pi_\param(x_t)]^2
 \\
 &= \sum_{t=1}^T \nabla [y_t - \pi_\param(x_t)]^2
@@ -282,11 +253,49 @@ So we can use the left-pseudo inverse $\tilde{X}^{-1}$ to obtain
 \param = \tilde{X}^{-1} \by
 \]
 
+* Regression libraries in Python
+** sklearn
+*** sklearn
+**** Fitting a model to data
+#+BEGIN_SRC python
+  from sklearn.linear_model import LinearRegression
+  model = LinearRegression().fit(X, Y) 
+#+END_SRC
+
+
+**** Getting predictions
+We can get predictions for all inputs as an array
+#+BEGIN_SRC python
+Z = model.predict(X)
+#+END_SRC
+
+
+** statsmodels
+*** Statsmodels
+**** Fitting a model to data X, Y
+#+BEGIN_SRC python
+  import statsmodels.api as sm
+  Xa = sm.add_constant(X) # adds a constant factor to the data
+  model = sm.OLS(Y, Xa)
+  results = model.fit() 
+#+END_SRC
+**** Getting predictions
+The prediction is not just a point!
+#+BEGIN_SRC python
+  z = results.get_prediction(Xa[t])
+  z.predicted_mean # This is E[y|x]
+#+END_SRC
+
+
 * Problems
 ** Interpretation Problem parameters
 *** The coefficients
 - $\param_i$ tells us how much $y$ is correlated with $x_{t,i}$
 - However, multiple correlations might be evident.
+- Correlation is not causation
+*** Correlation is not causation
+[[../fig/pirates-temp.png]]
+
 ** Exercises
 *** Linear regression exercises
 - Exercises 8, 13 from ISLP
