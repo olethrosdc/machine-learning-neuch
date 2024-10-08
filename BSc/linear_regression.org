@@ -37,6 +37,28 @@
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 * The Linear Model
+** Introduction
+*** Origins
+**** Gauss Leg                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+#+caption: Gauss: originator
+#+attr_latex: :width 50px
+[[../fig/gauss.jpg]]
+#+caption: Legendre: first publication
+#+attr_latex: :width 50px
+[[../fig/Legendre.jpg]]
+**** First application                                                :BMCOL:
+    :PROPERTIES:
+    :BEAMER_col: 0.5
+    :END:
+#+caption: Quetelet: populariser
+#+attr_latex: :width 50px
+[[../fig/quetelet.jpg]]
+#+caption: The orbit of Ceres
+[[../fig/ceres.gif]]
+
 ** Simple linear regression
 *** Simple linear regression
 **** Input and output
@@ -62,7 +84,7 @@ f_\param(x_t) = \param^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
 f_\param(x) = \param^\top x = \sum_{i=1}^n \param_i x_{i}
 \]
 
-***  Two views of the problem
+*** Two views of the problem
 **** Learning as optimisation
 - Each value $f_\param(x)$ is a *prediction* about the value of $y$
 - We suffer a loss $\ell(y, f_\param(x))$ for every example $(x,y)$ that we see.
@@ -74,10 +96,12 @@ f_\param(x) = \param^\top x = \sum_{i=1}^n \param_i x_{i}
 - Ideally, we want to find the true conditional distribution $P(y | x)$.
 
 *** Learning as Optimisation 
-Miniminise mean-squared error.
+Find the parameters $\param$ minimising squared error
 \[
-\min_\param \sum_{t=1}^T [y_t - f_\param(x_t)]^2
+\min_\param \frac{1}{T} \sum_{t=1}^T \big[\underbrace{y_t - f_\param(x_t)}_{\textrm{residual}}\big]^2
 \]
+[[./src/Regression/
+
 *** Learning as inference
 Assume a Gaussian noise model:
 \[
@@ -145,7 +169,6 @@ The prediction is not just a point!
   z = results.get_prediction(Xa[t])
   z.predicted_mean # This is E[y|x]
 #+END_SRC
-
 
 * Optimisation algorithms
 ** Gradient Descent
@@ -259,8 +282,8 @@ So we can use the left-pseudo inverse $\tilde{X}^{-1}$ to obtain
 \param = \tilde{X}^{-1} \by
 \]
 
-* Interpretation of the fit
-** Problem parameters
+* Problems
+** Interpretation Problem parameters
 *** The coefficients
 - $\param_i$ tells us how much $y$ is correlated with $x_{t,i}$
 - However, multiple correlations might be evident.
