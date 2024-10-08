@@ -62,7 +62,7 @@ learning.
 |      1 | 09.20 | Introduction                      | Mean estimation, kNN, Train/Test                 | nympy, pandas       | Mixed   |
 |      2 | 09.27 | The Perceptron and Generalisation | The Perceptron, Generalisation, Simulation       | pandas, scikitlearn | Lecture |
 |      3 | 10.04 | Model Comparison                  | Cross-Validation, Bootstrapping, Model Selection | scikit learn        | Lab (1) |
-|      4 | 10.11 | Regression                        | Linear regression, SGD                           |                     | Mix     |
+|      4 | 10.11 | Regression, Neural Networks       | Linear regression, SGD                           |                     | Mix     |
 |      5 | 10.18 | Multi-Layer Perceptrons           | Backpropagation, Softmax, RELU                   |                     | Mix     |
 |      6 | 10.25 | Generative Models                 | Beta-Bernoulli, Naive Bayes and Beyond           |                     | Lecture |
 |      7 | 11.01 | Bayes Nets                        |                                                  |                     | Mix     |
