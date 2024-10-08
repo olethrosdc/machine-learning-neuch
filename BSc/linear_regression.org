@@ -47,7 +47,7 @@
 - Parameters $\param_0, \param_1 \in \Reals$
 - Function $\pi_\param : \Reals \to \Reals$, defined as
 \[
-\pi_\param(x_t) = \param_0 + param_1 x_{t,i}
+\pi_\param(x_t) = \param_0 + \param_1 x_{t,i}
 \]
 *** Linear models
 \begin{tikzpicture}[domain=-1:3]
