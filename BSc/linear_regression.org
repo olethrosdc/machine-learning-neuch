@@ -289,10 +289,13 @@ The prediction is not just a point!
 
 * Problems
 ** Interpretation Problem parameters
-*** The coefficients
+*** Pitfalls
 - $\param_i$ tells us how much $y$ is correlated with $x_{t,i}$
 - However, multiple correlations might be evident.
+- Some features may be irrelevant
+- The relationship may not be linear
 - Correlation is not causation
+
 *** Correlation is not causation
 [[../fig/pirates-temp.png]]
 
