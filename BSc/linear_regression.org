@@ -35,6 +35,7 @@
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
 #+OPTIONS:   H:3
 * The Linear Model
 ** Simple linear regression
@@ -47,7 +48,7 @@
 - Parameters $\param_0, \param_1 \in \Reals$
 - Function $\pi_\param : \Reals \to \Reals$, defined as
 \[
-\pi_\param(x_t) = \param_0 + \param_1 x_{t,i}
+\pi_\param(x_t) = \param_0 + \param_1 x_{t}
 \]
 *** Linear models
 \begin{tikzpicture}[domain=-1:3]
@@ -115,6 +116,10 @@ p_\param(y_t| x_t)
 \]
 **** Maximum likelihood inference
 \begin{align*}
+\argmax_\param \prod p_\param(y_1, \ldots, y_t| x_1, \ldots, x_T) 
+&=
+\argmax_\param \ln \prod_t p_\param(y_t| x_t) 
+&=
 \argmax_\param \sum \ln p_\param(y_t| x_t) 
 &= \argmax_\param \sum_t \ln\left\{\exp\left(-[y_t - \pi_\param(x_t)]^2 / 2\sigma^2\right)\right\}\\
 &= \argmax_\param \sum_t -[y_t - \pi_\param(x_t)]^2 / 2\sigma^2\\
@@ -136,7 +141,7 @@ p_\param(y_t| x_t)
 - Parameters $\param \in \Reals^{n \times m}$
 - Function $\pi_\param : \Reals^n \to \Reals^m$, defined as
 \[
-\pi_\paramy(x_t) = \param^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
+\pi_\param(x_t) = \param^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
 \]
 
 * Optimisation algorithms
@@ -144,13 +149,15 @@ p_\param(y_t| x_t)
 *** Gradient descent algorithm
 **** Minimising a function
 \[
-\min_\param f(\param) \geq f(\param') \forall \param',
+\min_\param f(\param) \leq f(\param') \forall \param',
 \qquad \param^* = \argmin_\param f(\param) \Rightarrow f(\param^*) = \min_\param f(\param)
 \]
+#+BEAMER: \pause
 **** Gradient descent for minimisation
 - Input $\param_0$
 - For $n = 0, \ldots, N$:
 - $\param_{n+1} = \param_n - \eta_n \nabla_\param f(\param_n)$
+#+BEAMER: \pause
 **** Step-size $\eta_n$
 - $\eta_n$ fixed: for online learning
 - $\eta_n = c/[c + n]$ for asymptotic convergence
@@ -159,20 +166,25 @@ p_\param(y_t| x_t)
 *** Gradient desecnt for squared error
 **** The cost function
 $L(\param, D) = \sum_{t=1}^T (y_t - \pi_\param(x_t))^2$
+#+BEAMER: \pause
 **** Cost gradient
 Using the chain rule of differentiation:
 \begin{align*}
 \nabla_\param L(\param, D)
 &= \nabla \sum_{t=1}^T [y_t - \pi_\param(x_t)]^2
+= \sum_{t=1}^T \nabla [y_t - \pi_\param(x_t)]^2
 \\
-&= \sum_{t=1}^T \nabla [y_t - \pi_\param(x_t)]^2
-\\
-&= \sum_{t=1}^T 2 [y_t - \pi_\param(x_t)] [- \nabla \pi_\param(x_t)]^2
+&= \sum_{t=1}^T 2 [y_t - \pi_\param(x_t)] [- \nabla \pi_\param(x_t)]
 \end{align*}
-**** Parameter gradient
-For a linear regressor:
+#+BEAMER: \pause
+**** Parameter gradient for linear regression
 \[
-\frac{\partial}{\partial \param_j} \pi_\param(x_t) = x_{t,j}.
+\frac{\partial}{\partial \param_j} \pi_\param(x_t) 
+=
+\frac{\partial}{\partial \param_j} \sum_{i=1}^n \param_i x_t_i
+=
+\sum_{i=1}^n \frac{\partial}{\partial \param_j}  \param_i x_t_i
+= x_{t,j}.
 \]
 
 *** Stochastic gradient descent algorithm
