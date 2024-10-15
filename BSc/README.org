@@ -30,9 +30,9 @@ The course focuses on fundamental modelling problems and general machine learnin
 |      1 | 09.17 | Introduction                           | Mean estimation, kNN, Train/Test                                 | nympy, pandas       | Mixed   |
 |      2 | 09.24 | Generalisation, kNN, Decision problems | kNN, Generalisation, Decision Problems                           | pandas, scikitlearn | Mixed   |
 |      3 | 10.01 | The Perceptron, Model Comparison       | The Perceptron, Cross-Validation, Bootstrapping, Model Selection | scikit learn        | Mixed   |
-|      4 | 10.08 | Regression, Simulation                 | Linear regression, SGD                                           |                     | Mixed   |
-|      5 | 10.15 | Regression lab                         | Lab, Feature Selection for Regression                            |                     | Lab     |
-|      6 | 10.22 | Probabilistic models: ML               | Maximum Likelihood, SGD for Linear Regression                    |                     | Lecture |
+|      4 | 10.08 | Regression                             | Linear regression, SGD                                           |                     | Mixed   |
+|      5 | 10.15 | Regression lab, Simulation, Project    | Lab, Feature Selection for Regression                            |                     | Lab     |
+|      6 | 10.22 | Project Day                            | Maximum Likelihood, SGD for Linear Regression                    |                     | Lecture |
 |      7 | 10.29 | Generative Models                      | Beta-Bernoulli, Naive Bayes and Beyond                           |                     | Lab     |
 |      8 | 11.05 | Multi-Layer Perceptrons                | Backpropagation, Softmax, RELU                                   |                     | Mix     |
 |      9 | 11.12 | MLP2: Image Lab                        | Convolutional Networks, Image applications                       |                     | Lab     |
