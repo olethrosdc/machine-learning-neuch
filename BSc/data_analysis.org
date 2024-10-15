@@ -1,4 +1,4 @@
-#+TITLE: Data Science
+#+TITLE: Data Analysis Methodology: Pipelines and Simulation
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \include{preamble}
@@ -8,23 +8,26 @@
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
-#+OPTIONS:   H:3
+#+OPTIONS:   H:2
 #+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}}
 
 
 * The scientific question
-** Problem definition
-***
-** Data sources requirements
-*** Use existing data
-**** Data repositories
-- Can be used directly
-- May not be useful for the question
-- Multiple sources may be needed.
-
-**** Web crawling
-*** Collect observational data
-*** Collect experimental data
+* Project
+** Project components
+*** Scientific question
+- Formulate a simple scientific question that can be answered with data
+- Describe the analysis that you want to perform
+*** Data generation
+- Create a simple simulator to generate data according to various hypotheses
+- Be sure to be able to generate data for any type of hypothesis
+*** Pipeline development
+- Develop a machine learning pipeline that takes the generated data and performs the analysis
+*** Data collection (optional)
+- If real-world data is available, collect it
+*** Data analysis
+- Test your pipeline on generated and real data.
+  
 * Variable selection
 
 * Simulation
