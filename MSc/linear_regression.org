@@ -35,6 +35,7 @@
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
 #+OPTIONS:   H:3
 * The Linear Model
 ** Simple linear regression
@@ -47,7 +48,7 @@
 - Parameters $\param_0, \param_1 \in \Reals$
 - Function $\pi_\param : \Reals \to \Reals$, defined as
 \[
-\pi_\param(x_t) = \param_0 + \param_1 x_{t,i}
+\pi_\param(x_t) = \param_0 + \param_1 x_{t}
 \]
 *** Linear models
 \begin{tikzpicture}[domain=-1:3]
@@ -86,15 +87,15 @@ Find the parameters $\param$ minimising squared error
      :PROPERTIES:
      :BEAMER_col: 0.5
      :END:
-#+caption: Gauss: originator
-#+attr_latex: :width 100px
+     #+caption: Gauss: originator
+#+attr_latex: :width 100pt
 [[../fig/gauss.jpg]]
 **** First application                                                :BMCOL:
     :PROPERTIES:
     :BEAMER_col: 0.5
     :END:
 #+caption: Legendre: first publication
-#+attr_latex: :width 100px
+#+attr_latex: :width 100pt
 [[../fig/Legendre.jpg]]
 *** The orbit of Ceres
 [[../fig/ceres.jpg]]
@@ -102,7 +103,6 @@ Find the parameters $\param$ minimising squared error
 
 
 *** Maximum likelihood inference
-*Idea: For data $D$, find parameters maximising $P_\beta(D)$*
 **** Gaussian noise model:
 \[
 y_t = f(x_t) + \epsilon_t,  \qquad \epsilon_t \sim \Normal(0, \sigma)
@@ -114,11 +114,18 @@ p_\param(y_t| x_t)
 \exp(-[y_t - \pi_\param(x_t)]^2 / 2\sigma^2)
 \]
 **** Maximum likelihood inference
+*Idea: For data $D$, find parameters maximising $P_\beta(D)$*
 \begin{align*}
-\argmax_\param \sum \ln p_\param(y_t| x_t) 
+\argmax_\param P_\beta(D) 
+&= 
+\argmax_\param p_\param(y_1, \ldots, y_t| x_1, \ldots, x_T) 
+=
+\argmax_\param \ln \prod_t p_\param(y_t| x_t) \\
+&=
+\argmax_\param \sum \ln p_\param(y_t| x_t) \\
 &= \argmax_\param \sum_t \ln\left\{\exp\left(-[y_t - \pi_\param(x_t)]^2 / 2\sigma^2\right)\right\}\\
-&= \argmax_\param \sum_t -[y_t - \pi_\param(x_t)]^2 / 2\sigma^2\\
-&= \argmin_\param \sum_t |y_t - \pi_\param(x_t)|^2
+&= \argmax_\param \sum_t -[y_t - \pi_\param(x_t)]^2 / 2\sigma^2
+= \argmin_\param \sum_t |y_t - \pi_\param(x_t)|^2
 \end{align*}
 *** Coding break 
 - Show implementation
@@ -136,7 +143,7 @@ p_\param(y_t| x_t)
 - Parameters $\param \in \Reals^{n \times m}$
 - Function $\pi_\param : \Reals^n \to \Reals^m$, defined as
 \[
-\pi_\paramy(x_t) = \param^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
+\pi_\param(x_t) = \param^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
 \]
 
 * Optimisation algorithms
@@ -144,13 +151,15 @@ p_\param(y_t| x_t)
 *** Gradient descent algorithm
 **** Minimising a function
 \[
-\min_\param f(\param) \geq f(\param') \forall \param',
+\min_\param f(\param) \leq f(\param') \forall \param',
 \qquad \param^* = \argmin_\param f(\param) \Rightarrow f(\param^*) = \min_\param f(\param)
 \]
+#+BEAMER: \pause
 **** Gradient descent for minimisation
 - Input $\param_0$
 - For $n = 0, \ldots, N$:
 - $\param_{n+1} = \param_n - \eta_n \nabla_\param f(\param_n)$
+#+BEAMER: \pause
 **** Step-size $\eta_n$
 - $\eta_n$ fixed: for online learning
 - $\eta_n = c/[c + n]$ for asymptotic convergence
@@ -158,21 +167,30 @@ p_\param(y_t| x_t)
 
 *** Gradient desecnt for squared error
 **** The cost function
-$L(\param, D) = \sum_{t=1}^T (y_t - \pi_\param(x_t))^2$
+$L(\param, D) = \sum_{t=1}^T (y_t - \pi_\param(x_t))^2 =  \sum_{t=1}^T \epsilon_t^2$, with $\epsilon_t \defn y_t - \pi_\param(x_t)$.
+#+BEAMER: \pause
 **** Cost gradient
-Using the chain rule of differentiation:
+Using the chain rule of differentiation, $\nabla_\beta f(\epsilon) = \nabla_\epsilon f(\epsilon) \nabla_\beta \epsilon$.
 \begin{align*}
 \nabla_\param L(\param, D)
-&= \nabla \sum_{t=1}^T [y_t - \pi_\param(x_t)]^2
+&= \nabla_\param \sum_{t=1}^T \epsilon_t^2
+= \sum_{t=1}^T \nabla_\param \epsilon_t^2
+= \sum_{t=1}^T \nabla_{\epsilon_t} \epsilon_t^2 \nabla_\beta \epsilon
 \\
-&= \sum_{t=1}^T \nabla [y_t - \pi_\param(x_t)]^2
-\\
-&= \sum_{t=1}^T 2 [y_t - \pi_\param(x_t)] [- \nabla \pi_\param(x_t)]^2
+&
+= \sum_{t=1}^T 2 \epsilon_t \nabla_\param[y_t -  \pi_\param(x_t)]
+= \sum_{t=1}^T 2 [y_t - \pi_\param(x_t)] [- \nabla_\beta \pi_\param(x_t)]
 \end{align*}
-**** Parameter gradient
-For a linear regressor:
+#+BEAMER: \pause
+**** Parameter gradient for linear regression
+Remember $\nabla_\beta f = (\partial / \partial_1 f, \ldots, \partial / \partial_n f)$
 \[
-\frac{\partial}{\partial \param_j} \pi_\param(x_t) = x_{t,j}.
+\frac{\partial}{\partial \param_j} \pi_\param(x_t) 
+=
+\frac{\partial}{\partial \param_j} \sum_{i=1}^n \param_i x_{t,i}
+=
+\sum_{i=1}^n \frac{\partial}{\partial \param_j}  \param_i x_{t,i}
+= x_{t,j}.
 \]
 
 *** Stochastic gradient descent algorithm
@@ -194,26 +212,6 @@ f(\param) = \int_X dP(x) g(x, \param).
 \end{align*}
 
 ** Least-Squares
-*** Some matrix algebra
-**** The identity matrix $I \in \Reals^{n \times n}$
-- For this matrix, $I_{i,i} = 1$ and $I_{i,j} = 0$ when $j \neq i$.
-- $Ix = x$ and $IA = A$.
-
-**** The inverse of a matrix $A \in \Reals^{n \times n}$
-$A^{-1}$ is called the inverse of $A$ if
-- $A A^{-1} = I$.
-- or equivalently $A^{-1} A = I$.
-
-**** The pseudo-inverse of a matrix $A \in \Reals^{n \times m}$
-- $\tilde{A}^{-1}$ is called the *left pseudoinverse* of $A$ if $\tilde{A}^{-1} A = I$.
-\[
-\tilde{A}^{-1} = (A^\top A)^{-1} A^\top, \qquad n > m
-\]
-- $\tilde{A}^{-1}$ is called the *right pseudoinverse* of $A$ if $A \tilde{A}^{-1} = I$.
-\[
-\tilde{A}^{-1} =  A^\top (AA^\top)^{-1}, \qquad m > n
-\]
-
 *** Analytical Least-Squares Solution
 We need to solve the following equations for $A$:
 \begin{equation*}
@@ -246,12 +244,54 @@ x_T^\top
 \end{equation*}
 Resulting in 
 \[
-\by = X \param
+\by = X \param.
 \]
-So we can use the left-pseudo inverse $\tilde{X}^{-1}$ to obtain
+How can we get $\param?$
+
+*** Finding the $\param$
+We now have a linear equation,
 \[
-\param = \tilde{X}^{-1} \by
+\by = X \param.
 \]
+We want to solve for $\param$.
+If $X$ had an inverse $X^{-1}$, we could obtain 
+\[
+X^{-1} \by = X^{-1}  X \param = I \param = \param.
+\]
+But $X^{-1}$ *does not exist*.
+
+**** Least-squares solution
+The *left-pseudo inverse* $\tilde{X}^{-1} \defn (X^\top X)^{-1} X^\top$ can be used to obtain
+\[
+\param = \tilde{X}^{-1} \by,
+\]
+This follows as:
+\begin{align*}
+\by &= X \param \\
+ \tilde{X}^{-1} \by &=  \tilde{X}^{-1} X \param\\
+ \tilde{X}^{-1} \by &= \underbrace{(X^\top X)^{-1}}_{A^{-1}} \underbrace{X^\top X}_{A} \param.
+\end{align*}
+
+*** Some matrix algebra reminders
+**** The identity matrix $I \in \Reals^{n \times n}$
+- For this matrix, $I_{i,i} = 1$ and $I_{i,j} = 0$ when $j \neq i$.
+- $Ix = x$ and $IA = A$.
+
+**** The inverse of a matrix $A \in \Reals^{n \times n}$
+$A^{-1}$ is called the inverse of $A$ if
+- $A A^{-1} = I$.
+- or equivalently $A^{-1} A = I$.
+
+**** The pseudo-inverse of a matrix $A \in \Reals^{n \times m}$
+- $\tilde{A}^{-1}$ is called the *left pseudoinverse* of $A$ if $\tilde{A}^{-1} A = I$.
+\[
+\tilde{A}^{-1} = (A^\top A)^{-1} A^\top, \qquad n > m
+\]
+- $\tilde{A}^{-1}$ is called the *right pseudoinverse* of $A$ if $A \tilde{A}^{-1} = I$.
+\[
+\tilde{A}^{-1} =  A^\top (AA^\top)^{-1}, \qquad m > n
+\]
+
 
 * Regression libraries in Python
 ** sklearn
