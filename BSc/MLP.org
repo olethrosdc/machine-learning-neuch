@@ -65,7 +65,7 @@
       \node[RV] at (0,-1) (w1) {$w_1$};
       \node[RV] at (1,-1) (w2) {$w_2$};
       \node[RV] at (0,-3) (v1) {$v_1$};
-      \node[RV] at (1,-3) (v2) {$\hv_2$};
+      \node[RV] at (1,-3) (v2) {$v_2$};
       \node[RV] at (0,-4) (y1) {$\hy_1$};
       \node[RV] at (1,-4) (y2) {$\hy_2$};
       \draw[->] (x1) to (w1);
