@@ -9,7 +9,12 @@
 #+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
 
 * Features and layers
-*** Perceptron/linear regressionx
+*** Perceptron vs linear regression
+**** Network architecture                                             :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+\begin{center}
 \begin{tikzpicture}
       \node[RV] at (0,0) (x1) {$x_1$};
       \node[RV] at (1,0) (x2) {$x_2$};
@@ -17,21 +22,43 @@
       \draw[->] (x1) to (y1);
       \draw[->] (x2) to (y1);
 \end{tikzpicture}
+\end{center}
+- Network out
 \[
 \hy = \beta_0 + \beta_1 x_1 + \beta_2 x_2
 \]
-**** Perceptron cost:
-\[
-\loss  = \ind{y \neq \hy}|\hy|
-\]
-**** Linear regression cost:
-\[
-\loss = (\hy - y)^2
-\]
-**** Chain rule idea:
+- Chain rule
 \[
 \nabla_\beta \loss = \nabla_{\hy} \loss \nabla_\beta \hy
 \]
+- Network gradient
+\[
+\nabla_\beta \hy = (x_1, x_2)
+\]
+**** Cost functions:                                                  :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+***** Cost functions
+The only difference are the cost functions
+
+- Perceptron
+\[
+\loss  = \ind{y \neq \hy}|\hy|
+\]
+with
+\[
+\nabla \loss  = \ind{y \neq \hy}|\hy|
+\]
+- Linear regression
+\[
+\loss = (\hy - y)^2,
+\]
+with
+\[
+\nabla_{\hy} \loss = 2(\hy - y).
+\]
+
 *** Layering and features
 **** Layering and features                                            :BMCOL:
      :PROPERTIES:
@@ -60,25 +87,33 @@
 \begin{tikzpicture}
       \node[RV] at (0,0) (x1) {$x_1$};
       \node[RV] at (1,0) (x2) {$x_2$};
-      \node[RV] at (0,-2) (z1) {$z_1$};
-      \node[RV] at (1,-2) (z2) {$z_2$};
+      \node[draw] at (4,0) {Input layer};
       \node[RV] at (0,-1) (w1) {$w_1$};
       \node[RV] at (1,-1) (w2) {$w_2$};
+      \node[draw] at (4,-1) {Linear layer};
+      \node[RV] at (0,-2) (z1) {$z_1$};
+      \node[RV] at (1,-2) (z2) {$z_2$};
+      \node[draw] at (4,-2) {Sigmoid layer};
       \node[RV] at (0,-3) (v1) {$v_1$};
       \node[RV] at (1,-3) (v2) {$v_2$};
+      \node[draw] at (4,-3) {Linear layer};
       \node[RV] at (0,-4) (y1) {$\hy_1$};
       \node[RV] at (1,-4) (y2) {$\hy_2$};
+      \node[draw] at (4,-4) {Softmax layer};
       \draw[->] (x1) to (w1);
       \draw[->] (x2) to (w1);
       \draw[->] (x1) to (w2);
       \draw[->] (x2) to (w2);
       \draw[->] (w1) to (z1);
       \draw[->] (w2) to (z2);
-      \draw[->] (w2) to (z2);
       \draw[->] (z1) to (v1);
-      \draw[->] (z2) to (v1);
       \draw[->] (z1) to (v2);
+      \draw[->] (z2) to (v1);
       \draw[->] (z2) to (v2);
+      \draw[->] (v1) to (y1);
+      \draw[->] (v1) to (y2);
+      \draw[->] (v2) to (y1);
+      \draw[->] (v2) to (y2);
 \end{tikzpicture}
 *** Linear layers
 **** Example: Linear regression with $n$ inputs, $m$ outputs.
@@ -113,14 +148,30 @@ Now we can interpret $\hy = P_\vparam(y = 1 | x)$.
 **** Example: Multivariate logistic regression with $m$ classes.
 - Input: Features $\bx \in \Reals^n$
 - Middle: Fully-connected Linear activation layer $\bz = \mparam \bx$.
-- Output: $\hby \in \Reals^m$
-  
-**** Softmax output layer
-We want to translate the real-valued $z_i$ into probabilities:
-\[
-\hy_i = \frac{\exp(z_i)}{\sum_j \exp(z_j)}.
-\]
-Now we can use $P_\mparam(y = i | \bx) = \hy_i$
+- Output: S\hy_i \defn P_\mparam(y = i | \bx)$
+**** Figure                                                           :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+\begin{tikzpicture}
+      \node[RV] at (0,0) (x1) {$x_1$};
+      \node[RV] at (1,0) (x2) {$x_2$};
+      \node[draw] at (4,0) {Input layer};
+      \node[RV] at (0,-1) (z1) {$z_1$};
+      \node[RV] at (1,-1) (z2) {$z_2$};
+      \node[draw] at (4,-1) {Linear layer};
+      \node[RV] at (0,-2) (y1) {$\hy_1$};
+      \node[RV] at (1,-2) (y2) {$\hy_2$};
+      \node[draw] at (4,-2) {Softmax layer};
+      \draw[->] (x1) to (z1);
+      \draw[->] (x2) to (z1);
+      \draw[->] (x1) to (z2);
+      \draw[->] (x2) to (z2);
+      \draw[->] (z1) to (y1);
+      \draw[->] (z1) to (y2);
+      \draw[->] (z2) to (y1);
+      \draw[->] (z2) to (y2);
+\end{tikzpicture}
 
 
 * Algorithms
