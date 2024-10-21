@@ -3,8 +3,8 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{isomath}
-\usepackage{fontawesome}
 \usepackage{algorithmic}
+\usepackage{fontawesome}
 \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
 \newcommand \Var {\mathop{\mbox{\ensuremath{\mathbb{V}}}}\nolimits}
 \newcommand \Bias {\mathop{\mbox{\ensuremath{\mathbb{B}}}}\nolimits}
@@ -14,32 +14,41 @@
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\sgn}{sgn}
 \newcommand \defn {\mathrel{\triangleq}}
+\newcommand \loss {L}
+\newcommand \cost {\ell}
+\newcommand \util {U}
+\newcommand \rewrad {r}
 \newcommand \Reals {\mathbb{R}}
 \newcommand \Naturals {\mathbb{N}}
 \newcommand \Param {\mathcal{B}}
 \newcommand \param {\beta}
+\newcommand \pol {\pi}
+\newcommand \Pols {\Pi}
 \newcommand \vparam {\vectorsym{\beta}}
 \newcommand \mparam {\matrixsym{B}}
 \newcommand \CX {\mathcal{X}}
-\newcommand \CY {\mathcal{Y}}
 \newcommand \CA {\mathcal{A}}
-\newcommand \CD {\mathcal{D}}
+\newcommand \CY {\mathcal{Y}}
 \newcommand \bW {\matrixsym{W}}
 \newcommand \bw {\vectorsym{w}}
 \newcommand \wi {\vectorsym{w}_i}
 \newcommand \wij {w_{i,j}}
-\newcommand \pol {\pi}
-\newcommand \Pols {\Pi}
 \newcommand \bA {\matrixsym{A}}
 \newcommand \ai {\vectorsym{a}_i}
 \newcommand \aij {a_{i,j}}
+\newcommand \by {\vectorsym{y}}
+\newcommand \hby {\vectorsym{\hat{y}}}
+\newcommand \hy {\hat{y}}
+\newcommand \bz {\vectorsym{z}}
 \newcommand \bx {\vectorsym{x}}
 \newcommand \bX {\matrixsym{X}}
 \newcommand \bel {\beta}
 \newcommand \Ber {\textrm{Bernoulli}}
 \newcommand \Beta {\textrm{Beta}}
 \newcommand \Normal {\textrm{Normal}}
+\usetikzlibrary{shapes.geometric}
 \tikzstyle{utility}=[diamond,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=8mm]
 \tikzstyle{select}=[rectangle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
 \tikzstyle{hidden}=[dashed,draw=black,fill=red!10]
 \tikzstyle{RV}=[circle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
+
