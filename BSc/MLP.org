@@ -478,6 +478,10 @@ clf.predict(X_test)
 
 **** Regression
 #+BEGIN_SRC python :exports code
-from sklearn.neural_network import MLPClassifier
-clf = MLPClassifier(hidden_layer_sizes=(5, 2))
+from sklearn.neural_network import MLPRegressor
+model = MLPRegressor(hidden_layer_sizes=(5, 2))
 #+END_SRC
+** PyTorch
+** TensorFlow
+*** TensorFlow
+This is another library, no need to use this for this course
