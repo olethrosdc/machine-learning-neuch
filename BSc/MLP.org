@@ -7,7 +7,7 @@
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 #+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
-
+#+name: setup-minted
 * Features and layers
 *** Perceptron vs linear regression
 **** Network architecture                                             :BMCOL:
@@ -23,7 +23,8 @@
       \draw[->] (x2) to (y1);
 \end{tikzpicture}
 \end{center}
-- Network out
+#+ATTR_BEAMER: :overlay <+->
+- Network output
 \[
 \hy = \beta_0 + \beta_1 x_1 + \beta_2 x_2
 \]
@@ -41,15 +42,15 @@
      :END:
 ***** Cost functions
 The only difference are the cost functions
-
 - Perceptron
 \[
-\loss  = \ind{y \neq \hy}|\hy|
+\loss  = - \ind{y \neq \hy}\hy
 \]
 with
 \[
-\nabla \loss  = \ind{y \neq \hy}|\hy|
+\nabla \loss  = - \ind{y \neq \hy} y x
 \]
+
 - Linear regression
 \[
 \loss = (\hy - y)^2,
@@ -238,6 +239,7 @@ where $\mparam = [\vparam_i]_{i=1}^m$, $\param_{i,j} \sim \Normal(0,1)$
 \frac{1}{T} \sum_{t=1}^T \nabla_\vparam \cost(x_t, y_t, \vparam).
 \]
 - However $\cost(x_t, y_t, \vparam)$ is a complex non-linear function of $\vparam$.
+- We need many steps to calculate $\cost$. How can we then do it?
 *** The chain rule of differentiation
 #+ATTR_LATEX: :width 150px
 [[../fig/liebniz.jpeg]]
@@ -252,6 +254,7 @@ where $\mparam = [\vparam_i]_{i=1}^m$, $\param_{i,j} \sim \Normal(0,1)$
 [[../fig/werbos.jpg]]
 [1982] Werbos
 *** Backpropagation given a name
+1986: Learning representations by back-propagating errors.
 **** Rumel                                                            :BMCOL:
      :PROPERTIES:
      :BEAMER_col: 0.3
@@ -273,47 +276,45 @@ Hinton
 #+ATTR_LATEX: :width 100px
 [[../fig/williams.jpg]]
 Williams
-*** Back-propagation for linear regression
+*** Elementary back-propagation: linear regression
 \begin{center}
 \begin{tikzpicture}
-      \node[RV] at (0,0) (x) {$\bx$};
-      \node[RV] at (2,0) (hy) {$\hy$};
-      \node[RV] at (1,1) (w) {$\vparam$};
-      \node[utility] at (4,0) (c) {$\cost$};
-      \node[RV] at (6,0) (y) {$y$};
+      \node[RV] at (0,0) (x) {\alert<1>{$\bx$}};
+      \node[RV] at (1,1) (w) {\alert<1>{$\vparam$}};
+      \node[RV] at (2,0) (hy) {\alert<2>{$\hy$}};
+      \node[utility] at (4,0) (c) {\alert<3>{$\cost$}};
+      \node[RV] at (6,0) (y) {\alert<1,2>{$y$}};
       \draw[->] (x) to (hy);
       \draw[->] (w) to (hy);
       \draw[->] (hy) to (c);
       \draw[->] (y) to (c);
-      \draw [red, ->] (c) to [bend right=45] node [above]  {$\nabla_f(\cost)$} (hy);
-      \draw [red, ->] (hy) to [bend right=45] node [above]  {$\nabla_\vparam(\hy)$} (w);
+	  \draw [blue, ->] (c) to [bend right=45] node [above]  {\alert<4>{$\nabla_f(\hy)$}} (hy);
+      \draw [blue, ->] (hy) to [bend right=45] node [above]  {\alert<5>{$\nabla_\vparam(\hy)$}} (w);
 \end{tikzpicture}
 \end{center}
-#+ATTR_BEAMER: :overlay <+->
 - $f : X \to Y$, $\cost: Y \times Y \to \Reals$, chain rule: $\nabla_\vparam \cost = \nabla_\vparam f \nabla_{\hy} \cost$
-- Forward: 
+- *Forward*: follow the arrows to calculate *variables*
 \[
-f(\vparam, x) = \sum_{i=1}^n \param_i x_i, \qquad\cost(\hy, y) = (\hy - y)^2
+\alert<2>{\hy} \defn f(\alert<1>{\vparam, x}) = \sum_{i=1}^n \alert<1>{\param_i x_i}, \qquad\alert<3>{\cost}(\hy, y) = (\hy - y)^2
 \]
 #+BEAMER: \pause
-- Backward:
+#+BEAMER: \pause
+#+BEAMER: \pause
+- *Backward*: return to calculate the *gradients*
 \begin{align}
 \nabla_\vparam \ell(\hy, y) 
 &=
-\nabla_{\vparam} f(\vparam, \bx) \times \nabla_{\hy} \cost(\hy, y)
+\nabla_{\vparam} \alert<5>{f(\vparam, \bx)} \times \alert<4>{\nabla_{\hy} \cost(\hy, y)}
 \\
 &=
-2 [f_\vparam(x_t) - y_t]
-\nabla_f [f_\vparam(x_t)  - y_t]
-\nabla_\vparam f_\vparam(x_t) 
-\\
-&=
-2 [f_\vparam(x_t) - y_t] 
-\nabla_\vparam f_\vparam(x_t) 
+\nabla_\vparam f(\vparam, \bx) 
+\times 2 [\hy - y] 
 \end{align}
+#+BEAMER: \pause
+#+BEAMER: \pause
 - Update:
 \[
-\vparam_{t+1} = \vparam_t + \alpha_t \times \nabla_\vparam \ell(f(\vparam_t, x_t), y_t) 
+\vparam_{t+1} = \vparam_t + \alpha_t \times \nabla_\vparam \ell(\hy_t, y_t) 
 \]
 
 
@@ -399,6 +400,8 @@ Each partial derivative is simple:
 
 
 *** Sigmoid layer
+- This layer is used for *binary classification*.
+- It is used in the *logistic regression* model to obtain label probabilities.
 \[
 f(z) = 1 / (1 + \exp(-z))
 \]
@@ -411,6 +414,7 @@ So let us ignore the other inputs for simplicity:
 
 
 *** Softmax layer
+- This layer is used for *multi-class classification*
 \[
 y_i(\bz) = \frac{\exp(z_i)}{\sum_j \exp(z_j)}
 \]
@@ -426,3 +430,54 @@ y_i(\bz) = \frac{\exp(z_i)}{\sum_j \exp(z_j)}
 =
 \frac{e^{z_i + z_k}}{\left(\sum_j e^{z_j}\right)^2}
 \]
+** Cost functions
+*** Classification cost functions
+**** Error margin
+If $z$ is a confidence level for the positive class then
+\[
+\cost(z, y) = - \ind{zy < 0} z y
+\]
+**** Negative log likelihood (aka cross-entropy)
+If $z$ are label probabilities, then 
+\[
+\cost(z, y) = - \ln z_y.
+\]
+
+*** Regression cost functions
+**** Squared error
+If $z$ is a prediction for the dependent variable then
+\[
+\cost(z, y) = (y - z)^2
+\]
+This also corresponds to negative log likelihood under a Gaussianity assumption.
+**** Huber loss
+If $z$ is a prediction, then
+\begin{equation}
+\cost(z, y) = 
+\begin{cases}
+\frac{1}{2} (z - y)^2 & |z - y| \geq \delta\\
+\frac{1}{2} \delta(|z - y| - \frac{1}{2} \delta) & \textrm{otherwise.}
+\end{cases}
+\end{equation}
+
+
+
+
+* Python libraries
+** sklearn
+*** sklearn neural networks
+**** Classification
+Uses the *cross entropy* cost 
+#+BEGIN_SRC python
+from sklearn.neural_network import MLPClassifier
+clf = MLPClassifier(hidden_layer_sizes=(5, 2))
+clf.fit(X, y)
+clf.predict(X_test)
+#+END_SRC
+- Main condition is layer sizes.
+
+**** Regression
+#+BEGIN_SRC python :exports code
+from sklearn.neural_network import MLPClassifier
+clf = MLPClassifier(hidden_layer_sizes=(5, 2))
+#+END_SRC
