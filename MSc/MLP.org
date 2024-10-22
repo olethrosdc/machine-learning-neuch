@@ -7,9 +7,14 @@
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 #+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
-
+#+name: setup-minted
 * Features and layers
-*** Perceptron/linear regressionx
+*** Perceptron vs linear regression
+**** Network architecture                                             :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+\begin{center}
 \begin{tikzpicture}
       \node[RV] at (0,0) (x1) {$x_1$};
       \node[RV] at (1,0) (x2) {$x_2$};
@@ -17,21 +22,44 @@
       \draw[->] (x1) to (y1);
       \draw[->] (x2) to (y1);
 \end{tikzpicture}
+\end{center}
+#+ATTR_BEAMER: :overlay <+->
+- Network output
 \[
 \hy = \beta_0 + \beta_1 x_1 + \beta_2 x_2
 \]
-**** Perceptron cost:
-\[
-\loss  = \ind{y \neq \hy}|\hy|
-\]
-**** Linear regression cost:
-\[
-\loss = (\hy - y)^2
-\]
-**** Chain rule idea:
+- Chain rule
 \[
 \nabla_\beta \loss = \nabla_{\hy} \loss \nabla_\beta \hy
 \]
+- Network gradient
+\[
+\nabla_\beta \hy = (x_1, x_2)
+\]
+**** Cost functions:                                                  :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+***** Cost functions
+The only difference are the cost functions
+- Perceptron
+\[
+\loss  = - \ind{y \neq \hy}\hy
+\]
+with
+\[
+\nabla \loss  = - \ind{y \neq \hy} y x
+\]
+
+- Linear regression
+\[
+\loss = (\hy - y)^2,
+\]
+with
+\[
+\nabla_{\hy} \loss = 2(\hy - y).
+\]
+
 *** Layering and features
 **** Layering and features                                            :BMCOL:
      :PROPERTIES:
@@ -43,7 +71,7 @@
 
 ***** Intermediate layers
  - Linear layer
- - Non-linear activation function.
+ - Non-linear *activation* function.
 
 ***** Linear layers types
  - Dense 
@@ -60,25 +88,33 @@
 \begin{tikzpicture}
       \node[RV] at (0,0) (x1) {$x_1$};
       \node[RV] at (1,0) (x2) {$x_2$};
-      \node[RV] at (0,-2) (z1) {$z_1$};
-      \node[RV] at (1,-2) (z2) {$z_2$};
+      \node[draw] at (4,0) {Input layer};
       \node[RV] at (0,-1) (w1) {$w_1$};
       \node[RV] at (1,-1) (w2) {$w_2$};
+      \node[draw] at (4,-1) {Linear layer};
+      \node[RV] at (0,-2) (z1) {$z_1$};
+      \node[RV] at (1,-2) (z2) {$z_2$};
+      \node[draw] at (4,-2) {Sigmoid activation};
       \node[RV] at (0,-3) (v1) {$v_1$};
       \node[RV] at (1,-3) (v2) {$v_2$};
+      \node[draw] at (4,-3) {Linear layer};
       \node[RV] at (0,-4) (y1) {$\hy_1$};
       \node[RV] at (1,-4) (y2) {$\hy_2$};
+      \node[draw] at (4,-4) {Softmax activation};
       \draw[->] (x1) to (w1);
       \draw[->] (x2) to (w1);
       \draw[->] (x1) to (w2);
       \draw[->] (x2) to (w2);
       \draw[->] (w1) to (z1);
       \draw[->] (w2) to (z2);
-      \draw[->] (w2) to (z2);
       \draw[->] (z1) to (v1);
-      \draw[->] (z2) to (v1);
       \draw[->] (z1) to (v2);
+      \draw[->] (z2) to (v1);
       \draw[->] (z2) to (v2);
+      \draw[->] (v1) to (y1);
+      \draw[->] (v1) to (y2);
+      \draw[->] (v2) to (y1);
+      \draw[->] (v2) to (y2);
 \end{tikzpicture}
 *** Linear layers
 **** Example: Linear regression with $n$ inputs, $m$ outputs.
@@ -95,32 +131,97 @@ y_i = \vparam_i \bx
 \[
 \by = \mparam \bx 
 \]
+*** ReLU layers
+- Typically used in the hidden layers of neural networks
+\[
+f(x) = \max(0, x)
+\]
+**** Derivative
+\[
+df/dx f(x) = \ind{x > 0}
+\]
 *** Sigmoid activation
-**** Example: Logistic regression
+**** Whay                                                             :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+***** Example: Logistic regression
 - Input $\bx \in \Reals^n$
 - Intermediate output: $z \in \Reals$,
 \[
 z = \sum_{i=1}^n \param_i x_i.
 \]
-- Output $\hy \in [0,1]$.
-**** Definition
-This activation ensures we get something we can use as a probability
+- Output: sigmoid activation  $\hy \in [0,1]$.
 \[
-f(z) =  1/[1 + \exp(z)].
+f(z) =  1/[1 + \exp(-z)].
 \]
 Now we can interpret $\hy = P_\vparam(y = 1 | x)$.
-*** Softmax layer
-**** Example: Multivariate logistic regression with $m$ classes.
-- Input: Features $\bx \in \Reals^n$
-- Middle: Fully-connected Linear activation layer $\bz = \mparam \bx$.
-- Output: $\hby \in \Reals^m$
-  
-**** Softmax output layer
-We want to translate the real-valued $z_i$ into probabilities:
+***** Loss function: negative log likelihood
 \[
-\hy_i = \frac{\exp(z_i)}{\sum_j \exp(z_j)}.
+\cost(\hy, y) = - [\ind{y=1} \ln (\hy) + \ind{y=-1} \ln (1 - \hy)]
 \]
-Now we can use $P_\mparam(y = i | \bx) = \hy_i$
+**** Figure                                                           :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+
+\begin{tikzpicture}
+      \node[RV] at (0,0) (x1) {$x_1$};
+      \node[RV] at (1,0) (x2) {$x_2$};
+      \node[draw] at (4,0) {Input layer};
+      \node[RV] at (0.5,-1) (z) {$z$};
+      \node[draw] at (4,-1) {Linear layer};
+      \node[RV] at (0.5,-2) (y) {$\hy$};
+      \node[draw] at (4,-2) {Sigmoid layer};
+      \draw[->] (x1) to (z);
+      \draw[->] (x2) to (z);
+      \draw[->] (z) to (y);
+\end{tikzpicture}
+
+
+*** Softmax layer
+**** Description                                                      :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+***** Example: Multivariate logistic regression with $m$ classes.
+- Input: *Features* $\bx \in \Reals^n$
+- Fully-connected *linear* activation layer 
+\[
+\bz = \mparam \bx, \qquad \mparam \in \Reals^{m \times n}.
+\]
+- *Softmax* output
+\[
+\hy_i = \frac{\exp(z_i)}{\sum_{j = 1 ^m} \exp(z_j)}
+\]
+We can also interpret this as
+\[
+\hy_i \defn  \Pr(y = i \mid \bx)
+\]
+with usual loss $\cost(\hy, y) = - \ln \hy_y$
+**** Figure :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+\begin{tikzpicture}
+      \node[RV] at (0,0) (x1) {$x_1$};
+      \node[RV] at (1,0) (x2) {$x_2$};
+      \node[draw] at (4,0) {Input layer};
+      \node[RV] at (0,-1) (z1) {$z_1$};
+      \node[RV] at (1,-1) (z2) {$z_2$};
+      \node[draw] at (4,-1) {Linear layer};
+      \node[RV] at (0,-2) (y1) {$\hy_1$};
+      \node[RV] at (1,-2) (y2) {$\hy_2$};
+      \node[draw] at (4,-2) {Softmax layer};
+      \draw[->] (x1) to (z1);
+      \draw[->] (x2) to (z1);
+      \draw[->] (x1) to (z2);
+      \draw[->] (x2) to (z2);
+      \draw[->] (z1) to (y1);
+      \draw[->] (z1) to (y2);
+      \draw[->] (z2) to (y1);
+      \draw[->] (z2) to (y2);
+\end{tikzpicture}
 
 
 * Algorithms
@@ -151,6 +252,7 @@ where $\mparam = [\vparam_i]_{i=1}^m$, $\param_{i,j} \sim \Normal(0,1)$
 \frac{1}{T} \sum_{t=1}^T \nabla_\vparam \cost(x_t, y_t, \vparam).
 \]
 - However $\cost(x_t, y_t, \vparam)$ is a complex non-linear function of $\vparam$.
+- We need many steps to calculate $\cost$. How can we then do it?
 *** The chain rule of differentiation
 #+ATTR_LATEX: :width 150px
 [[../fig/liebniz.jpeg]]
@@ -165,6 +267,7 @@ where $\mparam = [\vparam_i]_{i=1}^m$, $\param_{i,j} \sim \Normal(0,1)$
 [[../fig/werbos.jpg]]
 [1982] Werbos
 *** Backpropagation given a name
+1986: Learning representations by back-propagating errors.
 **** Rumel                                                            :BMCOL:
      :PROPERTIES:
      :BEAMER_col: 0.3
@@ -186,41 +289,57 @@ Hinton
 #+ATTR_LATEX: :width 100px
 [[../fig/williams.jpg]]
 Williams
-*** Back-propagation
-**** The chain rule
+*** Elementary back-propagation: linear regression
+\begin{center}
+\begin{tikzpicture}
+      \node[RV] at (0,0) (x) {\alert<1>{$\bx$}};
+      \node[RV] at (1,1) (w) {\alert<1>{$\vparam$}};
+      \node[RV] at (2,0) (hy) {\alert<2>{$\hy$}};
+      \node[utility] at (4,0) (c) {\alert<3>{$\cost$}};
+      \node[RV] at (6,0) (y) {\alert<1,2>{$y$}};
+      \draw[->] (x) to (hy);
+      \draw[->] (w) to (hy);
+      \draw[->] (hy) to (c);
+      \draw[->] (y) to (c);
+	  \draw [blue, ->] (c) to [bend right=45] node [above]  {\alert<4>{$\nabla_f(\cost)$}} (hy);
+      \draw [blue, ->] (hy) to [bend right=45] node [above]  {\alert<5>{$\nabla_\vparam(\hy)$}} (w);
+\end{tikzpicture}
+\end{center}
+- $f : X \to Y$, $\cost: Y \times Y \to \Reals$, chain rule: $\nabla_\vparam \cost = \nabla_\vparam f \nabla_{\hy} \cost$
+- *Forward*: follow the arrows to calculate *variables*
 \[
-f : X \to Z, \qquad g : Z \to Y,
-\qquad \frac{dg}{dx} = \frac{dg}{df} \frac{df}{dx},
-\qquad \nabla_x g = \nabla_f g \nabla_x f
+\alert<2>{\hy} \defn f(\alert<1>{\vparam, x}) = \sum_{i=1}^n \alert<1>{\param_i x_i}, \qquad\alert<3>{\cost}(\hy, y) = (\hy - y)^2
 \]
 #+BEAMER: \pause
-**** Linear regression :example:
-- $f_\vparam(x) = \sum_{i=1}^n \param_i x_i$.
-- $\E_\vparam[\loss] \approx \loss(D, \vparam) = \frac{1}{T} \sum_{t=1}^T c(\vparam, \bx_t, y_t)$.
+#+BEAMER: \pause
+#+BEAMER: \pause
+- *Backward*: return to calculate the *gradients*
 \begin{align}
-\nabla_\vparam c(\vparam, \bx_t, y_t) 
+\nabla_\vparam \ell(\hy, y) 
 &=
-\nabla_\vparam [\underbrace{f_\vparam(x_t) - y_t}_z]^2, \qquad g(z) = z^2
+\nabla_{\vparam} \alert<5>{f(\vparam, \bx)} \times \alert<4>{\nabla_{\hy} \cost(\hy, y)}
 \\
 &=
-\nabla_z g(z) \nabla_f z \nabla_\vparam f(x_t)
-\\
-&=
-2 [f_\vparam(x_t) - y_t]
-\nabla_f [f_\vparam(x_t)  - y_t]
-\nabla_\vparam f_\vparam(x_t) 
-\\
-&=
-2 [f_\vparam(x_t) - y_t] 
-\nabla_\vparam f_\vparam(x_t) 
+\nabla_\vparam f(\vparam, \bx) 
+\times 2 [\hy - y] 
 \end{align}
+#+BEAMER: \pause
+#+BEAMER: \pause
+- Update:
+\[
+\vparam_{t+1} = \vparam_t - \alpha_t \times \nabla_\vparam \ell(\hy_t, y_t) 
+\]
+
+
+
+
+
 
 *** Gradient descent with /back-propagation/
-**** Inputs
 - Dataset $D$, cost function $\loss = \sum_t \cost_t$
-- Parametrised architecture with $k$ layers
-  - Parameters $\mparam_1, \ldots, \mparam_k$ 
-  - Intermediate variables: $\bz_j = f_j(\bz_{j-1}, \mparam_j)$, $\bz_0 = \bx$, $\bz_k = \hby$.
+- Parameters $\mparam_1, \ldots, \mparam_k$ with $k$ layers
+- Intermediate variables: $\bz_j = h_j(\bz_{j-1}, \mparam_j)$, $\bz_0 = \bx$, $\bz_k = \hby$.
+#+BEAMER: \pause
 **** Dependency  graph
 \begin{center}
 \begin{tikzpicture}
@@ -241,8 +360,9 @@ f : X \to Z, \qquad g : Z \to Y,
       \draw[->] (y) to (c);
 \end{tikzpicture}
 \end{center}
+#+BEAMER: \pause
 **** Backpropagation with steepest stochastic gradient descent
-- Forward step: For $j = 1, \ldots, k$, calculate $\bz_j = f_j(k)$ and $\cost(\hby, \by)$
+- Forward step: For $j = 1, \ldots, k$, calculate $\bz_j = h_j(k)$ and $\cost(\hby, \by)$
 - Backward step: Calculate $\nabla_{\hby} \cost$ and $d_j \defn \nabla_{\mparam_j} \cost = \nabla_{\mparam_j} z_j d_{j+1}$ for $j = k \ldots, 1$
 - Apply gradient: $\mparam_j  -\!= \alpha d_j$.
 *** Other algorithms and gradients
@@ -293,6 +413,8 @@ Each partial derivative is simple:
 
 
 *** Sigmoid layer
+- This layer is used for *binary classification*.
+- It is used in the *logistic regression* model to obtain label probabilities.
 \[
 f(z) = 1 / (1 + \exp(-z))
 \]
@@ -305,6 +427,7 @@ So let us ignore the other inputs for simplicity:
 
 
 *** Softmax layer
+- This layer is used for *multi-class classification*
 \[
 y_i(\bz) = \frac{\exp(z_i)}{\sum_j \exp(z_j)}
 \]
@@ -320,3 +443,65 @@ y_i(\bz) = \frac{\exp(z_i)}{\sum_j \exp(z_j)}
 =
 \frac{e^{z_i + z_k}}{\left(\sum_j e^{z_j}\right)^2}
 \]
+** Cost functions
+*** Classification cost functions
+**** Error margin
+If $z$ is a confidence level for the positive class then
+\[
+\cost(z, y) = - \ind{zy < 0} z y
+\]
+**** Negative log likelihood (aka cross-entropy)
+If $z$ are label probabilities, then 
+\[
+\cost(z, y) = - \ln z_y.
+\]
+
+*** Regression cost functions
+**** Squared error
+If $z$ is a prediction for the dependent variable then
+\[
+\cost(z, y) = (y - z)^2
+\]
+This also corresponds to negative log likelihood under a Gaussianity assumption.
+**** Huber loss
+If $z$ is a prediction, then
+\begin{equation}
+\cost(z, y) = 
+\begin{cases}
+\frac{1}{2} (z - y)^2 & |z - y| \leq \delta\\
+ \delta(|z - y| - \frac{1}{2} \delta) & \textrm{otherwise.}
+\end{cases}
+\end{equation}
+
+
+
+
+* Python libraries
+** sklearn
+*** sklearn neural networks
+**** Classification
+Uses the *cross entropy* cost 
+#+BEGIN_SRC python
+from sklearn.neural_network import MLPClassifier
+clf = MLPClassifier(hidden_layer_sizes=(5, 2))
+clf.fit(X, y)
+clf.predict(X_test)
+#+END_SRC
+- Main condition is layer sizes.
+
+**** Regression
+#+BEGIN_SRC python :exports code
+from sklearn.neural_network import MLPRegressor
+model = MLPRegressor(hidden_layer_sizes=(5, 2))
+#+END_SRC
+** PyTorch
+*** Datasets
+#+BEGIN_SRC python :exports code
+X_train = torch.tensor(X_train, dtype=torch.float32)
+train_dataset = TensorDataset(X_train, y_train)  
+train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True)
+mlp = nn.Sequential(nn.Linear(input_size , 50), nn.ReLU())
+#+END_SRC
+** TensorFlow
+*** TensorFlow
+This is another library, no need to use this for this course

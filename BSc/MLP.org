@@ -153,9 +153,13 @@ z = \sum_{i=1}^n \param_i x_i.
 \]
 - Output: sigmoid activation  $\hy \in [0,1]$.
 \[
-f(z) =  1/[1 + \exp(z)].
+f(z) =  1/[1 + \exp(-z)].
 \]
 Now we can interpret $\hy = P_\vparam(y = 1 | x)$.
+***** Loss function: negative log likelihood
+\[
+\cost(\hy, y) = - [\ind{y=1} \ln (\hy) + \ind{y=-1} \ln (1 - \hy)]
+\]
 **** Figure                                                           :BMCOL:
      :PROPERTIES:
      :BEAMER_col: 0.5
@@ -194,7 +198,7 @@ We can also interpret this as
 \[
 \hy_i \defn  \Pr(y = i \mid \bx)
 \]
-
+with usual loss $\cost(\hy, y) = - \ln \hy_y$
 **** Figure :BMCOL:
      :PROPERTIES:
      :BEAMER_col: 0.5
@@ -297,7 +301,7 @@ Williams
       \draw[->] (w) to (hy);
       \draw[->] (hy) to (c);
       \draw[->] (y) to (c);
-	  \draw [blue, ->] (c) to [bend right=45] node [above]  {\alert<4>{$\nabla_f(\hy)$}} (hy);
+	  \draw [blue, ->] (c) to [bend right=45] node [above]  {\alert<4>{$\nabla_f(\cost)$}} (hy);
       \draw [blue, ->] (hy) to [bend right=45] node [above]  {\alert<5>{$\nabla_\vparam(\hy)$}} (w);
 \end{tikzpicture}
 \end{center}
@@ -323,7 +327,7 @@ Williams
 #+BEAMER: \pause
 - Update:
 \[
-\vparam_{t+1} = \vparam_t + \alpha_t \times \nabla_\vparam \ell(\hy_t, y_t) 
+\vparam_{t+1} = \vparam_t - \alpha_t \times \nabla_\vparam \ell(\hy_t, y_t) 
 \]
 
 
@@ -464,8 +468,8 @@ If $z$ is a prediction, then
 \begin{equation}
 \cost(z, y) = 
 \begin{cases}
-\frac{1}{2} (z - y)^2 & |z - y| \geq \delta\\
-\frac{1}{2} \delta(|z - y| - \frac{1}{2} \delta) & \textrm{otherwise.}
+\frac{1}{2} (z - y)^2 & |z - y| \leq \delta\\
+ \delta(|z - y| - \frac{1}{2} \delta) & \textrm{otherwise.}
 \end{cases}
 \end{equation}
 
