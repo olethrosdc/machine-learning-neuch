@@ -131,6 +131,15 @@ y_i = \vparam_i \bx
 \[
 \by = \mparam \bx 
 \]
+*** ReLU layers
+- Typically used in the hidden layers of neural networks
+\[
+f(x) = \max(0, x)
+\]
+**** Derivative
+\[
+df/dx f(x) = \ind{x > 0}
+\]
 *** Sigmoid activation
 **** Whay                                                             :BMCOL:
      :PROPERTIES:
@@ -482,6 +491,13 @@ from sklearn.neural_network import MLPRegressor
 model = MLPRegressor(hidden_layer_sizes=(5, 2))
 #+END_SRC
 ** PyTorch
+*** Datasets
+#+BEGIN_SRC python :exports code
+X_train = torch.tensor(X_train, dtype=torch.float32)
+train_dataset = TensorDataset(X_train, y_train)  
+train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True)
+mlp = nn.Sequential(nn.Linear(input_size , 50), nn.ReLU())
+#+END_SRC
 ** TensorFlow
 *** TensorFlow
 This is another library, no need to use this for this course
