@@ -131,25 +131,61 @@ y_i = \vparam_i \bx
 \by = \mparam \bx 
 \]
 *** Sigmoid activation
-**** Example: Logistic regression
+**** Whay                                                             :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+***** Example: Logistic regression
 - Input $\bx \in \Reals^n$
 - Intermediate output: $z \in \Reals$,
 \[
 z = \sum_{i=1}^n \param_i x_i.
 \]
-- Output $\hy \in [0,1]$.
-**** Definition
-This activation ensures we get something we can use as a probability
+- Output: sigmoid activation  $\hy \in [0,1]$.
 \[
 f(z) =  1/[1 + \exp(z)].
 \]
 Now we can interpret $\hy = P_\vparam(y = 1 | x)$.
-*** Softmax layer
-**** Example: Multivariate logistic regression with $m$ classes.
-- Input: Features $\bx \in \Reals^n$
-- Linear: Fully-connected Linear activation layer $\bz = \mparam \bx$ with $\mparam \in \Reals^{m \times n}$.
-- Softmax: $\hy_i = \frac{\exp(z_i)}{\sum_{j = 1 ^m} \exp(z_j)}$
 **** Figure                                                           :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+
+\begin{tikzpicture}
+      \node[RV] at (0,0) (x1) {$x_1$};
+      \node[RV] at (1,0) (x2) {$x_2$};
+      \node[draw] at (4,0) {Input layer};
+      \node[RV] at (0.5,-1) (z) {$z$};
+      \node[draw] at (4,-1) {Linear layer};
+      \node[RV] at (0.5,-2) (y) {$\hy$};
+      \node[draw] at (4,-2) {Sigmoid layer};
+      \draw[->] (x1) to (z);
+      \draw[->] (x2) to (z);
+      \draw[->] (z) to (y);
+\end{tikzpicture}
+
+
+*** Softmax layer
+**** Description                                                      :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+***** Example: Multivariate logistic regression with $m$ classes.
+- Input: *Features* $\bx \in \Reals^n$
+- Fully-connected *linear* activation layer 
+\[
+\bz = \mparam \bx, \qquad \mparam \in \Reals^{m \times n}.
+\]
+- *Softmax* output
+\[
+\hy_i = \frac{\exp(z_i)}{\sum_{j = 1 ^m} \exp(z_j)}
+\]
+We can also interpret this as
+\[
+\hy_i \defn  \Pr(y = i \mid \bx)
+\]
+
+**** Figure :BMCOL:
      :PROPERTIES:
      :BEAMER_col: 0.5
      :END:
@@ -237,24 +273,34 @@ Hinton
 #+ATTR_LATEX: :width 100px
 [[../fig/williams.jpg]]
 Williams
-*** Back-propagation
-**** The chain rule
+*** Back-propagation for linear regression
+\begin{center}
+\begin{tikzpicture}
+      \node[RV] at (0,0) (x) {$\bx$};
+      \node[RV] at (2,0) (hy) {$\hy$};
+      \node[RV] at (1,1) (w) {$\vparam$};
+      \node[utility] at (4,0) (c) {$\cost$};
+      \node[RV] at (6,0) (y) {$y$};
+      \draw[->] (x) to (hy);
+      \draw[->] (w) to (hy);
+      \draw[->] (hy) to (c);
+      \draw[->] (y) to (c);
+      \draw [red, ->] (c) to [bend right=45] node [above]  {$\nabla_f(\cost)$} (hy);
+      \draw [red, ->] (hy) to [bend right=45] node [above]  {$\nabla_\vparam(\hy)$} (w);
+\end{tikzpicture}
+\end{center}
+#+ATTR_BEAMER: :overlay <+->
+- $f : X \to Y$, $\cost: Y \times Y \to \Reals$, chain rule: $\nabla_\vparam \cost = \nabla_\vparam f \nabla_{\hy} \cost$
+- Forward: 
 \[
-f : X \to Z, \qquad g : Z \to Y,
-\qquad \frac{dg}{dx} = \frac{dg}{df} \frac{df}{dx},
-\qquad \nabla_x g = \nabla_f g \nabla_x f
+f(\vparam, x) = \sum_{i=1}^n \param_i x_i, \qquad\cost(\hy, y) = (\hy - y)^2
 \]
 #+BEAMER: \pause
-**** Linear regression :example:
-- $f_\vparam(x) = \sum_{i=1}^n \param_i x_i$.
-- $\E_\vparam[\loss] \approx \loss(D, \vparam) = \frac{1}{T} \sum_{t=1}^T c(\vparam, \bx_t, y_t)$.
+- Backward:
 \begin{align}
-\nabla_\vparam c(\vparam, \bx_t, y_t) 
+\nabla_\vparam \ell(\hy, y) 
 &=
-\nabla_\vparam [\underbrace{f_\vparam(x_t) - y_t}_z]^2, \qquad g(z) = z^2
-\\
-&=
-\nabla_z g(z) \nabla_f z \nabla_\vparam f(x_t)
+\nabla_{\vparam} f(\vparam, \bx) \times \nabla_{\hy} \cost(\hy, y)
 \\
 &=
 2 [f_\vparam(x_t) - y_t]
@@ -265,13 +311,21 @@ f : X \to Z, \qquad g : Z \to Y,
 2 [f_\vparam(x_t) - y_t] 
 \nabla_\vparam f_\vparam(x_t) 
 \end{align}
+- Update:
+\[
+\vparam_{t+1} = \vparam_t + \alpha_t \times \nabla_\vparam \ell(f(\vparam_t, x_t), y_t) 
+\]
+
+
+
+
+
 
 *** Gradient descent with /back-propagation/
-**** Inputs
 - Dataset $D$, cost function $\loss = \sum_t \cost_t$
-- Parametrised architecture with $k$ layers
-  - Parameters $\mparam_1, \ldots, \mparam_k$ 
-  - Intermediate variables: $\bz_j = f_j(\bz_{j-1}, \mparam_j)$, $\bz_0 = \bx$, $\bz_k = \hby$.
+- Parameters $\mparam_1, \ldots, \mparam_k$ with $k$ layers
+- Intermediate variables: $\bz_j = h_j(\bz_{j-1}, \mparam_j)$, $\bz_0 = \bx$, $\bz_k = \hby$.
+#+BEAMER: \pause
 **** Dependency  graph
 \begin{center}
 \begin{tikzpicture}
@@ -292,8 +346,9 @@ f : X \to Z, \qquad g : Z \to Y,
       \draw[->] (y) to (c);
 \end{tikzpicture}
 \end{center}
+#+BEAMER: \pause
 **** Backpropagation with steepest stochastic gradient descent
-- Forward step: For $j = 1, \ldots, k$, calculate $\bz_j = f_j(k)$ and $\cost(\hby, \by)$
+- Forward step: For $j = 1, \ldots, k$, calculate $\bz_j = h_j(k)$ and $\cost(\hby, \by)$
 - Backward step: Calculate $\nabla_{\hby} \cost$ and $d_j \defn \nabla_{\mparam_j} \cost = \nabla_{\mparam_j} z_j d_{j+1}$ for $j = k \ldots, 1$
 - Apply gradient: $\mparam_j  -\!= \alpha d_j$.
 *** Other algorithms and gradients
