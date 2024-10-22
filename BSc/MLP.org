@@ -1,77 +1,120 @@
 #+TITLE: Multi-Layer Perceptrons and Deep Learning
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
-#+LaTeX_HEADER: \usepackage{tikz}
-#+LaTeX_HEADER: \usepackage{amsmath}
-#+LaTeX_HEADER: \usepackage{amssymb}
-#+LaTeX_HEADER: \usepackage{isomath}
-#+LaTeX_HEADER: \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
-#+LaTeX_HEADER: \newcommand \Var {\mathop{\mbox{\ensuremath{\mathbb{V}}}}\nolimits}
-#+LaTeX_HEADER: \newcommand \Bias {\mathop{\mbox{\ensuremath{\mathbb{B}}}}\nolimits}
-#+LaTeX_HEADER: \newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
-#+LaTeX_HEADER: \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
-#+LaTeX_HEADER: \DeclareMathOperator*{\argmax}{arg\,max}
-#+LaTeX_HEADER: \DeclareMathOperator*{\argmin}{arg\,min}
-#+LaTeX_HEADER: \DeclareMathOperator*{\sgn}{sgn}
-#+LaTeX_HEADER: \newcommand \defn {\mathrel{\triangleq}}
-#+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
-#+LaTeX_HEADER: \newcommand \Param {\Theta}
-#+LaTeX_HEADER: \newcommand \param {\theta}
-#+LaTeX_HEADER: \newcommand \vparam {\vectorsym{\theta}}
-#+LaTeX_HEADER: \newcommand \mparam {\matrixsym{\Theta}}
-#+LaTeX_HEADER: \newcommand \bW {\matrixsym{W}}
-#+LaTeX_HEADER: \newcommand \bw {\vectorsym{w}}
-#+LaTeX_HEADER: \newcommand \wi {\vectorsym{w}_i}
-#+LaTeX_HEADER: \newcommand \wij {w_{i,j}}
-#+LaTeX_HEADER: \newcommand \bA {\matrixsym{A}}
-#+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
-#+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
-#+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
-#+LaTeX_HEADER: \newcommand \by {\vectorsym{y}}
-#+LaTeX_HEADER: \newcommand \hby {\hat{\by}}
-#+LaTeX_HEADER: \newcommand \hy {\hat{y}}
-#+LaTeX_HEADER: \newcommand \bz {\vectorsym{z}}
-#+LaTeX_HEADER: \newcommand \bel {\beta}
-#+LaTeX_HEADER: \newcommand \loss {\ell}
-#+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
-#+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
-#+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
-#+LaTeX_HEADER: \usetikzlibrary{shapes.geometric}
-#+LaTeX_HEADER: \tikzstyle{utility}=[diamond,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=8mm]
-#+LaTeX_HEADER: \tikzstyle{select}=[rectangle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
-#+LaTeX_HEADER: \tikzstyle{hidden}=[dashed,draw=black,fill=red!10]
-#+LaTeX_HEADER: \tikzstyle{RV}=[circle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
+#+LaTeX_HEADER: \input{preamble}
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
 
 * Features and layers
-** Layers
-Minor
+*** Perceptron vs linear regression
+**** Network architecture                                             :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+\begin{center}
+\begin{tikzpicture}
+      \node[RV] at (0,0) (x1) {$x_1$};
+      \node[RV] at (1,0) (x2) {$x_2$};
+      \node[RV] at (0,-1) (y1) {$\hy$};
+      \draw[->] (x1) to (y1);
+      \draw[->] (x2) to (y1);
+\end{tikzpicture}
+\end{center}
+- Network out
+\[
+\hy = \beta_0 + \beta_1 x_1 + \beta_2 x_2
+\]
+- Chain rule
+\[
+\nabla_\beta \loss = \nabla_{\hy} \loss \nabla_\beta \hy
+\]
+- Network gradient
+\[
+\nabla_\beta \hy = (x_1, x_2)
+\]
+**** Cost functions:                                                  :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+***** Cost functions
+The only difference are the cost functions
 
-** Now
+- Perceptron
+\[
+\loss  = \ind{y \neq \hy}|\hy|
+\]
+with
+\[
+\nabla \loss  = \ind{y \neq \hy}|\hy|
+\]
+- Linear regression
+\[
+\loss = (\hy - y)^2,
+\]
+with
+\[
+\nabla_{\hy} \loss = 2(\hy - y).
+\]
+
 *** Layering and features
-**** Fixed layers
-- Input to layer $x \in R^n$ 
-- Output from layer $\hby \in R^m$.
+**** Layering and features                                            :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+***** Fixed layers
+ - Input to layer $x \in R^n$ 
+ - Output from layer $\hby \in R^m$.
 
-**** Intermediate layers
-Combinations of
-- Linear layer
-- Non-linear activation function.
+***** Intermediate layers
+ - Linear layer
+ - Non-linear *activation* function.
 
-**** Linear layers types
-- Dense 
-- Sparse
-- Convolutional
+***** Linear layers types
+ - Dense 
+ - Sparse
+ - Convolutional
 
-**** Activation funnction
-Simple transformations of previous output.
-- Sigmoid
-- Softmax
-
-  
+***** Activation funnction
+ - Sigmoid
+ - Softmax
+**** The graph                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+\begin{tikzpicture}
+      \node[RV] at (0,0) (x1) {$x_1$};
+      \node[RV] at (1,0) (x2) {$x_2$};
+      \node[draw] at (4,0) {Input layer};
+      \node[RV] at (0,-1) (w1) {$w_1$};
+      \node[RV] at (1,-1) (w2) {$w_2$};
+      \node[draw] at (4,-1) {Linear layer};
+      \node[RV] at (0,-2) (z1) {$z_1$};
+      \node[RV] at (1,-2) (z2) {$z_2$};
+      \node[draw] at (4,-2) {Sigmoid activation};
+      \node[RV] at (0,-3) (v1) {$v_1$};
+      \node[RV] at (1,-3) (v2) {$v_2$};
+      \node[draw] at (4,-3) {Linear layer};
+      \node[RV] at (0,-4) (y1) {$\hy_1$};
+      \node[RV] at (1,-4) (y2) {$\hy_2$};
+      \node[draw] at (4,-4) {Softmax activation};
+      \draw[->] (x1) to (w1);
+      \draw[->] (x2) to (w1);
+      \draw[->] (x1) to (w2);
+      \draw[->] (x2) to (w2);
+      \draw[->] (w1) to (z1);
+      \draw[->] (w2) to (z2);
+      \draw[->] (z1) to (v1);
+      \draw[->] (z1) to (v2);
+      \draw[->] (z2) to (v1);
+      \draw[->] (z2) to (v2);
+      \draw[->] (v1) to (y1);
+      \draw[->] (v1) to (y2);
+      \draw[->] (v2) to (y1);
+      \draw[->] (v2) to (y2);
+\end{tikzpicture}
 *** Linear layers
 **** Example: Linear regression with $n$ inputs, $m$ outputs.
 - Input: Features $\bx \in \Reals^n$
@@ -85,34 +128,86 @@ y_i = \vparam_i \bx
 \]
 - In compact form:
 \[
-\by = \mparam \bx
+\by = \mparam \bx 
 \]
 *** Sigmoid activation
-**** Example: Logistic regression
+**** Whay                                                             :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+***** Example: Logistic regression
 - Input $\bx \in \Reals^n$
 - Intermediate output: $z \in \Reals$,
 \[
 z = \sum_{i=1}^n \param_i x_i.
 \]
-- Output $\hy \in [0,1]$.
-**** Definition
-This activation ensures we get something we can use as a probability
+- Output: sigmoid activation  $\hy \in [0,1]$.
 \[
 f(z) =  1/[1 + \exp(z)].
 \]
 Now we can interpret $\hy = P_\vparam(y = 1 | x)$.
+**** Figure                                                           :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+
+\begin{tikzpicture}
+      \node[RV] at (0,0) (x1) {$x_1$};
+      \node[RV] at (1,0) (x2) {$x_2$};
+      \node[draw] at (4,0) {Input layer};
+      \node[RV] at (0.5,-1) (z) {$z$};
+      \node[draw] at (4,-1) {Linear layer};
+      \node[RV] at (0.5,-2) (y) {$\hy$};
+      \node[draw] at (4,-2) {Sigmoid layer};
+      \draw[->] (x1) to (z);
+      \draw[->] (x2) to (z);
+      \draw[->] (z) to (y);
+\end{tikzpicture}
+
+
 *** Softmax layer
-**** Example: Multivariate logistic regression with $m$ classes.
-- Input: Features $\bx \in \Reals^n$
-- Middle: Fully-connected Linear activation layer $\bz = \mparam \bx$.
-- Output: $\hby \in \Reals^m$
-  
-**** Softmax output layer
-We want to translate the real-valued $z_i$ into probabilities:
+**** Description                                                      :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+***** Example: Multivariate logistic regression with $m$ classes.
+- Input: *Features* $\bx \in \Reals^n$
+- Fully-connected *linear* activation layer 
 \[
-\hy_i = \frac{\exp(z_i)}{\sum_j \exp(z_j)}.
+\bz = \mparam \bx, \qquad \mparam \in \Reals^{m \times n}.
 \]
-Now we can use $P_\mparam(y = i | \bx) = \hy_i$
+- *Softmax* output
+\[
+\hy_i = \frac{\exp(z_i)}{\sum_{j = 1 ^m} \exp(z_j)}
+\]
+We can also interpret this as
+\[
+\hy_i \defn  \Pr(y = i \mid \bx)
+\]
+
+**** Figure :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+\begin{tikzpicture}
+      \node[RV] at (0,0) (x1) {$x_1$};
+      \node[RV] at (1,0) (x2) {$x_2$};
+      \node[draw] at (4,0) {Input layer};
+      \node[RV] at (0,-1) (z1) {$z_1$};
+      \node[RV] at (1,-1) (z2) {$z_2$};
+      \node[draw] at (4,-1) {Linear layer};
+      \node[RV] at (0,-2) (y1) {$\hy_1$};
+      \node[RV] at (1,-2) (y2) {$\hy_2$};
+      \node[draw] at (4,-2) {Softmax layer};
+      \draw[->] (x1) to (z1);
+      \draw[->] (x2) to (z1);
+      \draw[->] (x1) to (z2);
+      \draw[->] (x2) to (z2);
+      \draw[->] (z1) to (y1);
+      \draw[->] (z1) to (y2);
+      \draw[->] (z2) to (y1);
+      \draw[->] (z2) to (y2);
+\end{tikzpicture}
 
 
 * Algorithms
@@ -140,31 +235,72 @@ where $\mparam = [\vparam_i]_{i=1}^m$, $\param_{i,j} \sim \Normal(0,1)$
 \[
 \nabla_\vparam \E_\vparam[\loss]
 \approx 
-\frac{1}{T} \sum_{t=1}^T \nabla_\vparam c(x_t, y_t, \vparam).
+\frac{1}{T} \sum_{t=1}^T \nabla_\vparam \cost(x_t, y_t, \vparam).
 \]
-- However $c(x_t, y_t, \vparam)$ is a complex non-linear function of $\vparam$.
-**** The solution
-- [1673] Liebniz, the chain rule of differentiation.
-- [1976] Rosenblat's perceptron without realising it!
-- [1982] Werbos applied it to MLPs.
-- [1986] Rummelhart, Hinton and Williams popularised it.
-*** Back-propagation
-**** The chain rule
+- However $\cost(x_t, y_t, \vparam)$ is a complex non-linear function of $\vparam$.
+*** The chain rule of differentiation
+#+ATTR_LATEX: :width 150px
+[[../fig/liebniz.jpeg]]
+[1673] Liebniz
+
+*** Chain rule applied to the perceptron
+#+ATTR_LATEX: :width 150px
+[[../fig/rosenblatt.jpeg]]
+[1976] Rosenblat
+*** Chain rule for deep neural netowrks
+#+ATTR_LATEX: :width 100px
+[[../fig/werbos.jpg]]
+[1982] Werbos
+*** Backpropagation given a name
+**** Rumel                                                            :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+ATTR_LATEX: :width 100px
+[[../fig/DERumelhart.png]]
+Rumelhart
+**** Hinton                                                           :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+ATTR_LATEX: :width 75px
+[[../fig/hinton.jpg]]
+Hinton
+**** Williams                                                         :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+#+ATTR_LATEX: :width 100px
+[[../fig/williams.jpg]]
+Williams
+*** Back-propagation for linear regression
+\begin{center}
+\begin{tikzpicture}
+      \node[RV] at (0,0) (x) {$\bx$};
+      \node[RV] at (2,0) (hy) {$\hy$};
+      \node[RV] at (1,1) (w) {$\vparam$};
+      \node[utility] at (4,0) (c) {$\cost$};
+      \node[RV] at (6,0) (y) {$y$};
+      \draw[->] (x) to (hy);
+      \draw[->] (w) to (hy);
+      \draw[->] (hy) to (c);
+      \draw[->] (y) to (c);
+      \draw [red, ->] (c) to [bend right=45] node [above]  {$\nabla_f(\cost)$} (hy);
+      \draw [red, ->] (hy) to [bend right=45] node [above]  {$\nabla_\vparam(\hy)$} (w);
+\end{tikzpicture}
+\end{center}
+#+ATTR_BEAMER: :overlay <+->
+- $f : X \to Y$, $\cost: Y \times Y \to \Reals$, chain rule: $\nabla_\vparam \cost = \nabla_\vparam f \nabla_{\hy} \cost$
+- Forward: 
 \[
-f : X \to Z, \qquad g : Z \to Y,
-\qquad \frac{dg}{dx} = \frac{dg}{df} \frac{df}{dx},
-\qquad \nabla_x g = \nabla_f g \nabla_x f
+f(\vparam, x) = \sum_{i=1}^n \param_i x_i, \qquad\cost(\hy, y) = (\hy - y)^2
 \]
-**** Linear regression :example:
-- $f_\vparam(x) = \sum_{i=1}^n \param_i x_i$.
-- $\E_\vparam[\loss] \approx \loss(D, \vparam) = \frac{1}{T} \sum_{t=1}^T c(\vparam, \bx_t, y_t)$.
+#+BEAMER: \pause
+- Backward:
 \begin{align}
-\nabla_\vparam c(\vparam, \bx_t, y_t) 
+\nabla_\vparam \ell(\hy, y) 
 &=
-\nabla_\vparam [\underbrace{f_\vparam(x_t) - y_t}_z]^2, \qquad g(z) = z^2
-\\
-&=
-\nabla_z g(z) \nabla_f z \nabla_\vparam f(x_t)
+\nabla_{\vparam} f(\vparam, \bx) \times \nabla_{\hy} \cost(\hy, y)
 \\
 &=
 2 [f_\vparam(x_t) - y_t]
@@ -175,23 +311,32 @@ f : X \to Z, \qquad g : Z \to Y,
 2 [f_\vparam(x_t) - y_t] 
 \nabla_\vparam f_\vparam(x_t) 
 \end{align}
+- Update:
+\[
+\vparam_{t+1} = \vparam_t + \alpha_t \times \nabla_\vparam \ell(f(\vparam_t, x_t), y_t) 
+\]
+
+
+
+
+
 
 *** Gradient descent with /back-propagation/
-**** Inputs
-- Dataset $D$, cost function $\loss = \sum_t c_t$
-- Parametrised architecture with $k$ layers
-  - Parameters $\vparam_1, \ldots, \vparam_k$ 
-  - Intermediate variables: $\bz_j = f_j(\bz_{j-1}, \vparam_j)$, $\bz_0 = \bx$, $\bz_k = \hby$.
+- Dataset $D$, cost function $\loss = \sum_t \cost_t$
+- Parameters $\mparam_1, \ldots, \mparam_k$ with $k$ layers
+- Intermediate variables: $\bz_j = h_j(\bz_{j-1}, \mparam_j)$, $\bz_0 = \bx$, $\bz_k = \hby$.
+#+BEAMER: \pause
 **** Dependency  graph
+\begin{center}
 \begin{tikzpicture}
       \node[RV] at (0,0) (x) {$\bx$};
       \node[RV] at (1,0) (z1) {$\bz_1$};
       \node[RV] at (2,0) (z2) {$\bz_2$};
-      \node[RV] at (1,1) (w1) {$\vparam_1$};
-      \node[RV] at (2,1) (w2) {$\vparam_2$};
+      \node[RV] at (1,1) (w1) {$\mparam_1$};
+      \node[RV] at (2,1) (w2) {$\mparam_2$};
       \node[RV] at (3,0) (hy) {$\hby$};
       \node[RV] at (5,0) (y) {$\by$};
-      \node[utility] at (4,0) (c) {$c$};
+      \node[utility] at (4,0) (c) {$\cost$};
       \draw[->] (x) to (z1);
       \draw[->] (z1) to (z2);
       \draw[->] (w2) to (z2);
@@ -200,10 +345,12 @@ f : X \to Z, \qquad g : Z \to Y,
       \draw[->] (hy) to (c);
       \draw[->] (y) to (c);
 \end{tikzpicture}
+\end{center}
+#+BEAMER: \pause
 **** Backpropagation with steepest stochastic gradient descent
-- Forward step: For $j = 1, \ldots, k$, calculate $\bz_j = f_j(k)$ and $c(\hby, \by)$
-- Backward step: Calculate $\nabla_{\hby} c$ and $d_j \defn \nabla_{\vparam_j} c = \nabla_{\vparam_j} z_j d_{j+1}$ for $j = k \ldots, 1$
-- Apply gradient: $\vparam_j  -\!= \alpha d_j$.
+- Forward step: For $j = 1, \ldots, k$, calculate $\bz_j = h_j(k)$ and $\cost(\hby, \by)$
+- Backward step: Calculate $\nabla_{\hby} \cost$ and $d_j \defn \nabla_{\mparam_j} \cost = \nabla_{\mparam_j} z_j d_{j+1}$ for $j = k \ldots, 1$
+- Apply gradient: $\mparam_j  -\!= \alpha d_j$.
 *** Other algorithms and gradients
 **** Natural gradient
 Defined for probabilistic models
@@ -213,8 +360,7 @@ Exponential moving average of gradient and square gradients
 Newton-like method
 
 ** Derivatives
-*** Example derivatives
-Here are some example derivatives
+
 *** Linear layer
 **** Definition
 This is a linear combination of inputs $x \in \Reals^n$ and parameter matrix $\mparam \in \Reals^{m \times n}$
@@ -244,7 +390,11 @@ f_i(\mparam, \bx)= \vparam_i \cdot \bx =  \sum_{j=1}^n \param_{i,j} x_j,
 **** Gradient 
 Each partial derivative is simple:
 \[
-\frac{\partial}{\partial \param_{i,j}} f_k(\mparam, \bx) = x_j
+\frac{\partial}{\partial \param_{i,j}} f_k(\mparam, \bx)
+=
+\sum_{k=1}^n \frac{\partial}{\partial \param_{i,j}}  \param_{i,k} x_k
+=
+ x_j
 \]
 
 
