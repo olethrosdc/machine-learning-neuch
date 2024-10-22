@@ -70,7 +70,7 @@ with
 
 ***** Intermediate layers
  - Linear layer
- - Non-linear activation function.
+ - Non-linear *activation* function.
 
 ***** Linear layers types
  - Dense 
@@ -93,13 +93,13 @@ with
       \node[draw] at (4,-1) {Linear layer};
       \node[RV] at (0,-2) (z1) {$z_1$};
       \node[RV] at (1,-2) (z2) {$z_2$};
-      \node[draw] at (4,-2) {Sigmoid layer};
+      \node[draw] at (4,-2) {Sigmoid activation};
       \node[RV] at (0,-3) (v1) {$v_1$};
       \node[RV] at (1,-3) (v2) {$v_2$};
       \node[draw] at (4,-3) {Linear layer};
       \node[RV] at (0,-4) (y1) {$\hy_1$};
       \node[RV] at (1,-4) (y2) {$\hy_2$};
-      \node[draw] at (4,-4) {Softmax layer};
+      \node[draw] at (4,-4) {Softmax activation};
       \draw[->] (x1) to (w1);
       \draw[->] (x2) to (w1);
       \draw[->] (x1) to (w2);
@@ -147,8 +147,8 @@ Now we can interpret $\hy = P_\vparam(y = 1 | x)$.
 *** Softmax layer
 **** Example: Multivariate logistic regression with $m$ classes.
 - Input: Features $\bx \in \Reals^n$
-- Middle: Fully-connected Linear activation layer $\bz = \mparam \bx$.
-- Output: S\hy_i \defn P_\mparam(y = i | \bx)$
+- Linear: Fully-connected Linear activation layer $\bz = \mparam \bx$ with $\mparam \in \Reals^{m \times n}$.
+- Softmax: $\hy_i = \frac{\exp(z_i)}{\sum_{j = 1 ^m} \exp(z_j)}$
 **** Figure                                                           :BMCOL:
      :PROPERTIES:
      :BEAMER_col: 0.5
