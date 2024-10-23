@@ -450,6 +450,9 @@ If $z$ is a confidence level for the positive class then
 \[
 \cost(z, y) = - \ind{zy < 0} z y
 \]
+\begin{tikzpicture}
+   \draw[color=blue] plot (\x,{ - (\x < 0) * sin(\x r)})    node[right] {margin};
+\end{tikzpicture}
 **** Negative log likelihood (aka cross-entropy)
 If $z$ are label probabilities, then 
 \[
