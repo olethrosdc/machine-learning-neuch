@@ -179,7 +179,7 @@ Assume $k$ classes, then
 **** Objective function
 $L(\theta) = P(x | \theta)$
 **** Marginalisation over latent variable
-$L(\theta) = \sum_z P(z, x | \theta) 
+$L(\theta) = \sum_z P(z, x | \theta) $
 **** Gradient ascent
 $\theta^{(n+1)} = \theta^{(n)} + \alpha \nabla_\theta L(\theta)$
 **** Gradient calculation
