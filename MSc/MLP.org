@@ -9,6 +9,7 @@
 #+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
 #+name: setup-minted
 * Features and layers
+** Introduction
 *** Perceptron vs linear regression
 **** Network architecture                                             :BMCOL:
      :PROPERTIES:
@@ -60,6 +61,7 @@ with
 \nabla_{\hy} \loss = 2(\hy - y).
 \]
 
+** Layers
 *** Layering and features
 **** Layering and features                                            :BMCOL:
      :PROPERTIES:
@@ -131,15 +133,56 @@ y_i = \vparam_i \bx
 \[
 \by = \mparam \bx 
 \]
-*** ReLU layers
-- Typically used in the hidden layers of neural networks
+*** Multiple linear layers
+**** Repeated linear transformations are linear
+It does not really help to have multiple linear layers one after the other. For example, if we transform  $x \in \Reals^n$ to $z \in \Reals^k$ to $y \in \Reals^m$ through two matrices
+\begin{align}
+z & = Ax, &&A \in \Reals^{k \times n}\\
+y &= Bz, &&B \in \Reals^{m \times k}
+\end{align}
+We can rewrite $y$ as 
+\begin{align}
+y &= B(Ax) = (BA) x = Cx, && C \in \Reals^{m \times n}
+\end{align}
+where $C = BA$.
+
+- Successive linear layers have no advantage normally.\footnote{Multi-task learning might be an exception.}
+- However, we can interlace them with *non-linear activation functions*. 
+
+
+
+** Activation functions
+*** ReLU activation
+**** Left column                                                      :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+- Activation function:
 \[
 f(x) = \max(0, x)
 \]
-**** Derivative
+- Derivative
 \[
-df/dx f(x) = \ind{x > 0}
+\frac{d}{dx} f(x) = \ind{x > 0}
 \]
+Typically used in the hidden layers of neural networks, as it is:
+- Simple to calculate.
+- Nonlinear.
+- Its gradient never vanishes.
+
+**** Right column                                                     :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+
+\begin{tikzpicture}[domain=-2:2]
+  \draw[thin,->] (-2.2,0) -- (2.2,0);
+  \draw[thin,->] (0,-0.2) -- (0,2.2);
+  \draw[dotted] (-2.1,-0.1) grid (2.1,2.1);
+  \draw[dashed,thick,color=blue]   plot (\x, {max(0,\x)})    node[right] {$f$};
+  \draw[dashdotted,thick,color=red,samples at={-2,0,0.001,2}]  plot (\x, {\x > 0}) node[right] {$\frac{df}{dz}$};
+\end{tikzpicture}
+
 *** Sigmoid activation
 **** Whay                                                             :BMCOL:
      :PROPERTIES:
@@ -164,7 +207,6 @@ Now we can interpret $\hy = P_\vparam(y = 1 | x)$.
      :PROPERTIES:
      :BEAMER_col: 0.5
      :END:
-
 \begin{tikzpicture}
       \node[RV] at (0,0) (x1) {$x_1$};
       \node[RV] at (1,0) (x2) {$x_2$};
@@ -177,7 +219,6 @@ Now we can interpret $\hy = P_\vparam(y = 1 | x)$.
       \draw[->] (x2) to (z);
       \draw[->] (z) to (y);
 \end{tikzpicture}
-
 
 *** Softmax layer
 **** Description                                                      :BMCOL:
@@ -243,16 +284,24 @@ where $\mparam = [\vparam_i]_{i=1}^m$, $\param_{i,j} \sim \Normal(0,1)$
 
 ** Back propagation
 *** Background on back-propagation
-**** The problem
-- We need to minimise a loss function $\loss$
-- We need to calculate 
+**** Gradient descent algorithm
+- We need to minimise the expected value $\E_\vparam[\loss]$ of the loss function $\loss$
+- Since we cannot calculate  $\E_\vparam[\loss]$, we use:
 \[
 \nabla_\vparam \E_\vparam[\loss]
 \approx 
 \frac{1}{T} \sum_{t=1}^T \nabla_\vparam \cost(x_t, y_t, \vparam).
 \]
-- However $\cost(x_t, y_t, \vparam)$ is a complex non-linear function of $\vparam$.
-- We need many steps to calculate $\cost$. How can we then do it?
+- We can then update our parameters to reduce the *empirical loss*
+\[
+\vparam_{t+1} = \vparam_t - \alpha_t \nabla_\vparam \cost(x_t, y_t, \vparam).
+\]
+**** The problem
+- However $\cost$ is a complex function of $\vparam$.
+- How can we obtain $\nabla_\vparam \cost$?
+**** The solution
+- Use the chain rule to "backpropagate" errors.
+
 *** The chain rule of differentiation
 #+ATTR_LATEX: :width 150px
 [[../fig/liebniz.jpeg]]
@@ -413,21 +462,29 @@ Each partial derivative is simple:
 
 
 *** Sigmoid layer
+
 - This layer is used for *binary classification*.
 - It is used in the *logistic regression* model to obtain label probabilities.
 \[
 f(z) = 1 / (1 + \exp(-z))
 \]
-
-**** Derivative
-So let us ignore the other inputs for simplicity:
+- Derivative
 \[
 \frac{d}{dz} f(z) = \exp(-z)/[1+\exp(-z)]^{2}
 \]
 
+\begin{tikzpicture}[domain=-4:4]
+  \draw[thin,->] (-4.2,0) -- (4.2,0);
+  \draw[thin,->] (0,-0.2) -- (0,1.2);
+  \draw[dotted] (-4.1,-0.1) grid (4.1,1.1);
+  \draw[dashed,thick,color=blue]   plot (\x, {1/(1+exp(-\x))})    node[right] {$f$};
+  \draw[dashdotted,thick,color=red]  plot (\x, {exp(-\x)/(1+exp(-\x))^2}) node[right] {$\frac{df}{dz}$};
+\end{tikzpicture}
+
 
 *** Softmax layer
 - This layer is used for *multi-class classification*
+- It is a straightforward generalisation of the sigmoid function.
 \[
 y_i(\bz) = \frac{\exp(z_i)}{\sum_j \exp(z_j)}
 \]
@@ -445,25 +502,62 @@ y_i(\bz) = \frac{\exp(z_i)}{\sum_j \exp(z_j)}
 \]
 ** Cost functions
 *** Classification cost functions
-**** Error margin
-If $z$ is a confidence level for the positive class then
+**** Col A                                                            :BMCOL:
+	 :PROPERTIES:
+	 :BEAMER_col: 0.5
+	 :END:
+***** Classification error
+If $z$ is the output for each class then
+\[
+\cost(z, y) = \ind{y \notin \argmax(z)}
+\]
+This is not differentiable.
+***** Error margin
+If $z$ is the positive class output then
 \[
 \cost(z, y) = - \ind{zy < 0} z y
 \]
-**** Negative log likelihood (aka cross-entropy)
+Used in the perceptron.
+***** Negative log likelihood
 If $z$ are label probabilities, then 
 \[
 \cost(z, y) = - \ln z_y.
 \]
-
+Used in logistic regression.
+**** Col B                                                            :BMCOL:
+	 :PROPERTIES:
+	 :BEAMER_col: 0.5
+	 :END:
+[[../fig/class_loss_functions.pdf]]
+***** Hinge loss
+If $z$ are the output for each class
+\[
+\cost(z, y) = 1 - z_y
+\]
+Used in large margin classifiers.
 *** Regression cost functions
-**** Squared error
-If $z$ is a prediction for the dependent variable then
+**** Col A                                                            :BMCOL:
+	 :PROPERTIES:
+	 :BEAMER_col: 0.5
+	 :END:
+***** L2 loss (Squared error)
+If $z$ is a prediction for $y$ then
 \[
 \cost(z, y) = (y - z)^2
 \]
-This also corresponds to negative log likelihood under a Gaussianity assumption.
-**** Huber loss
+This is equivalent to negative log likelihood under Gaussianity. Used in linear regression.
+***** L1 loss
+If $z$ is a prediction for $y$ then
+\[
+\cost(z, y) = |y - z|
+\]
+Used in LASSO regression.
+**** Col B                                                            :BMCOL:
+	 :PROPERTIES:
+	 :BEAMER_col: 0.5
+	 :END:
+[[../fig/reg_loss_functions.pdf]]
+***** Huber loss
 If $z$ is a prediction, then
 \begin{equation}
 \cost(z, y) = 
@@ -472,9 +566,37 @@ If $z$ is a prediction, then
  \delta(|z - y| - \frac{1}{2} \delta) & \textrm{otherwise.}
 \end{cases}
 \end{equation}
+Mixes L1 and L2 losses.
 
 
-
+** Stochastic gradient descent in practice
+*** Gradient descent in practice
+**** The ideal gradient descent algorithm:
+If we could calculte $\nabla_\vparam \E_\vparam[\loss]$, we could do:
+\[
+\vparam_{n+1} = \vparam_n - \alpha_n \nabla_\vparam \E_\vparam[\loss]
+\]
+for a suitable $\alpha_n$ schedule.
+**** Gradient descent on the empirical error
+Since we only have the data, we can try to minimse the empirical loss
+$\frac{1}{T} \sum_{t=1}^T \cost(x_t, y_t, \vparam)$ through gradient descent
+\[
+\vparam_{n+1} = \vparam_{n} - \alpha_n \frac{1}{T} \sum_{t=1}^T \nabla_\vparam \cost(x_t, y_t, \vparam)
+\]
+This is also called *batch* gradient descent.
+*** Stochastic gradient descent
+**** Gradient descent on one example:
+We don't have to wait calculate $\nabla_\vparam \cost(x_t, y_t, \vparam)$ for all $t$ before applying the update. We can do it at every example:
+\[
+\vparam_{n+1}= \vparam_n -  \alpha_n \nabla_\vparam \cost(x_{[n]_T}, y_{[n]_T}, \vparam).
+\]
+Here $[n]_T$ is 1 + n modulo T to ensure $n \in \{1, \ldots, T\}$.
+**** Minibatch gradient descent
+However, it is a bit better to look at $K$ examples at a time before we change the parameters. This is called a *minibatch*
+\[
+\vparam_{n+1}= \vparam_n -  \alpha_n \frac{1}{K} \sum_{k=nK}^{(n+1)K-1} \nabla_\vparam \cost(x_{[k]_T}, y_{[k]_T}, \vparam)
+\]
+This also helps with parallelisation, since we can compute $\cost, \nabla_\vparam \cost$ in parallel for each example.
 
 * Python libraries
 ** sklearn
@@ -495,13 +617,34 @@ from sklearn.neural_network import MLPRegressor
 model = MLPRegressor(hidden_layer_sizes=(5, 2))
 #+END_SRC
 ** PyTorch
-*** Datasets
+*** PyTorch
+**** Data set-up
 #+BEGIN_SRC python :exports code
 X_train = torch.tensor(X_train, dtype=torch.float32)
 train_dataset = TensorDataset(X_train, y_train)  
 train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True)
-mlp = nn.Sequential(nn.Linear(input_size , 50), nn.ReLU())
 #+END_SRC
+*** PyTorch: Manual training
+**** Network setup
+#+BEGIN_SRC python :exports code
+fc1 = nn.Linear(input_size, hidden_size)  # Input to hidden layer
+fc2 = nn.Linear(hidden_size, output_size)  # Hidden layer to output layer
+sigmoid = nn.Sigmoid() # some activation function
+criterion = nn.BCELoss() #what loss to minimise
+optimizer = optim.SGD(model.parameters(), lr=0.001) # how to minimise it
+#+END_SRC
+**** Training
+#+BEGIN_SRC python :exports code
+# Manual forward pass.
+z1 = fc1(inputs)  # hidden layer 1
+a1 = sigmoid(z1)     # Apply activation for hidden
+z2 = fc2(a1)      # Linear combination in output layer
+outputs = sigmoid(z2)  # Output layer activation
+loss = criterion(outputs, labels) # Specify loss
+loss.backward() # Backward pass
+optimizer.step() # Update weights
+#+END_SRC
+
 ** TensorFlow
 *** TensorFlow
-This is another library, no need to use this for this course
+	This is another library, no need to use this for this course
