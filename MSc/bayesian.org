@@ -94,7 +94,12 @@
 - Prior: $P(H_i)$.
 - Likelihood $P(D | H_i)$.
 - Posterior: $P(H_i | D) = P(D \cap H_i) / P(D) = P(D | H_i) P(H_i) / P(D)$
-- Marginal probability: $P(D) = P(D | H_0) P(H_0) + P(D | H_1) P(H_1)$
+- Marginal probability: 
+\begin{align}
+P(D)
+& = P(D \cap H_0) + P(D \cap H_1)\\
+& = P(D | H_0) P(H_0) + P(D | H_1) P(H_1)
+\end{align}
 - Posterior: $P(H_0 | D) = \frac{P(D | H_0) P(H_0)}{P(D | H_0) P(H_0) + P(D | H_1) P(H_1)}$
 - Assuming $P(D | H_1) = 1$, and setting $P(H_0) = q$, this gives
        \[
