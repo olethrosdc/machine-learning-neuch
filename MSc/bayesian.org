@@ -72,7 +72,7 @@
 *** DNA test properties
  #+ATTR_BEAMER: :overlay <+->
  - $D$: Test is positive
- - $P(D | H_0) = 1\%$: False positive rate
+ - $P(D | H_0) = 10\%$: False positive rate
  - $P(D | H_1) = 100\%$: True positive rate
 
 #+BEAMER: \pause
@@ -165,6 +165,80 @@ Example: Are men's and women's heights the same?
 - Data $x \sim P_{\param^*}$ for some $\param^* \in \Param$.
 - How can we estimate the correct $\param$?
 - How can we predict a new data point?
+#+BEAMER: \pause
+*** Bernoulli model :B_example:
+    :PROPERTIES:
+    :BEAMER_env: example
+    :END:
+**** Col A                                                            :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+#+ATTR_BEAMER: :overlay <+->
+- $x \in \{0,1\}$, $\param \in [0,1]$
+- $x \mid \param \sim \Ber(\param)$
+- P_\param(x = 1) = \param
+- P_\param(x = 0) = 1 - \param.
+**** Col B                                                            :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+\begin{tikzpicture}
+\node[RV] at (1,0) (x) {$x_t$};
+\node[RV,hidden] at (0,0) (mean) {$\theta$};
+\draw[->] (mean) to (x);
+\end{tikzpicture}
+#+BEAMER: \pause
+*** Gaussian model                                                :B_example:
+    :PROPERTIES:
+    :BEAMER_env: example
+    :END:
+**** Col A                                                            :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+#+ATTR_BEAMER: :overlay <+->
+- $x \in \Reals$, $\mu \in \Reals, \sigma \in \Reals_+$
+- $x \mid \mu, \sigma \sim \Normal(\mu, \sigma)$
+- $p_\param(x) = \frac{1}{\sigma\sqrt{2\pi}}\exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)$
+**** Col B                                                            :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+\begin{tikzpicture}
+\node[RV] at (1,0) (x) {$x_t$};
+\node[RV,hidden] at (0,0) (mean) {$\mu$};
+\node[RV,hidden] at (0,1) (std) {$\sigma$};
+\draw[->] (mean) to (x);
+\draw[->] (std) to (x);
+\end{tikzpicture}
+
+
+** Maximum likelihood (ML) inference
+- Family $\{P_\param |  \param \in \Param\}$
+- Data $x$ with *likelihood* $P_\param(x)$ for each parameter value $\param$.
+- $\param_{\textrm{ML}}(x) = \argmax_\param P_\param(x)$
+*** Bernoulli model :B_example:
+    :PROPERTIES:
+    :BEAMER_env: example
+    :END:
+#+ATTR_BEAMER: :overlay <+->
+- $x_t \in \{0,1\}$, for $t \in [T]$, $\param \in [0,1]$
+- $x_t \mid \param \sim \Ber(\param)$
+- $P_\param(x_1, \ldots, x_T)  = \prod_{t=1}^T P_\param(x_t)$
+- What maximises the likelihood?
+- Define $s_T = \sum_{t=1}^T x_t$.
+- Show that $\param_{\textrm{ML}}(x) = s_T / T$.
+- What is the problem with this estimate?
+
+
+** Maximum a posteriori (MAP) inference
+- Family $\{P_\param |  \param \in \Param\}$
+- Data $x$ with *likelihood* $P_\param(x)$ for each parameter value $\param$.
+- *Prior* $\bel(\param)$.
+- $\param_{\textrm{MAP}}(x) = \argmax_\param P_\param(x) \bel(\param)$
+- Experiment with the prior for the Bernoulli model.
+
 
 ** Bayesian Inference
 #+ATTR_BEAMER: :overlay <+->
