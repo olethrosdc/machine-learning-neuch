@@ -24,25 +24,25 @@ The course focuses on fundamental modelling problems and general machine learnin
 
 
 ** Schedule
-|--------+-------+----------------------------------------+------------------------------------------------------------------+---------------------+---------|
-| Module |  Date | Topic                                  | Details                                                          | Python              | Type    |
-|--------+-------+----------------------------------------+------------------------------------------------------------------+---------------------+---------|
-|      1 | 09.17 | Introduction                           | Mean estimation, kNN, Train/Test                                 | nympy, pandas       | Mixed   |
-|      2 | 09.24 | Generalisation, kNN, Decision problems | kNN, Generalisation, Decision Problems                           | pandas, scikitlearn | Mixed   |
-|      3 | 10.01 | The Perceptron, Model Comparison       | The Perceptron, Cross-Validation, Bootstrapping, Model Selection | scikit learn        | Mixed   |
-|      4 | 10.08 | Regression                             | Linear regression, SGD                                           |                     | Mixed   |
-|      5 | 10.15 | Regression lab, Simulation, Project    | Lab, Feature Selection for Regression                            |                     | Lab     |
-|      6 | 10.22 | Project Day                            | Maximum Likelihood, SGD for Linear Regression                    |                     | Lecture |
-|      7 | 10.29 | Generative Models                      | Beta-Bernoulli, Naive Bayes and Beyond                           |                     | Lab     |
-|      8 | 11.05 | Multi-Layer Perceptrons                | Backpropagation, Softmax, RELU                                   |                     | Mix     |
-|      9 | 11.12 | MLP2: Image Lab                        | Convolutional Networks, Image applications                       |                     | Lab     |
-|     10 | 11.19 | Sequence Prediction                    | Markov models, text prediction, LLMs                             |                     | Mixed   |
-|     11 | 11.26 | Project lab day                        |                                                                  |                     | Lab     |
-|     12 | 12.03 | Fairness and Privacy                   |                                                                  |                     | Mixed   |
-|     13 | 12.10 | Project Presentations                  |                                                                  |                     | Lab     |
-|--------+-------+----------------------------------------+------------------------------------------------------------------+---------------------+---------|
-|     14 | 12.17 | Project Presentations                  |                                                                  |                     |         |
-|--------+-------+----------------------------------------+------------------------------------------------------------------+---------------------+---------|
+|--------+-------+----------------------------------------+------------------------------------------------------------------+---------------------+-------|
+| Module |  Date | Topic                                  | Details                                                          | Python              | Type  |
+|--------+-------+----------------------------------------+------------------------------------------------------------------+---------------------+-------|
+|      1 | 09.17 | Introduction                           | Mean estimation, kNN, Train/Test                                 | nympy, pandas       | Mixed |
+|      2 | 09.24 | Generalisation, kNN, Decision problems | kNN, Generalisation, Decision Problems                           | pandas, scikitlearn | Mixed |
+|      3 | 10.01 | The Perceptron, Model Comparison       | The Perceptron, Cross-Validation, Bootstrapping, Model Selection | scikit learn        | Mixed |
+|      4 | 10.08 | Regression                             | Linear regression, SGD                                           | sklearn             | Mixed |
+|      5 | 10.15 | Regression lab, Simulation, Project    | Lab, Feature Selection for Regression                            | sklearn             | Lab   |
+|      6 | 10.22 | Multi-layer Perceptrons                | Cost functions, Backpropagation, Layers                          | sklearn/pytorch     | Mix   |
+|      7 | 10.29 | Probabilistic machine learning         | ML, MAP, Bayesian Infernece, Beta-Bernoulli: hypotheses          |                     | Lab   |
+|      8 | 11.05 | Generative models                      | Naive Bayes, Graphical models, independence                      |                     | Mix   |
+|      9 | 11.12 | Sequence prediction                    | Markov models, text prediction, LLMs                             |                     | Mixed |
+|     10 | 11.19 | Ensemble methods                       | Bagging, boosting                                                |                     | Mixed |
+|     11 | 11.26 | Project lab day                        |                                                                  |                     | Lab   |
+|     12 | 12.03 | Fairness and Privacy                   |                                                                  |                     | Mixed |
+|     13 | 12.10 | Project Presentations                  |                                                                  |                     | Lab   |
+|--------+-------+----------------------------------------+------------------------------------------------------------------+---------------------+-------|
+|     14 | 12.17 | Project Presentations                  |                                                                  |                     |       |
+|--------+-------+----------------------------------------+------------------------------------------------------------------+---------------------+-------|
 
 ** Material
 *** Textbooks

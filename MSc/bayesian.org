@@ -104,29 +104,18 @@
 ** Python example
 
 #+BEGIN_SRC python
-# the input to the function is the prior, the likelihood function, and posteriors
-# Input:
-# - prior for hypothesis 0 (scalar)
-# - data (single data point)
-# - likelihood[data][hypothesis] array unction
-# Returns:
-# - posterior for the data point (if multiple points are given, the calculation is repeated)
 def get_posterior(prior, data, likelihood):
     marginal = prior * likelihood[data][0] + (1 - prior) * likelihood[data][1]
     posterior = prior * likelihood[data][0] / marginal
     return posterior
 
 import numpy as np
-prior = 0.9
+prior = 0.9 # Pr(H1)
 likelihood = np.zeros([2, 2])
-# pr of negative test if not a match
-likelihood[0][0] = 0.9
-# pr of positive test if not a match
-likelihood[1][0] = 0.1
-# pr of negative test if a match
-likelihood[0][1] = 0
-# pr of positive test if a match
-likelihood[1][1] = 1
+likelihood[0][0] = 0.9 # Pr(F|H0)
+likelihood[1][0] = 0.1 # Pr(T|H0)
+likelihood[0][1] = 0 # Pr(F|H1)
+likelihood[1][1] = 1 # Pr(T|H1)
 data = 1
 return get_posterior(prior, data, likelihood)
 #+END_SRC
@@ -163,14 +152,20 @@ Example: Are men's and women's heights the same?
 #+ATTR_BEAMER: :overlay <+->
 - Defining the models $P(D | H_i)$ incorrectly.
 - Using an "unreasonable" prior $P(H_i)$
-
+#+BEAMER: \pause
 *** The garden of many paths
 #+ATTR_BEAMER: :overlay <+->
 - Having a huge hypothesis space
 - Selecting the relevant hypothesis after seeing the data
 
-
 * Bayesian Inference
+** Probabilistic models
+#+ATTR_BEAMER: :overlay <+->
+- Model family $\{P_\param |  \param \in \Param\}$
+- Data $x \sim P_{\param^*}$ for some $\param^* \in \Param$.
+- How can we estimate the correct $\param$?
+- How can we predict a new data point?
+
 ** Bayesian Inference
 #+ATTR_BEAMER: :overlay <+->
 - Model family $\{P_\param |  \param \in \Param\}$
@@ -181,17 +176,17 @@ Example: Are men's and women's heights the same?
 \begin{align}
 \bel(\param | x)
 & = \frac{P_\param(x) \bel(\param)}{\sum_{\param' \in \Param} P_{\param'}(x) \bel(\param')},
-\tag{finite $\Param$, $P$ is a probability}
+\tag{finite $\Param$, $\bel$ is a probability}
 \\
 \dbel(\param | x)
 & = \frac{P_\param(x) \dbel(\param)}{\int_{\Param} P_{\param'}(x) \dbel(\param') d\param'},
-\tag{continuous $\Param$, $p$ is a density}
+\tag{continuous $\Param$, $\dbel$ is a density}
 \\
 \bel(B | x)
 & = \frac{\int_{B} P_{\param'}(x) d\bel(\param)}
 {\int_{\Param}P_{\param'}(x) d\bel(\param)},
 && B \subset \Param
-\tag{arbitrary $\Param$, $P$ is a measure}
+\tag{arbitrary $\Param$, $\bel$ is a measure}
 \end{align}
 #+BEAMER: \pause
 *** Alternative notation for different probability spaces
