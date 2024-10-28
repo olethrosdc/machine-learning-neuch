@@ -11,6 +11,17 @@
 
 * Conditional Probability and the Theorem of Bayes
 #+TOC: headlines
+** Probability refresher
+  \begin{tikzpicture}
+    \node<2->[someset, minimum size=2cm, fill=green, opacity=0.5] at (0,0) (Recovery) [label=Recovery] {$A_1$};
+    \node<3->[someset, minimum size=3cm, fill=red, opacity=0.5] at (2,0) (Side effects) [label=Side effects] {$A_2$};
+    \node[someset, minimum size=5cm] at (1,0) (Everything) [label=below:Everything ($\Outcomes$)] {};
+    \node<4-> at (1.5,-0.5) (omega) {$\outcome$};
+    \node at (5,0) (patient) {Patient state};
+    \draw<4->[->, bend left=45] (patient) -- (omega);
+  \end{tikzpicture}
+
+
 ** Bayes theorem                                         :theory:probability:
 #+ATTR_BEAMER: :overlay <+->
 - Recall the definition of Conditional probability:
@@ -108,7 +119,7 @@ P(D)
 - The posterior can always be updated with more data!
 ** Python example
 
-#+BEGIN_SRC python :exports code
+#+BEGIN_SRC python
 def get_posterior(prior, data, likelihood):
     marginal = prior * likelihood[data][0] + (1 - prior) * likelihood[data][1]
     posterior = prior * likelihood[data][0] / marginal
