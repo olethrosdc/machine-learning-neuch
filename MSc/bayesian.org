@@ -182,8 +182,8 @@ Example: Are men's and women's heights the same?
 #+ATTR_BEAMER: :overlay <+->
 - $x \in \{0,1\}$, $\param \in [0,1]$
 - $x \mid \param \sim \Ber(\param)$
-- P_\param(x = 1) = \param
-- P_\param(x = 0) = 1 - \param.
+- $P_\param(x = 1) = \param$
+- $P_\param(x = 0) = 1 - \param$.
 **** Col B                                                            :BMCOL:
      :PROPERTIES:
      :BEAMER_col: 0.5
