@@ -9,19 +9,121 @@
 #+OPTIONS:   H:2
 #+OPTIONS: toc:nil
 
-* Conditional Probability and the Theorem of Bayes
-#+TOC: headlines
+* Introduction
 ** Probability refresher
+*** Col A                                                             :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
   \begin{tikzpicture}
     \node<2->[someset, minimum size=2cm, fill=green, opacity=0.5] at (0,0) (Recovery) [label=Recovery] {$A_1$};
     \node<3->[someset, minimum size=3cm, fill=red, opacity=0.5] at (2,0) (Side effects) [label=Side effects] {$A_2$};
     \node[someset, minimum size=5cm] at (1,0) (Everything) [label=below:Everything ($\Outcomes$)] {};
-    \node<4-> at (1.5,-0.5) (omega) {$\outcome$};
-    \node at (5,0) (patient) {Patient state};
+    \node<4-> at (1.5,0.5) (omega) {$\outcome$};
+    \node<4-> at (4,3) (patient) {Patient state};
     \draw<4->[->, bend left=45] (patient) -- (omega);
   \end{tikzpicture}
+*** Col B                                                             :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+**** Notation
+#+ATTR_BEAMER: :overlay <+->
+- $\omega \in \Omega$ random outcome
+- $P(A)$: Probability that $\omega$ is in $A$.
+- $P(A_2) > P(A_1)$ means $A_2$ is more likely than $A_1$ according to $P$.
+#+BEAMER: \pause
+**** Axioms
+#+ATTR_BEAMER: :overlay <+->
+- $P(A \geq 0)$ for any $A \subset \Omega$.
+- $P(\Omega) = 1$.
+- If $A_1 \cap A_2 = \emptyset$ then $P(A_1 \cup A_2) = P(A_1) + P(A_2)$.
+  
+** Mutually exclusive events
+*** Col A                                                             :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+
+    \begin{tikzpicture}
+      \node[someset, minimum size=1cm, fill=green, opacity=0.5] at (0,0) (Recovery) [label=Recovery] {$A_1$};
+      \node[someset, minimum size=2cm, fill=red, opacity=0.5] at (2,0) (Side effects) [label=Side effects] {$A_2$};
+      \node[someset, minimum size=4cm] at (1,0) (Everything) [label=below:Everything ($\Outcomes$)] {};
+    \end{tikzpicture}
+*** Col B                                                             :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+- A_1 \cap A_2 = \emptyset
+- Consequently, $P(A_1 \cup A_2) = P(A_1) + P(A_2)$
+- So the probability of $A_1$ *or* $A_2$ equals the probability of $A_1$  *plus* the probability of $A_2$.
+#+BEAMER: \pause
+**** Which of the following is true?
+1. If $A_2$ happens then $A_1$ happens.
+2. If $A_1$ happens then $A_2$ happens.
+3. $A_1$ and $A_2$ can happen at the same time.
+4. $A_1$ and $A_2$ cannot happen at the same time.
+#+BEAMER: \pause
+- (4) is correct.
 
 
+** Implication
+*** Col A                                                             :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+
+    \begin{tikzpicture}
+      \node[someset, minimum size=1cm, fill=green, opacity=0.5] at (1.5,-0.5) (Recovery) [label=Recovery] {$A_1$};
+      \node[someset, minimum size=3cm, fill=red, opacity=0.5] at (1,0) (Side effects) [label=Side effects] {$A_2$};
+      \node[someset, minimum size=4cm] at (1,0) (Everything) [label=below:Everything ($\Outcomes$)] {};
+    \end{tikzpicture}
+*** Col B                                                             :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+- $A_1 \subset A_2$.
+**** Which of the following is true?
+1. If $A_2$ happens then $A_1$ happens.
+2. If $A_1$ happens then $A_2$ happens.
+3. $A_1$ and $A_2$ can happen at the same time.
+4. $A_1$ and $A_2$ cannot happen at the same time.
+#+BEAMER: \pause
+- (1,3) are correct
+
+** Marginalisation
+*** Col A                                                             :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+  \begin{tikzpicture}
+    \begin{scope}
+      \draw[opacity=0.5, fill=gray, preaction={draw, thick, double
+        distance=0pt}] plot[smooth cycle] coordinates{ (0,2) (2.5,2.5)
+        (3,4) (4,3) (4,-1) (0,0) };
+      
+      \draw[thick, draw=black, fill=red, opacity=0.5] (2,1) -- (2,3)
+      -- (-2,1) -- cycle; \draw[thick, draw=black, fill=blue,
+      opacity=0.5] (2,1) -- (2,-2) -- (-2,1) -- cycle; \draw[thick,
+      draw=black, fill=yellow, opacity=0.5] (2,1) -- (2,-2) -- (5,1)
+      -- cycle; \draw[thick, draw=black, fill=green, opacity=0.5]
+      (2,1) -- (2,3) -- (5,1) -- cycle;
+    \end{scope}
+    \node at (1,2) {$B_1$}; \node at (3,2) {$B_2$}; \node at (3,0)
+    {$B_3$}; \node at (1,0) {$B_4$};
+  \end{tikzpicture}
+*** Col B                                                             :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+\begin{align*}
+  P(B) &= P\left(\bigcup_i B_i\right) = \sum_i P(B_i) \\
+  P(A \cap B) &= P\left(\bigcup_i (A \cap B_i)\right)\\
+& = \sum_i P(A \cap B_i),
+\end{align*}
+
+* Conditional Probability and the Theorem of Bayes
+#+TOC: headlines
 ** Bayes theorem                                         :theory:probability:
 #+ATTR_BEAMER: :overlay <+->
 - Recall the definition of Conditional probability:
@@ -101,17 +203,21 @@
 - What is your belief that the people with the positive test are guilty?
 
 ** Explanation
-       #+ATTR_BEAMER: :overlay <+->
-- Prior: $P(H_i)$.
-- Likelihood $P(D | H_i)$.
-- Posterior: $P(H_i | D) = P(D \cap H_i) / P(D) = P(D | H_i) P(H_i) / P(D)$
-- Marginal probability: 
-\begin{align}
-P(D)
-& = P(D \cap H_0) + P(D \cap H_1)\\
-& = P(D | H_0) P(H_0) + P(D | H_1) P(H_1)
-\end{align}
-- Posterior: $P(H_0 | D) = \frac{P(D | H_0) P(H_0)}{P(D | H_0) P(H_0) + P(D | H_1) P(H_1)}$
+- *Prior*: $P(H_i)$. How much do we believe in $H_i$.
+- *Likelihood* $P(D | H_i)$. How likely is $D$ if $H_i$ is true.
+#+BEAMER: \pause
+- *Posterior* $P(H_i | D)$: How likely is $H_i$ given the data
+  \[
+  P(H_i | D)
+  =
+  \frac{P(D \cap H_i)}{P(D)}
+  = \frac{P(D | H_i) P(H_i)}{P(D)}
+  \]
+#+BEAMER: \pause
+- Obtaining the *marginal* probability: \[ P(D)
+ = P(D \cap H_0) + P(D \cap H_1) & = P(D | H_0) P(H_0) + P(D | H_1) P(H_1) \]
+
+- Posterior: \[P(H_0 | D) = \frac{P(D | H_0) P(H_0)}{P(D | H_0) P(H_0) + P(D | H_1) P(H_1)}\]
 - Assuming $P(D | H_1) = 1$, and setting $P(H_0) = q$, this gives
        \[
        P(H_0 | D) = \frac{0.1 q}{0.1 q + 1 - q} =  \frac{q}{10 - 9q}
@@ -120,20 +226,21 @@ P(D)
 ** Python example
 
 #+BEGIN_SRC python
-def get_posterior(prior, data, likelihood):
-    marginal = prior * likelihood[data][0] + (1 - prior) * likelihood[data][1]
-    posterior = prior * likelihood[data][0] / marginal
-    return posterior
+  def get_posterior(prior, data, likelihood):
+	  marginal = prior*likelihood[data][0]
+	   + (1 - prior)*likelihood[data][1]
+	  posterior = prior*likelihood[data][0] / marginal
+	  return posterior
 
-import numpy as np
-prior = 0.9 # Pr(H1)
-likelihood = np.zeros([2, 2])
-likelihood[0][0] = 0.9 # Pr(F|H0)
-likelihood[1][0] = 0.1 # Pr(T|H0)
-likelihood[0][1] = 0 # Pr(F|H1)
-likelihood[1][1] = 1 # Pr(T|H1)
-data = 1
-return get_posterior(prior, data, likelihood)
+  import numpy as np
+  prior = 0.9 # Pr(H1)
+  likelihood = np.zeros([2, 2])
+  likelihood[0][0] = 0.9 # Pr(F|H0)
+  likelihood[1][0] = 0.1 # Pr(T|H0)
+  likelihood[0][1] = 0 # Pr(F|H1)
+  likelihood[1][1] = 1 # Pr(T|H1)
+  data = 1
+  return get_posterior(prior, data, likelihood)
 #+END_SRC
 
 #+RESULTS:
@@ -193,8 +300,8 @@ Example: Are men's and women's heights the same?
 #+ATTR_BEAMER: :overlay <+->
 - $x \in \{0,1\}$, $\param \in [0,1]$
 - $x \mid \param \sim \Ber(\param)$
-- P_\param(x = 1) = \param
-- P_\param(x = 0) = 1 - \param.
+- $P_\param(1) = \param$
+- $P_\param(0) = 1 - \param$.
 **** Col B                                                            :BMCOL:
      :PROPERTIES:
      :BEAMER_col: 0.5
