@@ -34,7 +34,7 @@
 #+BEAMER: \pause
 **** Axioms
 #+ATTR_BEAMER: :overlay <+->
-- $P(A \geq 0)$ for any $A \subset \Omega$.
+- $P(A) \geq 0$ for any $A \subset \Omega$.
 - $P(\Omega) = 1$.
 - If $A_1 \cap A_2 = \emptyset$ then $P(A_1 \cup A_2) = P(A_1) + P(A_2)$.
   
@@ -324,7 +324,6 @@ Example: Are men's and women's heights the same?
 - Selecting the relevant hypothesis after seeing the data
 
 ** Class feedback
-https://forms.gle/qUEvjXEWRVyVTtsL8
 [[./fig/class-form.png]]
 
 * Bayesian Inference
