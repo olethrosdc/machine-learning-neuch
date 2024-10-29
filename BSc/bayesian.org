@@ -246,7 +246,6 @@
 #+RESULTS:
 : 0.4736842105263158
 
-
 ** Types of hypothesis testing problems
 #+ATTR_BEAMER: :overlay <+->
 *** Simple Hypothesis Test
@@ -336,7 +335,6 @@ Example: Are men's and women's heights the same?
 \draw[->] (std) to (x);
 \end{tikzpicture}
 
-
 ** Maximum likelihood (ML) inference
 - Family $\{P_\param |  \param \in \Param\}$
 - Data $x$ with *likelihood* $P_\param(x)$ for each parameter value $\param$.
@@ -354,14 +352,12 @@ Example: Are men's and women's heights the same?
 - Show that $\param_{\textrm{ML}}(x) = s_T / T$.
 - What is the problem with this estimate?
 
-
 ** Maximum a posteriori (MAP) inference
 - Family $\{P_\param |  \param \in \Param\}$
 - Data $x$ with *likelihood* $P_\param(x)$ for each parameter value $\param$.
 - *Prior* $\bel(\param)$.
 - $\param_{\textrm{MAP}}(x) = \argmax_\param P_\param(x) \bel(\param)$
 - Experiment with the prior for the Bernoulli model.
-
 
 ** Bayesian Inference
 #+ATTR_BEAMER: :overlay <+->
@@ -422,7 +418,6 @@ Example: Are men's and women's heights the same?
 - Does not select a single model
 - Averages over all models according to their fit *and* the prior
 - Does *not* result in an optimisation problem.
-
 
 ** The n-meteorologists problem  
 - Consider $n$ meteorological stations $\{\mu\}$ predicting rainfall.
