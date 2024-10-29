@@ -124,23 +124,39 @@
 * Conditional Probability and the Theorem of Bayes
 #+TOC: headlines
 ** Bayes theorem                                         :theory:probability:
+*** COL A                                                             :BMCOL:
+    :PROPERTIES:
+    :BEAMER_col: 0.5
+    :END:
 #+ATTR_BEAMER: :overlay <+->
-- Recall the definition of Conditional probability:
- \[
- P(A | B) = P(A \cap B) / P(B)
- \]
- i.e. the probability of A happening if B happens.
-- It is also true that:
- \[
- P(B | A) = P(A \cap B) / P(A)
- \]
-- Combining the two equations, reverse the conditioning:
- \[
- P(A | B) = P(B | A) P (A) / P(B)
- \]
+**** Conditional probability
+The probability of A happening if B happens.
+\[
+P(A | B) \defn \frac{P(A \cap B)}{P(B)}
+\]
+Since the following is also true:
+\[
+P(B | A) \defn \frac{P(A \cap B)}{P(A)}
+\]
+**** Bayes's theorem
+So we can reverse the order of conditioning:
+\[
+P(A | B) = \frac{P(B | A) P (A)}{ P(B)}
+\]
 
-- So we can reverse the order of conditioning, i.e. relate to the probability of A given B to that of B given A.
 
+*** COL B                                                             :BMCOL:
+    :PROPERTIES:
+    :BEAMER_col: 0.5
+    :END:
+  \begin{tikzpicture}
+    \node[someset, minimum size=2cm, fill=red, opacity=0.5] at (0,-0.5) (side-effects) [label=Side effects] {$A$};
+    \node[someset, minimum size=3cm, fill=green, opacity=0.5] at (1,0) (recovery) [label=recovery] {$B$};
+    \node[someset, minimum size=5cm] at (1,0) (Everything)  {};
+  \end{tikzpicture}
+
+- If you do recover, what is more likely? Side-effects or not?
+- If you have side-effects, are you more likely to recover not?
 ** The cards problem
  1. Print out a number of cards, with either [A|A], [A|B] or [B|B] on their sides.
  2. If you have an A, what is the probability of an A on the other side?
@@ -222,6 +238,34 @@
        P(H_0 | D) = \frac{0.1 q}{0.1 q + 1 - q} =  \frac{q}{10 - 9q}
        \]
 - The posterior can always be updated with more data!
+** The Covid Test
+
+*** Col A                                                             :BMCOL:
+    :PROPERTIES:
+    :BEAMER_col: 0.6
+    :END:
+- You are feeling sick. Two possibilities:
+       - $H_0$: You do not have COVID.
+       - $H_1$: You have COVID.
+
+- You perform a rapid test, which has detects COVID 80% of the time.
+\[
+P(T | H_1) = 0.8.
+\]
+- It falsely says you have COVID  10 % of the time.
+\[
+P(T | H_0) = 0.1.
+\]
+- Throw two dice dice and fill in the result in the google sheet to get your test result.
+
+- Select your own prior probability $P(H_1)$ of having covid. What is the posterior probability $P(H_1 | H_0)$
+*** Col B                                                             :BMCOL:
+    :PROPERTIES:
+    :BEAMER_col: 0.4
+    :END:
+[[./fig/covid.png]]
+
+
 ** Python example
 
 #+BEGIN_SRC python
@@ -278,6 +322,10 @@ Example: Are men's and women's heights the same?
 #+ATTR_BEAMER: :overlay <+->
 - Having a huge hypothesis space
 - Selecting the relevant hypothesis after seeing the data
+
+** Class feedback
+https://forms.gle/qUEvjXEWRVyVTtsL8
+[[./fig/class-form.png]]
 
 * Bayesian Inference
 ** Probabilistic models
