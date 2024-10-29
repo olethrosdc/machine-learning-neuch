@@ -7,7 +7,6 @@
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 #+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
-#+name: setup-minted
 * Features and layers
 ** Introduction
 *** Perceptron vs linear regression

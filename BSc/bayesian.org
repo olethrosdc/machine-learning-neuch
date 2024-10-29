@@ -7,8 +7,7 @@
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:2
-#+OPTIONS: toc:nil
-
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
 * Introduction
 ** Probability refresher
 *** Col A                                                             :BMCOL:
@@ -215,7 +214,7 @@
   \]
 #+BEAMER: \pause
 - Obtaining the *marginal* probability: \[ P(D)
- = P(D \cap H_0) + P(D \cap H_1) & = P(D | H_0) P(H_0) + P(D | H_1) P(H_1) \]
+ = P(D \cap H_0) + P(D \cap H_1)  = P(D | H_0) P(H_0) + P(D | H_1) P(H_1) \]
 
 - Posterior: \[P(H_0 | D) = \frac{P(D | H_0) P(H_0)}{P(D | H_0) P(H_0) + P(D | H_1) P(H_1)}\]
 - Assuming $P(D | H_1) = 1$, and setting $P(H_0) = q$, this gives
