@@ -258,7 +258,7 @@ P(T | H_0) = 0.1.
 \]
 - Throw two dice dice and fill in the result in the google sheet to get your test result.
 
-- Select your own prior probability $P(H_1)$ of having covid. What is the posterior probability $P(H_1 | H_0)$
+- Select your own prior probability $P(H_1)$ of having covid. What is the posterior probability $P(H_1 | T)$
 *** Col B                                                             :BMCOL:
     :PROPERTIES:
     :BEAMER_col: 0.4
@@ -353,7 +353,7 @@ Example: Are men's and women's heights the same?
      :END:
 \begin{tikzpicture}
 \node[RV] at (1,0) (x) {$x_t$};
-\node[RV,hidden] at (0,0) (mean) {$\theta$};
+\node[RV,hidden] at (0,0) (mean) {$\param$};
 \draw[->] (mean) to (x);
 \end{tikzpicture}
 #+BEAMER: \pause
