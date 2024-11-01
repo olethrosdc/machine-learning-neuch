@@ -353,12 +353,12 @@ Assume $k$ classes, then
 \]
 - $\Normal(\mu, \Sigma)$ is *multivariate Gaussian*
 \[
-p(x \mid c, \mu, \Sigma)
+p(x \mid \mu, \Sigma)
 \propto \exp(-\frac{1}{2} (x - \mu)^\top \Sigma^{-1} (x-\mu))
 \]
 - The generating distribution is
 \[
-p(x | \theta, \mu, \Sigma) = \sum_{z \in [k]} p(x \mid c, \mu, \Sigma) P(z \mid \theta).
+p(x | \theta, \mu, \Sigma) = \sum_{z \in [k]} p(x \mid \mu_z, \Sigma_z) P(z \mid \theta).
 \]
 **** Col B                                                            :BMCOL:
      :PROPERTIES:
@@ -367,7 +367,7 @@ p(x | \theta, \mu, \Sigma) = \sum_{z \in [k]} p(x \mid c, \mu, \Sigma) P(z \mid 
 
 
 \begin{tikzpicture}
-      \node[RV] at (2,0) (c) {$c$};
+      \node[RV, hidden] at (2,0) (c) {$z$};
       \node[RV] at (0,0) (x) {$x$};
       \node[RV,hidden] at (0,-1) (mu) {$\mu$};
       \node[RV,hidden] at (0,1) (sigma) {$\Sigma$};
