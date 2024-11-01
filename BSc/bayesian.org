@@ -324,6 +324,7 @@ Example: Are men's and women's heights the same?
 - Selecting the relevant hypothesis after seeing the data
 
 ** Class feedback
+#+ATTR_LaTeX: :width 0.6\textwidth
 [[./fig/class-form.png]]
 
 * Bayesian Inference

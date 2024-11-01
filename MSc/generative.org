@@ -1,61 +1,232 @@
 #+TITLE: Generative Modelling
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
-#+LaTeX_HEADER: \usepackage{tikz}
-#+LaTeX_HEADER: \usepackage{amsmath}
-#+LaTeX_HEADER: \usepackage{amssymb}
-#+LaTeX_HEADER: \usepackage{isomath}
-#+LaTeX_HEADER: \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
-#+LaTeX_HEADER: \newcommand \Var {\mathop{\mbox{\ensuremath{\mathbb{V}}}}\nolimits}
-#+LaTeX_HEADER: \newcommand \Bias {\mathop{\mbox{\ensuremath{\mathbb{B}}}}\nolimits}
-#+LaTeX_HEADER: \newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
-#+LaTeX_HEADER: \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
-#+LaTeX_HEADER: \DeclareMathOperator*{\argmax}{arg\,max}
-#+LaTeX_HEADER: \DeclareMathOperator*{\argmin}{arg\,min}
-#+LaTeX_HEADER: \DeclareMathOperator*{\sgn}{sgn}
-#+LaTeX_HEADER: \newcommand \defn {\mathrel{\triangleq}}
-#+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
-#+LaTeX_HEADER: \newcommand \Param {\Theta}
-#+LaTeX_HEADER: \newcommand \param {\theta}
-#+LaTeX_HEADER: \newcommand \vparam {\vectorsym{\theta}}
-#+LaTeX_HEADER: \newcommand \mparam {\matrixsym{\Theta}}
-#+LaTeX_HEADER: \newcommand \bW {\matrixsym{W}}
-#+LaTeX_HEADER: \newcommand \bw {\vectorsym{w}}
-#+LaTeX_HEADER: \newcommand \wi {\vectorsym{w}_i}
-#+LaTeX_HEADER: \newcommand \wij {w_{i,j}}
-#+LaTeX_HEADER: \newcommand \bA {\matrixsym{A}}
-#+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
-#+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
-#+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
-#+LaTeX_HEADER: \newcommand \bel {\beta}
-#+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
-#+LaTeX_HEADER: \newcommand \Mult {\textrm{Multinomial}}
-#+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
-#+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
-#+LaTeX_HEADER: \tikzstyle{utility}=[diamond,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=8mm]
-#+LaTeX_HEADER: \tikzstyle{select}=[rectangle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
-#+LaTeX_HEADER: \tikzstyle{hidden}=[dashed,draw=black,fill=red!10]
-#+LaTeX_HEADER: \tikzstyle{RV}=[circle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
+#+LaTeX_HEADER: \include{preamble}
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
 #+OPTIONS:   H:3
+
+* Graphical models
+** Graphical model
+*** Graphical models
+#+ATTR_LATEX: :center 
+    \begin{tikzpicture}
+      \node[RV] at (2,0) (xi) {$x_3$};
+      \node[RV] at (0,0) (xB) {$x_1$};
+      \node[RV] at (1,1) (xD) {$x_2$};
+      \draw[->] (xB) to (xD);
+      \draw[->] (xD) to (xi);
+      \draw[->] (xB) to (xi);
+    \end{tikzpicture}
+- Variables $x_1, x_2, x_3$
+- Arrows denote dependencies between variables.
+
+*** Conditional independence
+**** Example
+    \begin{tikzpicture}
+      \node[RV] at (2,0) (xi) {$x_3$};
+      \node[RV] at (0,0) (xB) {$x_1$};
+      \node[RV] at (1,1) (xD) {$x_2$};
+      \draw[->] (xB)--(xD);
+      \draw[->] (xD)--(xi);
+    \end{tikzpicture}
+    Graphical model for the factorisation $\Pr(x_3 \mid x_2) \Pr(x_2 \mid x_1) \Pr(x_1)$.
+**** Definition
+    - Consider variables $x_1, \ldots, x_n$.
+    - Let $B, D$ be subsets of $[n]$.
+
+    We say $x_i$ is *conditionally independent* of $\bx_B$ given $\bx_D$ and write 
+    \[x_i \indep \bx_B \mid \bx_D\]
+    if and only if:
+    \[
+    \Pr(x_i, \bx_B \mid \bx_D)
+    =
+    \Pr(x_i \mid \bx_D)
+    \Pr(\bx_B \mid \bx_D).
+    \]
+*** Directed graphical model
+A collection of $n$ random variables $x_i : \Omega \to X_i$, and let $X \defn \prod_i X_i$, with underlying probability measure $P$ on $\Omega$.
+      Let $\bx = (x_i)_{i=1}^n$ and for any subset $B \subset[n]$ let
+      \begin{align}
+        \bx_B &\defn (x_i)_{i \in B}\\
+        \bx_{-j} &\defn (x_i)_{i \neq i}
+      \end{align}
+*** Model specification
+    \begin{align}
+      \label{eq:factored-model}
+      x_1 &\sim f\\
+      x_2 \mid x_1 = a &\sim g(a)\\
+      x_3 \mid x_2 = b &\sim h(b),
+    \end{align}
+*** Smoking and lung cancer
+      \begin{tikzpicture}
+        \node[RV] at (0,0) (x1) {$S$};
+        \node[RV] at (1,1) (x2) {$C$};
+        \node[RV] at (2,0) (x3) {$A$};
+        \draw[->] (x1)--(x2);
+        \draw[->] (x3)--(x2);
+      \end{tikzpicture}
+      
+Smoking and lung cancer graphical model, where $S$: Smoking, $C$: cancer, $A$: asbestos exposure.
+
+*** Time of arrival at work
+      \begin{tikzpicture}
+        \node[RV] at (0,0) (x1) {$x_1$};
+        \node[RV] at (1,1) (x2) {$T$};
+        \node[RV] at (2,0) (x3) {$x_2$};
+        \draw[->] (x2)--(x3);
+        \draw[->] (x2)--(x1);
+      \end{tikzpicture}
+     
+Time of arrival at work graphical model where $T$ is a traffic jam and $x_1$ is the time John arrives at the office and $x_2$ is the time Jane arrives at the office.
+
+*Conditional independence:
+- Even though $x_1, x_2$ are *not independent*, they become independent once you know $T$.
+
+*** School admission
+|--------+------+--------|
+| School | Male | Female |
+|--------+------+--------|
+| A      |   62 |     82 |
+| B      |   63 |     68 |
+| C      |   37 |     34 |
+| D      |   33 |     35 |
+| E      |   28 |     24 |
+| F      |    6 |      7 |
+|--------+------+--------|
+
+- $z$: gender
+- $s$: school applied to
+- $a$: admission
+
+**** Col A                                                            :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+        \begin{tikzpicture}
+          \node[RV] at (0,0) (z) {$z$};
+          \node[RV] at (1,1) (s) {$s$};
+          \node[RV] at (2,0) (a) {$a$};
+          \draw[->] (z)--(s);
+          \draw[->] (z)--(s);
+          \draw[->] (s)--(a);
+        \end{tikzpicture}
+	Is admission independent of gender?
+**** Col B                                                            :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+
+
+
+        \begin{tikzpicture}
+          \node[RV] at (0,0) (z) {$z$};
+          \node[RV] at (1,1) (s) {$s$};
+          \node[RV] at (2,0) (a) {$a$};
+          \draw[->] (z)--(s);
+          \draw[->] (z)--(s);
+          \draw[->] (s)--(a);
+          \draw[->] (z)--(a);
+        \end{tikzpicture}
+
+	How about here?
+** Exercises
+*** What is the model for this graph?
+       \begin{tikzpicture}
+          \node[RV] at (0,0) (a) {$a$};
+          \node[RV] at (0,2) (b) {$b$};
+          \node[RV] at (2,0) (c) {$c$};
+          \node[RV] at (2,2) (d) {$d$};
+          \draw[->] (a)--(b);
+          \draw[->] (b)--(c);
+          \draw[->] (c)--(d);
+        \end{tikzpicture}
+\[
+P(a, b, c, d) = \cdots
+\]
+*** What is the model for this graph?
+       \begin{tikzpicture}
+          \node[RV] at (0,0) (a) {$a$};
+          \node[RV] at (0,2) (b) {$b$};
+          \node[RV] at (2,0) (c) {$c$};
+          \node[RV] at (2,2) (d) {$d$};
+          \draw[->] (a)--(b);
+          \draw[->] (b)--(c);
+          \draw[->] (c)--(d);
+          \draw[->] (b)--(d);
+        \end{tikzpicture}
+\[
+P(a, b, c, d) = 
+\]
+*** What is the model for this graph?
+       \begin{tikzpicture}
+          \node[RV] at (0,0) (a) {$a$};
+          \node[RV] at (0,2) (b) {$b$};
+          \node[RV] at (2,0) (c) {$c$};
+          \node[RV] at (2,2) (d) {$d$};
+          \draw[->] (a)--(b);
+          \draw[->] (a)--(c);
+        \end{tikzpicture}
+\[
+P(a, b, c, d) = 
+\]
+*** Draw the graph for this model
+       \begin{tikzpicture}
+          \node[RV] at (0,0) (a) {$a$};
+          \node[RV] at (0,2) (b) {$b$};
+          \node[RV] at (2,0) (c) {$c$};
+          \node[RV] at (2,2) (d) {$d$};
+        \end{tikzpicture}
+\[
+P(a, b, c, d) = P(a) P(b | a) P (c | b) P(d | b)
+\]
+
+*** Draw the graph for this model
+       \begin{tikzpicture}
+          \node[RV] at (0,0) (a) {$a$};
+          \node[RV] at (0,2) (b) {$b$};
+          \node[RV] at (2,0) (c) {$c$};
+          \node[RV] at (2,2) (d) {$d$};
+        \end{tikzpicture}
+\[
+P(a, b, c, d) = P(a) P(b | a) P (d | c) P(c)
+\]
+
+*** Draw the graph for this model
+       \begin{tikzpicture}
+          \node[RV] at (0,0) (a) {$a$};
+          \node[RV] at (0,2) (b) {$b$};
+          \node[RV] at (2,0) (c) {$c$};
+          \node[RV] at (2,2) (d) {$d$};
+        \end{tikzpicture}
+\[
+P(a, b, c, d) = P(a) P(b | a) P (c | a) P(d | b, c)
+\]
+
+
+
+
+
+
 
 * Classification
 ** Classification: Generative modelling
    #+TOC: headlines [currentsection,hideothersubsections]
 *** Generative modelling
-**** general idea
-- Data $(x,y)$.
+**** General idea
+- Data $(x_t,y_t)$.
 - Need to model $P(y | x)$.
-- Model the complete data distribution: $P(x | y)$, $P(x)$, $P(y)$.
+- Model the *complete* data distribution: $P(x | y)$, $P(x)$, $P(y)$.
 - Calculate \(  P(y | x) = \frac{P(x | y) P(x)}{P(y)}. \)
 **** Examples
-- Naive Bayes classifier
-- Gaussian Mixture Classifier
-**** Modelling the data distribution
+- *Naive Bayes* classifier.
+- *Gaussian mixture* model.
+- Large language models.
+**** Modelling the data distribution in classification
 - Need to estimate the density $P(x | y)$ for each class $y$.
-- Need to estimate $P(y)$
+- Need to estimate $P(y)$.
 *** The basic graphical model
 
 **** A discriminative classification model
@@ -73,13 +244,11 @@ Here $P(y | x) = P(x | y) P(y) / P(x)$.
       \node[RV] at (0,0) (y) {$y$};
       \draw[->] (y) to (x);
 \end{tikzpicture}
-**** A generative  model
+**** An unsupervised generative  model
 Here we just have $P(x)$.
 \begin{tikzpicture}
       \node[RV] at (2,0) (x) {$x$};
 \end{tikzpicture}
-
-
 
 
 *** Adding parameters to the graphical model
@@ -159,18 +328,56 @@ Assume $k$ classes, then
 - Generally $\sqrt{n}$ points in each bin.
 
 *** Gaussian Mixture Model
+
 **** Hyperparameters:
 - Number of Gaussian $k$.
 **** Parameters:
 - Multinomial distribution $\vparam$ over Gaussians
 - For each Gaussian $i$, center $\mu_i$, covariance matrix $\Sigma_i$.
-**** Model. For each point $x_t$:
-- $c_t = i$ w.p. $\theta_i$
-- $x_t | c_t = i \sim \Normal(\mu_i, \Sigma_i)$.
 **** Algorithms:
 - Expectation Maximisation
 - Gradient Ascent
 - Variational Bayesian Inference (with appropriate prior)
+
+*** Details of Gaussian mixture models
+**** Col A                                                            :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.6
+     :END:
+***** Model. For each point $x_t$:
+- $z_t \mid  \theta \sim \Mult(\theta_i)$, $\theta \in \Simplex^k$
+- $x_t | z_t = i \sim \Normal(\mu_i, \Sigma_i)$.
+- $\Mult(\theta)$ is *multinomial*
+\[
+\Pr(z_t = i \mid \theta) = \theta_i
+\]
+- $\Normal(\mu, \Sigma)$ is *multivariate Gaussian*
+\[
+p(x \mid c, \mu, \Sigma)
+\propto \exp(-\frac{1}{2} (x - \mu)^\top \Sigma^{-1} (x-\mu))
+\]
+- The generating distribution is
+\[
+p(x | \theta, \mu, \Sigma) = \sum_{z \in [k]} p(x \mid c, \mu, \Sigma) P(z \mid \theta).
+\]
+**** Col B                                                            :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.4
+     :END:
+
+
+\begin{tikzpicture}
+      \node[RV] at (2,0) (c) {$c$};
+      \node[RV] at (0,0) (x) {$x$};
+      \node[RV,hidden] at (0,-1) (mu) {$\mu$};
+      \node[RV,hidden] at (0,1) (sigma) {$\Sigma$};
+      \node[RV,hidden] at (2,1) (theta) {$\theta$};
+      \draw[->] (c) to (x);
+      \draw[->] (theta) to (c);
+      \draw[->] (sigma) to (x);
+      \draw[->] (mu) to (x);
+\end{tikzpicture}
+
 
 * Algorithms for latent variable models     
 
@@ -179,7 +386,7 @@ Assume $k$ classes, then
 **** Objective function
 $L(\theta) = P(x | \theta)$
 **** Marginalisation over latent variable
-$L(\theta) = \sum_z P(z, x | \theta) $
+$L(\theta) = \sum_z P(z, x | \theta)$
 **** Gradient ascent
 $\theta^{(n+1)} = \theta^{(n)} + \alpha \nabla_\theta L(\theta)$
 **** Gradient calculation
@@ -242,8 +449,8 @@ f(\vparam^{(k)}) \geq Q(\vparam^{(k)} | \vparam^{(k)}),
 \]
 
 **** Algorithm
-- Calculate: $Q(\vparam | \vparam^{(k)}$
-- Optimise: $\vparam^{(k+1)} = \argmax_\vparam Q(\vparam | \vparam^{(k)}$.
+- Calculate: $Q(\vparam | \vparam^{(k)})$
+- Optimise: $\vparam^{(k+1)} = \argmax_\vparam Q(\vparam | \vparam^{(k)})$.
 
 
 
