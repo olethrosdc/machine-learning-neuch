@@ -383,14 +383,24 @@ p(x | \theta, \mu, \Sigma) = \sum_{z \in [k]} p(x \mid \mu_z, \Sigma_z) P(z \mid
 
 ** Gradient algorithms
 *** Gradient ascent
+In the following we use $\theta$ for all the parameters of the Gaussian mixture model,
+with $x = (x_1, \ldots, x_T)$ and $z = (z_1, \ldots, z_T)$
 **** Objective function
+One way to estimate $\theta$ is through maximising the likelihood
 $L(\theta) = P(x | \theta)$
 **** Marginalisation over latent variable
-$L(\theta) = \sum_z P(z, x | \theta)$
+However, we need to marginalise over all values $z$
+\[
+L(\theta) = \sum_z P(z, x | \theta)
+\]
+For $T$ data points and $k$ different values of $z_t$, there are $k^T$ vectors $z$ to sum over.
 **** Gradient ascent
-$\theta^{(n+1)} = \theta^{(n)} + \alpha \nabla_\theta L(\theta)$
-**** Gradient calculation
-Here we use the *log trick*: $\nabla \ln f(x) = \nabla f(x) / f(x)$.
+If we can calculate the gradient of $L$, we can use gradient ascent to update our parameters:
+\[
+\theta^{(n+1)} = \theta^{(n)} + \alpha \nabla_\theta L(\theta).
+\]
+*** Gradient calculation
+Here we use the *log trick*: $\nabla \ln f(\theta) = \nabla f(\theta) / f(\theta)$.
 \begin{align}
 \nabla_\theta L(\theta)
 & = \sum_z \nabla_\theta P(z, x \mid \theta) 
@@ -400,24 +410,50 @@ Here we use the *log trick*: $\nabla \ln f(x) = \nabla f(x) / f(x)$.
 &= \sum_z  P(x \mid z, \theta)P(z \mid \theta) \nabla_\theta \ln P(z, x \mid \theta)
 \\
 &\approx \frac{1}{m} \sum_{i=1}^m P(x \mid z^{(i)}, \theta) \nabla_\theta \ln P(z^{(i)}, x \mid \theta)
-&&z^{(i)} \sim P(z | \mid \theta)
+&&z^{(i)} \sim P(z  \mid \theta)
 \end{align}
-
+The final approximates the sum with the sample mean, sampling $z^{(i)}$ from the distribution. Hence, we can implement the following algorithm
+- For $i = 1, \ldots, m$: $z^{(i)} \sim P(z  \mid \theta^{(n)})$
+- $d^{(n)} = \frac{1}{m} \sum_{i=1}^m P(x \mid z^{(i)}, \theta) \nabla_\theta \ln P(z^{(i)}, x \mid \theta^{(n)})$
+- $\theta^{(n+1)} = \theta^n + \alpha d^{(n)}$.
 ** Expectation maximisation
 *** A lower bound on the likelihood
+For any distribution $G(z)$, and specifically for
+$G(z) = P(z | x, \theta^{(k)})$:
 \begin{align*}
 \ln P(x | \alert{\theta})
-& = \sum_z G(z) P(x | \theta)\\
-& = \sum_z G(z) [\ln P(x, z | \theta) - \ln P(z | x, \theta)]
+& = \sum_z G(z) \ln P(x | \alert{\theta})
+ = \sum_z G(z) \ln [P(x, z | \alert{\theta}) / P(z | x, \alert{\theta})]
 \\
-& = \sum_z G(z) \ln P(x, z | \theta) - \sum_z G(z) \ln P(z | x, \theta)]
+& = \sum_z G(z) [\ln P(x, z | \alert{\theta}) - \ln P(z | x, \alert{\theta})]
 \\
-& = \sum_z P(z | x, \theta^{(k)}) \ln P(x, z | \theta) - \sum_z P(z | x, \theta^{(k)}) \ln P(z | x, \theta)
+& = \sum_z G(z) \ln P(x, z | \alert{\theta}) - \sum_z G(z) \ln P(z | x, \alert{\theta})
+\\
+& = \sum_z P(z | x, \theta^{(k)}) \ln P(x, z | \alert{\theta}) - \sum_z P(z | x, \theta^{(k)}) \ln P(z | x, \alert{\theta})
 \\
 & \geq \sum_z P(z | x, \theta^{(k)}) \ln P(x, z | \alert{\theta}) - \sum_z P(z | x, \theta^{(k)}) \ln P(z | x, \theta^{(k)})
 \\
-& = Q(\alert{\theta} \mid \theta^{(k)}) +\mathbb{H}(z \mid x = x, \theta = \theta^{(k)})
+& = Q(\alert{\theta} \mid \theta^{(k)}) +\mathbb{H}(z \mid x, \theta^{(k)}),
 \end{align*}
+where 
+\[
+\mathbb{H}(z \mid  x, \theta^{(k)})
+= 
+\sum_z  P(z \mid  x, \theta^{(k)}) \ln P(z \mid x, \theta^{(k)})
+\]
+is the entropy of $z$ for a fixed $x, \theta^{(k)}$. As this is not negative, $\ln P(x | \theta) \geq Q(\theta \mid \theta^{(k)})$.
+*** Some information theory
+Information theory notation can be a bit confusing. Sometimes we talk about random variables $\omega$, and sometimes about probability measures $P$. This is context-dependent.
+**** Entropy
+For a random variable $\omega$ under distribution $P$, we denote the entropy as
+\[
+ \mathbb{H}_P(\omega) \equiv \mathbb{H}(P) \equiv \mathbb{H}(\omega) =  \sum_{\omega \in \Omega} P(\omega) \ln P(\omega).
+\]
+**** KL Divergence
+For two probabilities $P, Q$ over random outcomes in the same space $\Omega$, we define
+\[
+D_{KL}(P \|Q) = \sum_{\omega \in \Omega} P(\omega) \ln \frac{P(\omega)}{Q(\omega)}
+\]
 **** The Gibbs Inequality
 $D_{KL}(P \|Q)  \geq 0$, or $\sum_x \ln P(x) P(x) \geq \sum_x \ln Q(x) P(x)$.
 *** EM Algorithm (Dempster et al, 1977)
