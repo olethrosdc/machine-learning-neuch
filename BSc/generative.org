@@ -12,6 +12,7 @@
 ** Graphical model
 *** Graphical models
 #+ATTR_LATEX: :center 
+\begin{center}
     \begin{tikzpicture}
       \node[RV] at (2,0) (xi) {$x_3$};
       \node[RV] at (0,0) (xB) {$x_1$};
@@ -20,48 +21,29 @@
       \draw[->] (xD) to (xi);
       \draw[->] (xB) to (xi);
     \end{tikzpicture}
-- Variables $x_1, x_2, x_3$
-- Arrows denote dependencies between variables.
+\end{center}
+**** Directed acyclic graph
+A directed acyclic graph with 
+- Nodes $x_1, \ldots, x_n$
+- Edges $x_i \to x_j$.
+so that there are no cycles in the graph.
+**** Conditional independence from graphical models
+- Each *node* of the model corresponds to a *random variable*
+- The *parent* of a node are the *direct dependencies* of the random variable.
 
-*** Conditional independence
-**** Example
-    \begin{tikzpicture}
-      \node[RV] at (2,0) (xi) {$x_3$};
-      \node[RV] at (0,0) (xB) {$x_1$};
-      \node[RV] at (1,1) (xD) {$x_2$};
-      \draw[->] (xB)--(xD);
-      \draw[->] (xD)--(xi);
-    \end{tikzpicture}
-    Graphical model for the factorisation $\Pr(x_3 \mid x_2) \Pr(x_2 \mid x_1) \Pr(x_1)$.
-**** Definition
-    - Consider variables $x_1, \ldots, x_n$.
-    - Let $B, D$ be subsets of $[n]$.
-
-    We say $x_i$ is *conditionally independent* of $\bx_B$ given $\bx_D$ and write 
-    \[x_i \indep \bx_B \mid \bx_D\]
-    if and only if:
-    \[
-    \Pr(x_i, \bx_B \mid \bx_D)
-    =
-    \Pr(x_i \mid \bx_D)
-    \Pr(\bx_B \mid \bx_D).
-    \]
-*** Directed graphical model
-A collection of $n$ random variables $x_i : \Omega \to X_i$, and let $X \defn \prod_i X_i$, with underlying probability measure $P$ on $\Omega$.
-      Let $\bx = (x_i)_{i=1}^n$ and for any subset $B \subset[n]$ let
-      \begin{align}
-        \bx_B &\defn (x_i)_{i \in B}\\
-        \bx_{-j} &\defn (x_i)_{i \neq i}
-      \end{align}
 *** Model specification
-<<<<<<< HEAD
-    \begin{align}
-      \label{eq:factored-model}
-      x_1 &\sim f\\
-      x_2 \mid x_1 = a &\sim g(a)\\
-      x_3 \mid x_2 = b &\sim h(b),
-    \end{align}
-=======
+\begin{center}
+    \begin{tikzpicture}
+      \node[RV] at (0,0) (x) {$x$};
+      \node[RV] at (1,0) (y) {$y$};
+      \node[RV] at (2,0) (z) {$z$};
+      \draw[->] (x)--(y);
+      \draw[->] (y)--(z);
+    \end{tikzpicture}
+\end{center}
+- The graphical model tells us *what depends on what*.
+- It does not tell us *how to generate data*.
+- We need to specify the *functional relationship* between variables.
 **** Col A                                                            :BMCOL:
 :PROPERTIES:
 :BEAMER_col: 0.5
@@ -71,7 +53,7 @@ A collection of $n$ random variables $x_i : \Omega \to X_i$, and let $X \defn \p
       \label{eq:factored-model}
       x &\sim f\\
       y \mid x = a &\sim g(a)\\
-      z \mid y = b &\sim h(b),
+      z \mid y = b &\sim h(b)
     \end{align*}
 **** Col B                                                            :BMCOL:
 :PROPERTIES:
@@ -83,8 +65,67 @@ A collection of $n$ random variables $x_i : \Omega \to X_i$, and let $X \defn \p
   y = g(x)
   z = h(y)
 #+END_SRC
->>>>>>> fa9c76b7a9f6a5b9e3eadeb85b6604dde6855149
+
+
+*** Graphical models and factorisation
+- Graphical models tell us what directly depends on what
+- They allow us to simplify the *joint distribution* of the variables
+- This is formed into a *product of factors*, one for each variable.
+**** Example
+    \begin{tikzpicture}
+      \node[RV] at (2,0) (xi) {$x_3$};
+      \node[RV] at (0,0) (xB) {$x_1$};
+      \node[RV] at (1,1) (xD) {$x_2$};
+      \draw[->] (xB)--(xD);
+      \draw[->] (xD)--(xi);
+    \end{tikzpicture}
+
+    This graphical model implies the factorisation 
+    \[
+    \Pr(x_1, x_2, x_3) = 
+    \Pr(x_3 \mid x_2, x_1) 
+    \Pr(x_2 \mid x_1) 
+    \Pr(x_1) = 
+\Pr(x_3 \mid x_2) \Pr(x_2 \mid x_1) \Pr(x_1)
+    \]
+     Notice that for each factor $\Pr(x_i \mid x_j)$, $x_j$ is the *parent* of $x_i$.
+
+      
+*** Conditional independence
+- Graphical models tell us what *directly* depends on what
+- Consequently, they also specify *conditional independence*
+**** Example
+***** Col A                                                           :BMCOL:
+      :PROPERTIES:
+      :BEAMER_col: 0.5
+      :END:
+    \begin{tikzpicture}
+      \node[RV] at (2,0) (xi) {$x_3$};
+      \node[RV] at (0,0) (xB) {$x_1$};
+      \node[RV] at (1,1) (xD) {$x_2$};
+      \draw[->] (xB)--(xD);
+      \draw[->] (xD)--(xi);
+    \end{tikzpicture}
+***** Col B                                                           :BMCOL:
+      :PROPERTIES:
+      :BEAMER_col: 0.5
+      :END:
+    \[
+    \Pr(x_1, x_2, x_3) = \Pr(x_3 \mid x_2) \Pr(x_2 \mid x_1) \Pr(x_1)
+    \]
+**** Conditional independence :B_definition:
+     :PROPERTIES:
+     :BEAMER_env: definition
+     :END:
+We say that variables $x, y$ are *conditionally* independent given $z$ and write $x \indep y \mid z$ if and only if
+\[
+\Pr(x, y \mid z) = \Pr(x \mid z) \Pr(y \mid z)
+\]
+- In the above example, it holds that $x_3 \indep x_1 \mid x_2$.
+
+
 *** Smoking and lung cancer
+
       \begin{tikzpicture}
         \node[RV] at (0,0) (x1) {$S$};
         \node[RV] at (1,1) (x2) {$C$};
@@ -93,8 +134,17 @@ A collection of $n$ random variables $x_i : \Omega \to X_i$, and let $X \defn \p
         \draw[->] (x3)--(x2);
       \end{tikzpicture}
       
-Smoking and lung cancer graphical model, where $S$: Smoking, $C$: cancer, $A$: asbestos exposure.
+- Smoking and lung cancer graphical model.
+- $S$: Smoking, $C$: cancer, $A$: asbestos exposure.
 
+#+BEAMER: \pause
+- In this graph, $A \indep S$, but $A \not \indep S \mid C$
+#+BEAMER: \pause
+**** XOR example
+#+ATTR_BEAMER: :overlay <+->
+- C = xor(S, A). 
+- If we know C = 1, S = 1, what is $A$?
+- C explains away
 *** Time of arrival at work
       \begin{tikzpicture}
         \node[RV] at (0,0) (x1) {$x_1$};
@@ -106,20 +156,34 @@ Smoking and lung cancer graphical model, where $S$: Smoking, $C$: cancer, $A$: a
      
 Time of arrival at work graphical model where $T$ is a traffic jam and $x_1$ is the time John arrives at the office and $x_2$ is the time Jane arrives at the office.
 
-*Conditional independence:
-- Even though $x_1, x_2$ are *not independent*, they become independent once you know $T$.
+#+ATTR_BEAMER: :overlay <+->
+- Even though $x_1, x_2$ are *not independent*, they become independent once you know $T$, i.e. $x_1 \indep x_2 \mid T$.
+- Proof:
+- $\Pr(x_1, x_2, T) = \Pr(x_2 \mid T) \Pr(x_1 \mid T) \Pr(T)$ from the graph.
+- $\Pr(x_1, x_2, T) / \Pr(T) = \Pr(x_1, x_2 \mid T) = \Pr(x_2 \mid T) \Pr(x_1 \mid T)$. \qed
 
 *** School admission
-|--------+------+--------|
-| School | Male | Female |
-|--------+------+--------|
-| A      |   62 |     82 |
-| B      |   63 |     68 |
-| C      |   37 |     34 |
-| D      |   33 |     35 |
-| E      |   28 |     24 |
-| F      |    6 |      7 |
-|--------+------+--------|
+**** Example
+
+***** Col A                                                           :BMCOL:
+      :PROPERTIES:
+      :BEAMER_col: 0.5
+      :END:
+|---------+------+--------|
+| School  | Male | Female |
+|---------+------+--------|
+| A       |   62 |     82 |
+| B       |   63 |     68 |
+| C       |   37 |     34 |
+| D       |   33 |     35 |
+| E       |   28 |     24 |
+| F       |    6 |      7 |
+|---------+------+--------|
+| Average |   50 | 27     |
+***** Col B                                                           :BMCOL:
+      :PROPERTIES:
+      :BEAMER_col: 0.5
+      :END:
 
 - $z$: gender
 - $s$: school applied to
@@ -127,7 +191,7 @@ Time of arrival at work graphical model where $T$ is a traffic jam and $x_1$ is 
 
 **** Col A                                                            :BMCOL:
      :PROPERTIES:
-     :BEAMER_col: 0.5
+     :BEAMER_col: 0.3
      :END:
         \begin{tikzpicture}
           \node[RV] at (0,0) (z) {$z$};
@@ -137,13 +201,12 @@ Time of arrival at work graphical model where $T$ is a traffic jam and $x_1$ is 
           \draw[->] (z)--(s);
           \draw[->] (s)--(a);
         \end{tikzpicture}
-	Is admission independent of gender?
+
+Is admission independent of gender?
 **** Col B                                                            :BMCOL:
      :PROPERTIES:
      :BEAMER_col: 0.5
      :END:
-
-
 
         \begin{tikzpicture}
           \node[RV] at (0,0) (z) {$z$};
@@ -232,8 +295,54 @@ P(a, b, c, d) = P(a) P(b | a) P (c | a) P(d | b, c)
 
 
 
+*** Conditional independence (general)
+- Consider variables $x_1, \ldots, x_n$.
+- Let $B, D$ be subsets of $[n]$, and
+- $\bx_B \defn (x_i)_{i \in B}$ be the variables with indices in $B$.
+- $\bx_{-j} \defn (x_i)_{i \neq i}$ all the variables apart from $x_j$.
+**** Conditional independence :B_definition:
+     :PROPERTIES:
+     :BEAMER_env: definition
+     :END:
+  We say $x_i$ is *conditionally independent* of $\bx_B$ given $\bx_D$ and write 
+  \[x_i \indep \bx_B \mid \bx_D\]
+  if and only if:
+  \[
+  \Pr(x_i, \bx_B \mid \bx_D)
+  =
+  \Pr(x_i \mid \bx_D)
+  \Pr(\bx_B \mid \bx_D).
+  \]
+- For this to hold in graphical model, $D$ must separate $i$ from $B$ in the graph.
 
 
+
+*** More complex example
+       \begin{tikzpicture}
+          \node[RV] at (0,0) (a) {$x_1$};
+          \node[RV] at (0,2) (b) {$x_2$};
+          \node[RV] at (2,0) (c) {$x_3$};
+          \node[RV] at (2,2) (d) {$x_4$};
+          \node[RV] at (4,0) (x) {$x_5$};
+          \node[RV] at (4,2) (y) {$x_6$};
+          \node[RV] at (6,1) (z) {$x_7$};
+          \draw[->] (a)--(c);
+          \draw[->] (c)--(d);
+          \draw[->] (b)--(d);
+          \draw[->] (d)--(y);
+          \draw[->] (c)--(x);
+          \draw[->] (y)--(z);
+          \draw[->] (x)--(z);
+        \end{tikzpicture}
+
+In this example, we have:
+\[
+x_7 \indep x_1, x_2 \mid x_3, x_4
+\]
+and 
+\[
+x_7 \indep x_3 \mid x_4, x_5
+\]
 
 * Classification
 ** Classification: Generative modelling
@@ -243,7 +352,7 @@ P(a, b, c, d) = P(a) P(b | a) P (c | a) P(d | b, c)
 - Data $(x_t,y_t)$.
 - Need to model $P(y | x)$.
 - Model the *complete* data distribution: $P(x | y)$, $P(x)$, $P(y)$.
-- Calculate \(  P(y | x) = \frac{P(x | y) P(x)}{P(y)}. \)
+- Calculate \(  P(y | x) = \frac{P(x | y) P(y)}{P(x)}. \)
 **** Examples
 - *Naive Bayes* classifier.
 - *Gaussian mixture* model.
@@ -299,14 +408,14 @@ Here $x  | \mu, \sigma \sim \Normal(\mu, \sigma^2)$
 - Data $(x,y)$
 - $x \in X$
 - $y \in Y \subset \mathbb{N}$, $N_i$: amount of data from class $i$.
-  
+#+BEAMER: \pause
 **** Separately model each class
 - Assume each class data comes from a different normal distribution
 - $x | y = i \sim \Normal(\mu_i, \sigma_i I)$
 - For each class, calculate
   - Empirical mean $\hat{\mu}_i = \sum_{t : y_t = i} x_t / N_i$
   - Empirical variance $\hat{\sigma}_i$.
-
+#+BEAMER: \pause
 **** Decision rule
 Use Bayes's theorem:
 \[
