@@ -54,12 +54,36 @@ A collection of $n$ random variables $x_i : \Omega \to X_i$, and let $X \defn \p
         \bx_{-j} &\defn (x_i)_{i \neq i}
       \end{align}
 *** Model specification
+<<<<<<< HEAD
     \begin{align}
       \label{eq:factored-model}
       x_1 &\sim f\\
       x_2 \mid x_1 = a &\sim g(a)\\
       x_3 \mid x_2 = b &\sim h(b),
     \end{align}
+=======
+**** Col A                                                            :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+***** Statistics
+    \begin{align*}
+      \label{eq:factored-model}
+      x &\sim f\\
+      y \mid x = a &\sim g(a)\\
+      z \mid y = b &\sim h(b),
+    \end{align*}
+**** Col B                                                            :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+***** Python
+#+BEGIN_SRC python
+  x = f()
+  y = g(x)
+  z = h(y)
+#+END_SRC
+>>>>>>> fa9c76b7a9f6a5b9e3eadeb85b6604dde6855149
 *** Smoking and lung cancer
       \begin{tikzpicture}
         \node[RV] at (0,0) (x1) {$S$};
