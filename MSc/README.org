@@ -65,7 +65,7 @@ learning.
 |      4 | 10.11 | Regression, Neural Networks       | Linear regression, SGD                           |                     | Mix     |
 |      5 | 10.18 | Multi-Layer Perceptrons           | Backpropagation, Softmax, RELU                   |                     | Mix     |
 |      6 | 10.25 | Generative Models                 | Beta-Bernoulli, Naive Bayes and Beyond           |                     | Lecture |
-|      7 | 11.01 | Bayes Nets                        |                                                  |                     | Mix     |
+|      7 | 11.01 | Bayes Nets                        | Markov Models, Tree Models, CRFs,                | Text prediction     | Mix     |
 |--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
 |      8 | 11.08 | Fairness 1                        |                                                  |                     |         |
 |      9 | 11.15 | Fairness 2                        |                                                  |                     |         |

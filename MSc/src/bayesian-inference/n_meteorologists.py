@@ -22,7 +22,7 @@ def get_posterior(prior, P, outcome):
 ## - outcome: actual outcome
 def get_marginal_prediction(belief, P, outcome):
     n_models = len(belief)
-    ## outcome probability
+    ## calculate outcome probability
     return outcome_probability
 
 ## In this function, U[action,outcome] should be the utility of the action/outcome pair
@@ -30,9 +30,7 @@ def get_expected_utility(belief, P, action, U):
     n_models = len(belief)
     n_outcomes = np.shape(P)[1]
     utility = 0
-    for x in range(n_outcomes):
-        utility += get_marginal_prediction(belief, P, x) * U[action, x]
-        
+    ## FILL IN
     return utility
 
 
@@ -42,8 +40,7 @@ def get_best_action(belief, P, U):
     n_models = len(belief)
     n_actions = np.shape(U)[0]
     utility = np.zeros(n_actions)
-    for a in range(n_actions):
-        utility[a] = get_expected_utility(belief, P, a, U)
+    ## FILL IN
     return np.argmax(utility)
 
 

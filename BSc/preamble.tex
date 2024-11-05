@@ -9,6 +9,7 @@
 \newcommand \Var {\mathop{\mbox{\ensuremath{\mathbb{V}}}}\nolimits}
 \newcommand \Bias {\mathop{\mbox{\ensuremath{\mathbb{B}}}}\nolimits}
 \newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
+\newcommand{\indep}{\mathrel{\text{\scalebox{1.07}{$\perp\mkern-10mu\perp$}}}}
 \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
@@ -42,13 +43,25 @@
 \newcommand \bz {\vectorsym{z}}
 \newcommand \bx {\vectorsym{x}}
 \newcommand \bX {\matrixsym{X}}
-\newcommand \bel {\beta}
+\newcommand \dbel {\phi}
+\newcommand \bel {\phi}
+\newcommand \Bel {\Phi}
 \newcommand \Ber {\textrm{Bernoulli}}
+\newcommand \Unif {\textrm{Unif}}
+\newcommand \Mult {\textrm{Mult}}
 \newcommand \Beta {\textrm{Beta}}
+\newcommand \Dir {\textrm{Dir}}
 \newcommand \Normal {\textrm{Normal}}
+\newcommand \Simplex {\mathbb{\Delta}}
+\newcommand \outcome {\omega}
+\newcommand \Outcomes {\Omega}
+
 \usetikzlibrary{shapes.geometric}
 \tikzstyle{utility}=[diamond,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=8mm]
 \tikzstyle{select}=[rectangle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
 \tikzstyle{hidden}=[dashed,draw=black,fill=red!10]
 \tikzstyle{RV}=[circle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
+\tikzstyle{transition}=[rectangle,draw=black!50,fill=black!20,thick]
+\tikzstyle{someset}=[circle,draw=black,minimum size=8mm]
+\tikzstyle{point}=[circle,draw=black,fill=black]
 

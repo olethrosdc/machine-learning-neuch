@@ -5,6 +5,7 @@
 \usepackage{isomath}
 \usepackage{algorithmic}
 \usepackage{fontawesome}
+\usepackage[bbgreekl]{mathbbol}
 \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
 \newcommand \Var {\mathop{\mbox{\ensuremath{\mathbb{V}}}}\nolimits}
 \newcommand \Bias {\mathop{\mbox{\ensuremath{\mathbb{B}}}}\nolimits}
@@ -14,18 +15,19 @@
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\sgn}{sgn}
 \newcommand \defn {\mathrel{\triangleq}}
+\newcommand{\indep}{\mathrel{\text{\scalebox{1.07}{$\perp\mkern-10mu\perp$}}}}
 \newcommand \loss {L}
 \newcommand \cost {\ell}
 \newcommand \util {U}
 \newcommand \rewrad {r}
 \newcommand \Reals {\mathbb{R}}
 \newcommand \Naturals {\mathbb{N}}
-\newcommand \Param {\mathcal{B}}
-\newcommand \param {\beta}
+\newcommand \Param {\Theta}
+\newcommand \param {\theta}
 \newcommand \pol {\pi}
 \newcommand \Pols {\Pi}
-\newcommand \vparam {\vectorsym{\beta}}
-\newcommand \mparam {\matrixsym{B}}
+\newcommand \vparam {\vectorsym{\param}}
+\newcommand \mparam {\matrixsym{\Theta}}
 \newcommand \CX {\mathcal{X}}
 \newcommand \CA {\mathcal{A}}
 \newcommand \CY {\mathcal{Y}}
@@ -43,9 +45,15 @@
 \newcommand \bx {\vectorsym{x}}
 \newcommand \bX {\matrixsym{X}}
 \newcommand \bel {\beta}
-\newcommand \Ber {\textrm{Bernoulli}}
+\newcommand \dbel {\beta}
+\newcommand \Bel {\mathcal{B}}
+\newcommand \Unif {\textrm{Unif}}
+\newcommand \Mult {\textrm{Mult}}
 \newcommand \Beta {\textrm{Beta}}
+\newcommand \Dir {\textrm{Dir}}
+\newcommand \Ber {\textrm{Bernoulli}}
 \newcommand \Normal {\textrm{Normal}}
+\newcommand \Simplex {\mathbb{\Delta}}
 \usetikzlibrary{shapes.geometric}
 \tikzstyle{utility}=[diamond,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=8mm]
 \tikzstyle{select}=[rectangle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
