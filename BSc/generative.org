@@ -11,6 +11,32 @@
 * Graphical models
 ** Random variables and probabilities
 *** Notational problems
+In probability theory, we are dealing with functions $P$ on sets, called measures.
+In statistics, we are dealing with random variables. While these two can be related, it is common to use shorthand notation in statistics. If in doubt, use the following conversion table.
+**** Col A                                                            :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+***** Probability theory
+1. Sets $A \subset \Omega$ are *events*.
+2. Probability measure $P$ on $\Omega$.
+3. $P(A) \in [0,1]$ with $A \subset \Omega$
+4. $P(A \cap C)$ the probability $\omega \in A \cap C$
+5. $P(A | B)$ the probability of $A$ if $B$ is true.
+6. Marginal distribution $P(A) = \sum_{i=1}^n \Pr(A \cap H_i)$
+7. Bayes's theorem: $P(A \mid B) = P(A \cap B) / P(B)$.
+**** Col A                                                            :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+***** Statistics
+1. Random variables $x : \Omega \to X$.
+2. The measure $P$ is *implicit*.
+3. $\Pr(x)$ for the distribution of $x$
+4. $\Pr(x, y)$ the joint distribution of $x, y$.
+5. $\Pr(x | y)$ the distribution of $x$ if $y$ is given.
+6. Marginal distribution $\Pr(y) = \sum_{i \in x}  \Pr(x = i, y)$.
+7. Bayes's theorem: $\Pr(x | y) = \Pr(x, y) / \Pr(y)$
 
 *** Probability and statistics
 **** Probability theory
@@ -19,16 +45,31 @@ These are functions on *sets*, so that
 - $P(\Omega) = 1$
 - $P(A) \in [0,1]$ for any $A \subset \Omega$
 - $P(A \cup B) = P(A) + P(B)$ if $A \cap B = \emptyset$.
-**** Statistics
-In statistics, we are interested in random variables $x, y, \ldots$ which are *functions $x : \Omega \to \Reals$*.
-However, talking about specific probabilities is very annoying. 
+*** Statistics
+In statistics, we are interested in random variables $x, y, \ldots$ which are *functions*  $x : \Omega \to X$, $y : \Omega \to Y$ etc.
+
 - We write $\Pr(x)$ as a shorthand for /the probability distribution of $x$/.
-- If we want to derive a probability measure from that distribution, things get frustratingly complicated. Here is the precise probability notation,
-where $P_x(A)$ is the measure of the set $A$ in the usual sense, if $P$ is the random event giving $\Omega$
+- The distribution of $x$ arises in the following way:
+  1. Sample $\omega$ from $P$
+  2. Calculate $x(\omega)$.
+- We can get a *probability measure $P_x$* by measuring how often $x$ falls in various sets $A \subset X$:
 \[
-P_x(A) \defn P(\omega)
+P_x(A) \defn P(\{\omega : x(\omega) \in A\})$
 \]
-- Note that since $x : \Omega \to \Reals$, $A \subset \Reals$
+Here, $\{\omega : x(\omega) \in A\}$ is literally the set of random outcomes $\omega$ for which $x(\omega)$ is in the set $A$. To avoid writing this cumbersome expression, we simply write
+$\Pr(x)$ as a general shorthand. This allows us to also write
+\[
+\Pr(x \in A) = P_x(A).
+\]
+
+*** Joint distributions, multiple variables
+If you thought things were messy, wait to see what happens when you have more than one variable! 
+- $x : \omega \to X$, $y: \omega \to Y$.
+- The measure $P_{x,y}$ has to be defined on the subsets of $X \times Y$.
+\[
+P_{x,y}(A) = P(\{\omega : (x(\omega), y(\omega)) \in A\}
+\]
+
 ** Graphical model
 *** Graphical models
 #+ATTR_LATEX: :center 
@@ -250,8 +291,9 @@ Is admission independent of gender?
           \draw[->] (b)--(c);
           \draw[->] (c)--(d);
         \end{tikzpicture}
+#+BEAMER: \pause
 \[
-P(a, b, c, d) = \cdots
+\Pr(a, b, c, d) = \Pr(d|c) \Pr(c|b) \Pr(b | a) \Pr(a)
 \]
 *** What is the model for this graph?
        \begin{tikzpicture}
@@ -264,8 +306,9 @@ P(a, b, c, d) = \cdots
           \draw[->] (c)--(d);
           \draw[->] (b)--(d);
         \end{tikzpicture}
+#+BEAMER: \pause
 \[
-P(a, b, c, d) = 
+\Pr(a, b, c, d) = \Pr(d|b, c) \Pr(c|b) \Pr(b | a) \Pr(a)
 \]
 *** What is the model for this graph?
        \begin{tikzpicture}
@@ -276,8 +319,9 @@ P(a, b, c, d) =
           \draw[->] (a)--(b);
           \draw[->] (a)--(c);
         \end{tikzpicture}
+#+BEAMER: \pause
 \[
-P(a, b, c, d) = 
+\Pr(a, b, c, d) = \Pr(d) \Pr(c|a) \Pr(b | a) \Pr(a)
 \]
 *** Draw the graph for this model
        \begin{tikzpicture}
@@ -285,6 +329,9 @@ P(a, b, c, d) =
           \node[RV] at (0,2) (b) {$b$};
           \node[RV] at (2,0) (c) {$c$};
           \node[RV] at (2,2) (d) {$d$};
+	  \draw<2>[->] (a)--(b);
+	  \draw<2>[->] (b)--(c);
+	  \draw<2>[->] (b)--(d);
         \end{tikzpicture}
 \[
 P(a, b, c, d) = P(a) P(b | a) P (c | b) P(d | b)
@@ -296,6 +343,8 @@ P(a, b, c, d) = P(a) P(b | a) P (c | b) P(d | b)
           \node[RV] at (0,2) (b) {$b$};
           \node[RV] at (2,0) (c) {$c$};
           \node[RV] at (2,2) (d) {$d$};
+	  \draw<2>[->] (a)--(b);
+	  \draw<2>[->] (c)--(d);
         \end{tikzpicture}
 \[
 P(a, b, c, d) = P(a) P(b | a) P (d | c) P(c)
@@ -307,6 +356,10 @@ P(a, b, c, d) = P(a) P(b | a) P (d | c) P(c)
           \node[RV] at (0,2) (b) {$b$};
           \node[RV] at (2,0) (c) {$c$};
           \node[RV] at (2,2) (d) {$d$};
+	  \draw<2>[->] (a)--(b);
+	  \draw<2>[->] (a)--(c);
+	  \draw<2>[->] (b)--(d);
+	  \draw<2>[->] (c)--(d);
         \end{tikzpicture}
 \[
 P(a, b, c, d) = P(a) P(b | a) P (c | a) P(d | b, c)
@@ -406,6 +459,11 @@ Here we just have $P(x)$.
 
 *** Adding parameters to the graphical model
     
+- We can also see the parameters of the distribution as (random) variables.
+- We can put those random variables in the graphical model as well.
+- Since the parameters are not observed, we denote them with dashed circles.
+- They are a type of *latent* or *hidden* variable.
+
 **** A Bernoulli RV
 Here, $x | \theta \sim \Ber(\theta)$
 \begin{tikzpicture}
@@ -463,7 +521,10 @@ Assume $k$ classes, then
 - $y \mid \theta \sim \Mult(\theta)$
 - $x \mid y, \mu, \sigma \sim \Normal(\mu_y, \sigma^2_y)$
 ** Density estimation
-*** General idea
+*** Density estimation
+The simplest type of generative model is just modelling the distribution of $x$. 
+There are a number of models for this.
+
 **** Parametric models
 - Fixed histograms
 - Gaussian Mixtures
@@ -531,6 +592,10 @@ p(x | \theta, \mu, \Sigma) = \sum_{z \in [k]} p(x \mid \mu_z, \Sigma_z) P(z \mid
       \draw[->] (mu) to (x);
 \end{tikzpicture}
 
+*** Applications of Gaussian mixture models
+- Density estimation
+- Clustering
+- Used as part of a more complex model.
 
 * Algorithms for latent variable models     
 
