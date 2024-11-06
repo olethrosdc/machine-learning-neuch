@@ -9,6 +9,26 @@
 #+OPTIONS:   H:3
 
 * Graphical models
+** Random variables and probabilities
+*** Notational problems
+
+*** Probability and statistics
+**** Probability theory
+Here, we talk a lot about *probability measures $P$* on some space $\Omega$.
+These are functions on *sets*, so that 
+- $P(\Omega) = 1$
+- $P(A) \in [0,1]$ for any $A \subset \Omega$
+- $P(A \cup B) = P(A) + P(B)$ if $A \cap B = \emptyset$.
+**** Statistics
+In statistics, we are interested in random variables $x, y, \ldots$ which are *functions $x : \Omega \to \Reals$*.
+However, talking about specific probabilities is very annoying. 
+- We write $\Pr(x)$ as a shorthand for /the probability distribution of $x$/.
+- If we want to derive a probability measure from that distribution, things get frustratingly complicated. Here is the precise probability notation,
+where $P_x(A)$ is the measure of the set $A$ in the usual sense, if $P$ is the random event giving $\Omega$
+\[
+P_x(A) \defn P(\omega)
+\]
+- Note that since $x : \Omega \to \Reals$, $A \subset \Reals$
 ** Graphical model
 *** Graphical models
 #+ATTR_LATEX: :center 
