@@ -28,6 +28,7 @@ class GaussianTimeSeries:
         """Initialise the time series."""
         self.state = 0
         self.scale = scale
+        
     def generate(self):
         """Generate a value from the time series."""
         
@@ -67,6 +68,7 @@ class LinearGaussianTimeSeries:
         self.state = np.zeros(order)
         self.scale = scale
         self.coeffs = np.random.uniform(size=order) - 0.5
+        
     def generate(self):
         x = np.dot(self.state, self.coeffs) + self.scale * np.random.normal()
         self.state[:-1] = self.state[1:]
@@ -132,7 +134,6 @@ if __name__ == '__main__':
     plt.plot(x)
     plt.title("Gaussian time series")
     plt.show()
-
 
     for order in range(1,4):
         lgts = LinearGaussianTimeSeries(0.1, order)
