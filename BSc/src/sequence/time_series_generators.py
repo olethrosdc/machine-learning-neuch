@@ -67,7 +67,7 @@ class LinearGaussianTimeSeries:
         self.order = order
         self.state = np.zeros(order)
         self.scale = scale
-        self.coeffs = np.random.uniform(size=order) - 0.5
+        self.coeffs = np.ones(order)/order
         
     def generate(self):
         x = np.dot(self.state, self.coeffs) + self.scale * np.random.normal()
