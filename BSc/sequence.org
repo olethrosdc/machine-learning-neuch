@@ -1,32 +1,34 @@
-#+TITLE: Sequence prediction
+#+TITLE:  Sequence prediction and language models
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
-#+LaTeX_HEADER: \include{preamble}
-#+LaTeX_HEADER: \usepackage{tikz}
-#+LaTeX_HEADER: \usepackage{pgfplots}
-#+LaTeX_HEADER: \usetikzlibrary{datavisualization}
+#+LaTeX_HEADER: \input{preamble}
 #+LaTeX_CLASS_OPTIONS: [smaller]
+#+LATEX_HEADER: \RequirePackage{fancyvrb}
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
-#+OPTIONS:   H:3
-#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}}
-
-* The problem of sequence prediction
-** Examples
-*** Weather
+#+OPTIONS:   H:2
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
+* Sequence prediction
+** Time series data
+** Weather
 [[./fig/meteo.png]]
-*** Climate
-[[./fig/climate.png]]
-*** Stock market
-[[./fig/us-stocks.png]]
-*** Inflation
-[[./fig/swiss-inflation.png]]
-** Common themes
-*** Assumptions for sequence prediction
-**** We cannot influence observations
-**** Future observations depend on past observations
+** Switzerland inflation
+[[./swiss-inflation.png]]
+** Turkey inflation
+[[./turkey-inflation.png]]
+** German inflation
+[[./german-inflation.png]]
+** Greece inflation
+[[./greece-inflation.png]]
+** Japan inflation
+[[./japan-inflation.png]]
+** US inflation
+[[./us-inflation.png]]
+** US stocks
+[[./us-stocks.png]]
 
-** Formalising sequence prediction
+*** Language models
+
 *** The problem of sequence prediction
 - Data $x_1, x_2, x_3, \ldots$
 - At time $t$, make a prediction $a_t$ for $x_t$.
@@ -61,6 +63,94 @@ P(x_t | x_{t-k}, \ldots, x_{t-1})
 = \sum_i \param^\top_i x_{t-i}.
 = \sum_{i,j} \param_{i,j} x_{t-i}.
 \]
+
+* Bayesian networks for prediction
+** Discrete Bayesian Networks
+\begin{tikzpicture}
+\node[RV] at (0,0) (x1) {$x_1$};
+\node[RV] at (0,1) (x2) {$x_2$};
+\node[RV] at (1,0) (x3) {$x_3$};
+\node[RV] at (1,1) (x4) {$x_4$};
+\node[RV,hidden] at (-1,0) (m1) {$\vparam_1$};
+\node[RV,hidden] at (-1,1) (m2) {$\vparam_2$};
+\node[RV,hidden] at (2,0) (m3) {$\vparam_3$};
+\node[RV,hidden] at (2,1) (m4) {$\vparam_4$};
+\draw[->] (x1) to (x2);
+\draw[->] (x2) to (x3);
+\draw[->] (x4) to (x3);
+\draw[->] (x2) to (x4);
+\draw[->] (m1) to (x1);
+\draw[->] (m2) to (x2);
+\draw[->] (m3) to (x3);
+\draw[->] (m4) to (x4);
+\end{tikzpicture}
+
+- A directed acyclic graph (DAG) defined on variables $x_1, \ldots, x_n$ with each $x_n$ taking a finite number of values,
+- Let $S_i$ be the indices corresponding to parent variables of $x_i$.
+- $x_i \mid \vparam_i, x_{S_i} = k \sim \Mult(\vparam_{i,k})$.
+
+*** Example: Lung cancer, smoking and asbestos
+**** LSA DAG
+    :PROPERTIES:
+    :BEAMER_col: 0.4
+    :END:
+
+\begin{tikzpicture}
+\node[RV] at (0,0) (x1) {$x_S$};
+\node[RV] at (0,1) (x2) {$x_C$};
+\node[RV] at (1,0) (x3) {$x_A$};
+\node[RV,hidden] at (-1,0) (m1) {$\param_A$};
+\node[RV,hidden] at (-1,1) (m2) {$\vparam_C$};
+\node[RV,hidden] at (2,0) (m3) {$\param_S$};
+\draw[->] (x1) to (x2);
+\draw[->] (x3) to (x2);
+\draw[->] (m1) to (x1);
+\draw[->] (m2) to (x2);
+\draw[->] (m3) to (x3);
+\end{tikzpicture}
+**** LSA Equations
+    :PROPERTIES:
+    :BEAMER_col: 0.6
+    :END:
+\begin{align}
+P_{\param_A}(x_A = 1) &= \param_A\\
+P_{\param_S}(x_S = 1) &= \param_S\\
+P_{\vparam_C}(x_C = 1 \mid X_A= j, X_S = k) &= \param_{C,j,k}
+\end{align}
+
+** Markov model
+\begin{tikzpicture}
+\node[RV] at (-1,0) (x0) {$x_{t-1}$};
+\node[RV] at (0,0) (x1) {$x_t$};
+\node[RV] at (1,0) (x2) {$x_{t+1}$};
+\node[RV,hidden] at (1,1) (m1) {$\vparam$};
+\node[RV] at (0,1) (prior) {$\vectorsym{\alpha}$};
+\draw[->] (prior) to (m1);
+\draw[->] (m1) to (x0);
+\draw[->] (m1) to (x1);
+\draw[->] (m1) to (x2);
+\draw[->] (x0) to (x1);
+\draw[->] (x1) to (x2);
+\end{tikzpicture}
+
+A *Markov model* obeys
+\[
+\Pr_\vparam(x_{k+1} | x_k, \ldots, x_1) = \Pr_\vparam(x_{k+1} | x_k)
+\]
+i.e. the graphical model is a chain. We are usually interested in *homogeneous* models, where
+\[
+\Pr_\vparam(x_{k+1} = i \mid x_k = j) = \param_{i,j} \qquad \forall k
+\]
+*** Inference for finite Markov models
+- If $x_t \in [n]$ then $x_{t+1} \mid \vparam, x_t = i \sim \Mult(\vparam_i)$, $\vparam_i \in \Simplex^n$
+- Prior $\vparam_i \mid \vectorsym{\alpha} \sim \Dir(\vectorsym{\alpha})$ for all $i \in [n]$.
+- Posterior $\vparam_i \mid x_1, \ldots, x_t, \vectorsym{\alpha} \sim \Dir(\vectorsym{\alpha}^{(t)})$ with
+  \[
+  \alpha^{t}_{i,j} = \alpha_{i,j} + \sum_{k=1}^t \ind{x_k = i \wedge x_{k+1} = j},
+  \qquad
+  \vectorsym{\alpha}^0 =   \vectorsym{\alpha}.
+  \]
+
 
 
 *** Recursive models
@@ -123,3 +213,8 @@ Gaussian with
 P_\theta(x_t = x | z_t = i) \propto \exp\left(-\|x - \psi_{i}\|\right)
 \]
 
+* Neural networks for prediction
+** Finite window neural networks
+*** Fixed window networks
+*** Neural networks with attention
+** Recursive neural networks
