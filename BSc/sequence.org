@@ -1,70 +1,178 @@
-#+TITLE: Sequence prediction
+#+TITLE:  Sequence prediction and language models
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
-#+LaTeX_HEADER: \include{preamble}
-#+LaTeX_HEADER: \usepackage{tikz}
-#+LaTeX_HEADER: \usepackage{pgfplots}
-#+LaTeX_HEADER: \usetikzlibrary{datavisualization}
+#+LaTeX_HEADER: \input{preamble}
 #+LaTeX_CLASS_OPTIONS: [smaller]
+#+LATEX_HEADER: \RequirePackage{fancyvrb}
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
-#+OPTIONS:   H:3
-#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}}
-
-* The problem of sequence prediction
-** Examples
-*** Weather
+#+OPTIONS:   H:2
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
+* Sequence prediction
+** Time series data
+** Weather
 [[./fig/meteo.png]]
-*** Climate
-[[./fig/climate.png]]
-*** Stock market
-[[./fig/us-stocks.png]]
-*** Inflation
+** Switzerland inflation
 [[./fig/swiss-inflation.png]]
-** Common themes
-*** Assumptions for sequence prediction
-**** We cannot influence observations
-**** Future observations depend on past observations
+** Turkey inflation
+[[./fig/turkey-inflation.png]]
+** German inflation
+[[./fig/german-inflation.png]]
+** Greece inflation
+[[./fig/greece-inflation.png]]
+** Japan inflation
+[[./fig/japan-inflation.png]]
+** US inflation
+[[./fig/us-inflation.png]]
+** US stocks
+[[./fig/us-stocks.png]]
 
-** Formalising sequence prediction
-*** The problem of sequence prediction
+
+** The problem of sequence prediction
 - Data $x_1, x_2, x_3, \ldots$
 - At time $t$, make a prediction $a_t$ for $x_t$.
-*** Auto-regressive models
-**** General idea
-- Predict $x_{t}$ from the last $k$ inputs
+** Markov models
+[[../fig/snakes-ladders.jpeg]]
+** Auto-regressive / Markov models
+*** General idea
+- $x_{t}$ is generated from the last $n$ inputs
 \[
-x_t \approx g(x_{t-k}, \ldots, x_{t-1})
+x_t = g(x_{t-k}, \ldots, x_{t-1}) + \epsilon_t
 \]
-**** Optimisation view
+- $n$: *order* or *window size*
+*** Optimisation view
 We wish to minimise the difference between our predictions $a_t$ and the next symbol
 \[
 \sum_t (a_t - x_t)^2
 \]
-**** Probabilistic view
+*** Probabilistic view
 We wish to model
 \[
-P(x_t | x_{t-k}, \ldots, x_{t-1})
+\Pr(x_t \mid x_{t-n}, \ldots, x_{t-1})
 \]
-*** Linear auto-regression
-**** Simple time-series data
+
+** Linear auto-regression
+*** Simple time-series data
 - Observations $x_t \in \Reals$
 - Parameters $\vparam \in \Reals^k$
 \[
 \hat{x}_t = \sum_i \param_i x_{t-i}.
 \]
-**** Multi-dimensional time-series data
+#+BEAMER: \pause
+*** Multi-dimensional time-series data
 - Observations $x_t \in \Reals^n$
-- Parameters $\mparam \in \Reals^{k \times n}$
+- Parameters $\mparam \in \Reals^{n \times k}$
 \[
 \hat{x}_t
 = \sum_i \param^\top_i x_{t-i}.
 = \sum_{i,j} \param_{i,j} x_{t-i}.
 \]
 
+* Network Models for prediction
+** Markov model
+\begin{tikzpicture}
+\node[RV] at (-1,0) (x0) {$x_{t-1}$};
+\node[RV] at (0,0) (x1) {$x_t$};
+\node[RV] at (1,0) (x2) {$x_{t+1}$};
+\node[RV,hidden] at (1,1) (m1) {$\vparam$};
+\node[RV] at (0,1) (prior) {$\vectorsym{\alpha}$};
+\draw[->] (prior) to (m1);
+\draw[->] (m1) to (x0);
+\draw[->] (m1) to (x1);
+\draw[->] (m1) to (x2);
+\draw[->] (x0) to (x1);
+\draw[->] (x1) to (x2);
+\end{tikzpicture}
 
-*** Recursive models
-**** General idea
+A *Markov model* obeys
+\[
+\Pr_\vparam(x_{t+1} | x_t, \ldots, x_1) = \Pr_\vparam(x_{t+1} | x_t)
+\]
+i.e. the graphical model is a chain. We are usually interested in *homogeneous* models, where
+\[
+\Pr_\vparam(x_{t+1} \mid x_t)
+=
+\Pr_\vparam(x_{t'+1} \mid x_{t'})
+ \qquad \forall t, t'
+\]
+** Inference for finite Markov models
+- If $x_t \in [n]$ then $x_{t+1} \mid \vparam, x_t = i \sim \Mult(\vparam_i)$, $\vparam_i \in \Simplex^n$
+- Prior $\vparam_i \mid \vectorsym{\alpha} \sim \Dir(\vectorsym{\alpha})$ for all $i \in [n]$.
+- Posterior $\vparam_i \mid x_1, \ldots, x_t, \vectorsym{\alpha} \sim \Dir(\vectorsym{\alpha}^{(t)})$ with
+  \[
+  \alpha^{t}_{i,j} = \alpha_{i,j} + \sum_{k=1}^t \ind{x_k = i \wedge x_{k+1} = j},
+  \qquad
+  \vectorsym{\alpha}^0 =   \vectorsym{\alpha}.
+  \]
+
+** $k$-Markov model
+\begin{tikzpicture}
+\node[RV] at (-4,0) (x3) {$x_{t-3}$};
+\node[RV] at (-2,0) (x2) {$x_{t-2}$};
+\node[RV] at (0,0) (x1) {$x_{t-1}$};
+\node[RV] at (2,0) (x0) {$x_{t}$};
+\draw[->] (x1) to (x0);
+\draw[->] (x2) to (x1);
+\draw[->] (x2) to [bend right=45] (x0);
+\end{tikzpicture}
+
+A *k-order* Markov model obeys
+\[
+\Pr_\vparam(x_{t} | x_{t-1}, \ldots, x_1) = \Pr_\vparam(x_{t} | x_{t-1}, \ldots, x_{t-k})
+\]
+
+
+
+** Markov Neural model
+- During training, it is important to fit $x_t$ on $x_{t-1}, \ldots, x_{t-n}$.
+- This can be done by duplicating and shifting the data: Transform $x$ from a series of points in $\Reals^n$ to a series in $\Reals^{kn}$.
+
+*** left                                                              :BMCOL:
+    :PROPERTIES:
+    :BEAMER_col: 0.5
+    :END:
+**** no hidden layer
+\begin{tikzpicture}
+\node[RV] at (0,-1) (x4) {$x_{t-4}$};
+\node[RV] at (0,0) (x3) {$x_{t-3}$};
+\node[RV] at (0,1) (x2) {$x_{t-2}$};
+\node[RV] at (0,2) (x1) {$x_{t-1}$};
+\node[RV] at (2,1) (a) {$a_t$};
+\draw[->] (x1) to (a);
+\draw[->] (x2) to (a);
+\draw[->] (x3) to (a);
+\end{tikzpicture}
+
+
+*** right                                                             :BMCOL:
+    :PROPERTIES:
+    :BEAMER_col: 0.5
+    :END:
+**** ... with a 2-unit hidden layer
+\begin{tikzpicture}
+\node[RV] at (0,-1) (x4) {$x_{t-4}$};
+\node[RV] at (2,0) (z1) {$z_1$};
+\node[RV] at (2,2) (z2) {$z_2$};
+\node[RV] at (0,0) (x3) {$x_{t-3}$};
+\node[RV] at (0,1) (x2) {$x_{t-2}$};
+\node[RV] at (0,2) (x1) {$x_{t-1}$};
+\node[RV] at (4,1) (a) {$a_t$};
+\draw[->] (x1) to (z1);
+\draw[->] (x2) to (z1);
+\draw[->] (x3) to (z1);
+\draw[->] (x1) to (z2);
+\draw[->] (x2) to (z2);
+\draw[->] (x3) to (z2);
+\draw[->] (z1) to (a);
+\draw[->] (z2) to (a);
+\end{tikzpicture}
+
+
+
+
+* Recursive models
+** Recursive models
+*** General idea
 - Maintain an /internal state/ $z_t$, which summarises what has been seen.
 \[
 z_t = f(z_{t-1}, x_{t-1}) \tag{change state}
@@ -74,11 +182,15 @@ z_t = f(z_{t-1}, x_{t-1}) \tag{change state}
 \hat{x}_t = g(z_t) \tag{predict}
 \]
 
-**** Examples
+*** Examples
 - Hidden Markov models
 - Recurrent Neural Networks
 
-*** Hidden Markov Models: General setting
+** Hidden Markov Models: General setting
+*** Col A                                                             :BMCOL:
+    :PROPERTIES:
+    :BEAMER_col: 0.5
+    :END:
 **** Variables
 - State $z_t$
 - Observations $x_t$
@@ -88,38 +200,38 @@ z_t = f(z_{t-1}, x_{t-1}) \tag{change state}
 **** Distributions
 - Transition distribution $P_\theta(z_{t+1} | z_t)$
 - Observation distribution $P_\psi(x_t | z_t)$.
-*** HMMs: Discrete case
-**** Variables
+*** Col B                                                             :BMCOL:
+    :PROPERTIES:
+    :BEAMER_col: 0.5
+    :END:
+\begin{tikzpicture}
+\node[RV] at (0,2) (x0) {$x_{t-1}$};
+\node[RV] at (2,2) (x1) {$x_t$};
+\node[RV] at (4,2) (x2) {$x_{t+1}$};
+\node[RV, hidden] at (0,0) (s0) {s_{t-1}$};
+\node[RV, hidden] at (2,0) (s1) {$s_t$};
+\node[RV, hidden] at (4,0) (s2) {$s_{t+1}$};
+\draw[->] (s0) to (s1);
+\draw[->] (s1) to (s2);
+\draw[->] (s0) to (x0);
+\draw[->] (s1) to (x1);
+\draw[->] (s2) to (x2);
+\end{tikzpicture}
+
+The parameter variables are omitted for simplicity.
+
+** HMMs: Discrete case
+*** Variables
 - State $z_t \in [n]$
 - Observation $x_t \in [m]$
-**** Transition distribution
+*** Transition distribution
 Multinomial with 
 \[
 P_\theta(z_{t+1} = j | z_t = i) = \param_{i,j}
 \]
-**** Observation distribution
+*** Observation distribution
 Multinomial with 
 \[
 P_\theta(x_t = j | z_t = i) = \psi_{i,j}
-\]
-*** HMM State estimation
-- 
-*** HMM Disribution estimation
-- The problem is that for HMMs we need the complete data.
-
-*** EM for HMMs
-*** HMMs: Continuous case
-**** Variables
-- State $z_t \in [n]$
-- Observation $x_t \in \Reals^m$
-**** Transition distribution
-Multinomial with 
-\[
-P_\theta(z_{t+1} = j | z_t = i) = \param_{i,j}
-\]
-**** Observation distribution
-Gaussian with 
-\[
-P_\theta(x_t = x | z_t = i) \propto \exp\left(-\|x - \psi_{i}\|\right)
 \]
 
