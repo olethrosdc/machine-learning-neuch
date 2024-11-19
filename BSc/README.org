@@ -37,7 +37,7 @@ The course focuses on fundamental modelling problems and general machine learnin
 |      8 | 11.05 | Generative models                      | Naive Bayes, Graphical models, independence                      |                     | Mix   |
 |      9 | 11.12 | Sequence prediction                    | Markov models, text prediction, LLMs                             |                     | Mixed |
 |     10 | 11.19 | Ensemble methods                       | Bagging, boosting                                                |                     | Mixed |
-|     11 | 11.26 | Project lab day                        |                                                                  |                     | Lab   |
+|     11 | 11.26 | Image recognition                      |                                                                  |                     | Lab   |
 |     12 | 12.03 | Fairness and Privacy                   |                                                                  |                     | Mixed |
 |     13 | 12.10 | Project Presentations                  |                                                                  |                     | Lab   |
 |--------+-------+----------------------------------------+------------------------------------------------------------------+---------------------+-------|
