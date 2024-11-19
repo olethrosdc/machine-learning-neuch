@@ -70,22 +70,23 @@ Build predictors sequentially, so that at iteration $b$, we try to improve perfo
 - $T > 0$
 - For $t = 1, \ldots, T$
   1. Choose allocation $p_t = \frac{w_t}{\sum_{i=1}^N w_{i,t}}$
-  2. Observe loss $\ell_t in [0, 1]^N$
+  2. Observe loss $\ell_t \in [0, 1]^N$
   3. Suffer loss $\ell_t^\top p_t$.
-  4. Set $w_{i, t+1} = w_{i, t} \eta^{\ell_{i,t}}$.
+  4. Set $w_{t+1, i} = w_{t, i} \exp(\eta \ell_{i,t})$.
 
-** AdaBoost
-- Weighted learning algorithm $\labmda$.
+** AdaBoost/SAMME
+- Weighted learning algorithm $\lambda$.
 - Data $D$.
 - $w_{i,t} = 1/T$.
 - For $b = 1, \ldots, B$
   1. Choose allocation $p_b = \frac{w_b}{\sum_{i=1}^N w_{b,i}}$
   2. Get $\pi_b = \lambda(D, p_b)$
-  3. Calculate error for all example $\ell_{b,t} = |\pi_b(x_t) - y_t|$ and
-  4. Average error $\epsilon_b = \sum_{t=1}^T p_{b,t} \ell_{b,t}
-  3. Let $\eta_b = \epsilon_b / (1 - \epsilon_b)
-  4. Set $w_{b + 1, t} = w_{b, t} \eta^{\ell_{b,t}}$
+  3. Calculate error for all examples: $\ell_{b,t} = |\pi_b(x_t) - y_t|$.
+  4. Average error $\epsilon_b = \sum_{t=1}^T p_{b,t} \ell_{b,t}$.
+  3. Let $\eta_b = \ln \frac{1 - \epsilon_b}{\epsilon_b} + \ln (C - 1)$.
+  4. Set $w_{b + 1, t} = w_{b, t} \exp\left(\eta_b \ind{c_t \neq \pi_b(x_t)}\right)$.
 - Output
 \[
-\sum_{b=1}^B \ln(\frac{1}{\eta_b}) \pi_(b)
+\pi(x) = \argmax_c \sum_{b=1}^B \eta_b \ind{\pi_b(x) = c}.
 \]
+
