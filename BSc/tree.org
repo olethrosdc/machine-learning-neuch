@@ -1,0 +1,75 @@
+#+TITLE:  Tree models
+#+AUTHOR: Christos Dimitrakakis
+#+EMAIL:christos.dimitrakakis@unine.ch
+#+LaTeX_HEADER: \input{preamble}
+#+LaTeX_CLASS_OPTIONS: [smaller]
+#+LATEX_HEADER: \RequirePackage{fancyvrb}
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+#+TAGS: activity advanced definition exercise homework project example theory code
+#+OPTIONS:   H:2
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
+* Decision trees
+** Regression trees
+*** Partitioning
+- Partition $\CX$ in subsets $\mathscr{P} = \{R_1, \ldots R_J\}$ so that
+\[
+\bigcup_{j=1}^J R_j = \CX,
+\qquad
+ R_i \cap R_j = \emptyset, \forall i \neq j
+\]
+*** MSE fit
+- Given a partition $\mathscr{P}$, parameters $\param_i$ for each $R_i \in \mathscr{i}$
+- $\param_j = \argmin_\param \sum_{t : x_t \in R_j} (y_t - \param_j)^2$
+*** Prediction
+- For a new point $x$, predict:
+- $\hat{y} = \param_j$ if $x \in R_j$
+
+** Constructing the partition
+We can search for a *good* (but not the best) partition
+
+*** Find the best splitting point 
+First, for any region $R_i$, and any $s \in R \cap \CX_j$, define left and right regions:
+\[
+R_l(i, j, s) = \{x_t : x_{t,j} < s\}, \qquad
+R_r(i, j, s) = \{x_t : x_{t,j} \geq s\}
+\]
+Then calculate the error-reduction:
+\[
+\epsilon_j =
+\sum_{t : x_t \in R_j} (y_t - \param_j) - 
+\left(
+\min_{\param_l} \sum_{t : x_t \in R_l(i,j,s)} (y - \param_l) +
+\min_{\param_r} \sum_{t : x_t \in R_r(i,j,s)} (y - \param_r)
+\right)
+\]
+Let $R_l(i,j), R_l(i,j)$ be the error-reduction-maximising regions for region $R_i$, feature $j$.
+
+*** Find the best feature
+Simply pick the region-feature combination $i^*,j^*$ that has the greatest reduction in error by splitting, and refine the partition
+\[
+\mathscr{P} = \mathscr{P} \setminus R_{i^*} \cup \{R_l(i^*, j^*), R_r(i^*, j^*)\} 
+\]
+** Classification trees
+*** Classification error fit
+- Pparameters $\param_i$ are simply the proportion of each class label in each set.
+\[
+\param_{j,c} = \sum_{t : x_t \in R_j} \ind{y_t = c} / |{t : x_t \in R_j}|
+\]
+*** Prediction
+For a new point $x$, predict:
+$\hat{y} = \argmax_y \param_{j,c}$ if $x \in R_j$
+*** Splitting
+- Gini index
+\[
+\sum_{c=1}^C \param_{j,c} (1 - \param_{j, c})
+\]
+- Entropy
+\[
+\sum_{c=1}^C \param_{j,c} \ln (\param_{j, c})
+\]
+** Tree complexity
+- We can reduce the tree complexity by simply minimising 
+\[
+MSE + \alpha |T|, 
+\]
+where $|T|$ is the tree size.

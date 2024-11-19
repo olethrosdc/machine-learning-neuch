@@ -1,0 +1,91 @@
+#+TITLE:  Ensemble methods
+#+AUTHOR: Christos Dimitrakakis
+#+EMAIL:christos.dimitrakakis@unine.ch
+#+LaTeX_HEADER: \input{preamble}
+#+LaTeX_CLASS_OPTIONS: [smaller]
+#+LATEX_HEADER: \RequirePackage{fancyvrb}
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+#+TAGS: activity advanced definition exercise homework project example theory code
+#+OPTIONS:   H:2
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
+* Ensemble Methods
+** Bagging
+*** Algorithm
+- Input: Data $D$, bags $B$, base learner $\lambda$
+- For $b = 1, \ldots, B$
+ - Sample \alert{with replacement} $D_b \sim \Unif(D)^N$
+ - Obtain predictor $\pi_b = \lambda(D_b)$.
+- Return $\{\pi_b\}$
+
+*** The bagged predictor
+In the end, we just combine all the predictors:
+\[
+\pi = f\left(\sum_{b=1}^B \pi_b\right)
+\]
+** Bagging classifiers
+*** Classification setting
+- Weak learner $\lambda : D \to \Pi$
+- Base hypotheses $\pi_b : X \to \{-1,1\}$
+with
+\[
+\pi_b = \lambda(D_b), \qquad D_b \sim D
+\]
+- Aggregate hypothesis
+\[
+\pi(x) = \sgn\left(\sum_{b=1}^B \pi_b(x)\right)
+\]
+** Regression setting
+- Weak learner $\lambda : D \to \Pi$
+- Base hypotheses $\pi_b : X \to \{-1,1\}$
+with
+\[
+\pi_b = \lambda(D_b), \qquad D_b \sim D
+\]
+- Aggregate hypothesis
+\[
+\pi(x) = \frac{1}{B} \sum_{b=1}^B \pi_b(x)
+\]
+** Random forests
+- Same as bagged trees
+*** Random subset of features
+In random forests a subset $\hat{p}$ of the features is randomly consider for splitting.
+*** Rationale
+- Make the splits more random
+- Consequently, the trees will look very different.
+** Boosting regression trees
+Build predictors sequentially, so that at iteration $b$, we try to improve performance on the *hardest* examples.
+*** Algorithm 
+- Input: Learner $\lambda$, data $D = (X, y)$, learning rate $\eta > 0$, set $r = y$.
+- For $b = 1, 2, \ldots, B$:
+  - Fit $\pi_b = \lambda(D, r)$
+  - Update the aggregate: $\pi = \pi + \eta \pi_b(x)$
+  - Update residuals: $r_t = r_t - \eta \pi_b(x_t)$
+- Output final model:
+\[
+\pi = \sum_{b = 1}^B \eta \pi_b
+\]
+** Hedge
+- $\eta \in [0,1]$
+- $w_t \in [0,1]^N$.
+- $T > 0$
+- For $t = 1, \ldots, T$
+  1. Choose allocation $p_t = \frac{w_t}{\sum_{i=1}^N w_{i,t}}$
+  2. Observe loss $\ell_t in [0, 1]^N$
+  3. Suffer loss $\ell_t^\top p_t$.
+  4. Set $w_{i, t+1} = w_{i, t} \eta^{\ell_{i,t}}$.
+
+** AdaBoost
+- Weighted learning algorithm $\labmda$.
+- Data $D$.
+- $w_{i,t} = 1/T$.
+- For $b = 1, \ldots, B$
+  1. Choose allocation $p_b = \frac{w_b}{\sum_{i=1}^N w_{b,i}}$
+  2. Get $\pi_b = \lambda(D, p_b)$
+  3. Calculate error for all example $\ell_{b,t} = |\pi_b(x_t) - y_t|$ and
+  4. Average error $\epsilon_b = \sum_{t=1}^T p_{b,t} \ell_{b,t}
+  3. Let $\eta_b = \epsilon_b / (1 - \epsilon_b)
+  4. Set $w_{b + 1, t} = w_{b, t} \eta^{\ell_{b,t}}$
+- Output
+\[
+\sum_{b=1}^B \ln(\frac{1}{\eta_b}) \pi_(b)
+\]
