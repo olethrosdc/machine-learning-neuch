@@ -65,16 +65,25 @@ Build predictors sequentially, so that at iteration $b$, we try to improve perfo
 \pi = \sum_{b = 1}^B \eta \pi_b
 \]
 ** Hedge
-- $\eta \in [0,1]$
-- $w_t \in [0,1]^N$.
-- $T > 0$
+*** Prediction with expert advice
+This is an *online* prediction problem, where, at each step $t$:
+- We pick $a_t$ of $N$ *possible decisions*
+- We observe the loss $\ell_t(a)$ for all $a \in [N]$.
+- We then suffer a loss $\ell_t(a_t)$
+- Our goal is to minimise the total loss $\sum_{t=1}^T \ell_t(a_t)$
+
+*** Algorithm
+- Learning rate $\eta \in [0,1]$, Weights $w_t \in [0,1]^N$, Iterations $T > 0$
 - For $t = 1, \ldots, T$
-  1. Choose allocation $p_t = \frac{w_t}{\sum_{i=1}^N w_{i,t}}$
-  2. Observe loss $\ell_t \in [0, 1]^N$
-  3. Suffer loss $\ell_t^\top p_t$.
-  4. Set $w_{t+1, i} = w_{t, i} \exp(\eta \ell_{i,t})$.
+  1. Calculate allocation $p_t = \frac{w_t}{\sum_{i=1}^N w_{i,t}}$
+  2. Selct action $a_t = i$ with probability $p_{t,i}$.
+  2. Observe loss $\ell_t \in [0, 1]^N$ for all actions.
+  3. Suffer loss $\ell_t
+  4. Update all weights $w_{t+1, i} = w_{t, i} \exp(\eta \ell_{i,t})$.
 
 ** AdaBoost/SAMME
+AdaBoost can be seen as a version of Hedge with a varying learning rate.
+*** Algorithm
 - Weighted learning algorithm $\lambda$.
 - Data $D$.
 - $w_{i,t} = 1/T$.
