@@ -41,7 +41,7 @@ The course focuses on fundamental modelling problems and general machine learnin
 |     12 | 12.03 | Fairness and Privacy                   |                                                                  |                     | Mixed |
 |     13 | 12.10 | Project Presentations                  |                                                                  |                     | Lab   |
 |--------+-------+----------------------------------------+------------------------------------------------------------------+---------------------+-------|
-|     14 | 12.17 | Project Presentations                  |                                                                  |                     |       |
+|     14 | 12.17 | Project work                           |                                                                  |                     | Lab   |
 |--------+-------+----------------------------------------+------------------------------------------------------------------+---------------------+-------|
 
 ** Material
@@ -50,18 +50,38 @@ The course focuses on fundamental modelling problems and general machine learnin
 - Introduction to Statistical Learning with Python
 https://hastie.su.domains/ISLP/ISLP_website.pdf.download.html
 ** Notation differences
-*** Notation differences
-**** Random variables
+*** Random variables
 The ISLP book typically denotes random variables with a capital letter, i.e. $X, Y$ and their probabilities with $P(X | Y)$. For specific values, it typically uses the small letters, e.g.
 $P(X = x | Y = y)$.
-We will not use this convention, and stick to small letters, e.g. writing $P(x = i | y = j)$ or
-$P(x_t = x | y_t = y)$. Sometimes we use the shorthand $\sum_x P(x, y)$ to mean $\sum_{i \in X} P(x = i | y)$.
 
-**** Sets
+We will not use this convention, and stick to small letters, e.g. writing 
+\[
+P(x = i | y = j)
+\] or
+\[
+P(x_t = x | y_t = y).
+\]
+
+Sometimes we use the shorthand $\sum_x P(x, y)$ to mean $\sum_{i \in X} P(x = i | y)$.
+
+*** Sets
 We will use  capital letters e.g. $A, B, C$ for sets. For special sets, we will use calligraphic capital letters, e.g. $\CA, \CX, \CY$.
 
-**** Models versus decision rules
-The ISLP book makes no distinction between decision rules and models. It sometimes uses $P$, $\hat{P}$ or $\hat{Pr}$ for an estimated model. We use $\pi$ to differentiate between a decision rule and a model $P$. We use $\param$ for the parameters of a model and $\hat{\param}$ for estimated parameters.
+*** Models versus decision rules
+The ISLP book makes no real distinction between decision rules and models. It sometimes uses $P$, $\hat{P}$ or $\hat{Pr}$ for an estimated model. We use:
+- $\pi$ for a decision rule.
+- $P$ for a model
+- $\param$ for the parameters of a model, with $P_\param$ the parametrised model.
+- $\hat{\param}$ for estimated parameters.
+
+* Course evaluation
+** Course evaluation
+*** Course evaluation
+- Remember to do the course evaluation on is-academia.
+- This helps us improve the course.
+- Try to leave text comments. These are more informative than simple
+  scores. We would like to know what you found easy, what you found
+  hard, what was a big problem for you, what you enjoyed, etc.
 
 * Activities
 ** Assignments
@@ -78,18 +98,111 @@ The ISLP book makes no distinction between decision rules and models. It sometim
  In this assignment we compare classification models. 
  We apply the basic ideas of train, test, validation, cross-validation and bootstrapping. 
  They should develop this using scikitlearn.
-*** Assignment 3: Regression, simulations
- We first perform regression using both statsmodels and scikitlearn (slightly different)
- In this assignment we further develop the idea of simulation.
- Here the students should already implement some project ideas
-*** Assignment 4: Probabilistic Models
- Here we focus on simulation from a known probabilistic model. We show
- how we can use a probabilistic model to define a simulation, and how
- we can learn the model from simulation data. 
-*** Assignment 5: Neural networks
- Image classification example.
-*** Assignment 6: Sequential prediction
- Compare a variable order Markov chain, a hidden Markov model and a recurrent neural network.
+*** Assignment 3: Linear regression and simulation
+
+**** Regression
+Complete the in-class exercise:
+
+(a) Use the sm.OLS() function to perform a multiple linear regression
+with weight as the response and all other variables (except name) as
+the predictors. Use the summarize() function to print the results.
+
+Comment on the output. For instance:
+
+i. Is there a relationship between the predictors and the re-
+sponse? 
+
+ii. What does the coefficient for the gender variable suggest?
+
+iii. Produce some of diagnostic plots of the linear regression fit as
+described in the lab. Comment on any problems you see with the
+fit. Do the residual plots suggest any unusually large outliers?
+Does the leverage plot identify any observations with unusually
+high leverage?
+
+iv. Try a few different transformations of the variables, such as \(\log(x)\) or \(\sqrt{x}\)
+
+**** Simulation
+
+
+In this exercise you will create some \emph{simulated} data and will fit 
+\emph{linear regression models} to it. 
+
+(a) Generate 100 values \(x_t\) from the normal distribution, i.e. \(x_t \sim N(0,1)\).
+
+(b) Generate a vector \(y\) using the formula
+\[
+y_t = 1 - 2 x_t + \epsilon_t, 
+\]
+with \(\epsilon_t \sim N(0,0.5)\), i.e. with zero men and variance 0.5.
+
+(c) Create a scatterplot between x, y and comment on what you observe.
+
+
+(e) Fit a least squares linear model to predict y using x . Comment
+on the model obtained. How do the estimated \(\beta_0, \beta_1\) compare to the true values?
+
+(f) Plot the true regression line  with the given parameters.
+
+(g) Repeat steps \(a-f\) with the following modification:
+
+i. Generate 10-dimensional \(x_t\) from the normal distribution, i.e. \(x_{t,i} \sim N(0,1)\).
+
+ii. Generate the vector \(y\) only using the first feature, \(x_{t,1}\), i.e.
+\[
+y_t = 1 - 2 x_{t,1} + \epsilon_t.
+\]
+This means that the coefficients \(\beta_2, \ldots, \beta_10 = 0\).
+
+In what way are your results different?
+
+(h) Repeat (g), but generate 10,000 points \((x_t, y_t)\) instead of only 100.
+
+*** Assignment 4: Basic neural networks
+- sigmoid functions
+- Single layer networks
+- Multi-layer networks
+- Numerical example
+- Computational graph
+- pyTorch neural networks
+- Model
+
+*** Assignment 5: Probabilistic Models
+
+
+
+Complete the notebook in https://github.com/olethrosdc/machine-learning-neuch/blob/main/BSc/src/bayesian/priors-posteriors.ipynb to calculate the beta-Bernoulli posterior
+
+*** Assignment 6: Graphical models, generative models and simulation
+
+
+    Describe the main variables of your project.
+    Define their possible dependencies with a graphical model.
+    Create a generative model that satisfies the given dependencies, even if the exact probabilistic relationship between the variables is not yet known.
+    Use the generative model as a simulation to generate data similar to the one you have in your own project, simplifying if possible.
+
+This assignment is a stepping stone for you to then perform an analysis on data you generate from the simulation.
+
+Complete both tasks notebook in https://github.com/olethrosdc/machine-learning-neuch/blob/main/BSc/src/Featureselection/feature_selection.ipynb related to your group project.
+
+You should do it in group. One submission per group and add all name members in the notebook and\or pdf.
+
+*** Assignment 7: Tree-based methods
+
+Complete all the  notebook tasks in https://github.com/olethrosdc/machine-learning-neuch/blob/main/BSc/src/Tree-basedmethods/tree_based.ipynb. 
+
+- Examine how tree depth / bagging / random forests affect predictions
+
+
+
+
+
+*** Assignment 8: Neural networks
+    Image classification example.
+
+Complete Assignment 1 of this notebook: [[https://github.com/olethrosdc/machine-learning-neuch/blob/main/BSc/src/Image%20Processing/image_processing.ipynb]]  and assignment 2 of the second notebook : 
+[[https://github.com/olethrosdc/machine-learning-neuch/blob/main/BSc/src/Image%20Processing/cnn.ipynb]]
+
 
 ** Projects
 
@@ -101,10 +214,23 @@ The ISLP book makes no distinction between decision rules and models. It sometim
  3. Simulation of the data generating process to select a data analysis methodology.
  4. Collection of data guided by the simulation.
  5. Data analysis guided by the simulation
-   
-*** Grading
- Criteria for full marks in each part of the project are the following. 
 
+Throughout the course, we have assignments that are related to your project, and that can help you prepare material for the project itself, and obtain early feedback. You can then build on the material you developed in the assignments for your project. Those assignments that are directly linked to the project are done in *groups*.
+
+*** Project presentation/report contents
+Your project presentation, as well as the final report, must contain the following details:
+
+1. Define a scientific question (e.g. are women better in math?). Does it potentially involve any ethical issues? 
+2. Simulator. What are the dependencies between the variables? Specify a graphical model for those dependencies? How can we modify it so we get different answers? (e.g in one simulator math ability is independent of gender; in another, it depends on educational stimulus, which depends on gender).
+3. Data sources, if any. Data collection methodology, if any. (Otherwise rely on the simulation). Does data collection relate to private data, or any other possible ethical issues?
+4. Pipeline. How do you process data reliably? Explain how all steps that you perform, including scaling the data, filtering out possible outliers, dealing with missing values. Explain which parts are automated, and which parts involve personal choices.
+5. Methodology. What methods are you using to answer the question? How do you justify them? Explain how and why you are using a specific machine learning algorithm. What are the theoretical and practical reasons for this choice? 
+6. Summary results: plots, graphs, tables, etc. These should be design so as to show the empirical relations between the variables of interest, and can include histograms, density plots,  regression plots, classification boundaries, confidence intervals, regression coefficients, for example.
+7. Conclusion based on your results. Can you answer the question? How much data do you need to answer the question clearly? In which cases does your methodology provide reliable results?  If you are using a simulator, you can test the reliability of your methodology by seeing how close the results are to the ground truth. Are there any ethical issues involved, e.g. related to fairness, privacy, or safety? Justify your answers. 
+   
+*** Report Grading
+ The *criteria* for obtaining full marks in the project are the following. 
+ 
  1. Documenting of the work in a way that enables reproduction.
  2. Technical correctness of their analysis.
  3. Demonstrating that they have understood the assumptions underlying their analysis.
@@ -168,3 +294,5 @@ The ISLP book makes no distinction between decision rules and models. It sometim
  4. There is no effort to ensure reproducibility or robustness.
  5. When applicable: Ethical issues are not mentioned.
  6. There is no mention of methods beyond the source material or independent thinking.
+    
+
