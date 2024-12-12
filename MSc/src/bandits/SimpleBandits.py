@@ -20,15 +20,41 @@ class Simulator:
 class RandomPolicy:
     def __init__(self, n_actions):
         self.n_actions = n_actions
+    # reset everything to zero, forgetting the past    
     def reset(self):
         pass
+    # take what seems to be the best action
     def act(self):
         return np.random.choice(self.n_actions)
     ## Here, we update what we learn from observing an action and a reward
     def update(self, action, reward):
         # step
         pass
-    
+
+# play every arm at least once, then play arm with highest average reward
+class AveragePolicy:
+    def __init__(self, n_actions):
+        self.n_actions = n_actions
+        # add something to save the average values
+        self.reset()
+    # reset everything to zero, forgetting the past    
+    def reset(self):
+        self.n_pulls = np.zeros(self.n_actions)
+        self.total_reward = np.zeros(self.n_actions)
+        self.average_reward = 2 + np.zeros(self.n_actions)
+        pass
+    # take what seems to be the best action
+    def act(self):
+        return np.argmax(self.average_reward)
+    ## Here, we update what we learn from observing an action and a reward
+    def update(self, action, reward):
+        self.n_pulls[action] += 1
+        self.total_reward[action] += reward
+        self.average_reward[action] = self.total_reward[action] / self.n_pulls[action]
+        # step
+        pass
+
+
 if __name__ == '__main__':
     n_drugs = 8
     n_features = 4
