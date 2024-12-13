@@ -220,13 +220,13 @@ Throughout the course, we have assignments that are related to your project, and
 *** Project presentation/report contents
 Your project presentation, as well as the final report, must contain the following details:
 
-1. Define a scientific question (e.g. are women better in math?)
+1. Define a scientific question (e.g. are women better in math?). Does it potentially involve any ethical issues? 
 2. Simulator. What are the dependencies between the variables? Specify a graphical model for those dependencies? How can we modify it so we get different answers? (e.g in one simulator math ability is independent of gender; in another, it depends on educational stimulus, which depends on gender).
-3. Data sources, if any. Data collection methodology, if any. (Otherwise rely on the simulation)
+3. Data sources, if any. Data collection methodology, if any. (Otherwise rely on the simulation). Does data collection relate to private data, or any other possible ethical issues?
 4. Pipeline. How do you process data reliably? Explain how all steps that you perform, including scaling the data, filtering out possible outliers, dealing with missing values. Explain which parts are automated, and which parts involve personal choices.
 5. Methodology. What methods are you using to answer the question? How do you justify them? Explain how and why you are using a specific machine learning algorithm. What are the theoretical and practical reasons for this choice? 
 6. Summary results: plots, graphs, tables, etc. These should be design so as to show the empirical relations between the variables of interest, and can include histograms, density plots,  regression plots, classification boundaries, confidence intervals, regression coefficients, for example.
-7. Conclusion based on your results. Can you answer the question? How much data do you need to answer the question clearly? In which cases does your methodology provide reliable results? If you are using a simulator, you can test the reliability of your methodology by seeing how close the results are to the ground truth. Justify your answers. 
+7. Conclusion based on your results. Can you answer the question? How much data do you need to answer the question clearly? In which cases does your methodology provide reliable results?  If you are using a simulator, you can test the reliability of your methodology by seeing how close the results are to the ground truth. Are there any ethical issues involved, e.g. related to fairness, privacy, or safety? Justify your answers. 
    
 *** Report Grading
  The *criteria* for obtaining full marks in the project are the following. 

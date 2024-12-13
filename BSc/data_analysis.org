@@ -4,7 +4,11 @@
 #+LaTeX_HEADER: \include{preamble}
 #+LaTeX_HEADER: \usepackage{tikz}
 #+LaTeX_HEADER: \usepackage{pgfplots}
+<<<<<<< HEAD
 #+LaTeX_HEADER: \usetikzlibrary{shapes,arrows,chains,datavisualization}
+=======
+#+LaTeX_HEADER: \usetikzlibrary{datavisualization,shapes,arrows,chains}
+>>>>>>> 86808586d7613740c4d7b8a2a89658e277c710f1
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
@@ -54,8 +58,45 @@
   \draw [->] (sampling) -- (analysis) ;
   \draw [->] (method.south) -| (analysis) ;
 
+<<<<<<< HEAD
 \end{tikzpicture}
 #+END_EXPORT
+=======
+* The pipeline
+** Pipeline
+\begin{tikzpicture}[>=triangle 60, start chain=going below,node distance=6mm and 40mm]
+\tikzset{
+  base/.style={draw, on chain, on grid, align=center, minimum height=4ex},
+  proc/.style={base, rectangle, text width=8em},
+  test/.style={base, diamond, aspect=2, text width=5em},
+  term/.style={proc, rounded corners},
+  % coord node style is used for placing corners of connecting lines
+  coord/.style={coordinate, on chain, on grid, node distance=6mm and 25mm},
+  % nmark node style is used for coordinate debugging marks
+  nmark/.style={draw, cyan, circle, font={\sffamily\bfseries}},
+  % -------------------------------------------------
+  % Connector line styles for different parts of the diagram
+  norm/.style={->, draw, lcnorm},
+  free/.style={->, draw, lcfree},
+  cong/.style={->, draw, lccong},
+  it/.style={font={\small\itshape}}
+}
+\node[proc] (question) {Define scientific question};
+\node[proc, join] (variables) {Select variables};
+\node[proc, join] (dependencies) {Dependencies};
+\node[proc, join] (simulator) {Simulator};
+\node[proc, right=of question] (method) {Method};
+\draw[->] (question) -- (method);
+\draw[->] (variables) -- (method);
+\node[proc, right=of method] (sampling) {Collect data};
+\draw[->] (question) -- (method);
+\draw[->] (variables) -- (method);
+\end{tikzpicture}
+
+* The scientific question
+
+* Project
+>>>>>>> 86808586d7613740c4d7b8a2a89658e277c710f1
 ** Project components
 *** Scientific and ethical question
 - Formulate a scientific question that can be answered with data
