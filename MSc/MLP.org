@@ -568,6 +568,40 @@ If $z$ is a prediction, then
 \end{equation}
 Mixes L1 and L2 losses.
 
+** Gradient descent
+*** Smooth function :B_definition:
+    :PROPERTIES:
+    :BEAMER_env: definition
+    :END:
+A function $f : \Reals^d \to \Reals$ is $\ell$-smooth if:
+\[
+\|\nabla_x f(x) - \nabla_y f(y)\|_2 \leq \ell \|x - y\|2.
+\]
+*** Contraction mappings :B_definition:
+    :PROPERTIES:
+    :BEAMER_env: definition
+    :END:
+A function $f : \Reals^d \to \Reals^d$ is a contraction if
+\[
+\|f(x) - f(y)\| \leq \|x - y\|.
+\]
+In other words, it is a contraction if it is 1-Lipschitz. 
+In addition, contraction mappings have a fixed point $x^*$ such that
+$f(x^*) = x^*$.
+
+*** Gradient descent as a contraction                             :B_theorem:
+    :PROPERTIES:
+    :BEAMER_env: theorem
+    :END:
+Suppose $f : \Reals^d \to \Reals$ is convex and $\ell$-smooth, 
+Then the mapping
+\[
+\psi(x) \defn x - \eta \nabla_x f(x)
+\]
+is a contraction as long as $\eta \leq 2/\ell$.
+
+[See Nesterov 04 or Appendix A of Iterative Privacy Amplification for proofs]
+
 
 ** Stochastic gradient descent in practice
 *** Gradient descent in practice
@@ -648,3 +682,4 @@ optimizer.step() # Update weights
 ** TensorFlow
 *** TensorFlow
 	This is another library, no need to use this for this course
+a

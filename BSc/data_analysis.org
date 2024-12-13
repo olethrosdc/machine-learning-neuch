@@ -4,35 +4,140 @@
 #+LaTeX_HEADER: \include{preamble}
 #+LaTeX_HEADER: \usepackage{tikz}
 #+LaTeX_HEADER: \usepackage{pgfplots}
-#+LaTeX_HEADER: \usetikzlibrary{datavisualization}
+#+LaTeX_HEADER: \usetikzlibrary{shapes,arrows,chains,datavisualization}
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:2
-#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}}
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
 
+* Flowchart
+** Flowchart
+#+BEGIN_EXPORT latex
+\begin{tikzpicture}[%
+  >=triangle 60,              % Nice arrows; your taste may be different
+  start chain=going below,    % General flow is top-to-bottom
+  node distance=6mm and 40mm, % Global setup of box spacing
+  every join/.style={norm}   % Default linetype for connecting boxes
+  ]
+  % ------------------------------------------------- 
+  % A few box styles 
+  % <on chain> *and* <on grid> reduce the need for manual relative
+  % positioning of nodes
+  \tikzset{
+    base/.style={draw, on chain, on grid, align=center, minimum height=4ex},
+    proc/.style={base, rectangle, text width=8em},
+    test/.style={base, diamond, aspect=2, text width=5em},
+    term/.style={proc, rounded corners},
+    % coord node style is used for placing corners of connecting lines
+    coord/.style={coordinate, on chain, on grid, node distance=6mm and 25mm},
+    % nmark node style is used for coordinate debugging marks
+    nmark/.style={draw, cyan, circle, font={\sffamily\bfseries}},
+    % -------------------------------------------------
+    % Connector line styles for different parts of the diagram
+    norm/.style={->, draw}
+  }
+  % -------------------------------------------------
+  % Start by placing the nodes
+  \node [proc] (question) {Define question};
+  % Use join to connect a node to the previous one 
+  \node [proc, join] (variables)    {Select variables};
+  \node [proc, join] (dependencies) {Dependency structures};
+  \node [proc, join] (simulator) {Simulator};
+  \node [proc, join] (method)    {Methodology};
+  \node [proc, right=of dependencies] (ethics)    {Ethical issues};
+  \node [proc, right=of variables] (sampling) {Data sources};
+  \node [proc, right=of sampling] (analysis) {Data analysis};
+  \draw [->] (dependencies)--(ethics);
+  \draw [->] (ethics) |- (method.east) ;
+  \draw [->] (variables) |- (sampling) ;
+  \draw [->] (sampling) -- (analysis) ;
+  \draw [->] (method.south) -| (analysis) ;
 
-* The scientific question
-* Project
+\end{tikzpicture}
+#+END_EXPORT
 ** Project components
-*** Scientific question
-- Formulate a simple scientific question that can be answered with data
-- Describe the analysis that you want to perform
-*** Data generation
-- Create a simple simulator to generate data according to various hypotheses
+*** Scientific and ethical question
+- Formulate a scientific question that can be answered with data
+- Be careful to address any ethical concerns.
+*** Simulation.
+- Create a simulator to generate data according to various hypotheses
 - Be sure to be able to generate data for any type of hypothesis
 *** Pipeline development
-- Develop a machine learning pipeline that takes the generated data and performs the analysis
+- Develop a methodology for analysing the data.
+- Use the simulator to see when the method works!
 *** Data collection (optional)
 - If real-world data is available, collect it
 *** Data analysis
 - Test your pipeline on generated and real data.
-  
-* Variable selection
 
-* Simulation
 
-* Data collection
+* Into the weeds
+** The scientific question
+- Select a question that can be answered through data.
+- Easiest is something that can be answered with 'yes' or 'no'
+*** Examples
+- Are women better than men in math?
+- Does coffee make you live longer?
+- Do lower speed limits decrease accidents?
 
-* Data analysis
+** Variables
+*** Main variables
+- Those are the main variables we are interested in.
+Example: gender, math grades 
+*** Related variables
+- These are variables that may affect our measurements
+Example: parental income, occupation, ethnic background, location
+*** Confounding variables
+- These variables may affect our measurements, but may be unobserved
+Example: talent, high school teacher influence
+
+** Variable dependencies
+*** Direct dependencies
+- Define a graphical model that connects variables
+- The input to a variable shows what affects it directly
+*** Indirect dependencies
+- If there is a path from a variable to another, they are indirectly dependent
+*** Hypothesis structures
+- A different dependency model may correspond to each hypothesis
+*** Example: Gender and math
+- Case 1: Gender is independent of math grades. Then gender is just an isolated random variable.
+- Case 2: Gender affects math grades through high school teacher
+- Case 3: Gender directly affects talent.
+
+** Simulation
+- Used to test methodology
+- A different simulation can be used for different dependency structures
+- Simulation can be then used to test if our method can detect the correct hypothesis.
+- It can also tell us how much data will be needed for a robust performance.
+- Using simulation, we can find what methods can work, and how much data they would need.
+
+** Data analysis
+Decide what kind of machine learning tools you need. Some examples:
+- A simple Bayesian hypothesis test.
+- Regression: see how much different variables affect the target variable. Use the regression coefficients.
+- Classification: dependencies of binary variables can be detected through a classification model
+
+** Ethics
+*** Fairness
+- Are there potential discrimination issues with respect to groups?
+- Are there any issues regarding meritocracy?
+*** Privacy
+- Does the data include personal information?
+- What steps do you need to take to protect privacy?
+
+*** Safety
+- Are there any potential safety concerns?
+
+
+** Data collection
+- Make a plan for collecting data, guided by the simulation.
+- Determine how much time / effort collecting the required amount of data would take.
+- Determine what pre-processing you need.
+- Decide how to handle missing values.
+** Final test
+- Test the complete pipeline, including train/test/validate or cross-validation splits on data from different simulations.
+- Obtain collected data and pre-process it, if necessary.
+- Fine-tune the method selected on the training set if necessary.
+- Finally, test the pipeline on the data collected.
 
