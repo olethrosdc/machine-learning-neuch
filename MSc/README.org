@@ -55,25 +55,35 @@ learning.
 
 *** Schedule
 
+There are three types of sessions:
+- Lecture sessions
+- Mixed
+- Lab
 
 |--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
 | Module |  Date | Topic                       | Details                                             | Python              | Type    |
 |--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
-|      1 | 09.19 | Introduction                | Mean estimation, Classification, kNN                | nympy, pandas       | Mixed   |
-|      2 | 09.26 | Learning and Generalisation | Train/Test, XV, Bootstrapping, Simulation           | pandas, scikitlearn | Lecture |
-|      3 | 10.03 | Perceptron                  | Margin, Regret, Gradient Descent                    | scikit learn        | Lab (1) |
-|      4 | 10.10 | Regression                  | Linear regression, Least Squares, Probabilistic     | pyTorch intro       | Mix     |
-|      5 | 10.17 | Project, Linear Regression  | Project discussion, Linear Regression Lab           | pyTorch             | Mix     |
-|      6 | 10.24 | MLP                         | Features, GLMs, Backpop, Stochastic GD              | pyTorch             | Lecture |
-|      7 | 10.31 | Probabilistic models        | ML, MAP, Bayes, Beta-Bernoulli, Hypothesis testing  |                     |         |
-|      8 | 11.07 | Generative modelling        | Bayesian Networks, Markov Models, Tree Models, CRFs |                     |         |
-|      9 | 11.14 | Generative model lab        |                                                     |                     |         |
-|     10 | 11.21 | Fairness                    | Fairness definitions                                |                     |         |
-|     11 | 11.28 | Privacy                     |                                                     |                     |         |
-|     12 | 12.05 | Project work                |                                                     |                     |         |
-|     13 | 12.12 | Project Presentations       |                                                     |                     | Lab     |
+|      1 | 09.19 | Introduction                | Mean estimation, Classification, kNN                | nympy, pandas       | Lecture |
+|      2 | 09.26 | Learning and Generalisation | Train/Test, XV, Bootstrapping, Simulation           | pandas, scikitlearn | Mixed   |
 |--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
-|     14 | 12.19 | Special Exam                |                                                     |                     |         |
+|      3 | 10.03 | Classification, Perceptron  | Margin, Regret, Gradient Descent                    | scikit learn        | Mixed   |
+|      4 | 10.10 | Regression, Linear          | Linear regression, Least Squares, Probabilistic     | pyTorch intro       | Mixed   |
+|      5 | 10.17 | Project, Linear Regression  | Project discussion, Linear Regression Lab           | pyTorch             | Lab     |
+|      6 | 10.24 | Neural Networks             | Features, GLMs, Backpop, Stochastic GD              | pyTorch             | Mixed   |
+|--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
+|      7 | 10.31 | Probabilistic models        | ML, MAP, Bayes, Beta-Bernoulli, Hypothesis testing  |                     | Lecture |
+|      8 | 11.07 | Generative modelling        | Bayesian Networks, Markov Models, Tree Models, CRFs |                     | Mixed   |
+|--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
+|      9 | 11.14 | Ensemble Models             |                                                     |                     | Mixed   |
+|--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
+|     10 | 11.21 | Fairness & Privacy          | Fairness definitions                                |                     |      Lecture |
+|--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
+|     11 | 11.28 | Reinforcement Learning      |                                                     |                     | Mixed   |
+|--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
+|     12 | 12.05 | Project work                |                                                     |                     | Free    |
+|     13 | 12.12 | Project Presentations       |                                                     |                     | EXAM    |
+|--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
+|     14 | 12.19 | Special Exam                |                                                     |                     | EXAM    |
 |--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
 
 
