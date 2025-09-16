@@ -108,32 +108,33 @@
 - Assignments and proejct
 - Additional reading material
 - Asking questions
+
 **** Course Github 
 ***** A                                                               :BMCOL:
       :PROPERTIES:
-      :BEAMER_col: 0.5\textwidth
+      :BEAMER_col: 0.5
       :END:
 - .org files for notes, PDF for slides
 - source code for examples
 ***** B                                                               :BMCOL:
       :PROPERTIES:
-      :BEAMER_col: 0.5\textwidth
+      :BEAMER_col: 0.5
       :END:
-#+ATTR_LATEX: :width 0.25
+#+ATTR_LATEX: :width 0.25\textwidth
 [[./fig/github-qr.png]]
 
 **** Course literature
 ***** A                                                               :BMCOL:
       :PROPERTIES:
-      :BEAMER_col: 0.5\textwidth
+      :BEAMER_col: 0.5
       :END:
 - An Introduction to Statistical Learning with Python
 - Book chapters will be mentioned in the course
 ***** B                                                               :BMCOL:
       :PROPERTIES:
-      :BEAMER_col: 0.5\textwidth
+      :BEAMER_col: 0.5
       :END:
-#+ATTR_LATEX: :width 0.25
+#+ATTR_LATEX: :width 0.25\textwidth
 [[./fig/islp-book-qr.png]]
 
 *** Assignment, teaching and questions
