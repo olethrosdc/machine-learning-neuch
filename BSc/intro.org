@@ -700,7 +700,10 @@ P(S) = T/N, \qquad \forall S \subset \Omega.
 - Accidental data disclosure
 - Re-identification risk
 
-* Reading for this week
+* For next week
+** Assigment
+*** Assignment
+- See Moodle
 ** Reading
 *** Reading for this week
 ISLP Chapter 1

@@ -5,7 +5,7 @@ X = pd.read_excel("../../data/class.xlsx")
 
 ## Accessing data
 
-X["First Name"]
+X["Height"]
 
 ## Plotting data
 X.hist()
