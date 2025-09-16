@@ -222,11 +222,15 @@ The class data looks like this
 - Predict the \alert{gender} of an unknown individual.
 - Predict the \alert{height}.
 - Predict the \alert{height and weight}?
+#+BEAMER: \pause
 
 **** Supervised learning problems (conditional estimation)
 - Classification: Can we predict gender from height/weight?
 - Regression: Can we predict weight from height and gender?
-- In both cases we predict *output* variables from *input* variables
+- In both cases we _predict_ *output* variables from *input* variables
+
+#+BEAMER: \pause
+
 **** Variables
 - *Input* variables: aka features, predictors, independent variables
 - *Output* variables: aka response, dependent variables, labels, or targets.
@@ -384,7 +388,7 @@ np.mean(X)
 \[
 \frac{1}{T} \sum_{t=1}^T x_{t}
 \]
-The sample mean is \(O(1/\sqrt{T})\)-close $\E_P[x_t]$ with high probability.
+The sample mean is \(O(1/\sqrt{T})\)-close to $\E_P[x_t]$ with high probability.
 
 *** Reminder: expectations of random variables
 **** A gambling game :B_exampleblock:
@@ -415,9 +419,11 @@ x(a) P(a) + x(b) P(b) + x(c) P(c)
 **** Models as summaries
 - They summarise what we can see in the data
 - The ultimate model of the data *is* the data
+#+BEAMER: \pause
 **** Models as predictors
 - They make predictions about things *beyond* the data
 - This requires some assumptions about the *data-generating process*.
+#+BEAMER: \pause
 **** Example models
 - A numerical mean
 - A linear classifier
@@ -429,7 +435,7 @@ x(a) P(a) + x(b) P(b) + x(c) P(c)
 
 *** Estimates and decisions
 We always need to make decisions based on some *estimates*.
-
+#+BEAMER: \pause
 **** Estimate the bias of a coin :activity:
 - I give you a coin that, lands with some fixed probability on heads.
 - You are allowed to experiment with the coin.
@@ -437,6 +443,7 @@ We always need to make decisions based on some *estimates*.
 - Otherwise you pay me *x CHF*.
 - How much should I ask you to *pay* for the bet to be *fair*?
 - What do you need to *know* to determine this?
+#+BEAMER: \pause
 **** If the coin is fair                                          :B_example:
 :PROPERTIES:
 :BEAMER_env: example
@@ -447,6 +454,7 @@ We always need to make decisions based on some *estimates*.
 
 
 *** The Bernoulli distribution
+#+BEAMER: \pause
 **** Bernoulli distribution :B_definition:
      :PROPERTIES:
      :BEAMER_env: definition
@@ -462,19 +470,21 @@ when
 1 - \theta & x = 0.
 \end{cases}
 \]
+#+BEAMER: \pause
 **** Applications of the Bernoulli distribution :B_example:
      :PROPERTIES:
      :BEAMER_env: example
      :END:
 - A biased coin flip.
 - Classification errors.
+#+BEAMER: \pause
 **** Exercise: The expected value                              :B_alertblock:
 :PROPERTIES:
 :BEAMER_env: alertblock
 :END:
 If x is Bernoulli with parameter $\theta$, then what is the expected value of
-- The variable $f(x) = x$?
-- The variable $g(x) = x^2$?
+- The variable $f(x) = x-1$?
+- The variable $g(x) = (x-1)^2$?
 
 
 ** Two variable models
@@ -622,31 +632,42 @@ P(S) = T/N, \qquad \forall S \subset \Omega.
 - Given data $x_1, \ldots, x_T$.
 - Learn about the data-generating process.
 - Example: Estimation, compression, text/image generation  
+#+BEAMER: \pause
+
 **** Supervised learning
 - Given data $(x_1, y_1), \ldots, (x_T, y_T)$
 - Learn about the relationship between $x_t$ and $y_t$.
 - Example: Classification, Regression
+#+BEAMER: \pause
+
 **** Online learning
 - Sequence prediction: At each step $t$, predict $x_{t+1}$ from $x_1, \ldots, x_t$.
 - Conditional prediction: At each step $t$, predict $y_{t+1}$ from $x_1, y_1 \ldots, x_t, y_t, \alert{x_{t+1}}$
+
+#+BEAMER: \pause
+
 **** Reinforcement learning
  Learn to act in an *unknown* world through interaction and rewards
 
 
 
 
-*** Validating models
+*** Data, models, and reproducibility.
 **** Training data
 - Calculations, optimisation
 - Data exploration
+#+BEAMER: \pause
 **** Validation data
 - Fine-tuning
 - Model selection
+#+BEAMER: \pause
 **** Test data
 - Performance comparison
+#+BEAMER: \pause
 **** Simulation
 - Interactive performance comparison
 - White box testing
+#+BEAMER: \pause
 **** Real-world testing
 - Actual performance measurement
 
