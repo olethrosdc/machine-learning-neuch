@@ -56,17 +56,40 @@ learning.
 *** Schedule
 
 
+|--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
+| Module |  Date | Topic                       | Details                                             | Python              | Type    |
+|--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
+|      1 | 09.19 | Introduction                | Mean estimation, Classification, kNN                | nympy, pandas       | Mixed   |
+|      2 | 09.26 | Learning and Generalisation | Train/Test, XV, Bootstrapping, Simulation           | pandas, scikitlearn | Lecture |
+|      3 | 10.03 | Perceptron                  | Margin, Regret, Gradient Descent                    | scikit learn        | Lab (1) |
+|      4 | 10.10 | Regression                  | Linear regression, Least Squares, Probabilistic     | pyTorch intro       | Mix     |
+|      5 | 10.17 | Project, Linear Regression  | Project discussion, Linear Regression Lab           | pyTorch             | Mix     |
+|      6 | 10.24 | MLP                         | Features, GLMs, Backpop, Stochastic GD              | pyTorch             | Lecture |
+|      7 | 10.31 | Probabilistic models        | ML, MAP, Bayes, Beta-Bernoulli, Hypothesis testing  |                     |         |
+|      8 | 11.07 | Generative modelling        | Bayesian Networks, Markov Models, Tree Models, CRFs |                     |         |
+|      9 | 11.14 | Generative model lab        |                                                     |                     |         |
+|     10 | 11.21 | Fairness                    | Fairness definitions                                |                     |         |
+|     11 | 11.28 | Privacy                     |                                                     |                     |         |
+|     12 | 12.05 | Project work                |                                                     |                     |         |
+|     13 | 12.12 | Project Presentations       |                                                     |                     | Lab     |
+|--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
+|     14 | 12.19 | Special Exam                |                                                     |                     |         |
+|--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
+
+
+
 |--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
 | Module |  Date | Topic                             | Details                                          | Python              | Type    |
 |--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
-|      1 | 09.20 | Introduction                      | Mean estimation, kNN, Train/Test                 | nympy, pandas       | Mixed   |
-|      2 | 09.27 | The Perceptron and Generalisation | The Perceptron, Generalisation, Simulation       | pandas, scikitlearn | Lecture |
-|      3 | 10.04 | Model Comparison                  | Cross-Validation, Bootstrapping, Model Selection | scikit learn        | Lab (1) |
-|      4 | 10.11 | Regression, Neural Networks       | Linear regression, SGD                           |                     | Mix     |
-|      5 | 10.18 | Multi-Layer Perceptrons           | Backpropagation, Softmax, RELU                   |                     | Mix     |
-|      6 | 10.25 | Generative Models                 | Beta-Bernoulli, Naive Bayes and Beyond           |                     | Lecture |
-|      7 | 11.01 | Bayes Nets                        | Markov Models, Tree Models, CRFs,                | Text prediction     | Mix     |
+|      1 | 09.21 | Introduction                      | Mean estimation, kNN, Train/Test                 | nympy, pandas       | Mixed   |
+|      2 | 09.28 | The Perceptron and Generalisation | The Perceptron, Generalisation, Simulation       | pandas, scikitlearn | Lecture |
+|      3 | 10.05 | Model Comparison                  | Cross-Validation, Bootstrapping, Model Selection | scikit learn        | Lab (1) |
+|      4 | 10.12 | Regression, Neural Networks       | Linear regression, SGD                           |                     | Mix     |
+|      5 | 10.19 | Multi-Layer Perceptrons           | Backpropagation, Softmax, RELU                   |                     | Mix     |
+|      6 | 10.26 | Generative Models                 | Beta-Bernoulli, Naive Bayes and Beyond           |                     | Lecture |
+|      7 | 11.02 | Bayes Nets                        | Markov Models, Tree Models, CRFs,                | Text prediction     | Mix     |
 |--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
+<<<<<<< HEAD
 |      8 | 11.08 | Ensemble Models                   |                                                  |                     |         |
 |      9 | 11.15 | Support Vector Machines           |                                                  |                     |         |
 |--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
@@ -74,8 +97,17 @@ learning.
 |     11 | 11.29 | Markov Models                     |                                                  |                     |         |
 |--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
 |     12 | 11.06 | Reinforcement Learning            |                                                  |                     |         |
+=======
+|      8 | 11.09 | Fairness 1                        |                                                  |                     |         |
+|      9 | 11.16 | Fairness 2                        |                                                  |                     |         |
 |--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
-|     13 | 12.13 | Project Presentations             |                                                  |                     | Lab     |
+|     10 | 11.23 | Privacy 1                         |                                                  |                     |         |
+|     11 | 11.30 | Privacy 2                         |                                                  |                     |         |
+|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
+|     12 | 11.07 | Project Work                      |                                                  |                     |         |
+>>>>>>> 7a589fac56a939c70b3af79006d84ffe0c1e3411
+|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
+|     13 | 12.14 | Project Presentations             |                                                  |                     | Lab     |
 |--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
 |     14 | 12.20 | NA                                |                                                  |                     |         |
 |--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|

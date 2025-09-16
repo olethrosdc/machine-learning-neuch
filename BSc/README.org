@@ -27,21 +27,21 @@ The course focuses on fundamental modelling problems and general machine learnin
 |--------+-------+----------------------------------------+------------------------------------------------------------------+---------------------+-------|
 | Module |  Date | Topic                                  | Details                                                          | Python              | Type  |
 |--------+-------+----------------------------------------+------------------------------------------------------------------+---------------------+-------|
-|      1 | 09.17 | Introduction                           | Mean estimation, kNN, Train/Test                                 | nympy, pandas       | Mixed |
-|      2 | 09.24 | Generalisation, kNN, Decision problems | kNN, Generalisation, Decision Problems                           | pandas, scikitlearn | Mixed |
-|      3 | 10.01 | The Perceptron, Model Comparison       | The Perceptron, Cross-Validation, Bootstrapping, Model Selection | scikit learn        | Mixed |
-|      4 | 10.08 | Regression                             | Linear regression, SGD                                           | sklearn             | Mixed |
-|      5 | 10.15 | Regression lab, Simulation, Project    | Lab, Feature Selection for Regression                            | sklearn             | Lab   |
-|      6 | 10.22 | Multi-layer Perceptrons                | Cost functions, Backpropagation, Layers                          | sklearn/pytorch     | Mix   |
-|      7 | 10.29 | Probabilistic machine learning         | ML, MAP, Bayesian Infernece, Beta-Bernoulli: hypotheses          |                     | Lab   |
-|      8 | 11.05 | Generative models                      | Naive Bayes, Graphical models, independence                      |                     | Mix   |
-|      9 | 11.12 | Sequence prediction                    | Markov models, text prediction, LLMs                             |                     | Mixed |
-|     10 | 11.19 | Ensemble methods                       | Bagging, boosting                                                |                     | Mixed |
-|     11 | 11.26 | Image recognition                      |                                                                  |                     | Lab   |
-|     12 | 12.03 | Fairness and Privacy                   |                                                                  |                     | Mixed |
-|     13 | 12.10 | Project Presentations                  |                                                                  |                     | Lab   |
+|      1 | 09.16 | Introduction                           | Mean estimation, kNN, Train/Test                                 | nympy, pandas       | Mixed |
+|      2 | 09.23 | Generalisation, kNN, Decision problems | kNN, Generalisation, Decision Problems                           | pandas, scikitlearn | Mixed |
+|      3 | 09.30 | The Perceptron, Model Comparison       | The Perceptron, Cross-Validation, Bootstrapping, Model Selection | scikit learn        | Mixed |
+|      4 | 10.07 | Regression                             | Linear regression, SGD                                           | sklearn             | Mixed |
+|      5 | 10.14 | Regression lab, Simulation, Project    | Lab, Feature Selection for Regression                            | sklearn             | Lab   |
+|      6 | 10.21 | Multi-layer Perceptrons                | Cost functions, Backpropagation, Layers                          | sklearn/pytorch     | Mix   |
+|      7 | 10.28 | Probabilistic machine learning         | ML, MAP, Bayesian Infernece, Beta-Bernoulli: hypotheses          |                     | Lab   |
+|      8 | 11.04 | Generative models                      | Naive Bayes, Graphical models, independence                      |                     | Mix   |
+|      9 | 11.11 | Sequence prediction                    | Markov models, text prediction, LLMs                             |                     | Mixed |
+|     10 | 11.18 | Computer Vision                        | Bagging, boosting                                                |                     | Mixed |
+|     11 | 11.25 | Ensemble methods                       |                                                                  |                     | Lab   |
+|     12 | 12.02 | Fairness and Privacy                   |                                                                  |                     | Mixed |
+|     13 | 12.09 | Project Presentations                  |                                                                  |                     | Lab   |
 |--------+-------+----------------------------------------+------------------------------------------------------------------+---------------------+-------|
-|     14 | 12.17 | Project work                           |                                                                  |                     | Lab   |
+|     14 | 12.16 | Project work                           |                                                                  |                     | Lab   |
 |--------+-------+----------------------------------------+------------------------------------------------------------------+---------------------+-------|
 
 ** Material
