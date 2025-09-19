@@ -15,7 +15,7 @@ class NearestNeighbourClassifier:
         self.labels = labels
         self.n_classes = len(np.unique(labels))  # Counts actual number of labels
         self.K = K
-        self.n_points = data.shape[0]
+        self.n_points = data.shape[0] # np array dimensions
         self.n_features = data.shape[1]
         print("classes: ", self.n_classes)
         pass
@@ -42,8 +42,8 @@ class NearestNeighbourClassifier:
     ## predict the most likely label
     def predict(self, x):
         # calculate the probabilities of different clases
-
-        # return the y value for the closest point
+        p = self.get_probabilities(x)
+        # return the y value for the closest point, i.e. the class with the highest proportion
         return np.argmax(p)
     
 
@@ -54,12 +54,13 @@ class NearestNeighbourClassifier:
         distances = [self.metric(x, self.data[t]) for t in range(self.n_points)] 
         # sort data using argsort
         # get K closest neighbours
-        neighbours =
-        proportions =
-        # get the proportion of each label
+        neighbours = np.argsort(distances)[:self.K] # t^*
+        proportions = np.zeros(self.n_classes)
+        # get the proportion of each label so that proportions[y] is the proportion of label y in the neighbourhood
         for k in range(self.K):
-
-
+            idx = int(self.labels[neighbours[k]])
+            proportions[idx] += 1
+        proportions /= self.K
         return proportions
 
 
@@ -82,7 +83,7 @@ if __name__== "__main__":
     y += 1
     y = y.astype(int)
     print(y)
-
+    
     kNN = NearestNeighbourClassifier(x, y, euclidean_metric, 3)
     for t in range(x.shape[0]):
         x_t = x[t]
