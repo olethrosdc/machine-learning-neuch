@@ -15,19 +15,28 @@
 #+ATTR_LATEX: :width 0.5\textwidth
 [[./fig/class_data_QR.png]]
 
-*** Supervised learning problem
 
-- Given labelled training examples $(x_1, y_1), \ldots (x_T, y_T)$ where
-- $x_t \in X$, the *input* variables (or *features*)
-- $y_t \in Y$, the *output* variables (or *labels*)
-  
-**** Feature space $\CX$
+
+
+*** (Batch) learning from data
+
+- $x_t \in \CX$, the *input* variables (or *features*)
 - Usually $\CX = \Reals^n$: the n-dimensional Euclidean space
-- How does that correspond to the class data?
-**** Classification Problem
-- $Y = \{1, \ldots, m\}$ are *discrete* labels
-**** Regression Problem
-- $Y = \Reals^m$ are *continuous* values
+#+BEAMER: \pause
+ 
+**** Unsupervised learning:
+- Training examples $(x_1, \ldots  x_T)$,
+- Predict $x_{t}$ for $t > T$.
+
+#+BEAMER: \pause
+**** Supervised learning:  
+- Given labelled training examples $(x_1, y_1), \ldots (x_T, y_T)$
+- $y_t \in \CY$, the *output* variables (or *labels*)
+- For new $x_t$, $t > T$, predict $y_t$.
+#+BEAMER: \pause
+**** Classification vs Regression
+- Classification: $\CY = \{1, \ldots, m\}$ are *discrete* labels
+- Regression: $\CY = \Reals^m$ are *continuous* values
 
 
 
@@ -164,5 +173,7 @@ If we have $T$ datapoints
 
 *** KNN activity
 - Implement nearest neighbours
+[[./src/KNearestNeighbours/NearestNeighbourClassifier.py]]
 - Introduction to scikitlearn nearest neighbours
+[[./src/KNearestNeighbours/KNN-scikit.ipynb]]
 - Introduction to generalisation errors
