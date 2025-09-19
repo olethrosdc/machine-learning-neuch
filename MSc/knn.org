@@ -9,18 +9,27 @@
 #+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
 * Introduction
 ** The hidden secret of machine learning
-*** Supervised learning
+*** Fill-in class data
+
+#+CAPTION: Spreadsheet link
+#+ATTR_LATEX: :width 0.5\textwidth
+[[./fig/class_data_QR.png]]
+
+*** Supervised learning problem
 
 - Given labelled training examples $(x_1, y_1), \ldots (x_T, y_T)$ where
 - $x_t \in X$, the *input* variables (or *features*)
 - $y_t \in Y$, the *output* variables (or *labels*)
+  
 **** Feature space $\CX$
 - Usually $\CX = \Reals^n$: the n-dimensional Euclidean space
-- How do we use your class data?
-**** Classification
+- How does that correspond to the class data?
+**** Classification Problem
 - $Y = \{1, \ldots, m\}$ are *discrete* labels
-**** Regression
+**** Regression Problem
 - $Y = \Reals^m$ are *continuous* values
+
+
 
 *** The kNN algorithm idea
 
@@ -151,6 +160,8 @@ If we have $T$ datapoints
 
 
 * Activities
+
+
 *** KNN activity
 - Implement nearest neighbours
 - Introduction to scikitlearn nearest neighbours

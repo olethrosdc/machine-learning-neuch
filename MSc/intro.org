@@ -1,4 +1,4 @@
-#+TITLE: Machine Learning: Theory, Fairness, Privacy
+#+TITLE: Machine Learning and Data Mining
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \usepackage{tikz}
@@ -41,8 +41,10 @@
 ** Books
 - Introduction to Statistical Learning with Python
 https://hastie.su.domains/ISLP/ISLP_website.pdf
-- The algorithm foundations of differential privacy
-https://www.cis.upenn.edu/~aaroth/Papers/privacybook.pdf
+- Probabilistic machine learning: An introduction
+  https://probml.github.io/pml-book/book1.html
+** Additional references
+- Probabilistic machine learning: Advanced topics  https://probml.github.io/pml-book/book2.html
 - Machine learning in science and society (draft)
 https://github.com/olethrosdc/ml-society-science/blob/master/book.pdf
 ** Course github
@@ -57,12 +59,9 @@ https://github.com/olethrosdc/ml-society-science/blob/master/book.pdf
 - Group project (40%)
 - Exam (40%)
 ** Communication
-- Forum for technical questions
-- Email for personal questions
+- ILIAS Forum for *technical* questions
+- Email for *personal* questions
 - Office hours Friday 13:15-14:00 (by appointment)
-
-
-
 
 * Course contents
 ** Theory
@@ -71,10 +70,9 @@ https://github.com/olethrosdc/ml-society-science/blob/master/book.pdf
 ** Algorithms and Models
 - Bayesian networks and Bayesian inference
 - Neural networks and stochastic gradient descent
-** Fairness
-- Group: Equality
-- Individual: Meritocracy
-** Privacy
-- Anonymity
-- Differential privacy
+** Social & Scientific Aspects
+- Reproducibility
+- Fairness
+- Privacy
+
 
