@@ -202,6 +202,7 @@ If $f,g$ are independent RVs
 
 
 * Linear algebra
+#+TOC: headlines [currentsection]
 ** Vectors
 *** Vector space $F$ axioms
 Here we consider a vector space $F$. Typically, it is a subset of the Euclidean d-dimensional space, ie. $F \subset \Reals^d$.
@@ -220,7 +221,30 @@ For $a \in \Reals$ and $x, y \in F$,
 - $ax = (a x_1, \ldots, a x_d)$.
 - $-x = (-1) x$.
 - $0 = (0, \ldots, 0)$
+** Norms and distances
+*** Norms
+A norm $\|\cdot\|$ is a scalar operator on a vector with the properties
+- $\|x\| \geq 0$ with equality iff $x = 0$.
+- $\|x + y\| \leq \|x\| + \|y\|$
+- $\|c x\| = c\|x\|$ for every scalar $c$.
+**** Example: Manhattan norm $\Reals^n$
+$\|x\|_1 = \sum_{i=1}^n |x_i|$
+**** Example: Euclidean norm in $\Reals^n$
+$\|x\|_2 = \sqrt{\sum_{i=1}^n x_i}$
+**** Example: \(p\)-norm
+$\|x\|_p = \left(\sum_{i=1}^n x_i\right)^{1/p}$
 
+*** Metrics
+A metric (or distance) on $\CX$ is a function $d: \CX \times \CX \to \Reals$ with the properties:
+- $d(x, y) \geq 0$ with equality iff $x = y$.
+- $d(x, y) = d(y, x)$.
+- $d(x, y) \leq d(x, z) + d(z, y)$.
+
+**** Example: Euclidean distance
+\[
+d_2(x,y) = \|x - y\|_2
+\]
+  
 ** Linear operators and matrices
 *** Linear operators
 **** Linear operator $A : F \to G$
@@ -266,6 +290,7 @@ $A^{-1}$ is called the inverse of $A$ if
 
 
 * Calculus
+#+TOC: headlines [currentsection]
 ** Univariate caclulus
 *** Derivatives
 **** Derivative

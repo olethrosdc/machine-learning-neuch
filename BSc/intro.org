@@ -571,6 +571,8 @@ In our example, $\phi_0 = 0.1$ and $\phi_1 = 0.6$.
 Given the above table, calculate
 - $P(x)$
 - The conditional probability table for $P(y | x)$.
+- $\E_P[f]$ where $f(x,y) = x + y$.
+- $\E_P[g]$ where $g(x,y) = xy$.
 - $\E[y | x]$ for all values of $x$.
 
 *** Two variables: conditional expectation

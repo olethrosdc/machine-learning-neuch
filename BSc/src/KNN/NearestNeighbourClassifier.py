@@ -17,9 +17,9 @@ class NearestNeighbourClassifier:
     ## Assume labels are in {1, ..., m}
     def __init__(self, data, labels, metric, K):
         self.metric = metric
-        self.data = data
+        self.data = data # features
         self.labels = labels
-        self.n_classes = int(max(labels))  # VERY CRUDE
+        self.n_classes = len(np.unique(labels))  # VERY CRUDE
         self.K = K
         self.n_points = data.shape[0]
         self.n_features = data.shape[1]
@@ -56,8 +56,10 @@ class NearestNeighbourClassifier:
         :param x: the test point
         :return: the label y with the highest probability P(y|x)
         """
+        p = self.get_probabilities(x)
+        retun np.argmax(p)
         # HINT: use get_probabilities() to get the most likely label
-        pass
+        
 
     ## return a vector of probabilities, one for each label
     def get_probabilities(self, x):
@@ -73,10 +75,21 @@ class NearestNeighbourClassifier:
 
         """
         # 1. Calculate distances to all points
-        # 2. Sort the points
+        distances = [self.metric(x, x[i]) for i in range(self.n_points)]
+
+        # 2. Sort the points        
+        neighbours = np.argsort(distances)[:self.K]
+
         # 3. Calculate the proportion of labels for the K closest points 
-        
-        # return the proportion of each label
+        proportions = np.zeros(self.n_classes)
+        # go through every neigbhour and increase counts of labels
+        for k in range(self.K):
+            idx = neighbours[k] # get the corresponding example
+            label = self.label[idx] # get label
+            proportions[label] += 1
+
+        proportions /= self.K
+            # return the proportion of each label
         return proportions
 
 

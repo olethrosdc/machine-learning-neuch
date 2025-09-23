@@ -150,9 +150,10 @@ If we have $T$ datapoints
 **** kNN as a *model*
 - Given features $x$, we get a vector $p$ of class probabilities:
 \[
-p_i = P(y = i | x)
+p_i = P(y = i | x),
 \]
-
+where $P(y = i | x)$ is the probability that  $y$ is $i$, given $x$.
+#+BEAMER: \pause
 **** Decisions to maximise accuracy
 At time $t$:
 #+ATTR_BEAMER: :overlay <+->
@@ -160,15 +161,16 @@ At time $t$:
 - We *predict* label $a_t = \argmax_i P(y_t = i | x_t)$
 - We observe the actual label $y_t$.
 - We *win* if $y_t = a_t$ and *lose* otherwise
-- Can we generalise this?
+#+BEAMER: \pause
 **** The model versus the prediction
 - The *model* $P$ tells us the probability of different classes.
 - When we *decide* what our prediction should be, we can *use* the model.
 - We will use $\pi$ to denote the *decision rule* or *policy*.
 *** Decisions versus predictions
-- We frequently need to make a decision, instead of just a prediction.
-- We use a utility function $U(y, a)$ to calculate how good different actions are.
-- The space of actions $A$ is not identical to the set of labels $A$.
+- We frequently need to make a *decision*, instead of just a *prediction*.
+- Our *utility* function $U(y, a)$ represents our *preferences*.
+- The space of *actions* $A$ is /not identical/ to the set of *labels* $Y$.
+#+BEAMER: \pause
 **** Minimise spam annoyance                                 :B_exampleblock:
 	 :PROPERTIES:
 	 :BEAMER_env: exampleblock
@@ -182,6 +184,7 @@ What utility function would you use for the spam detection problem?
 | Virus    |      |      |       |
 |----------+------+------+-------|
 
+#+BEAMER: \pause
 **** Classification decision to maximise expected utility
 - Expected utility of a single decision
 \[
@@ -200,18 +203,22 @@ a^* = \argmax_a \E[U | a, x]
 - Implement nearest neighbours
 - Introduction to scikitlearn nearest neighbours
 
-*** Homework
-- Measure performance
+*** Homework:  Measure performance
+In this exercise, you will measure utility on a test set, and select actions that potentially maximise utility in expectation:
 
-The general idea is to measure utility on a test set.
+**** Measure utility
+Create a function called /utilityScore(y, actions, U)/.
+  
+This takes as input the actual labels $y_t$, and actions $a_t$ (e.g. predicted labels) of a classifier. It then returns the average utility: $\sum_{t=1}^T U(a_t, y_t)/ T$.
 
-- First, create a function called utilityScore(y, actions, U)
-This takes as input the actual labels, and actions (or predicted labels) of a classifier. It then returns the average utility on those labels.
-$\sum_t U(a_t, y_t)/ T$.
+**** Calculate utility scores
+Calculate the /utility_score/ of a basic kNN classifier for various values of $k$.
 
-- Calculate the utility_score of a kNN classifier for various values of k
-- Then, create a function called predict_util(clf, X, U)
-that takes a classifier clf, a dataset of features and a utility
-function as input. It calls clf.predict_proba() and returns a list of actions, one for each row of X.
-- Verify that using predict_util() givs you a higher utilityScore() than simply using predict()
+**** Return highest-utility actions
+Create a function /predictUtil(clf, X, U)/
+that takes a classifier /clf/, a dataset of features /X/ and a utility
+function /U/ as input. It calls /clf.predict__proba()/ and returns a list of actions, one for each row of X.
+
+**** Verification
+Verify that using predict_util() givs you a higher utilityScore() than simply using predict()
 
