@@ -59,7 +59,7 @@ class NearestNeighbourClassifier:
         # get the proportion of each label so that proportions[y] is the proportion of label y in the neighbourhood
         for k in range(self.K):
             idx = int(self.labels[neighbours[k]])
-            proportions[idx] += 1
+            proportions[idx - 1] += 1
         proportions /= self.K
         return proportions
 
@@ -77,10 +77,9 @@ if __name__== "__main__":
 
     data = pd.read_csv("./class.csv")
     x = data[["Height (cm)", "Weight (kg)"]].to_numpy()
-    y = data["Biking (0/1)"].to_numpy()
+    y = data["Sex"].to_numpy()
     print(y)
     y[np.isnan(y)] = 0
-    y += 1
     y = y.astype(int)
     print(y)
     
