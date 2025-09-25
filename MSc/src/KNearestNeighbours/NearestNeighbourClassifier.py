@@ -36,8 +36,7 @@ class NearestNeighbourClassifier:
         # Need to use the get_probabilities function to return the action with the highest
         # expected utility
         # i.e. maximising sum_y P(y|x) U(a,y)
-
-        return
+        pass
     
     ## predict the most likely label
     def predict(self, x):
@@ -59,19 +58,13 @@ class NearestNeighbourClassifier:
         # get the proportion of each label so that proportions[y] is the proportion of label y in the neighbourhood
         for k in range(self.K):
             idx = int(self.labels[neighbours[k]])
-            proportions[idx - 1] += 1
+            proportions[idx] += 1
         proportions /= self.K
         return proportions
 
 
 if __name__== "__main__":
     
-    x = np.random.uniform(size=[10, 4])
-    y = 1 + np.random.choice(2, size=10)
-
-    kNN = NearestNeighbourClassifier(x, y, euclidean_metric, 10)
-
-    kNN.get_probabilities(x[0])
 
     import pandas as pd
 
@@ -94,6 +87,8 @@ if __name__== "__main__":
     print("Class probability and utility of decision");
     print("-----------------------------------------");
 
+    neg_log_loss = 0
+    utility = 0
     for t in range(x.shape[0]):
         x_t = x[t]
         p = kNN.get_probabilities(x_t)
@@ -101,6 +96,12 @@ if __name__== "__main__":
         # Assignment 1
         # fill the kNN.decide method of the knn class above.
         decision = kNN.decide(U=U, x=x_t)
-        print(p[y[t]], U[decision, y[t]])
+#        print(p)
+#        print(p[y[t]], U[decision, y[t]])
+        utility +=  U[decision, y[t]]
+        neg_log_loss += np.log(p[y[t]])
 
+    print("Mean util:", utility/x.shape[0])
+    print("Mean logprob:", neg_log_loss/x.shape[0])
+                            
         
