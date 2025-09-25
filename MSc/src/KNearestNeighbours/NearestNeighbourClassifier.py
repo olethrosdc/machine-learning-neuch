@@ -24,10 +24,10 @@ class NearestNeighbourClassifier:
     def decide(self, U, x):
         """
         A method that return the action that maximise the expected utility.
-        :param U: is a 2 denominational array that indicated the utility of each action based on y.
+        :param U: is a 2 denominational array that indicated the utility of each action a given y
                     example: U = np.array([ [ 1 , -1000],
                                             [ -1 ,    0]  ])
-                            so the U[1,0] indicated the utility of tanking the action a=1 based on y=0.
+                            so U[1,0]=-1 is the utility of taking action a=1 when y=0.
         :param x: the test point.
         :return: the action that maximises the expected utility max_a E[U|a,x].
                  where E[U|a,x] = sum_y P(y|x) U(a,y).
@@ -82,20 +82,25 @@ if __name__== "__main__":
     y[np.isnan(y)] = 0
     y = y.astype(int)
     print(y)
-    
+
     kNN = NearestNeighbourClassifier(x, y, euclidean_metric, 3)
+    
+    U = np.array([[1, -1000],
+                  [-1, 0]])
+
+
+    print("Utility matrix")
+    print(U)
+    print("Class probability and utility of decision");
+    print("-----------------------------------------");
+
     for t in range(x.shape[0]):
         x_t = x[t]
         p = kNN.get_probabilities(x_t)
-        print(y[t], p)
-        print(p[y[t] - 1])
+        
+        # Assignment 1
+        # fill the kNN.decide method of the knn class above.
+        decision = kNN.decide(U=U, x=x_t)
+        print(p[y[t]], U[decision, y[t]])
 
-    # Assignment 1
-    # fill the kNN.decide method of the knn class above.
-    U = np.array([[1, -1000],
-                  [-1, 0]])
-    print("Utility matrix")
-    print(U)
-    final_decision = kNN.decide(U=U, x=x_t)
-    print("final decision")
-    print(final_decision)
+        
