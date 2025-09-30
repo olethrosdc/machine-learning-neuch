@@ -203,7 +203,6 @@ Performance is measured over the *data $D$*
 #+BEAMER: \pause
 **** Training and testing
 - Split $D$ in $D_{\textrm{train}}$, $D_{\textrm{test}}$
-- Obtain $\pi = \lambda(D_{\textrm{train}})$
 - Obtain $\pol = \lambda(D_{\textrm{train}})$
 - Calculate $U(\pol, D_{\textrm{test}})$
 - $\E_P[U(\pol, D_{\textrm{test}})] \alert{=} U(\pol, P)$ for any fixed $\pol$ (unbiased estimator)
