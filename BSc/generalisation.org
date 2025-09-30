@@ -314,6 +314,17 @@ classifier is 50%.
 - Use the classifier to predict the class labels for the samples in fold k.
 
 
+*** Lab
+- scikitlearn KNN
+- scikitlearn performance measures
+- train/test/validate plot with increasing k
+- XV plot with increasing k
+- Scaling and other preprocessing
+- Effect of outliers on preprocessing
+- Optional: Bootstrap performance evaluation
+  
+  
+  
 * Learning and generalisation
 ** Introduction
 *** Learning and generalisation

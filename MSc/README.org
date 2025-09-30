@@ -86,46 +86,18 @@ There are three types of sessions:
 |     14 | 12.19 | Special Exam                |                                                     |                     | EXAM    |
 |--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
 
+**** 1. Introduction, KNN
 
+PML1 Chapter 2.1-2.24, 
+PML2 Chapter 2.1
+ISLP Chapter 1, 4.7.6
+ESL Chapter 13
 
-|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
-| Module |  Date | Topic                             | Details                                          | Python              | Type    |
-|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
-|      1 | 09.21 | Introduction                      | Mean estimation, kNN, Train/Test                 | nympy, pandas       | Mixed   |
-|      2 | 09.28 | The Perceptron and Generalisation | The Perceptron, Generalisation, Simulation       | pandas, scikitlearn | Lecture |
-|      3 | 10.05 | Model Comparison                  | Cross-Validation, Bootstrapping, Model Selection | scikit learn        | Lab (1) |
-|      4 | 10.12 | Regression, Neural Networks       | Linear regression, SGD                           |                     | Mix     |
-|      5 | 10.19 | Multi-Layer Perceptrons           | Backpropagation, Softmax, RELU                   |                     | Mix     |
-|      6 | 10.26 | Generative Models                 | Beta-Bernoulli, Naive Bayes and Beyond           |                     | Lecture |
-|      7 | 11.02 | Bayes Nets                        | Markov Models, Tree Models, CRFs,                | Text prediction     | Mix     |
-|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
-|      8 | 11.08 | Ensemble Models                   |                                                  |                     |         |
-|      9 | 11.15 | Support Vector Machines           |                                                  |                     |         |
-|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
-|     10 | 11.22 | Image Processing                  |                                                  |                     |         |
-|     11 | 11.29 | Markov Models                     |                                                  |                     |         |
-|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
-|     12 | 11.06 | Reinforcement Learning            |                                                  |                     |         |
-|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
-|     13 | 12.14 | Project Presentations             |                                                  |                     | Lab     |
-|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
-|     14 | 12.20 | NA                                |                                                  |                     |         |
-|--------+-------+-----------------------------------+--------------------------------------------------+---------------------+---------|
+**** 2. Generalisation
 
+PML1 Chapter 5.1, 5.3
+ISLP Chapter 2, 4.7.6
 
-1. kNN, learning and generalisation.
-2. The Perceptron algorithm. Gradient Descent Convergence. Pandas/scikit.
-3. MLP
-4. Bayesian learning.
-5. Bayesian networks.
-6. Online learning: Prediction with expert advice.
-7. Concentration inequalities and learning theory.
-8. Fairness and discrimination: conditional independence.
-9. Fairness and meritocracy: smoothness.
-10. Differential privacy and randomised response.
-11. Laplace and Exponential mechanisms.
-12. Experiment design lab
-13. Project presentations.
 
 ** Material
 *** Textbooks
