@@ -46,8 +46,8 @@ U(\pi, D) \defn \frac{1}{T} \sum_{t=1}^T \pi(y_t | x_t)
 
 **** The expected accuracy of a decision rule
 #+BEAMER: \pause
-If $(x, y) \sim P$, the accuracy $U$ of a rule $\pi$
-under $P$ is the probability it predicts correctly
+If $(x, y) \sim P$, the accuracy $U$ of a stochastic decision rule $\pi$
+under the distribution $P$ is the probability it predicts correctly
 \[
 U(\pi, P) \defn \int_\CX  dP(x) \sum_{y=1}^m P(y|x) \pi(y | x)
 \]
@@ -72,6 +72,7 @@ The utility function $U(y, a)$ is a real-valued function so that, for a label $y
 *** The optimal decision
 - A *model* $P(y | x)$ of class probabilities
 - A *utility* $U(y, a)$ for each class and action combination
+#+BEAMER: \pause
 **** Expected utility
 We can calculate the expected utility of any decision
 \[
@@ -79,6 +80,7 @@ We can calculate the expected utility of any decision
 \]
 Here the first equality follows from the definition of conditional expectation and 
 $P(y | x, a) = P(y | x)$ as the label does not depend on our actions.
+#+BEAMER: \pause
 **** The optimal decision
 For any observation $x$, and $P$, we take the action maximising expected utility:
 \[
@@ -91,6 +93,7 @@ This defines a function $\CX \to \CA$, which is the Bayes-optimal decision rule.
 - A *utility* $U(y, a)$ for each class and action combination
 - A *decision rule* $\pi(a | x)$ assigning probability to action $a$ for every possible input $x$
 
+#+BEAMER: \pause
 **** Expected utility over a dataset.
 We obtain the expected utility of the *decision rule* by marginalising over all actions
 \[
@@ -102,11 +105,13 @@ U(\pi, D) \defn \E[U | \pi, D]
 \]
 Here the first equality follows from the definition of conditional expectation and 
 $P(y | x, a) = P(y | x)$ as the label does not depend on our actions.
+#+BEAMER: \pause
+
 **** Expected utility over $P$
 We can marginalise over possible datasets $D$
 \[
 U(\pi, P) \defn 
-\E_P[U | \pi] 
+\E^\pi_P[U]
 = \int_{\mathcal{D}} \!\!dP(D) U(\pi, D)
 \overset{\textrm{i.i.d.}}{=} \!\! \int_{\CX} dP(x) \sum_{\CY} P(y | x) \sum_a \pi(a|x) U(y,a)
 \]
@@ -172,31 +177,33 @@ We will later see a link between this metric, mean-square error and estimation.
 **** Training data
 - $D = ((x_t, y_t) : t = 1, \ldots, T)$.
 - $x_t \in \CX$, $y_t \in \CY$.
+#+BEAMER: \pause
+
 **** Assumption: The data is generated i.i.d.
 - $(x_t, y_t) \sim P$ for all $t$ (identical)
 - $D \sim P^T$ (independent)
+#+BEAMER: \pause
 **** The optimal decision rule for $P$
-\[
-\max_\pi U(\pi, P)
-= 
-\max_\pi \int_{\CX \times \CY} dP(x, y) \sum_a \pi(a | x) U(a,y)
-\]
+\(\max_\pi U(\pi, P) =  \max_\pi \int_{\CX \times \CY} dP(x, y) \sum_a \pi(a | x) U(a,y).\)
+
+Here we measure performance for the data *distribution $P$.*
+#+BEAMER: \pause
 **** The optimal decision rule for $D$
-\[
-\max_\pi U(\pi, D)
-= 
-\max_\pi \sum_{(x,y) \in D} \sum_a \pi(a | x) U(a,y)
-\]
+\(\max_\pi U(\pi, D)=  \max_\pi \sum_{(x,y) \in D} \sum_a \pi(a | x) U(a,y).\)
+
+Performance is measured over the *data $D$*
 
 *** Generalisation
 **** The fundamental problem
-- We want to maximise $U(\pi, P)$
-- We can only measure $U(\pi, D)$
+- We want to maximise $U(\pi, P)$, the *actual* performance.
+- We can only measure $U(\pi, D)$, over *some data*.
 - We have a *learning algorithm $\lambda : \CD \to \Pols$*
 - If $\pi = \lambda(D)$, then we instead measure $U(\lambda(D), D)$.
+- However $\E_P[U(\lambda(D), D)] \geq U(\pi, P)$ $\forall \pi$ (*biased* estimator)
 #+BEAMER: \pause
 **** Training and testing
 - Split $D$ in $D_{\textrm{train}}$, $D_{\textrm{test}}$
+- Obtain $\pi = \lambda(D_{\textrm{train}})$
 - Obtain $\pol = \lambda(D_{\textrm{train}})$
 - Calculate $U(\pol, D_{\textrm{test}})$
 - $\E_P[U(\pol, D_{\textrm{test}})] \alert{=} U(\pol, P)$ for any fixed $\pol$ (unbiased estimator)
@@ -270,10 +277,11 @@ Live coding in Python:
 from sklearn.model_selection import cross_val_score
 scores = cross_val_score(classifier, X, y, cv = n_folds)
 #+END_SRC
+
 *** Bootstrapping
 - Express uncertainty by resampling the data.
 - Repeat your calculations for each resample
-
+#+BEAMER: \pause
 **** BootstrapSample(D)
 \begin{algorithmic}
 \STATE \textbf{input} Data $D = (z_1, \ldots, z_T)$, of size $T$
@@ -283,7 +291,7 @@ scores = cross_val_score(classifier, X, y, cv = n_folds)
 \ENDFOR
 \STATE \textbf{return} $D_b$
 \end{algorithmic}
-
+#+BEAMER: \pause
 **** BootstrapEstimate($D, \lambda, N$)
 \begin{algorithmic}
 \STATE \textbf{input} Data $D \in \mathcal{D}$, algorithm $\lambda : \mathcal{D} \to \Theta$, $N > 0$ number of samples
@@ -292,6 +300,7 @@ scores = cross_val_score(classifier, X, y, cv = n_folds)
 \ENDFOR
 \STATE \textbf{return} $\{\theta_n : n \in [N]\}$
 \end{algorithmic}
+
 
 
 *** The wrong way to do XV for subset selection :activity:
@@ -325,6 +334,7 @@ classifier is 50%.
   
   
   
+======= end
 * Learning and generalisation
 ** Introduction
 *** Learning and generalisation
@@ -349,7 +359,7 @@ An estimator is a function $f: \mathcal{D} \to \Theta$, where $\Theta$ is a set 
      :PROPERTIES:
      :BEAMER_env: definition
      :END:
-An estimator is *unbiased* if, for the distribution $P(D | \theta)$, we have
+An estimator is *unbiased* if, for any $\theta$ and corresponding distribution $P(D | \theta)$:
 \[
 \E[f \mid \theta] = \sum_D f(D) P(D | \theta) = \theta.
 \]
@@ -370,9 +380,9 @@ The sample mean estimator $f(D) = \sum_{t} x_t / T$ is unbiased, as :
 - Then $U(\lambda(D), D)$ is biased, as for any $\pi'$
 \begin{align}
 \E_{D \sim P} [U(\lambda(D), D)]
- &= \int_{\CD} dP(D)  U(\lambda(D), D)\\
- &= \int_{\CD} dP(D) \max_\pi U(\pi, D)\\
- &\geq \int_{\CD} dP(D) U(\pi', D)\\
+ &= \int_{D} dP(D)  U(\lambda(D), D)\\
+ &= \int_{D} dP(D) \max_\pi U(\pi, D)\\
+ &\geq \int_{D} dP(D) U(\pi', D)\\
  &= U(\pi', P) 
 \end{align}
 i.e. the expected value of the training accuracy is higher than the accuracy of *any* classifier.
