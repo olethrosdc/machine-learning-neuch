@@ -19,11 +19,11 @@
 - Label space $\CY = \{-1, 1\}$: e.g. gender
 - Can we find some $\param_1 \in \Reals$ and a direction  $\param_0 \in \{-1, +1\}$ so as to separate the genders?
 **** Online learning: At time $t$
-- We choose a separator $\beta^t_0, \beta_1^t$
+- We choose a separator $\param^t_0, \param_1^t$
 - We observe a new datapoint $x_t, y_t$
 - We make a mistake at time $t$ if:
 \[
-\beta^t x_t - \beta_0^t \leq 0.
+\param^t x_t - \param_0^t \leq 0.
 \]
 - If we stop making mistakes, then we are classifying everything perfectly.
 
@@ -67,9 +67,9 @@ The *perceptron decision rule* is $\pi(x) = \textrm{sign}(f(x))$
    \draw[dotted, color=gray] (-1.1,-3.1) grid (5.1,4.1);
    \draw[->] (0,0) -- (4,0) node[right] {$x_1$};
    \draw[->] (0,0) -- (0,4) node[above] {$x_2$};
-   \draw[thick, color=blue]   plot (\x, {0 + \x * 1/2})  node[right] {$\beta = (0, 1, 2)$};
-   \draw[--,thick, color=magenta]   plot (\x, {1 + \x * 1/1})  node[right] {$\beta = (1, 1, 1)$};
-   \draw[-.,thick, color=red]   plot (\x, {1 - \x * 1/1})  node[right] {$\beta = (1, 1, -1)$};
+   \draw[thick, color=blue]   plot (\x, {0 + \x * 1/2})  node[right] {$\param = (0, 1, 2)$};
+   \draw[--,thick, color=magenta]   plot (\x, {1 + \x * 1/1})  node[right] {$\param = (1, 1, 1)$};
+   \draw[-.,thick, color=red]   plot (\x, {1 - \x * 1/1})  node[right] {$\param = (1, 1, -1)$};
 \end{tikzpicture}
 
 These lines are the solution to $f(x) = 0$
@@ -139,8 +139,8 @@ These lines are the solution to $f(x) = 0$
      :BEAMER_env: theorem
      :END:
  The number of mistakes is bounded by $\rho^{-2}$, where $\|x_t\|\leq
- 1$, $\rho \leq y_t (x_t^\top \beta^*)$ for some *margin* $\rho$ and
- *hyperplane* $\beta^*$ with $\|\beta^*\|=1$.
+ 1$, $\rho \leq y_t (x_t^\top \param^*)$ for some *margin* $\rho$ and
+ *hyperplane* $\param^*$ with $\|\param^*\|=1$.
 *** Simple proof
 #+ATTR_BEAMER: :overlay +-
 - Scale data: $\|x\| \leq 1$
@@ -188,7 +188,7 @@ After $M$ mistakes:
 ** Gradients for optimisation
 *** The gradient descent method: one dimension
 - Function to minimise $f : \Reals \to \Reals$.
-- Derivative $\frac{d}{d \param} f(\beta)$
+- Derivative $\frac{d}{d \param} f(\param)$
 **** Gradient descent algorithm
 - Input: initial value $\param^0$, *learning rate* schedule $\alpha_t$
 - For $t=1, \ldots, T$
@@ -235,12 +235,12 @@ If we know $P$, then we can calculate
 *** Mean-squared error cost function
 \begin{tikzpicture}[domain=-1:2, range=-1:2]
    \draw[dotted, color=gray] (-1.1,-2.1) grid (3.1,4.1);
-   \draw[->] (0,0) -- (2,0) node[right] {$\beta$};
+   \draw[->] (0,0) -- (2,0) node[right] {$\param$};
    \draw[->] (0,0) -- (0,4) node[above] {$\ell$};
    \draw[color=red] plot (\x, {(\x-1)^2})  node[right] {$\mu = 1$};
    \draw[color=blue] plot (\x, {(\x)^2})  node[right] {$\mu = 0$};
 \end{tikzpicture}
-Here we see a plot of $\ell(\mu, \beta) = (\beta - \mu)^2$.
+Here we see a plot of $\ell(\mu, \param) = (\param - \mu)^2$.
 *** Stochastic gradient for mean estimation
 **** Sampling :B_theorem:
      :PROPERTIES:
@@ -275,7 +275,7 @@ For any bounded random variable $f$,
 *** The gradient method
 - Function to minimise $f : \Reals^n \to \Reals$.
 - Derivative $\nabla_\param f(\param)  = \left(\frac{\partial f(\param)}{\partial \param_1}, \ldots, \frac{\partial f(\param)}{\partial \param_n}\right)$,
- where $\frac{\partial f}{\partial \beta_n}$ denotes the *partial* derivative, i.e. varying one argument and keeping the others fixed.
+ where $\frac{\partial f}{\partial \param_n}$ denotes the *partial* derivative, i.e. varying one argument and keeping the others fixed.
 **** Gradient descent algorithm
 - Input: initial value $\param^0$, learning rate schedule $\alpha_t$
 - For $t=1, \ldots, T$
@@ -342,7 +342,7 @@ where the *indicator function $\ind{A}$* is  1 when $A$ is true and $0$ otherwis
 \end{tikzpicture}
 \end{center}
 
-Here we see a plot of $\ell(\mu, \beta) = (\beta - \mu)^2$.
+Here we see a plot of $\ell(\mu, \param) = (\param - \mu)^2$.
 *** Derivative of the perceptron cost function
 The total cost over the data is defined as
 \[
@@ -350,7 +350,7 @@ L(D, \param) = \sum_{(x, y) \in D} \ell(x, y, \param)
 \]
 Taking the derivative, we have
 \[
-\nabla_\param L(D, \param) = \nabla_\param \sum_{(x, y) \in D} \ell(x, y, \beta)
+\nabla_\param L(D, \param) = \nabla_\param \sum_{(x, y) \in D} \ell(x, y, \param)
   = \sum_{(x, y) \in D} \nabla_\param \ell(x, y, \param)
 \]
 
