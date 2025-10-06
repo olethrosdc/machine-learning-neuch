@@ -36,7 +36,12 @@ class NearestNeighbourClassifier:
         # Need to use the get_probabilities function to return the action with the highest
         # expected utility
         # i.e. maximising sum_y P(y|x) U(a,y)
-        pass
+        n_actions = U.shape[0]
+        value = np.zeros(n_actions)
+        probs = self.get_probabilities(x)
+        for a in range(n_actions):
+            value[a] = np.dot(probs, U[a,:])
+        return np.argmax(value)
     
     ## predict the most likely label
     def predict(self, x):
@@ -76,8 +81,12 @@ if __name__== "__main__":
     y = y.astype(int)
     print(y)
 
-    kNN = NearestNeighbourClassifier(x, y, euclidean_metric, 3)
+    kNN = NearestNeighbourClassifier(x, y, euclidean_metric, 1)
     
+    U_acc = np.array([[1, 0],
+                      [0, 1]])
+
+
     U = np.array([[1, -1000],
                   [-1, 0]])
 

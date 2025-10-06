@@ -67,16 +67,16 @@ There are three types of sessions:
 |      2 | 09.26 | Learning and Generalisation | Train/Test, XV, Bootstrapping, Simulation           | pandas, scikitlearn | Mixed   |
 |--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
 |      3 | 10.03 | Classification, Perceptron  | Margin, Regret, Gradient Descent                    | scikit learn        | Mixed   |
-|      4 | 10.10 | Regression, Linear          | Linear regression, Least Squares, Probabilistic     | pyTorch intro       | Mixed   |
-|      5 | 10.17 | Project, Linear Regression  | Project discussion, Linear Regression Lab           | pyTorch             | Lab     |
-|      6 | 10.24 | Neural Networks             | Features, GLMs, Backpop, Stochastic GD              | pyTorch             | Mixed   |
+|      6 | 10.10 | Neural Networks             | Logistic Regression, Backpop, Stochastic GD         | pyTorch intro       | Mixed   |
+|      5 | 10.17 | Neural Network Lab          | Project discussion, Linear Regression Lab           | pyTorch             | Lab     |
+|      4 | 10.24 | Regression, Linear          | Linear regression, Least Squares, Probabilistic     | pyTorch             | Mixed   |
 |--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
 |      7 | 10.31 | Probabilistic models        | ML, MAP, Bayes, Beta-Bernoulli, Hypothesis testing  |                     | Lecture |
 |      8 | 11.07 | Generative modelling        | Bayesian Networks, Markov Models, Tree Models, CRFs |                     | Mixed   |
 |--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
 |      9 | 11.14 | Ensemble Models             |                                                     |                     | Mixed   |
 |--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
-|     10 | 11.21 | Fairness & Privacy          | Fairness definitions                                |                     |      Lecture |
+|     10 | 11.21 | Fairness & Privacy          | Fairness definitions                                |                     | Lecture |
 |--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
 |     11 | 11.28 | Reinforcement Learning      |                                                     |                     | Mixed   |
 |--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
