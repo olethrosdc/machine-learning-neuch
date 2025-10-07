@@ -357,6 +357,8 @@ Let $z = g(y)$, $y = f(x)$ so that $z= g(f(x))$. Then $\frac{dz}{dx} = \frac{dz}
 #+BEAMER: \pause
 **** Applying the chain rule to calculate the gradient
 #+ATTR_BEAMER: :overlay <+->
+- Set $z =  \ell(x,y, \param)$.
+- $\nabla_\param \ell(x,y, \param) = - (\frac{d}{dz} \ind{z < 0} z) \nabla_\param z$.
 - $\nabla_\param \ell(x,y, \param) = - \ind{y(x^\top \param) < 0} \nabla_\param [y(x^\top \param)]$.
 - $\frac{\partial}{\partial{\param_i}} [y(x_t^\top \param)] = y x_{t,i}$ (gradient of Perceptron's output)
 - Gradient update: $\param^{t+1} = \param^t - \nabla_\param \ell(x,y, \param) = \param^t + y x_{t}$
