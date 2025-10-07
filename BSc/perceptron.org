@@ -18,6 +18,8 @@
 - Feature space $\CX \subset \Reals$: e.g. height
 - Label space $\CY = \{-1, 1\}$: e.g. gender
 - Can we find some $\param_1 \in \Reals$ and a direction  $\param_0 \in \{-1, +1\}$ so as to separate the genders?
+
+#+BEAMER: \pause
 **** Online learning: At time $t$
 - We choose a separator $\param^t_0, \param_1^t$
 - We observe a new datapoint $x_t, y_t$
@@ -27,6 +29,7 @@
 \]
 - If we stop making mistakes, then we are classifying everything perfectly.
 
+#+BEAMER: \pause
 **** Can you find a threshold that makes a small number of mistakes?
 [[./src/Perceptron/perceptron_simple.py]]
 
@@ -59,33 +62,44 @@ f(x) = \param^\top x
 #+BEAMER: \pause
 **** The classifier
 The *perceptron decision rule* is $\pi(x) = \textrm{sign}(f(x))$
-- If $f(x) > 0$, we assign class +1
+- If $f(x) \geq 0$, we assign class +1
 - If $f(x) < 0$, we assign class -1
-*** Hyperplanes in 2 dimensions (lines)
+*** Hyperplanes in 2 dimensions (lines)                              
+
+**** Graph                                                            :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5\textwidth
+:END:
 
 \begin{tikzpicture}[domain=-1:3]
    \draw[dotted, color=gray] (-1.1,-3.1) grid (5.1,4.1);
    \draw[->] (0,0) -- (4,0) node[right] {$x_1$};
    \draw[->] (0,0) -- (0,4) node[above] {$x_2$};
-   \draw[thick, color=blue]   plot (\x, {0 + \x * 1/2})  node[right] {$\param = (0, 1, 2)$};
-   \draw[--,thick, color=magenta]   plot (\x, {1 + \x * 1/1})  node[right] {$\param = (1, 1, 1)$};
-   \draw[-.,thick, color=red]   plot (\x, {1 - \x * 1/1})  node[right] {$\param = (1, 1, -1)$};
+   \draw[thick, color=blue]   plot (\x, {0 - \x * 1/2})  node[right] {$\param = (0, 1, 2)$};
+   \draw[--,thick, color=magenta]   plot (\x, {1 - \x })  node[right] {$\param = (-1, 1, 1)$};
+   \draw[-.,thick, color=red]   plot (\x, {1 + \x})  node[right] {$\param = (1, 1, -1)$};
 \end{tikzpicture}
 
-These lines are the solution to $f(x) = 0$
+**** Poperties                                                        :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5\textwidth
+:END:
+
+- These lines are the solution to $f(x) = 0$.
+- $\param_1, \param_2$ can be thought of as the line to each hyperplane
+
 ** The algorithm
 *** The Perceptron
 **** Pitts and McCulloch                                              :BMCOL:
      :PROPERTIES:
      :BEAMER_col: 0.5
      :END:
-#+attr_html: :width 60x
-#+attr_latex: :width 60px
+#+attr_html: :width 60pt
+#+attr_latex: :width 60pt
 #+NAME: piits
 #+CAPTION: Pitts
 [[../fig/pitts.jpg]]
-#+attr_html: :width 60px
-#+attr_latex: :width 60px
+#+attr_latex: :width 60pt
 #+CAPTION: McCulloch
 [[../fig/McCulloch.jpeg]]
 
@@ -93,13 +107,11 @@ These lines are the solution to $f(x) = 0$
      :PROPERTIES:
      :BEAMER_col: 0.5
      :END:
-#+attr_html: :width 60px
-#+attr_latex: :width 60px
+#+attr_latex: :width 60pt
 #+CAPTION: Rosenblatt
 [[../fig/rosenblatt.jpeg]]
 
-#+attr_html: :width 60px
-#+attr_latex: :width 60px
+#+attr_latex: :width 60pt
 #+CAPTION: Perceptron Mark I
 [[../fig/Mark_I_perceptron.jpeg]]
 
@@ -108,6 +120,7 @@ These lines are the solution to $f(x) = 0$
 - Feature space $X \subset \Reals^n$.
 - Label space $Y = \{-1, 1\}$.
 - Data $(x_t, y_t)$, $t \in [T]$,  with $x_t \in X, y_t \in Y$.
+#+BEAMER: \pause
 **** Algorithm
 + $\param^0 \sim \Normal^n(0, I)$. % Initialise parameters
 + For $t = 1, \ldots, T$
@@ -129,8 +142,8 @@ These lines are the solution to $f(x) = 0$
 **** Example 2: Two-dimensional data
 - See [[file:src/NeuralNetworks/perceptron.py][in-class programming exercise]]
 *** Margins and the perceptron theorem
-#+attr_html: :width 120px
-#+attr_latex: :width 120px
+#+attr_html: :width 120pt
+#+attr_latex: :width 120pt
 [[./fig/margin.pdf]]
 - The *hyperplane* $\param^*$ separates the examples
 - The *margin* $\rho$ is the minimum distance $\rho$ between $\param^*$ and any point.
@@ -164,7 +177,10 @@ After $M$ mistakes:
 #+ATTR_BEAMER: :overlay +-
 - $\param^t \cdot \param^* \geq M \rho$
 - $\param^t \cdot \param^t \leq M$
-- So $M \rho \leq \param^t \cdot \param^* \leq \|\param^t\| = \sqrt{\param^t \cdot \param^t} \leq \sqrt{M}$.
+- So $M \rho \leq \param^t \cdot \param^*
+  \leq \|\param^t\| \cdot \|\param^*\|
+  = \|\param^t\|
+   =  \sqrt{\param^t \cdot \param^t} \leq \sqrt{M}$.
 - Thus, $M \leq \rho^{-2}$.
 
 
@@ -189,12 +205,13 @@ After $M$ mistakes:
 *** The gradient descent method: one dimension
 - Function to minimise $f : \Reals \to \Reals$.
 - Derivative $\frac{d}{d \param} f(\param)$
+#+BEAMER: \pause
 **** Gradient descent algorithm
 - Input: initial value $\param^0$, *learning rate* schedule $\alpha_t$
 - For $t=1, \ldots, T$
   - $\param^{t+1} = \param^t - \alpha_t \frac{d}{d \param} f(\param^t)$
 - Return $\param^T$
-
+#+BEAMER: \pause
 **** Properties
 - If $\sum_t \alpha_t = \infty$ and $\sum_t \alpha_t^2 < \infty$, it finds a local minimum $\param^T$, i.e. there is $\epsilon > 0$ so that
 \[
@@ -241,7 +258,7 @@ If we know $P$, then we can calculate
    \draw[color=blue] plot (\x, {(\x)^2})  node[right] {$\mu = 0$};
 \end{tikzpicture}
 Here we see a plot of $\ell(\mu, \param) = (\param - \mu)^2$.
-*** Stochastic gradient for mean estimation
+*** Gradient descent and sampling
 **** Sampling :B_theorem:
      :PROPERTIES:
      :BEAMER_env: theorem
@@ -255,21 +272,23 @@ For any bounded random variable $f$,
 \E_P \left[\frac{1}{T} \sum_{t=1}^T f(x_t)\right]
 , \qquad x_t \sim P
 \]
-**** Sampling :B_example:
-     :PROPERTIES:
-     :BEAMER_env: example
-     :END:
-- If we sample $x$ we approximate the gradient:
-\begin{align*}
- \frac{d}{d\param} \E_P [(x - \param)^2] 
-= \int_{-\infty}^\infty \!\!\!\! dP(x) \frac{d}{d\param} (x - \param)^2
-\approx \frac{1}{T} \sum_{t=1}^T \frac{d}{d\param} (x_t - \param)^2
-= \frac{1}{T} \sum_{t=1}^T 2(x_t - \param)
-\end{align*}
-#+BEAMER: \pause
-- If we update $\param$ after each new sample $x_t$, we obtain:
+
+**** Sampled derivatives
+\vspace{-1em}
 \[
-\param^{t+1} = \param^t + 2 \alpha_t (x_t - \param^t)
+ \frac{d}{d\param} \E_P [f(\param, x)]
+= \E_P \left[ \frac{d}{d\param} f(\param, x)\right]
+\approx \frac{1}{T} \sum_{t=1}^T \frac{d}{d\param} f(\param, x_t)
+\]
+#+BEAMER: \pause
+- Batch updates (over all samples)
+\[
+\param^{k+1} = \param^k - 2 \alpha_k \frac{d}{d\param} \sum_{t=1}^T f(\param, x_t) / T.
+\]
+#+BEAMER: \pause
+- Online updates (after each sample)
+\[
+\param^{t+1} = \param^t - 2 \alpha_t \frac{d}{d\param} f(\param, x_t)
 \]
 
 *** The gradient method
@@ -367,8 +386,8 @@ The classification error cost function is *not* differentiable :(
 *** Margins and confidences
 #+ATTR_BEAMER: :overlay <+->
 We can think of the output of the network as a measure of confidence
-#+attr_html: :width 100px
-#+attr_latex: :width 100px
+#+attr_html: :width 100pt
+#+attr_latex: :width 100pt
 [[./fig/margin.pdf]]
 #+BEAMER: \pause
 By applying the *logit* function, we can bound a real number $x$ to $[0,1]$:
