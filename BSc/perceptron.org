@@ -344,16 +344,12 @@ where the *indicator function $\ind{A}$* is  1 when $A$ is true and $0$ otherwis
 
 Here we see a plot of $\ell(\mu, \param) = (\param - \mu)^2$.
 *** Derivative of the perceptron cost function
-The total cost over the data is defined as
-\[
-L(D, \param) = \sum_{(x, y) \in D} \ell(x, y, \param)
-\]
+The total cost over the data is defined as $L(D, \param) = \sum_{(x, y) \in D} \ell(x, y, \param)$.
 Taking the derivative, we have
 \[
 \nabla_\param L(D, \param) = \nabla_\param \sum_{(x, y) \in D} \ell(x, y, \param)
   = \sum_{(x, y) \in D} \nabla_\param \ell(x, y, \param)
 \]
-
 
 **** Reminder: The chain rule
 Let $z = g(y)$, $y = f(x)$ so that $z= g(f(x))$. Then $\frac{dz}{dx} = \frac{dz}{d\alert{y}}\frac{d\alert{y}}{dx}$
@@ -362,7 +358,7 @@ Let $z = g(y)$, $y = f(x)$ so that $z= g(f(x))$. Then $\frac{dz}{dx} = \frac{dz}
 **** Applying the chain rule to calculate the gradient
 #+ATTR_BEAMER: :overlay <+->
 - $\nabla_\param \ell(x,y, \param) = - \ind{y(x^\top \param) < 0} \nabla_\param [y(x^\top \param)]$.
-- $\frac{\partial \param}{\partial{\param_i}} [y(x_t^\top \param)] = y x_{t,i}$ (gradient of Perceptron's output)
+- $\frac{\partial}{\partial{\param_i}} [y(x_t^\top \param)] = y x_{t,i}$ (gradient of Perceptron's output)
 - Gradient update: $\param^{t+1} = \param^t - \nabla_\param \ell(x,y, \param) = \param^t + y x_{t}$
 #+BEAMER: \pause
 The classification error cost function is *not* differentiable :(
