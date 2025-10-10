@@ -258,7 +258,7 @@ If we know $P$, then we can calculate
    \draw[color=blue] plot (\x, {(\x)^2})  node[right] {$\mu = 0$};
 \end{tikzpicture}
 Here we see a plot of $\ell(\mu, \param) = (\param - \mu)^2$.
-*** Stochastic gradient for mean estimation
+*** Gradient descent and sampling
 **** Sampling :B_theorem:
      :PROPERTIES:
      :BEAMER_env: theorem
@@ -272,21 +272,23 @@ For any bounded random variable $f$,
 \E_P \left[\frac{1}{T} \sum_{t=1}^T f(x_t)\right]
 , \qquad x_t \sim P
 \]
-**** Sampling :B_example:
-     :PROPERTIES:
-     :BEAMER_env: example
-     :END:
-- If we sample $x$ we approximate the gradient:
-\begin{align*}
- \frac{d}{d\param} \E_P [(x - \param)^2] 
-= \int_{-\infty}^\infty \!\!\!\! dP(x) \frac{d}{d\param} (x - \param)^2
-\approx \frac{1}{T} \sum_{t=1}^T \frac{d}{d\param} (x_t - \param)^2
-= \frac{1}{T} \sum_{t=1}^T 2(x_t - \param)
-\end{align*}
-#+BEAMER: \pause
-- If we update $\param$ after each new sample $x_t$, we obtain:
+
+**** Sampled derivatives
+\vspace{-1em}
 \[
-\param^{t+1} = \param^t + 2 \alpha_t (x_t - \param^t)
+ \frac{d}{d\param} \E_P [f(\param, x)]
+= \E_P \left[ \frac{d}{d\param} f(\param, x)\right]
+\approx \frac{1}{T} \sum_{t=1}^T \frac{d}{d\param} f(\param, x_t)
+\]
+#+BEAMER: \pause
+- Batch updates (over all samples)
+\[
+\param^{k+1} = \param^k - 2 \alpha_k \frac{d}{d\param} \sum_{t=1}^T f(\param, x_t) / T.
+\]
+#+BEAMER: \pause
+- Online updates (after each sample)
+\[
+\param^{t+1} = \param^t - 2 \alpha_t \frac{d}{d\param} f(\param, x_t)
 \]
 
 *** The gradient method
@@ -361,16 +363,12 @@ where the *indicator function $\ind{A}$* is  1 when $A$ is true and $0$ otherwis
 
 Here we see a plot of $\ell(\mu, \param) = (\param - \mu)^2$.
 *** Derivative of the perceptron cost function
-The total cost over the data is defined as
-\[
-L(D, \param) = \sum_{(x, y) \in D} \ell(x, y, \param)
-\]
+The total cost over the data is defined as $L(D, \param) = \sum_{(x, y) \in D} \ell(x, y, \param)$.
 Taking the derivative, we have
 \[
 \nabla_\param L(D, \param) = \nabla_\param \sum_{(x, y) \in D} \ell(x, y, \param)
   = \sum_{(x, y) \in D} \nabla_\param \ell(x, y, \param)
 \]
-
 
 **** Reminder: The chain rule
 Let $z = g(y)$, $y = f(x)$ so that $z= g(f(x))$. Then $\frac{dz}{dx} = \frac{dz}{d\alert{y}}\frac{d\alert{y}}{dx}$
@@ -378,8 +376,10 @@ Let $z = g(y)$, $y = f(x)$ so that $z= g(f(x))$. Then $\frac{dz}{dx} = \frac{dz}
 #+BEAMER: \pause
 **** Applying the chain rule to calculate the gradient
 #+ATTR_BEAMER: :overlay <+->
+- Set $z =  \ell(x,y, \param)$.
+- $\nabla_\param \ell(x,y, \param) = - (\frac{d}{dz} \ind{z < 0} z) \nabla_\param z$.
 - $\nabla_\param \ell(x,y, \param) = - \ind{y(x^\top \param) < 0} \nabla_\param [y(x^\top \param)]$.
-- $\frac{\partial \param}{\partial{\param_i}} [y(x_t^\top \param)] = y x_{t,i}$ (gradient of Perceptron's output)
+- $\frac{\partial}{\partial{\param_i}} [y(x_t^\top \param)] = y x_{t,i}$ (gradient of Perceptron's output)
 - Gradient update: $\param^{t+1} = \param^t - \nabla_\param \ell(x,y, \param) = \param^t + y x_{t}$
 #+BEAMER: \pause
 The classification error cost function is *not* differentiable :(
