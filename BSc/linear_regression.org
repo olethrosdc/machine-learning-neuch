@@ -135,7 +135,8 @@ p_\param(y_t| x_t)
 &= \argmax_\param \sum_t -[y_t - \pi_\param(x_t)]^2 / 2\sigma^2
 = \argmin_\param \sum_t |y_t - \pi_\param(x_t)|^2
 \end{align*}
-*** Coding break 
+*** Coding break
+src/Regression/RegressionDemonstration.ipynb
 - Show implementation
 - Fit and residuals
 - Multiple draws from the distribution
