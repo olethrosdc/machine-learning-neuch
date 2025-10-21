@@ -462,7 +462,6 @@ Each partial derivative is simple:
 
 
 *** Sigmoid layer
-
 - This layer is used for *binary classification*.
 - It is used in the *logistic regression* model to obtain label probabilities.
 \[
@@ -475,10 +474,10 @@ f(z) = 1 / (1 + \exp(-z))
 
 \begin{tikzpicture}[domain=-4:4]
   \draw[thin,->] (-4.2,0) -- (4.2,0);
-  \draw[thin,->] (0,-0.2) -- (0,1.2);
-  \draw[dotted] (-4.1,-0.1) grid (4.1,1.1);
-  \draw[dashed,thick,color=blue]   plot (\x, {1/(1+exp(-\x))})    node[right] {$f$};
-  \draw[dashdotted,thick,color=red]  plot (\x, {exp(-\x)/(1+exp(-\x))^2}) node[right] {$\frac{df}{dz}$};
+  \draw[thin,->] (0,-0.2) -- (0,2.2);
+  \draw[dotted] (-4.1,-0.1) grid (4.1,2.1);
+  \draw[dashed,thick,color=blue]   plot (\x, {2/(1+exp(-\x))})    node[right] {$f$};
+  \draw[dashdotted,thick,color=red]  plot (\x, {2*exp(-\x)/(1+exp(-\x))^2}) node[right] {$\frac{df}{dz}$};
 \end{tikzpicture}
 
 
@@ -573,15 +572,15 @@ Mixes L1 and L2 losses.
     :PROPERTIES:
     :BEAMER_env: definition
     :END:
-A function $f : \Reals^d \to \Reals$ is $\ell$-smooth if:
+A function $f : \Reals^d \to \Reals$ is \(\ell\)-smooth if:
 \[
-\|\nabla_x f(x) - \nabla_y f(y)\|_2 \leq \ell \|x - y\|2.
+\|\nabla_x f(x) - \nabla_y f(y)\|_2 \leq \ell \|x - y\|_2.
 \]
 *** Contraction mappings :B_definition:
     :PROPERTIES:
     :BEAMER_env: definition
     :END:
-A function $f : \Reals^d \to \Reals^d$ is a contraction if
+A function $f : \Reals^d \to \Reals^d$ is a contraction for some norm $\| \cdot \|$ if
 \[
 \|f(x) - f(y)\| \leq \|x - y\|.
 \]
@@ -593,7 +592,7 @@ $f(x^*) = x^*$.
     :PROPERTIES:
     :BEAMER_env: theorem
     :END:
-Suppose $f : \Reals^d \to \Reals$ is convex and $\ell$-smooth, 
+Suppose $f : \Reals^d \to \Reals$ is convex and \(\ell\)-smooth, 
 Then the mapping
 \[
 \psi(x) \defn x - \eta \nabla_x f(x)
