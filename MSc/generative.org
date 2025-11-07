@@ -28,7 +28,7 @@
     \begin{tikzpicture}
       \node[RV] at (2,0) (xi) {$x_3$};
       \node[RV] at (0,0) (xB) {$x_1$};
-      \node[RV] at (1,1) (xD) {$x_2$};
+.      \node[RV] at (1,1) (xD) {$x_2$};
       \draw[->] (xB)--(xD);
       \draw[->] (xD)--(xi);
     \end{tikzpicture}
@@ -220,10 +220,12 @@ P(a, b, c, d) = P(a) P(b | a) P (c | a) P(d | b, c)
 - Need to model $P(y | x)$.
 - Model the *complete* data distribution: $P(x | y)$, $P(x)$, $P(y)$.
 - Calculate \(  P(y | x) = \frac{P(x | y) P(x)}{P(y)}. \)
+#+BEAMER: \pause
 **** Examples
 - *Naive Bayes* classifier.
 - *Gaussian mixture* model.
 - Large language models.
+#+BEAMER: \pause
 **** Modelling the data distribution in classification
 - Need to estimate the density $P(x | y)$ for each class $y$.
 - Need to estimate $P(y)$.
@@ -252,7 +254,9 @@ Here we just have $P(x)$.
 
 
 *** Adding parameters to the graphical model
-    
+- Parameters are *latent* (hidden, unobserved)
+- Data is *observed*
+- We can learn about the parameters from the data.
 **** A Bernoulli RV
 Here, $x | \theta \sim \Ber(\theta)$
 \begin{tikzpicture}
@@ -275,14 +279,14 @@ Here $x  | \mu, \sigma \sim \Normal(\mu, \sigma^2)$
 - Data $(x,y)$
 - $x \in X$
 - $y \in Y \subset \mathbb{N}$, $N_i$: amount of data from class $i$.
-  
+#+BEAMER: \pause
 **** Separately model each class
 - Assume each class data comes from a different normal distribution
 - $x | y = i \sim \Normal(\mu_i, \sigma_i I)$
 - For each class, calculate
   - Empirical mean $\hat{\mu}_i = \sum_{t : y_t = i} x_t / N_i$
   - Empirical variance $\hat{\sigma}_i$.
-
+#+BEAMER: \pause
 **** Decision rule
 Use Bayes's theorem:
 \[
@@ -291,11 +295,14 @@ P(y | x) = P(x | y) P(y) / P(x),
 choosing the $y$ with largest posterior $P(y | x)$.
 - $P(x | y = i) \propto \exp(- \|\hat{\mu}_i - x\|^2/\hat{\sigma}_i^2)$
 *** Graphical model for the Naive Bayes Classifier
+
 **** When $x \in \Reals$
 Assume $k$ classes, then
 - $\mu = (\mu_1, \ldots, \mu_k)$
 - $\sigma = (\sigma_1, \ldots, \sigma_k)$
 - \(\theta = (\theta_1, \ldots, \theta_k)\)
+  #+BEAMER: \pause
+  \begin{center}
 \begin{tikzpicture}
       \node[RV] at (2,0) (x) {$x$};
       \node[RV] at (0,0) (y) {$y$};
@@ -307,9 +314,13 @@ Assume $k$ classes, then
       \draw[->] (variance) to (x);
       \draw[->] (choice) to (y);
 \end{tikzpicture}
+\end{center}
 - $y \mid \theta \sim \Mult(\theta)$
 - $x \mid y, \mu, \sigma \sim \Normal(\mu_y, \sigma^2_y)$
+* Density estimation
 ** Density estimation
+*** Density estimation
+
 *** General idea
 **** Parametric models
 - Fixed histograms
@@ -385,15 +396,18 @@ p(x | \theta, \mu, \Sigma) = \sum_{z \in [k]} p(x \mid \mu_z, \Sigma_z) P(z \mid
 *** Gradient ascent
 In the following we use $\theta$ for all the parameters of the Gaussian mixture model,
 with $x = (x_1, \ldots, x_T)$ and $z = (z_1, \ldots, z_T)$
+#+BEAMER: \pause
 **** Objective function
 One way to estimate $\theta$ is through maximising the likelihood
 $L(\theta) = P(x | \theta)$
+#+BEAMER: \pause
 **** Marginalisation over latent variable
 However, we need to marginalise over all values $z$
 \[
 L(\theta) = \sum_z P(z, x | \theta)
 \]
 For $T$ data points and $k$ different values of $z_t$, there are $k^T$ vectors $z$ to sum over.
+#+BEAMER: \pause
 **** Gradient ascent
 If we can calculate the gradient of $L$, we can use gradient ascent to update our parameters:
 \[
@@ -401,9 +415,10 @@ If we can calculate the gradient of $L$, we can use gradient ascent to update ou
 \]
 *** Gradient calculation
 Here we use the *log trick*: $\nabla \ln f(\theta) = \nabla f(\theta) / f(\theta)$.
+#+BEAMER: \pause
 \begin{align}
 \nabla_\theta L(\theta)
-& = \sum_z \nabla_\theta P(z, x \mid \theta) 
+& = \sum_z \nabla_\theta P(z, x \mid \theta)
 \\
 &= \sum_z  P(z, x \mid \theta) \nabla_\theta \ln P(z, x \mid \theta)
 \\
@@ -412,7 +427,8 @@ Here we use the *log trick*: $\nabla \ln f(\theta) = \nabla f(\theta) / f(\theta
 &\approx \frac{1}{m} \sum_{i=1}^m P(x \mid z^{(i)}, \theta) \nabla_\theta \ln P(z^{(i)}, x \mid \theta)
 &&z^{(i)} \sim P(z  \mid \theta)
 \end{align}
-The final approximates the sum with the sample mean, sampling $z^{(i)}$ from the distribution. Hence, we can implement the following algorithm
+#+BEAMER: \pause
+Hence, we can implement the following algorithm:
 - For $i = 1, \ldots, m$: $z^{(i)} \sim P(z  \mid \theta^{(n)})$
 - $d^{(n)} = \frac{1}{m} \sum_{i=1}^m P(x \mid z^{(i)}, \theta) \nabla_\theta \ln P(z^{(i)}, x \mid \theta^{(n)})$
 - $\theta^{(n+1)} = \theta^n + \alpha d^{(n)}$.
