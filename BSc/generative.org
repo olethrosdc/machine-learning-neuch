@@ -46,7 +46,8 @@ These are functions on *sets*, so that
 - $P(A) \in [0,1]$ for any $A \subset \Omega$
 - $P(A \cup B) = P(A) + P(B)$ if $A \cap B = \emptyset$.
 *** Statistics
-In statistics, we are interested in random variables $x, y, \ldots$ which are *functions*  $x : \Omega \to X$, $y : \Omega \to Y$ etc.
+In statistics, we are interested in random variables $x, y, \ldots$
+which are *functions*  $x : \Omega \to X$, t$y : \Omega \to Y$ etc.
 
 - We write $\Pr(x)$ as a shorthand for /the probability distribution of $x$/.
 - The distribution of $x$ arises in the following way:
@@ -54,7 +55,7 @@ In statistics, we are interested in random variables $x, y, \ldots$ which are *f
   2. Calculate $x(\omega)$.
 - We can get a *probability measure $P_x$* by measuring how often $x$ falls in various sets $A \subset X$:
 \[
-P_x(A) \defn P(\{\omega : x(\omega) \in A\})$
+P_x(A) \defn P(\{\omega : x(\omega) \in A\})
 \]
 Here, $\{\omega : x(\omega) \in A\}$ is literally the set of random outcomes $\omega$ for which $x(\omega)$ is in the set $A$. To avoid writing this cumbersome expression, we simply write
 $\Pr(x)$ as a general shorthand. This allows us to also write
