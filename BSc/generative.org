@@ -700,7 +700,7 @@ This means surrogate is always a lower bound so that
 \[
 f(\vparam) \geq Q(\vparam | \vparam^{(k)}),
 \qquad
-f(\vparam^{(k)}) \geq Q(\vparam^{(k)} | \vparam^{(k)}),
+f(\vparam^{(k)}) = Q(\vparam^{(k)} | \vparam^{(k)}),
 \]
 
 **** Algorithm
