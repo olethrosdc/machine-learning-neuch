@@ -76,7 +76,7 @@ P_\param(D) = \sum_z P_\param(D, z).
 *** Inversion sampler
 $F(u) = \Pr(x \geq u) = P(\{\omega : x(\omega) \geq u\})$ is the CDF of $x$.
 - Sample $u$ uniformly in $[0,1]$
-- Set $x = F^{-1}(u)$.
+- Set $x = F^{-1}(u)$, i.e. $v: \Pr(x \geq v) = u$
 
 *** Rejection Sampler
 - Input: Threshold $\epsilon$, distribution $Q$

@@ -35,7 +35,7 @@ In statistics, we are dealing with random variables. While these two can be rela
 3. $\Pr(x)$ for the distribution of $x$
 4. $\Pr(x, y)$ the joint distribution of $x, y$.
 5. $\Pr(x | y)$ the distribution of $x$ if $y$ is given.
-6. Marginal distribution $\Pr(y) = \sum_{i \in x}  \Pr(x = i, y)$.
+6. Marginal distribution $\Pr(y) = \sum_{i \in X}  \Pr(x = i, y)$.
 7. Bayes's theorem: $\Pr(x | y) = \Pr(x, y) / \Pr(y)$
 
 *** Probability and statistics
@@ -281,6 +281,33 @@ Is admission independent of gender?
         \end{tikzpicture}
 
 	How about here?
+*** Time-series
+**** Markov chain
+      \begin{tikzpicture}
+        \node[RV] at (0,0) (x1) {$x_1$};
+        \node[RV] at (1,0) (x2) {$x_2$};
+        \node[RV] at (2,0) (x3) {$x_3$};
+        \draw[->] (x1)--(x2);
+        \draw[->] (x2)--(x3);
+      \end{tikzpicture}
+
+**** Hidden Markov model
+      \begin{tikzpicture}
+        \node[RV, hidden] at (0,0) (x1) {$x_1$};
+        \node[RV, hidden] at (1,0) (x2) {$x_2$};
+        \node[RV, hidden] at (2,0) (x3) {$x_2$};
+        \node[RV] at (0,1) (y1) {$y_1$};
+        \node[RV] at (1,1) (y2) {$y_2$};
+        \node[RV] at (2,1) (y3) {$y_2$};
+        \draw[->] (x1)--(x2);
+        \draw[->] (x2)--(x3);
+        \draw[->] (x1)--(y1);
+        \draw[->] (x2)--(y2);
+        \draw[->] (x3)--(y3);
+      \end{tikzpicture}
+
+      
+
 ** Exercises
 *** What is the model for this graph?
        \begin{tikzpicture}
