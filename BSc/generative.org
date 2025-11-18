@@ -629,65 +629,86 @@ p(x | \theta, \mu, \Sigma) = \sum_{z \in [k]} p(x \mid \mu_z, \Sigma_z) P(z \mid
 
 ** Gradient algorithms
 *** Gradient ascent
-In the following we use $\theta$ for all the parameters of the Gaussian mixture model,
+In the following we use $\param$ for *all* the parameters of the Gaussian mixture model,
 with $x = (x_1, \ldots, x_T)$ and $z = (z_1, \ldots, z_T)$
 **** Objective function
-One way to estimate $\theta$ is through maximising the likelihood
-$L(\theta) = P(x | \theta)$
+One way to estimate $\param$ is through maximising the likelihood
+$L(\param) = P(x | \param)$
 **** Marginalisation over latent variable
 However, we need to marginalise over all values $z$
 \[
-L(\theta) = \sum_z P(z, x | \theta)
+L(\param) = \sum_z P(z, x | \param)
 \]
 For $T$ data points and $k$ different values of $z_t$, there are $k^T$ vectors $z$ to sum over.
 **** Gradient ascent
 If we can calculate the gradient of $L$, we can use gradient ascent to update our parameters:
 \[
-\theta^{(n+1)} = \theta^{(n)} + \alpha \nabla_\theta L(\theta).
+\param^{(n+1)} = \param^{(n)} + \alpha \nabla_\param L(\param).
 \]
 *** Gradient calculation
-Here we use the *log trick*: $\nabla \ln f(\theta) = \nabla f(\theta) / f(\theta)$.
+Here we use the *log trick*: $\nabla \ln f(\param) = \nabla f(\param) / f(\param)$.
 \begin{align}
-\nabla_\theta L(\theta)
-& = \sum_z \nabla_\theta P(z, x \mid \theta) 
+\nabla_\param L(\param)
+& = \sum_z \nabla_\param P(z, x \mid \param) 
 \\
-&= \sum_z  P(z, x \mid \theta) \nabla_\theta \ln P(z, x \mid \theta)
+&= \sum_z  P(z, x \mid \param) \nabla_\param \ln P(z, x \mid \param)
 \\
-&= \sum_z  P(x \mid z, \theta)P(z \mid \theta) \nabla_\theta \ln P(z, x \mid \theta)
+&= \sum_z  P(x \mid z, \param)P(z \mid \param) \nabla_\param \ln P(z, x \mid \param)
 \\
-&\approx \frac{1}{m} \sum_{i=1}^m P(x \mid z^{(i)}, \theta) \nabla_\theta \ln P(z^{(i)}, x \mid \theta)
-&&z^{(i)} \sim P(z  \mid \theta)
+&\approx \frac{1}{m} \sum_{i=1}^m P(x \mid z^{(i)}, \param) \nabla_\param \ln P(z^{(i)}, x \mid \param)
+&&z^{(i)} \sim P(z  \mid \param)
 \end{align}
 The final approximates the sum with the sample mean, sampling $z^{(i)}$ from the distribution. Hence, we can implement the following algorithm
-- For $i = 1, \ldots, m$: $z^{(i)} \sim P(z  \mid \theta^{(n)})$
-- $d^{(n)} = \frac{1}{m} \sum_{i=1}^m P(x \mid z^{(i)}, \theta) \nabla_\theta \ln P(z^{(i)}, x \mid \theta^{(n)})$
-- $\theta^{(n+1)} = \theta^n + \alpha d^{(n)}$.
+- For $i = 1, \ldots, m$: $z^{(i)} \sim P(z  \mid \param^{(n)})$
+- $d^{(n)} = \frac{1}{m} \sum_{i=1}^m P(x \mid z^{(i)}, \param) \nabla_\param \ln P(z^{(i)}, x \mid \param^{(n)})$
+- $\param^{(n+1)} = \param^n + \alpha d^{(n)}$.
+*** Gradients of the GMMs
+For the Gaussian mixture model, we need to calculate the following gradient, with respect to $\param = (\theta, \mu, \sigma)$.
+\[
+\nabla_\param \ln P(z, x \mid \param)
+= \sum_{t=1}^T  \nabla_\param \ln P(z_t, x_t \mid \param)
+= \sum_{t=1}^T  \nabla_\param \ln [P(z_t \mid \theta) P(x_t  \mid z_t, \mu, \sigma)]
+\]
+The individual terms are:
+\[
+\nabla_\theta \ln P(z_t | \theta)  = \frac{1}{P(z_t | \theta)} \nabla_\theta  P(z_t | \theta)
+\qquad
+\frac{\partial}{\partial \theta_i} =  \frac{\ind{z_t = i}}{P(z_t | \theta)}
+\]
+\[
+\frac{\partial}{\partial \mu_i} \ln P(x_t  \mid z_t = i, \mu, \sigma) 
+= - \frac{\partial}{\partial \mu_i}  \frac{(x_t - \mu_i)^2}{2\sigma_i^2}
+= \sigma_i^{-2} (x_t - \mu_i) 
+\]
+So the algorithm
+- Randomly assigns $z_t$ according to the current $\theta$ estimate
+- Moves the centers towards the mean indicated by the $z$.
 ** Expectation maximisation
 *** A lower bound on the likelihood
 For any distribution $G(z)$, and specifically for
-$G(z) = P(z | x, \theta^{(k)})$:
+$G(z) = P(z | x, \param^{(k)})$:
 \begin{align*}
-\ln P(x | \alert{\theta})
-& = \sum_z G(z) \ln P(x | \alert{\theta})
- = \sum_z G(z) \ln [P(x, z | \alert{\theta}) / P(z | x, \alert{\theta})]
+\ln P(x | \alert{\param})
+& = \sum_z G(z) \ln P(x | \alert{\param})
+ = \sum_z G(z) \ln [P(x, z | \alert{\param}) / P(z | x, \alert{\param})]
 \\
-& = \sum_z G(z) [\ln P(x, z | \alert{\theta}) - \ln P(z | x, \alert{\theta})]
+& = \sum_z G(z) [\ln P(x, z | \alert{\param}) - \ln P(z | x, \alert{\param})]
 \\
-& = \sum_z G(z) \ln P(x, z | \alert{\theta}) - \sum_z G(z) \ln P(z | x, \alert{\theta})
+& = \sum_z G(z) \ln P(x, z | \alert{\param}) - \sum_z G(z) \ln P(z | x, \alert{\param})
 \\
-& = \sum_z P(z | x, \theta^{(k)}) \ln P(x, z | \alert{\theta}) - \sum_z P(z | x, \theta^{(k)}) \ln P(z | x, \alert{\theta})
+& = \sum_z P(z | x, \param^{(k)}) \ln P(x, z | \alert{\param}) - \sum_z P(z | x, \param^{(k)}) \ln P(z | x, \alert{\param})
 \\
-& \geq \sum_z P(z | x, \theta^{(k)}) \ln P(x, z | \alert{\theta}) - \sum_z P(z | x, \theta^{(k)}) \ln P(z | x, \theta^{(k)})
+& \geq \sum_z P(z | x, \param^{(k)}) \ln P(x, z | \alert{\param}) - \sum_z P(z | x, \param^{(k)}) \ln P(z | x, \param^{(k)})
 \\
-& = Q(\alert{\theta} \mid \theta^{(k)}) +\mathbb{H}(z \mid x, \theta^{(k)}),
+& = Q(\alert{\param} \mid \param^{(k)}) +\mathbb{H}(z \mid x, \param^{(k)}),
 \end{align*}
 where 
 \[
-\mathbb{H}(z \mid  x, \theta^{(k)})
+\mathbb{H}(z \mid  x, \param^{(k)})
 = 
-\sum_z  P(z \mid  x, \theta^{(k)}) \ln P(z \mid x, \theta^{(k)})
+\sum_z  P(z \mid  x, \param^{(k)}) \ln P(z \mid x, \param^{(k)})
 \]
-is the entropy of $z$ for a fixed $x, \theta^{(k)}$. As this is not negative, $\ln P(x | \theta) \geq Q(\theta \mid \theta^{(k)})$.
+is the entropy of $z$ for a fixed $x, \param^{(k)}$. As this is not negative, $\ln P(x | \param) \geq Q(\param \mid \param^{(k)})$.
 *** Some information theory
 Information theory notation can be a bit confusing. Sometimes we talk about random variables $\omega$, and sometimes about probability measures $P$. This is context-dependent.
 **** Entropy
