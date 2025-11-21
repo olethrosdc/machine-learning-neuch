@@ -191,6 +191,7 @@ If $x \geq 0$
 & =  u \Pr(x \geq u)
 \end{align}
 *** Chernoff bound
+The Chernoof bound uses the fact that if $x \geq y$ is true, then $f(x) \geq f(y)$ for any monotonic increasing function $f$. In particular:
 \[
 \Pr(x - \mu \geq u) 
 =
@@ -200,16 +201,17 @@ If $x \geq 0$
 \]
 - This follows directly from Markov's inequality.
 - Tuning $\lambda$ gives us the tightest bound.
+- An example is a bound on the tail of the normal distribution, given next.
 *** Normal tail bound
 **** Moment generating function
 If $x \sim \Normal(\mu, \sigma^2)$ then
-\[
+\begin{align}
 \E[e^{\lambda x}]
 = 
 e^{\mu \lambda + \sigma^2 \lambda^2 / 2}
-\]
+\end{align}
 **** Proof
-\begin{align}
+\begin{align*}
 \E[e^{\lambda x}]
 &=
 \frac{1}{\sigma \sqrt{2 \pi}}
@@ -228,7 +230,7 @@ dx
 \int_{-\infty}^\infty
 e^{\lambda (\sqrt{2} \sigma y + \mu) - y^2}
 dy
-\end{align}
+\end{align*}
 where $y = (x-\mu)/(\sqrt{2} \sigma)$, so $x = \sqrt{2} \sigma y + \mu$.
 **** Normal tail bound
 If $x_t \sim \Normal(\mu, 1)$, then
@@ -236,6 +238,7 @@ If $x_t \sim \Normal(\mu, 1)$, then
 \Pr(|x_t - \mu| > \epsilon) \leq 2 e^{- \epsilon^2/2}
 \]
 *** Normal bound
+We can use the above tail bound to prove a bound on the error of the empirical estimate $\hat{\mu}$ of a normal with mean $\mu$ after observing $T$ samples.
 - $\hat{\mu} \sim \Normal(\mu, 1/T)$.
 - For any $c > 0$,  $\Var[c x] = c \Var[x] \Rightarrow T \hat{\mu} \sim \Normal(T \mu, 1)$. So:
 \begin{align}
@@ -251,6 +254,7 @@ If $x_t \sim \Normal(\mu, 1)$, then
 &\leq 2 e^{- T^2u^2/2}
 && \textrm{where $u = \epsilon / T$}
 \end{align}
+Can we prove something more general? Yes!
 
 *** Subgaussian random variables
 
@@ -259,9 +263,8 @@ If $x_t \sim \Normal(\mu, 1)$, then
 :BEAMER_env: definition
 :END:
 $x$ is \sigma-subgaussian if
-\[
-\E[\exp(\lambda x)] \leq \exp(\lambda^2\sigma^2/2), \qquad \forall \lambda \in \Reals.
-\]
+$\E[\exp(\lambda x)] \leq \exp(\lambda^2\sigma^2/2), \qquad \forall \lambda \geq 0$.
+
 **** Subgaussian bound :B_theorem:
 :PROPERTIES:
 :BEAMER_env: theorem
@@ -270,19 +273,27 @@ If $x$ is \sigma-subgaussian then, for all $\epsilon \geq 0$,
 \begin{equation}
 \Pr(x \geq \epsilon) \leq \exp\left(\frac{\epsilon^2}{2 \sigma^2}\right)
 \end{equation}
-The proof is straightforward:
+\vspace{-1em}
+**** Proof                                                          :B_proof:
+:PROPERTIES:
+:BEAMER_env: proof
+:END:
+Using a Chernoff bound, and the definition of subgaussianity,
 \begin{align*}
-\Pr(x \geq 0) &= \Pr(\exp(\lambda x) \geq \exp(\lambda \epsilon))\\
-&\leq \E[\exp(\lambda x)] \exp(- \lambda \epsilon)\\
+\Pr(x \geq \epsilon) &= \Pr(\exp(\lambda x) \geq \exp(\lambda \epsilon))
+\leq \E[\exp(\lambda x)] \exp(- \lambda \epsilon)\\
 &\leq \exp\left(\frac{\lambda^2 \sigma^2}{2} - \lambda \epsilon\right).
 \end{align*}
-Set $\lambda = \epsilon / \sigma^2$.
+Finally, set $\lambda = \epsilon / \sigma^2$.
+
+
 *** Application of subgaussian bounds
 - If $x$ is $\sigma$ subgaussian then $\E[x] = 0$, $\Var[x] \leq \sigma^2$
 - $cX$ is $|c|\sigma$ subgaussian for all $c \in \Reals$.
 - If $x_1, x_2$ are $\sigma_1, \sigma_2$ subgaussian then
 $x_1 + x_2$ is $\sqrt{\sigma_1^2 + \sigma_2^2}$ subgaussian.
 
+The above facts lead to the following corollary:
 **** Corollary
 If $x_t - \mu$ are independent $\sigma$ subgaussian and
 \[
@@ -292,13 +303,12 @@ If $x_t - \mu$ are independent $\sigma$ subgaussian and
 \Pr(\hat{\mu} \geq \mu + \epsilon) \leq \exp\left(-\frac{n\epsilon^2}{2\sigma^2}\right)
 \]
 
-*** Exercise
-- Show that if $\E[x] = 0$ and $X \in [a,b]$ then x is $(b -a)/2$ subgaussian.
-- [hard]
 
   
-** Hoeffding bound
+*** Hoeffding bound
 
+- If $x \in [a,b]$ then it is $(b - a)/2$ subgaussian. This directly leads to the following inequality:\footnote{There other ways of proving it, but this is the easiest given the previous development}
+  
 **** Hoeffding Inequality
 For any sequence of independent (but not identical) rv's $x_1, \ldots, x_T$, with $x_t \in [a_t, b_t]$,
 and consider the sum $s_T = \sum_{t=1}^T x_t$, which is also random. Then
@@ -308,13 +318,19 @@ and consider the sum $s_T = \sum_{t=1}^T x_t$, which is also random. Then
 **** Corollary
 For any sequence of independent rv's $x_1, \ldots, x_T$, with $x_t \in [0, 1]$,
 with expectation $\E[x_t] = \mu$
-it holds for the empirical mean $z_T = \frac{1}{T} \sum_{t=1}^T x_t$:
+it holds for the empirical mean $\hat{\mu}_T = \frac{1}{T} \sum_{t=1}^T x_t$:
 \[
-\Pr(|\mu - z_T| \geq \epsilon) \leq 2 \exp\left( -2n \epsilon^2\right)
+\Pr(|\mu - \hat{\mu}_T| \geq \epsilon) \leq 2 \exp\left( -2T \epsilon^2\right)
 \]
 
     
 * Exercises
+*** Subgaussianity
+Prove the following statements:
+- [easy] If $x$ is $\sigma$ subgaussian, then $cx$ is $c\sigma$ subgaussian
+- [medium] If $x_i$ are $\sigma$ subgaussian then $\sum_i x_i$ is $\sqrt{\sum_i \sigma_i^2}$ subgaussian
+- [hard] if $\E[x] = 0$ and $x \in [a,b]$ then x is $(b -a)/2$ subgaussian.
+
 
 ** Conditional probability
 *** Bayesian Reasoning
@@ -322,9 +338,15 @@ it holds for the empirical mean $z_T = \frac{1}{T} \sum_{t=1}^T x_t$:
 ** Hypothesis testing
 *** Exercise
 **** A statistical test
-Consider the null hypothesis $H_0$ that $x_t \sim \Ber(1/2)$ and the sample mean $\hat{\mu_T} = \frac{1}{T} \sum_{t=1}^T x_t$. The probability of making an error of more than $\epsilon$ is
+- We have data $x_t$  and the sample mean $\hat{\mu}_T = \frac{1}{T} \sum_{t=1}^T x_t$.
+- The null hypothesis $H_0$ is that $x_t \sim \Ber(1/2)$.
+- The alternative $H_1$ is that  $x_t \sim \Ber(\theta)$, with $\theta \neq 1/2$.
+- You have a statistical test which, for any significance level $\alpha \in [0,1]$, returns $S_1$ when $H_0$ with probability $\alpha$. 
+  This is implemented by choosing a threshold $\tau$ so that
 \[
-1 - \sum_{k={T \epsilon}}{T\epsilon}
+\Pr(|\hat{\mu}_T - 0.5| \geq \tau \mid H_0) = \alpha.
 \]
-
-
+ However, this tells us nothing about $\Pr(S_0 \mid H_1)$. Using Hoeffding's inequality, show for which values of $\theta \neq \frac{1}{2}$, we have that $\Pr(S_0 \mid H_1) \leq \alpha$, i.e.
+\[
+\Pr(|\hat{\mu}_T - 0.5| < \tau \mid \theta) \leq \alpha
+\]
