@@ -216,5 +216,5 @@ Variable order models allow us to:
 ** Hierarchical models
 *** Multiple hypotheses
 [not covered]
-
+c
 

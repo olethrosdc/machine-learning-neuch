@@ -107,13 +107,13 @@ S_1 = \{x : s(x) > \theta\}
 \[
 S_1 = \{x : s(x) \geq \theta\}
 \]
-**** Example: Laplace distributiotan
+**** Example: Laplace distribution
 - Density: $f(x | \mu, \lambda) = \frac{1}{2\lambda} e^{-\frac{1}{\lambda} |x - \mu|}$
 - $H_0$: $x \sim \Lapl(0, 1)$.
 - $f(x | 0, 1) \geq \theta$ means $|x| \leq \ln(1/2 \theta)$. So 
 \[
 P(S_1 | H_0) =
-\int_{-infty}{^-\ln(1/2\theta)} e^{-x} dx
+\int_{-\infty}^{-\ln(1/2\theta)} e^{-x} dx
 =
 1/2\theta.
 \]
@@ -252,7 +252,52 @@ If $x_t \sim \Normal(\mu, 1)$, then
 && \textrm{where $u = \epsilon / T$}
 \end{align}
 
-*** Hoeffding bound
+*** Subgaussian random variables
+
+**** Subgaussianity                                            :B_definition:
+:PROPERTIES:
+:BEAMER_env: definition
+:END:
+$x$ is \sigma-subgaussian if
+\[
+\E[\exp(\lambda x)] \leq \exp(\lambda^2\sigma^2/2), \qquad \forall \lambda \in \Reals.
+\]
+**** Subgaussian bound :B_theorem:
+:PROPERTIES:
+:BEAMER_env: theorem
+:END:
+If $x$ is \sigma-subgaussian then, for all $\epsilon \geq 0$,                
+\begin{equation}
+\Pr(x \geq \epsilon) \leq \exp\left(\frac{\epsilon^2}{2 \sigma^2}\right)
+\end{equation}
+The proof is straightforward:
+\begin{align*}
+\Pr(x \geq 0) &= \Pr(\exp(\lambda x) \geq \exp(\lambda \epsilon))\\
+&\leq \E[\exp(\lambda x)] \exp(- \lambda \epsilon)\\
+&\leq \exp\left(\frac{\lambda^2 \sigma^2}{2} - \lambda \epsilon\right).
+\end{align*}
+Set $\lambda = \epsilon / \sigma^2$.
+*** Application of subgaussian bounds
+- If $x$ is $\sigma$ subgaussian then $\E[x] = 0$, $\Var[x] \leq \sigma^2$
+- $cX$ is $|c|\sigma$ subgaussian for all $c \in \Reals$.
+- If $x_1, x_2$ are $\sigma_1, \sigma_2$ subgaussian then
+$x_1 + x_2$ is $\sqrt{\sigma_1^2 + \sigma_2^2}$ subgaussian.
+
+**** Corollary
+If $x_t - \mu$ are independent $\sigma$ subgaussian and
+\[
+\hat{\mu} = \frac{1}{T} \sum_{t=1}^T x_t
+\]
+\[
+\Pr(\hat{\mu} \geq \mu + \epsilon) \leq \exp\left(-\frac{n\epsilon^2}{2\sigma^2}\right)
+\]
+
+*** Exercise
+- Show that if $\E[x] = 0$ and $X \in [a,b]$ then x is $(b -a)/2$ subgaussian.
+- [hard]
+
+  
+** Hoeffding bound
 
 **** Hoeffding Inequality
 For any sequence of independent (but not identical) rv's $x_1, \ldots, x_T$, with $x_t \in [a_t, b_t]$,
