@@ -1,44 +1,13 @@
 #+TITLE: Confidence Intervals
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
-#+LaTeX_HEADER: \usepackage{tikz}
-#+LaTeX_HEADER: \usepackage{amsmath}
-#+LaTeX_HEADER: \usepackage{amssymb}
-#+LaTeX_HEADER: \usepackage{isomath}
-#+LaTeX_HEADER: \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
-#+LaTeX_HEADER: \newcommand \Var {\mathop{\mbox{\ensuremath{\mathbb{V}}}}\nolimits}
-#+LaTeX_HEADER: \newcommand \Bias {\mathop{\mbox{\ensuremath{\mathbb{B}}}}\nolimits}
-#+LaTeX_HEADER: \newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
-#+LaTeX_HEADER: \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
-#+LaTeX_HEADER: \DeclareMathOperator*{\argmax}{arg\,max}
-#+LaTeX_HEADER: \DeclareMathOperator*{\argmin}{arg\,min}
-#+LaTeX_HEADER: \DeclareMathOperator*{\sgn}{sgn}
-#+LaTeX_HEADER: \newcommand \defn {\mathrel{\triangleq}}
-#+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
-#+LaTeX_HEADER: \newcommand \Param {B}
-#+LaTeX_HEADER: \newcommand \param {\beta}
-#+LaTeX_HEADER: \newcommand \vparam {\vectorsym{\beta}}
-#+LaTeX_HEADER: \newcommand \mparam {\matrixsym{B}}
-#+LaTeX_HEADER: \newcommand \bW {\matrixsym{W}}
-#+LaTeX_HEADER: \newcommand \bw {\vectorsym{w}}
-#+LaTeX_HEADER: \newcommand \wi {\vectorsym{w}_i}
-#+LaTeX_HEADER: \newcommand \wij {w_{i,j}}
-#+LaTeX_HEADER: \newcommand \bA {\matrixsym{A}}
-#+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
-#+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
-#+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
-#+LaTeX_HEADER: \newcommand \by {\vectorsym{y}}
-#+LaTeX_HEADER: \newcommand \bel {\beta}
-#+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
-#+LaTeX_HEADER: \newcommand \Lapl {\textrm{Laplace}}
-#+LaTeX_HEADER: \newcommand \Binom {\textrm{Binomial}}
-#+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
-#+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
-#+LaTeX_HEADER: \newcommand \CH {\mathcal{H}}
+#+LaTeX_HEADER: \input{preamble}
 #+LaTeX_CLASS_OPTIONS: [smaller]
+#+LATEX_HEADER: \RequirePackage{fancyvrb}
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
 
 * Hypothesis testing
 ** Simple Hypothesis Tests
@@ -325,6 +294,7 @@ it holds for the empirical mean $\hat{\mu}_T = \frac{1}{T} \sum_{t=1}^T x_t$:
 
     
 * Exercises
+** Subgaussianity
 *** Subgaussianity
 Prove the following statements:
 - [easy] If $x$ is $\sigma$ subgaussian, then $cx$ is $c\sigma$ subgaussian
@@ -336,17 +306,17 @@ Prove the following statements:
 *** Bayesian Reasoning
   You are tested for COVID are found negative. The doctor says that the probability of a false positive (i.e. that the probability that the test is positive if you do not have COVID) is $1/10$ and the probability of a negative test if you have COVID is $1/5$.  The prevalence of COVID in the population in the population $1/10$. What is the probability that you actually have COVID?
 ** Hypothesis testing
-*** Exercise
-**** A statistical test
+*** A statistical test
 - We have data $x_t$  and the sample mean $\hat{\mu}_T = \frac{1}{T} \sum_{t=1}^T x_t$.
 - The null hypothesis $H_0$ is that $x_t \sim \Ber(1/2)$.
-- The alternative $H_1$ is that  $x_t \sim \Ber(\theta)$, with $\theta \neq 1/2$.
+- The alternative $H_1$ is that  $x_t \sim \Ber(\mu)$, with $\mu \neq 1/2$.
 - You have a statistical test which, for any significance level $\alpha \in [0,1]$, returns $S_1$ when $H_0$ with probability $\alpha$. 
   This is implemented by choosing a threshold $\tau$ so that
 \[
 \Pr(|\hat{\mu}_T - 0.5| \geq \tau \mid H_0) = \alpha.
 \]
- However, this tells us nothing about $\Pr(S_0 \mid H_1)$. Using Hoeffding's inequality, show for which values of $\theta \neq \frac{1}{2}$, we have that $\Pr(S_0 \mid H_1) \leq \alpha$, i.e.
+ However, this tells us nothing about $\Pr(S_0 \mid H_1)$. Using Hoeffding's inequality, show for which values of $\mu \neq \frac{1}{2}$, we have that $\Pr(S_0 \mid H_1) \leq \alpha$, i.e.
 \[
-\Pr(|\hat{\mu}_T - 0.5| < \tau \mid \theta) \leq \alpha
+\Pr(|\hat{\mu}_T - 0.5| < \tau \mid \mu) \leq \alpha
 \]
+Hint: Define $\Delta = |\mu - \frac{1}{2}|$. Show that, this holds when $\Delta > \sqrt{\ln(2/\alpha)/2T} + \tau$.
