@@ -8,7 +8,18 @@
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:2
 #+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
-* Ensemble Methods
+* Ensemble methods
+** General idea
+- Concept class $\Pi$ (e.g. linear classifiers)
+- Base learner $\lambda : \mathcal{D} \to \Pi$ (e.g. perceptron)
+*** General Algorithm  
+At iteration $b$,
+1. Generate data $D_b$ from $D$.
+2. Get base predictor $\pi_b = \lambda(D_b)$
+
+At the end, combine predictors $\pi_1, \ldots, \pi_B$.
+ 
+* Bagging
 ** Bagging
 *** Algorithm
 - Input: Data $D$, bags $B$, base learner $\lambda$
@@ -17,6 +28,7 @@
  - Obtain predictor $\pi_b = \lambda(D_b)$.
 - Return $\{\pi_b\}$
 
+#+BEAMER: \pause
 *** The bagged predictor
 In the end, we just combine all the predictors:
 \[
@@ -34,6 +46,12 @@ with
 \[
 \pi(x) = \sgn\left(\sum_{b=1}^B \pi_b(x)\right)
 \]
+#+BEAMER: \pause
+*** PAC property
+Choosing $B \in O(\ln(T))$ results in error bounded by $\tilde{O}(d/T)$ with high probability, for *binary* classification and *VC dimension $d$*
+
+[[https://arxiv.org/abs/2212.02264][Bagging is an Optimal PAC learner]], Larsen 2024.
+
 ** Regression setting
 - Weak learner $\lambda : D \to \Pi$
 - Base hypotheses $\pi_b : X \to \{-1,1\}$
@@ -41,17 +59,33 @@ with
 \[
 \pi_b = \lambda(D_b), \qquad D_b \sim D
 \]
+#+BEAMER: \pause
 - Aggregate hypothesis
 \[
 \pi(x) = \frac{1}{B} \sum_{b=1}^B \pi_b(x)
 \]
+** Sub-sample-and-aggregate
+*** Algorithm
+    - Input: Data $D$, number of experts $B$, base learner $\lambda$
+    - For $B = 1, \ldots, B$
+    -- Sample \alert{without replacement} $D_b \sim \Unif(D)$
+    -- Obtain predictor $\pi_b = \lambda(D_b)$.
+    - Return $\{\pi_b\}$
+#+BEAMER: \pause
+*** The aggregated predictor
+    \[
+    \pi =  f\left(\pi_1, \ldots, \pi_k\right)
+    \]
+
 ** Random forests
 - Same as bagged trees
+#+BEAMER: \pause
 *** Random subset of features
 In random forests a subset $\hat{p}$ of the features is randomly consider for splitting.
 *** Rationale
 - Make the splits more random
 - Consequently, the trees will look very different.
+* Boosting
 ** Boosting regression trees
 Build predictors sequentially, so that at iteration $b$, we try to improve performance on the *hardest* examples.
 *** Algorithm 
@@ -71,14 +105,14 @@ This is an *online* prediction problem, where, at each step $t$:
 - We observe the loss $\ell_t(a)$ for all $a \in [N]$.
 - We then suffer a loss $\ell_t(a_t)$
 - Our goal is to minimise the total loss $\sum_{t=1}^T \ell_t(a_t)$
-
+#+BEAMER: \pause
 *** Algorithm
 - Learning rate $\eta \in [0,1]$, Weights $w_t \in [0,1]^N$, Iterations $T > 0$
 - For $t = 1, \ldots, T$
   1. Calculate allocation $p_t = \frac{w_t}{\sum_{i=1}^N w_{i,t}}$
   2. Selct action $a_t = i$ with probability $p_{t,i}$.
   2. Observe loss $\ell_t \in [0, 1]^N$ for all actions.
-  3. Suffer loss $\ell_t
+  3. Suffer loss $\ell_t$.
   4. Update all weights $w_{t+1, i} = w_{t, i} \exp(\eta \ell_{i,t})$.
 
 ** AdaBoost/SAMME
