@@ -76,7 +76,7 @@ There are three types of sessions:
 |--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
 |      9 | 11.14 | Project Highlights          |                                                     |                     | Misc    |
 |--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
-|     10 | 11.21 | Learning Theory, Privacy    |                                                     |                     | Lecture |
+|     10 | 11.21 | Learning Theory             |                                                     |                     | Lecture |
 |     11 | 11.28 | Fairness                    |                                                     |                     | Mixed   |
 |     12 | 12.05 | Reinforcement Learning      |                                                     |                     | Mixed   |
 |--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
@@ -250,13 +250,28 @@ Here are some example questions for the exam. Answers can range from simple one-
 
 ** Book Subjects
 
-All non-programming exercises in the following chapters of the book "Statistical Learning with Python"  may appear in some form in the exam
+All non-programming exercises in the following chapters of the book 
+may appear in some form in the exam
 
+*** Statistical Learning with Python
 - Ch. 2 Statistical Learning
 - Ch. 3 Linear Regression
 - Ch. 4 Classification
 - Ch. 5 Resampling
 - Ch. 10 Neural networks
+
+*** Probabilistic Machine Learning
+
+- Ch. 2 (2.1, 2.2, 2.3, 2.4, 2.5, 2.6)
+- Ch. 3 (3.1, 3.2, 3.5, 3.6)
+- Ch. 4 (4.1, 4.3, 4.6, 4.7.4) 
+- Ch. 5 (5.1,  5.3, 5.4, 5.5) 
+- Ch. 7 (7.1, 7.2, 7.3, 7.5.3)
+- Ch. 8 (8.1, 8.2, 8.4)
+- Ch. 13 (13.1, 13.2, 13.2, 13.3)
+- Ch. 16 (16.1)
+
+
 
 In addition, exam questions similar to the ones below may also appear.
 
@@ -343,7 +358,7 @@ Due to this, we have $a >^* c$. However, as $a$ and $b$ have similar IQs we pref
 Note that if we mapped these to a utility function, i.e. $U(a) = a_1 + a_2$, we will always get a transitive relation.
 
 
-** Differential privacy
+** Differential privacy (not 2025/26)
 
 Consider a system where we obtain data $x_1, \ldots, x_n$ from
 individuals, where $x_t \in X$ corresponds to data from a single
@@ -466,7 +481,7 @@ A simple idea is to combine the social welfare linearly with the DM's utility. T
 The two objectives obviously coincide when $U = V$. However, any utility function $U$ which has the same maximum as $V$ is compatible with social welfare. 
 
 
-** Causality (not this year)
+** Causality (not 2025/26)
 
 Patients arrive at a hospital and receive a treatment that depends on their symptoms. The first table shows how many people receive each treatment. Assume that the number of people with each symptom is representative of the population.
 
@@ -532,7 +547,7 @@ So the overall curing rate based on the data would be 3/4 * 2/3 + 1/2*1/3 = 6/12
 4. Firstly, there could be hidden medical or financial costs. One treatment might be more expensive than the other, or may have more side-effects. In addition, one type of symptoms might be less acute or life-threatening than the other, thus requiring less aggressive treatment. Secondly, the new policy always uses the same treatment, and this means that we do not get information about the effectiveness of alternative treatments. This may be important in the initial stages of executing a treatment.
 
 
-** Markov decision processes and experiment design (not this year)
+** Markov decision processes and experiment design (not 2025/26)
 
    
 Consider a Markov decision process with two actions $A = \{0, 1\}$ and three states $S = \{0, 1, 2\}$, with a horizon $T=2$, with starting state $s_1 = 10 and the following transition distribution:
