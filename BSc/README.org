@@ -36,8 +36,8 @@ The course focuses on fundamental modelling problems and general machine learnin
 |      7 | 10.28 | Probabilistic machine learning  | ML, MAP, Bayesian Infernece, Beta-Bernoulli: hypotheses |                     | Lab   |
 |      8 | 11.04 | Generative models               | Naive Bayes, Graphical models, independence             |                     | Mix   |
 |      9 | 11.11 | Sequence prediction             | Markov models, text prediction, LLMs                    |                     | Mixed |
-|     10 | 11.18 | Computer Vision                 | Bagging, boosting                                       |                     | Mixed |
-|     11 | 11.25 | Ensemble methods                |                                                         |                     | Lab   |
+|     10 | 11.18 | Large Language Models           |                                                         |                     | Mixed |
+|     11 | 11.25 | Computer Vision                 |                                                         |                     | Lab   |
 |     12 | 12.02 | Fairness and Privacy            |                                                         |                     | Mixed |
 |     13 | 12.09 | Project Presentations           |                                                         |                     | Lab   |
 |--------+-------+---------------------------------+---------------------------------------------------------+---------------------+-------|
