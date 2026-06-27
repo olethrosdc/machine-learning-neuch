@@ -132,7 +132,7 @@ The average probability of the actual class:
 *** Negative Log-Loss
 Here we assign look at the *logarithm* of the probability. This really penalises bad guesses.
 \[
-\sum_{t=1}^T \ln P(y_t | x_t) / T
+- \sum_{t=1}^T \ln P(y_t | x_t) / T
 \]
 - If we always assign probability 1 to the correct label, this score is 0.
 - If we assign probability 0 to even a single label, the score is $-\infty$.
@@ -340,8 +340,8 @@ classifier is 50%.
 How well can decision rule perform?
 
 **** Estimation theory view
-- Bias: The expected difference between the estimated value and the unknown parameter
-- Variance: The expected difference between the estimated value and the unknown parameter
+- Bias: The *expected difference* between the estimated value and the unknown parameter
+- Variance: Just the *variance* of that estimator, as a random variable.
 **** Learning theory view
 - Approximation ability: How well a class of rules can approximate the optimal one.
 - Statistical error: How easy it is to choose the best rule in the class.
@@ -416,7 +416,7 @@ What is the expected deviation from the true function
 To minimise the MSE, we use $f^* = \mu$. This gives us two ideas:
 **** Empirical mean estimator:
 - $f_D = \sum_{t=1}^T x_t / T$.
-- $\Var(f_D) = \E [f_D - \mu] = 1/\sqrt{T}$
+- $\Var(f_D) = \E [f_D - \mu]^2 = \sigma^2/T$
 - $\Bias(f_D) = 0$. (unbiased estimator)
 **** Laplace mean estimator:
 - $f_D = \sum_{t=1}^T (\lambda + x_t) / T$.

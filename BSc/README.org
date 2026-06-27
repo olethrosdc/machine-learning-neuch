@@ -44,6 +44,9 @@ The course focuses on fundamental modelling problems and general machine learnin
 |     14 | 12.16 | Project work                    |                                                         |                     | Lab   |
 |--------+-------+---------------------------------+---------------------------------------------------------+---------------------+-------|
 
+*** Note on pacing
+Tree-based and ensemble methods (Assignment 7), and the convolutional-network material (Assignment 8), are covered *only if time permits*. By default, that time goes to in-class project work instead: (re)forming the scientific question, drawing the graphical model, and building the simulator, testing the pipeline and discussing the project with the professor and TA(s).
+
 ** Material
 *** Textbooks
 **** Primary
@@ -64,6 +67,7 @@ P(x_t = x | y_t = y).
 
 Sometimes we use the shorthand $\sum_x P(x, y)$ to mean $\sum_{i \in X} P(x = i | y)$.
 
+
 *** Sets
 We will use  capital letters e.g. $A, B, C$ for sets. For special sets, we will use calligraphic capital letters, e.g. $\CA, \CX, \CY$.
 
@@ -73,6 +77,20 @@ The ISLP book makes no real distinction between decision rules and models. It so
 - $P$ for a model
 - $\param$ for the parameters of a model, with $P_\param$ the parametrised model.
 - $\hat{\param}$ for estimated parameters.
+
+** Relevant book chapters
+Chapter 1.
+Chapter 2.
+Chapter 3.
+Chapter 4.
+Chapter 5.
+Chapter 8: 8.2.1
+Chapter 10: 10.1, 10.2, 10.7, 10.7.1, 10.7.2
+Chapter 12: 12.1, 12.3
+Chapter 13: 13.1-13.4
+
+
+
 
 * Course evaluation
 ** Course evaluation
@@ -86,18 +104,43 @@ The ISLP book makes no real distinction between decision rules and models. It so
 * Activities
 ** Assignments
 *** Assignment 0: Probability exercise, classification/regression
- - Reminder of probability and expectation
- - Examples of classification and regression
+**** Pen-and-paper
+- Reminder of probability and expectation: for a general random variable $x$ on a small outcome space with unspecified (symbolic) probabilities, derive $\E[x]$ and $\Var(x)$ as formulas, not numbers.
+- Given a list of problem descriptions, classify each as classification, regression, or neither, and identify the input/output variables.
+**** In-class coding
+- Compute a sample mean on a small dataset and compare it against the symbolic formula above.
+- Fit a toy classifier and a toy regressor, just to see the difference in what each one predicts.
+**** Project (home)
+- Sketch a candidate scientific question for your project, and identify one variable that would be central to answering it.
+
 
 *** Assignment 1: k-Nearest Neighbour, performance
  Here we look at different methods to measure model performance.
  Using scikitlearn, see how data rescaling affects performance.
  Then measure performance under an alternative measure.
+**** Pen-and-paper
+- Without picking any specific dataset: argue why the *training* accuracy of $k$-NN is always $100\%$ when $k=1$, and why training accuracy can only get worse (or stay the same) as $k$ grows towards $T$.
+- Given a generic utility matrix $U(y, a)$ (symbols, not numbers) and a model $P(y \mid x)$, derive the action $a^*$ maximising expected utility. Under what condition on $U$ does $a^*$ coincide with "predict the most likely class"? Give a $U$ for which it does not.
+**** In-class coding
+Here we look at different methods to measure model performance. Using scikit-learn, see how data rescaling affects performance. Then measure performance under the utility-based alternative above, instead of accuracy.
+**** Project (home)
+- Apply the same performance measure to a variable from your own project (real or simulated data).
 
+ 
 *** Assignment 2: Perceptron, model comparison
  In this assignment we compare classification models. 
  We apply the basic ideas of train, test, validation, cross-validation and bootstrapping. 
  They should develop this using scikitlearn.
+
+**** Pen-and-paper
+- Go through the mistake-bound proof line by line. For each of its two key inequalities ($\param^t \cdot \param^*$ grows by *at least* $\rho$ per mistake; $\|\param^t\|^2$ grows by *at most* $1$ per mistake), explain in words the geometric fact it captures.
+- What step of the proof breaks down if the data is *not* linearly separable? What step breaks down if $\|x_t\|$ is unbounded?
+**** In-class coding
+In this assignment we compare classification models. We apply the basic ideas of train, test, validation, cross-validation and bootstrapping, using scikit-learn, to compare the perceptron against another classifier.
+**** Project (home)
+- Apply train/test or cross-validation to a variable from your own project.
+
+ 
 *** Assignment 3: Linear regression and simulation
 
 **** Regression
@@ -107,23 +150,28 @@ Complete the in-class exercise:
 with weight as the response and all other variables (except name) as
 the predictors. Use the summarize() function to print the results.
 
-Comment on the output. For instance:
+Comment on the output: this is interpretation, not recomputation:
 
 i. Is there a relationship between the predictors and the re-
 sponse? 
 
 ii. What does the coefficient for the gender variable suggest?
 
-iii. Produce some of diagnostic plots of the linear regression fit as
+iii. Produce some diagnostic plots of the linear regression fit as
 described in the lab. Comment on any problems you see with the
 fit. Do the residual plots suggest any unusually large outliers?
 Does the leverage plot identify any observations with unusually
 high leverage?
 
-iv. Try a few different transformations of the variables, such as \(\log(x)\) or \(\sqrt{x}\)
+iv. Try a few different transformations of the variables, such as \(\log(x)\) or \(\sqrt{x}\), and discuss how the interpretation of the coefficients changes.
 
-**** Simulation
 
+
+**** Pen-and-paper: why least squares can fail
+- Show that $X^\top X$ is singular if and only if the columns of $X$ are linearly ependent. What does this mean in practice when two predictors are highly correlated?
+- Without plugging in any specific numbers, argue why $\E[\hat\param] = \param$ for the OLS estimator under the standard assumptions (hint: linearity of expectation).
+
+**** Simulation: in-class coding
 
 In this exercise you will create some \emph{simulated} data and will fit 
 \emph{linear regression models} to it. 
@@ -134,17 +182,17 @@ In this exercise you will create some \emph{simulated} data and will fit
 \[
 y_t = 1 - 2 x_t + \epsilon_t, 
 \]
-with \(\epsilon_t \sim N(0,0.5)\), i.e. with zero men and variance 0.5.
+with \(\epsilon_t \sim N(0,0.5)\), i.e. with zero mean and variance 0.5.
 
 (c) Create a scatterplot between x, y and comment on what you observe.
 
 
-(e) Fit a least squares linear model to predict y using x . Comment
-on the model obtained. How do the estimated \(\beta_0, \beta_1\) compare to the true values?
+(d) Fit a least squares linear model to predict y using x . Comment
+on the model obtained. How do the estimated \(\param_0, \param_1\) compare to the true values?
 
-(f) Plot the true regression line  with the given parameters.
+(e) Plot the true regression line  with the given parameters, alongside the fitted one.
 
-(g) Repeat steps \(a-f\) with the following modification:
+(f) Repeat steps \(a-e\) with the following modification:
 
 i. Generate 10-dimensional \(x_t\) from the normal distribution, i.e. \(x_{t,i} \sim N(0,1)\).
 
@@ -152,7 +200,7 @@ ii. Generate the vector \(y\) only using the first feature, \(x_{t,1}\), i.e.
 \[
 y_t = 1 - 2 x_{t,1} + \epsilon_t.
 \]
-This means that the coefficients \(\beta_2, \ldots, \beta_10 = 0\).
+This means that the coefficients \(\param_2, \ldots, \param_10 = 0\), but $\param_1 = 1$
 
 In what way are your results different?
 
@@ -228,12 +276,23 @@ Your project presentation, as well as the final report, must contain the followi
 6. Summary results: plots, graphs, tables, etc. These should be design so as to show the empirical relations between the variables of interest, and can include histograms, density plots,  regression plots, classification boundaries, confidence intervals, regression coefficients, for example.
 7. Conclusion based on your results. Can you answer the question? How much data do you need to answer the question clearly? In which cases does your methodology provide reliable results?  If you are using a simulator, you can test the reliability of your methodology by seeing how close the results are to the ground truth. Are there any ethical issues involved, e.g. related to fairness, privacy, or safety? Justify your answers. 
    
-*** Report Grading
- The *criteria* for obtaining full marks in the project are the following. 
+*** Project Grading
+
+The project is supposed to be a *simple* demonstration of your understanding of the scientific process, including formulation of the problem, data collection and analysis.
+
+The project has the following components:
+ 1. An *active* github repository containing code (simulator, pipeline, analysis), notebooks and data.
+ 2. A brief report explaining the scientific question, simulation, methodology, and summarising the results. The report can be on overleaf, or as a notebook.
+ 3. Three oral presentations by the group, including (a) a proposal of the research question (b) first investigation of different methodologies and simulation results (c) final results on simulation and real data.
+
+The report does *not* have to be grammatically correct. 
+
+**** General criteria
+ The *criteria* for obtaining full marks in the *final project report and presentation* are the following. 
  
  1. Documenting of the work in a way that enables reproduction.
  2. Technical correctness of their analysis.
- 3. Demonstrating that they have understood the assumptions underlying their analysis.
+ 3. Demonstrating that they have understood the methods underlying their analysis and the scientific question,  both in writing and orally.
  4. Addressing issues of reproducibility in research.
  5. Addressing scientific and ethical questions where applicable, and if not, clearly explain why they are not.
  6. Consulting additional resources beyond the source material with proper citations.
@@ -243,18 +302,17 @@ Your project presentation, as well as the final report, must contain the followi
 
 *** A (6)
 
-
- 1. Submission of a detailed report from which one can definitely reconstruct their work without referring to their code. There should be no ambiguities in the described methodology. Well-documented code where design decisions are explained. 
- 2. Extensive analysis and discussion. Technical correctness of their analysis. Nearly error-free implementation.
+ 1. Submission of a report from which one can reconstruct their work without referring to their code. No ambiguities in the described methodology. Well-documented code where design decisions are explained. 
+ 2. Analysis and discussion. Technical correctness of their analysis. Nearly error-free implementation.
  3. The report should detail what models are used and what the assumptions are behind them. The conclusions of the should include appropriate caveats.  When the problem includes simple decision making, the optimality metric should be well-defined and justified. Simiarly, when well-defined optimality criteria should given for the experiment design, when necessary. The design should be (to some degree of approximation, depending on problem complexity) optimal according to this criteria.
- 4. Appropriate methods to measure reproducibility. Use of cross-validation or hold-out sets to measure performance. Use of an unbiased methodology for algorithm, model or parameter selection. Appropriate reporting of a confidence level (e.g. using bootstrapping) in their analytical results. Relevant assumptions are mentioned when required.
+ 4. Appropriate methods for reproducibility. Use of cross-validation or hold-out sets to measure performance. Use of an unbiased methodology for algorithm, model or parameter selection. Appropriate reporting of a confidence level (e.g. using bootstrapping) in their analytical results. Relevant assumptions are mentioned when required.
  5. A clear definition of a scientific question. When dealing with data relating to humans, ethical concerns, such as privacy and/or fairness should be addressed.
  6. The report contains some independent thinking, or includes additional resources beyond the source material with proper citations. The students go beyond their way to research material and implement methods not discussed in the course.
 
 *** B (5.5)
 
- 1. Submission of a report from which one can plausibly reconstruct their work without referring to their code. There should be no major ambiguities in the described methodology. 
- 2. Technical correctness of their analysis, with a good discussion. Possibly minor errors in the implementation.
+ 1. Submission of a report from which one can partially reconstruct their work without referring to their code. No major ambiguities in the described methodology. 
+ 2. Technical correctness of their analysis. Possibly minor errors in the implementation.
  3. The report should detail what models are used, as well as the optimality criteria, including for the experiment design. The conclusions of the report must contain appropriate caveats. 
  4. Use of cross-validation or hold-out sets to measure performance. Use of an unbiased methodology for algorithm, model or parameter selection. 
  5. When dealing with data relating to humans, ethical concerns such as privacy and/or fairness should be addressed. While an analysis of this issue may not be performed, there is a substantial discussion of the issue that clearly shows understanding by the student.
