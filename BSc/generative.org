@@ -548,6 +548,44 @@ Assume $k$ classes, then
 \end{tikzpicture}
 - $y \mid \theta \sim \Mult(\theta)$
 - $x \mid y, \mu, \sigma \sim \Normal(\mu_y, \sigma^2_y)$
+
+*** Bayesian inference for the GMM
+We saw, for the Beta-Bernoulli and Dirichlet-Multinomial models, that a *conjugate prior* turns Bayesian inference into a simple parameter update. The same idea extends to the GMM, by placing a prior on every parameter.
+**** Col A                                                            :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.4
+     :END:
+\begin{tikzpicture}
+\node[RV] at (0,1) (x) {$x_t$};
+\node[RV,hidden] at (0,0) (c) {$z_t$};
+\node[RV,hidden] at (0,-1) (cat) {$\theta$};
+\node[RV,hidden] at (1,-1) (mean) {$\vectorsym{\mu}$};
+\node[RV,hidden] at (2,-1) (var) {$\vectorsym{\Sigma}$};
+\draw[->] (cat) to (c);
+\draw[->] (c) to (x);
+\draw[->] (mean) to (x);
+\draw[->] (var) to (x);
+\node[RV] at (0,-2) (aprior) {$\vectorsym{\alpha}$};
+\node[RV] at (1,-2) (gprior) {$\vectorsym{v}$};
+\node[RV] at (2,-2) (sprior) {$\vectorsym{W}$};
+\draw[->] (aprior) to (cat);
+\draw[->] (gprior) to (mean);
+\draw[->] (sprior) to (var);
+\end{tikzpicture}
+**** Col B                                                            :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.6
+     :END:
+\begin{align}
+\mu_i \mid \vectorsym{v} &\sim \Normal(\vectorsym{v}, I),\\
+\Sigma_i \mid \vectorsym{W} &\sim \Wish(\vectorsym{W}),\\
+\theta \mid \vectorsym{\alpha} &\sim \Dir(\vectorsym{\alpha}),\\
+z_t \mid \theta &\sim \Mult(\theta),\\
+x_t \mid \mu, \Sigma, z_t = i & \sim \Normal(\mu_i, \Sigma_i).
+\end{align}
+**** Exercise :exercise:
+Which of the five lines above, if any, would have a closed-form conjugate update if all the *others* were held fixed? Compare with the Beta-Bernoulli and Dirichlet-Multinomial cases covered earlier.
+  
 ** Density estimation
 *** Density estimation
 The simplest type of generative model is just modelling the distribution of $x$. 
