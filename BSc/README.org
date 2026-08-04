@@ -36,13 +36,16 @@ The course focuses on fundamental modelling problems and general machine learnin
 |      7 | 10.28 | Probabilistic machine learning  | ML, MAP, Bayesian Infernece, Beta-Bernoulli: hypotheses |                     | Lab   |
 |      8 | 11.04 | Generative models               | Naive Bayes, Graphical models, independence             |                     | Mix   |
 |      9 | 11.11 | Sequence prediction             | Markov models, text prediction, LLMs                    |                     | Mixed |
-|     10 | 11.18 | Computer Vision                 | Bagging, boosting                                       |                     | Mixed |
-|     11 | 11.25 | Ensemble methods                |                                                         |                     | Lab   |
+|     10 | 11.18 | Large Language Models           |                                                         |                     | Mixed |
+|     11 | 11.25 | Computer Vision                 |                                                         |                     | Lab   |
 |     12 | 12.02 | Fairness and Privacy            |                                                         |                     | Mixed |
 |     13 | 12.09 | Project Presentations           |                                                         |                     | Lab   |
 |--------+-------+---------------------------------+---------------------------------------------------------+---------------------+-------|
 |     14 | 12.16 | Project work                    |                                                         |                     | Lab   |
 |--------+-------+---------------------------------+---------------------------------------------------------+---------------------+-------|
+
+*** Note on pacing
+Tree-based and ensemble methods (Assignment 7), and the convolutional-network material (Assignment 8), are covered *only if time permits*. By default, that time goes to in-class project work instead: (re)forming the scientific question, drawing the graphical model, and building the simulator, testing the pipeline and discussing the project with the professor and TA(s).
 
 ** Material
 *** Textbooks
@@ -64,6 +67,7 @@ P(x_t = x | y_t = y).
 
 Sometimes we use the shorthand $\sum_x P(x, y)$ to mean $\sum_{i \in X} P(x = i | y)$.
 
+
 *** Sets
 We will use  capital letters e.g. $A, B, C$ for sets. For special sets, we will use calligraphic capital letters, e.g. $\CA, \CX, \CY$.
 
@@ -73,6 +77,20 @@ The ISLP book makes no real distinction between decision rules and models. It so
 - $P$ for a model
 - $\param$ for the parameters of a model, with $P_\param$ the parametrised model.
 - $\hat{\param}$ for estimated parameters.
+
+** Relevant book chapters
+Chapter 1.
+Chapter 2.
+Chapter 3.
+Chapter 4.
+Chapter 5.
+Chapter 8: 8.2.1
+Chapter 10: 10.1, 10.2, 10.7, 10.7.1, 10.7.2
+Chapter 12: 12.1, 12.3
+Chapter 13: 13.1-13.4
+
+
+
 
 * Course evaluation
 ** Course evaluation
@@ -86,18 +104,43 @@ The ISLP book makes no real distinction between decision rules and models. It so
 * Activities
 ** Assignments
 *** Assignment 0: Probability exercise, classification/regression
- - Reminder of probability and expectation
- - Examples of classification and regression
+**** Pen-and-paper
+- Reminder of probability and expectation: for a general random variable $x$ on a small outcome space with unspecified (symbolic) probabilities, derive $\E[x]$ and $\Var(x)$ as formulas, not numbers.
+- Given a list of problem descriptions, classify each as classification, regression, or neither, and identify the input/output variables.
+**** In-class coding
+- Compute a sample mean on a small dataset and compare it against the symbolic formula above.
+- Fit a toy classifier and a toy regressor, just to see the difference in what each one predicts.
+**** Project (home)
+- Sketch a candidate scientific question for your project, and identify one variable that would be central to answering it.
+
 
 *** Assignment 1: k-Nearest Neighbour, performance
  Here we look at different methods to measure model performance.
  Using scikitlearn, see how data rescaling affects performance.
  Then measure performance under an alternative measure.
+**** Pen-and-paper
+- Without picking any specific dataset: argue why the *training* accuracy of $k$-NN is always $100\%$ when $k=1$, and why training accuracy can only get worse (or stay the same) as $k$ grows towards $T$.
+- Given a generic utility matrix $U(y, a)$ (symbols, not numbers) and a model $P(y \mid x)$, derive the action $a^*$ maximising expected utility. Under what condition on $U$ does $a^*$ coincide with "predict the most likely class"? Give a $U$ for which it does not.
+**** In-class coding
+Here we look at different methods to measure model performance. Using scikit-learn, see how data rescaling affects performance. Then measure performance under the utility-based alternative above, instead of accuracy.
+**** Project (home)
+- Apply the same performance measure to a variable from your own project (real or simulated data).
 
+ 
 *** Assignment 2: Perceptron, model comparison
  In this assignment we compare classification models. 
  We apply the basic ideas of train, test, validation, cross-validation and bootstrapping. 
  They should develop this using scikitlearn.
+
+**** Pen-and-paper
+- Go through the mistake-bound proof line by line. For each of its two key inequalities ($\param^t \cdot \param^*$ grows by *at least* $\rho$ per mistake; $\|\param^t\|^2$ grows by *at most* $1$ per mistake), explain in words the geometric fact it captures.
+- What step of the proof breaks down if the data is *not* linearly separable? What step breaks down if $\|x_t\|$ is unbounded?
+**** In-class coding
+In this assignment we compare classification models. We apply the basic ideas of train, test, validation, cross-validation and bootstrapping, using scikit-learn, to compare the perceptron against another classifier.
+**** Project (home)
+- Apply train/test or cross-validation to a variable from your own project.
+
+ 
 *** Assignment 3: Linear regression and simulation
 
 **** Regression
@@ -107,23 +150,28 @@ Complete the in-class exercise:
 with weight as the response and all other variables (except name) as
 the predictors. Use the summarize() function to print the results.
 
-Comment on the output. For instance:
+Comment on the output: this is interpretation, not recomputation:
 
 i. Is there a relationship between the predictors and the re-
 sponse? 
 
 ii. What does the coefficient for the gender variable suggest?
 
-iii. Produce some of diagnostic plots of the linear regression fit as
+iii. Produce some diagnostic plots of the linear regression fit as
 described in the lab. Comment on any problems you see with the
 fit. Do the residual plots suggest any unusually large outliers?
 Does the leverage plot identify any observations with unusually
 high leverage?
 
-iv. Try a few different transformations of the variables, such as \(\log(x)\) or \(\sqrt{x}\)
+iv. Try a few different transformations of the variables, such as \(\log(x)\) or \(\sqrt{x}\), and discuss how the interpretation of the coefficients changes.
 
-**** Simulation
 
+
+**** Pen-and-paper: why least squares can fail
+- Show that $X^\top X$ is singular if and only if the columns of $X$ are linearly ependent. What does this mean in practice when two predictors are highly correlated?
+- Without plugging in any specific numbers, argue why $\E[\hat\param] = \param$ for the OLS estimator under the standard assumptions (hint: linearity of expectation).
+
+**** Simulation: in-class coding
 
 In this exercise you will create some \emph{simulated} data and will fit 
 \emph{linear regression models} to it. 
@@ -134,17 +182,17 @@ In this exercise you will create some \emph{simulated} data and will fit
 \[
 y_t = 1 - 2 x_t + \epsilon_t, 
 \]
-with \(\epsilon_t \sim N(0,0.5)\), i.e. with zero men and variance 0.5.
+with \(\epsilon_t \sim N(0,0.5)\), i.e. with zero mean and variance 0.5.
 
 (c) Create a scatterplot between x, y and comment on what you observe.
 
 
-(e) Fit a least squares linear model to predict y using x . Comment
-on the model obtained. How do the estimated \(\beta_0, \beta_1\) compare to the true values?
+(d) Fit a least squares linear model to predict y using x . Comment
+on the model obtained. How do the estimated \(\param_0, \param_1\) compare to the true values?
 
-(f) Plot the true regression line  with the given parameters.
+(e) Plot the true regression line  with the given parameters, alongside the fitted one.
 
-(g) Repeat steps \(a-f\) with the following modification:
+(f) Repeat steps \(a-e\) with the following modification:
 
 i. Generate 10-dimensional \(x_t\) from the normal distribution, i.e. \(x_{t,i} \sim N(0,1)\).
 
@@ -152,54 +200,71 @@ ii. Generate the vector \(y\) only using the first feature, \(x_{t,1}\), i.e.
 \[
 y_t = 1 - 2 x_{t,1} + \epsilon_t.
 \]
-This means that the coefficients \(\beta_2, \ldots, \beta_10 = 0\).
+This means that the coefficients \(\param_2, \ldots, \param_{10} = 0\).1$
 
 In what way are your results different?
 
-(h) Repeat (g), but generate 10,000 points \((x_t, y_t)\) instead of only 100.
+(g) Repeat (f), but generate 10,000 points \((x_t, y_t)\) instead of only 100. What changes, and why?
+
+**** Project (home)
+Extend the simulation to generate data resembling your own project's variables: correct dimensionality, and a plausible noise model.
+
 
 *** Assignment 4: Basic neural networks
-- sigmoid functions
-- Single layer networks
-- Multi-layer networks
-- Numerical example
-- Computational graph
-- pyTorch neural networks
-- Model
+
+**** Pen-and-paper
+- For two linear layers $z = Ax$, $y = Bz$ with *general* matrices $A, B$, show that $y = Cx$ for some matrix $C$, stacking linear layers (i.e. combinging two linear layers) makes no difference. Why does the argument break once a nonlinearity sits between the two layers?
+- Take a 2-layer network with a sigmoid activation and squared-error cost. Fill in the missing step that combines $\nabla_{\hy}\cost$ and $\nabla_{\param}\hy$, via the chain rule, into $\nabla_{\param_1}\cost$ for the *first* layer's weights.
+
+**** In-class coding
+- sigmoid functions, single-layer and multi-layer networks, a numerical example, the computational graph
+- A short example fitting a network (sklearn or PyTorch) to toy data, just to see training in action.
+- Use the noisy data from the previous week's assignment. See what happens in the *training* and *testing* error when you:
+  (a) Increase the amount of noisy dimensions
+  (b) Increase the amount of training data.
+  (c) Increase the number of neural network parameters.
 
 *** Assignment 5: Probabilistic Models
 
-
-
+**** Pen-and-paper
+- Moderate: Derive the Beta likelihood functions for iid data.
+- Harder: Derive the Beta-Bernoulli posterior for a *general* prior $\Beta(\alpha_0, \alpha_1)$ and *general* data $x_1, \ldots, x_T$. Use the derivation from the slides without looking, then check it.
+- Easy: Looking only at the *form* of the posterior parameters $\alpha_1 + \sum_t x_t$ and $\alpha_0 + T - \sum_t x_t$: which part stays fixed as $T$ grows, and which part grows with $T$? Use this, without plotting anything, to argue that the prior's influence shrinks as data accumulates.
+**** In-class coding
 Complete the notebook in https://github.com/olethrosdc/machine-learning-neuch/blob/main/BSc/src/bayesian/priors-posteriors.ipynb to calculate the beta-Bernoulli posterior
 
 *** Assignment 6: Graphical models, generative models and simulation
 
+**** Pen-and-paper
+- Describe the main variables of your project.
+- Define their possible dependencies with a graphical model.
+- Write down the factorisation of the joint distribution implied by your graphical model.
+- Propose a *second*, competing graphical model for a different hypothesis about your variables (e.g. direct dependence vs. mediation by a third variable), and write its factorisation too. What differs between the two, as expressions — not just as pictures?
+**** In-class coding
+- Given a small graphical model provided in class, write a short (around five lines) sampler that generates data consistent with it.
+- Complete both tasks in the notebook at https://github.com/olethrosdc/machine-learning-neuch/blob/main/BSc/src/Featureselection/feature_selection.ipynb related to your group project.
+**** Project (home)
+- Create a generative model that satisfies the dependencies you defined, even if the exact probabilistic relationship between variables is not yet known (simplify if needed).
+- Use this generative model as a simulator to generate data similar to your own project. This is a stepping stone to performing your analysis on simulated data before touching anything real.
 
-    Describe the main variables of your project.
-    Define their possible dependencies with a graphical model.
-    Create a generative model that satisfies the given dependencies, even if the exact probabilistic relationship between the variables is not yet known.
-    Use the generative model as a simulation to generate data similar to the one you have in your own project, simplifying if possible.
+You should do this in groups. One submission per group, with all member names in the notebook and/or report.
 
-This assignment is a stepping stone for you to then perform an analysis on data you generate from the simulation.
-
-Complete both tasks notebook in https://github.com/olethrosdc/machine-learning-neuch/blob/main/BSc/src/Featureselection/feature_selection.ipynb related to your group project.
-
-You should do it in group. One submission per group and add all name members in the notebook and\or pdf.
 
 *** Assignment 7: Tree-based methods
-
-Complete all the  notebook tasks in https://github.com/olethrosdc/machine-learning-neuch/blob/main/BSc/src/Tree-basedmethods/tree_based.ipynb. 
-
-- Examine how tree depth / bagging / random forests affect predictions
-
-
+**** Pen-and-paper
+- Write the Gini index and entropy as functions of a class-proportion vector $p \in \Simplex^C$. Show both are zero when $p$ is a point mass (a pure node) and maximal when $p$ is uniform.
+- Construct, on paper, a small two-dimensional labelled dataset where *no single split* on either feature improves the Gini index, but a depth-2 tree classifies it perfectly (hint: think about XOR). What does this tell you about greedy tree construction?
+**** In-class coding
+Complete all the notebook tasks in https://github.com/olethrosdc/machine-learning-neuch/blob/main/BSc/src/Tree-basedmethods/tree_based.ipynb.
+- Examine how tree depth / bagging / random forests affect predictions.
 
 
 
 *** Assignment 8: Neural networks
     Image classification example.
-
+**** Pen-and-paper
+- For a convolutional layer with $C$ channels and a $k \times k$ kernel applied to an $n \times n$ image, write the number of parameters as a function of $k, C, n$. Compare it, symbolically, to a fully-connected layer mapping the same input to the same output size. What does weight-sharing buy you structurally, and what does it cost?
+**** In-Class-Coding
 Complete Assignment 1 of this notebook: [[https://github.com/olethrosdc/machine-learning-neuch/blob/main/BSc/src/Image%20Processing/image_processing.ipynb]]  and assignment 2 of the second notebook : 
 [[https://github.com/olethrosdc/machine-learning-neuch/blob/main/BSc/src/Image%20Processing/cnn.ipynb]]
 
@@ -228,12 +293,23 @@ Your project presentation, as well as the final report, must contain the followi
 6. Summary results: plots, graphs, tables, etc. These should be design so as to show the empirical relations between the variables of interest, and can include histograms, density plots,  regression plots, classification boundaries, confidence intervals, regression coefficients, for example.
 7. Conclusion based on your results. Can you answer the question? How much data do you need to answer the question clearly? In which cases does your methodology provide reliable results?  If you are using a simulator, you can test the reliability of your methodology by seeing how close the results are to the ground truth. Are there any ethical issues involved, e.g. related to fairness, privacy, or safety? Justify your answers. 
    
-*** Report Grading
- The *criteria* for obtaining full marks in the project are the following. 
+*** Project Grading
+
+The project is supposed to be a *simple* demonstration of your understanding of the scientific process, including formulation of the problem, data collection and analysis.
+
+The project has the following components:
+ 1. An *active* github repository containing code (simulator, pipeline, analysis), notebooks and data.
+ 2. A brief report explaining the scientific question, simulation, methodology, and summarising the results. The report can be on overleaf, or as a notebook.
+ 3. Three oral presentations by the group, including (a) a proposal of the research question (b) first investigation of different methodologies and simulation results (c) final results on simulation and real data.
+
+The report does *not* have to be grammatically correct. 
+
+**** General criteria
+ The *criteria* for obtaining full marks in the *final project report and presentation* are the following. 
  
  1. Documenting of the work in a way that enables reproduction.
  2. Technical correctness of their analysis.
- 3. Demonstrating that they have understood the assumptions underlying their analysis.
+ 3. Demonstrating that they have understood the methods underlying their analysis and the scientific question,  both in writing and orally.
  4. Addressing issues of reproducibility in research.
  5. Addressing scientific and ethical questions where applicable, and if not, clearly explain why they are not.
  6. Consulting additional resources beyond the source material with proper citations.
@@ -243,18 +319,17 @@ Your project presentation, as well as the final report, must contain the followi
 
 *** A (6)
 
-
- 1. Submission of a detailed report from which one can definitely reconstruct their work without referring to their code. There should be no ambiguities in the described methodology. Well-documented code where design decisions are explained. 
- 2. Extensive analysis and discussion. Technical correctness of their analysis. Nearly error-free implementation.
+ 1. Submission of a report from which one can reconstruct their work without referring to their code. No ambiguities in the described methodology. Well-documented code where design decisions are explained. 
+ 2. Analysis and discussion. Technical correctness of their analysis. Nearly error-free implementation.
  3. The report should detail what models are used and what the assumptions are behind them. The conclusions of the should include appropriate caveats.  When the problem includes simple decision making, the optimality metric should be well-defined and justified. Simiarly, when well-defined optimality criteria should given for the experiment design, when necessary. The design should be (to some degree of approximation, depending on problem complexity) optimal according to this criteria.
- 4. Appropriate methods to measure reproducibility. Use of cross-validation or hold-out sets to measure performance. Use of an unbiased methodology for algorithm, model or parameter selection. Appropriate reporting of a confidence level (e.g. using bootstrapping) in their analytical results. Relevant assumptions are mentioned when required.
+ 4. Appropriate methods for reproducibility. Use of cross-validation or hold-out sets to measure performance. Use of an unbiased methodology for algorithm, model or parameter selection. Appropriate reporting of a confidence level (e.g. using bootstrapping) in their analytical results. Relevant assumptions are mentioned when required.
  5. A clear definition of a scientific question. When dealing with data relating to humans, ethical concerns, such as privacy and/or fairness should be addressed.
  6. The report contains some independent thinking, or includes additional resources beyond the source material with proper citations. The students go beyond their way to research material and implement methods not discussed in the course.
 
 *** B (5.5)
 
- 1. Submission of a report from which one can plausibly reconstruct their work without referring to their code. There should be no major ambiguities in the described methodology. 
- 2. Technical correctness of their analysis, with a good discussion. Possibly minor errors in the implementation.
+ 1. Submission of a report from which one can partially reconstruct their work without referring to their code. No major ambiguities in the described methodology. 
+ 2. Technical correctness of their analysis. Possibly minor errors in the implementation.
  3. The report should detail what models are used, as well as the optimality criteria, including for the experiment design. The conclusions of the report must contain appropriate caveats. 
  4. Use of cross-validation or hold-out sets to measure performance. Use of an unbiased methodology for algorithm, model or parameter selection. 
  5. When dealing with data relating to humans, ethical concerns such as privacy and/or fairness should be addressed. While an analysis of this issue may not be performed, there is a substantial discussion of the issue that clearly shows understanding by the student.

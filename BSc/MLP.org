@@ -435,11 +435,11 @@ where $\mparam = \begin{bmatrix}
 \end{bmatrix}
 =
 \begin{bmatrix}
-\param_{1,1} & \cdots & \param_{1,j} & \cdots & \param_{1,m}\\
+\param_{1,1} & \cdots & \param_{1,j} & \cdots & \param_{1,n}\\
 \vdots  & \ddots & \vdots  & \ddots & \cdots \\
-\param_{i,1} & \cdots & \param_{i,j} & \cdots & \param_{i,m}\\
+\param_{i,1} & \cdots & \param_{i,j} & \cdots & \param_{i,n}\\
 \vdots  & \ddots & \ddots  & \ddots & \cdots \\ 	   
-\param_{n,1} & \cdots & \param_{i,j} & \cdots & \param_{n,m}
+\param_{m,1} & \cdots & \param_{m,j} & \cdots & \param_{m,n}
 \end{bmatrix}$
 
 \[

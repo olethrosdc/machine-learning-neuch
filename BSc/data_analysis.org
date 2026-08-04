@@ -4,11 +4,7 @@
 #+LaTeX_HEADER: \include{preamble}
 #+LaTeX_HEADER: \usepackage{tikz}
 #+LaTeX_HEADER: \usepackage{pgfplots}
-<<<<<<< HEAD
 #+LaTeX_HEADER: \usetikzlibrary{shapes,arrows,chains,datavisualization}
-=======
-#+LaTeX_HEADER: \usetikzlibrary{datavisualization,shapes,arrows,chains}
->>>>>>> 86808586d7613740c4d7b8a2a89658e277c710f1
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
@@ -57,11 +53,8 @@
   \draw [->] (variables) |- (sampling) ;
   \draw [->] (sampling) -- (analysis) ;
   \draw [->] (method.south) -| (analysis) ;
-
-<<<<<<< HEAD
 \end{tikzpicture}
 #+END_EXPORT
-=======
 * The pipeline
 ** Pipeline
 \begin{tikzpicture}[>=triangle 60, start chain=going below,node distance=6mm and 40mm]
@@ -93,10 +86,8 @@
 \draw[->] (variables) -- (method);
 \end{tikzpicture}
 
-* The scientific question
 
 * Project
->>>>>>> 86808586d7613740c4d7b8a2a89658e277c710f1
 ** Project components
 *** Scientific and ethical question
 - Formulate a scientific question that can be answered with data
@@ -113,7 +104,6 @@
 - Test your pipeline on generated and real data.
 
 
-* Into the weeds
 ** The scientific question
 - Select a question that can be answered through data.
 - Easiest is something that can be answered with 'yes' or 'no'
@@ -122,16 +112,37 @@
 - Does coffee make you live longer?
 - Do lower speed limits decrease accidents?
 
+*** Problem Formulation vs. Model Fitting
+**** The "Hammer and Nail" Fallacy
+- Students often force every real-world problem into standard classification or regression because those algorithms are familiar.
+- Choosing the algorithm before defining the decision context leads to useless models.
+
+*** Counterexample: Earthquake Prediction
+**** The Naïve Reduction (Classification)
+- *Setup:* Predict if an earthquake occurs today: $y \in \{0, 1\}$.
+- *Result:* An algorithm that always predicts $y=0$ achieves $>99.9\%$ accuracy. 
+- *Failure:* The model is completely useless for risk mitigation or evacuation decisions.
+  
+**** The Correct Formulation
+- Earthquakes are rare, continuous spatiotemporal events.
+- *Better questions:* Given a sequence of earthquake events with locations, what is the probability distribution of earthquake magnitudes at *all* possible locations tomorrow? Next week? Within a month?
+- What is the expected utility or cost of an evacuation decision based on an imperfect warning pipeline?
+
 ** Variables
+Let us give an example: Does gender influence math performance?
+
 *** Main variables
-- Those are the main variables we are interested in.
-Example: gender, math grades 
+- Those are the main variables we are interested in. 
+Example: gender, math grades (*which* grades is important)
 *** Related variables
 - These are variables that may affect our measurements
 Example: parental income, occupation, ethnic background, location
-*** Confounding variables
+*** Hidden factors (confounders)
 - These variables may affect our measurements, but may be unobserved
-Example: talent, high school teacher influence
+Example: talent, high school teacher influence, family encouragement, personal interests
+
+
+
 
 ** Variable dependencies
 *** Direct dependencies
@@ -145,6 +156,15 @@ Example: talent, high school teacher influence
 - Case 1: Gender is independent of math grades. Then gender is just an isolated random variable.
 - Case 2: Gender affects math grades through high school teacher
 - Case 3: Gender directly affects talent.
+
+** From graphs to equations
+Each hypothesis above is really a claim about how the *joint distribution* factorises. Let $g$ be gender, $m$ math grade, $t$ teacher encouragement.
+- Case 1 (independence): $\Pr(g, m) = \Pr(g)\Pr(m)$.
+- Case 2 (mediation through $t$): $\Pr(g, m, t) = \Pr(g)\Pr(t \mid g)\Pr(m \mid t)$, so $\Pr(g,m) = \sum_t \Pr(g)\Pr(t\mid g)\Pr(m \mid t)$.
+- Case 3 (direct effect): $\Pr(g, m) = \Pr(g)\Pr(m \mid g)$.
+**** Exercise :exercise:
+Cases 2 and 3 both let gender affect math grades, yet they are different *claims* about the world. Without collecting any data: what additional variable, if measured, would let you tell the two cases apart? Write the factorisation that would result if *both* mediation and a direct effect were present.
+
 
 ** Simulation
 - Used to test methodology
