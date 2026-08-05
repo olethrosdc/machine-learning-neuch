@@ -1,4 +1,4 @@
-#+TITLE: Generative Modelling (MSc)
+#+TITLE: Generative Modelling (BSc)
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \include{preamble}
@@ -35,7 +35,7 @@ In statistics, we are dealing with random variables. While these two can be rela
 3. $\Pr(x)$ for the distribution of $x$
 4. $\Pr(x, y)$ the joint distribution of $x, y$.
 5. $\Pr(x | y)$ the distribution of $x$ if $y$ is given.
-6. Marginal distribution $\Pr(y) = \sum_{i \in x}  \Pr(x = i, y)$.
+6. Marginal distribution $\Pr(y) = \sum_{i \in X}  \Pr(x = i, y)$.
 7. Bayes's theorem: $\Pr(x | y) = \Pr(x, y) / \Pr(y)$
 
 *** Probability and statistics
@@ -410,6 +410,7 @@ P(a, b, c, d) = P(a) P(b | a) P (c | a) P(d | b, c)
   \]
 - For this to hold in graphical model, $D$ must separate $i$ from $B$ in the graph.
 
+
 *** More complex example
        \begin{tikzpicture}
           \node[RV] at (0,0) (a) {$x_1$};
@@ -439,6 +440,15 @@ x_7 \indep x_3 \mid x_4, x_5
 
 * Example Machine Learning Tasks
 ** Classification: Discriminative modelling
+*** Discrimiative modelling
+**** General idea
+- Data $(x_t,y_t)$.
+- Need to model $P(y | x)$.
+- No need to model $P(x | y), P(y)$.
+**** Examples
+- Logistic regression.
+- k-Nearest Neighbour
+- Multi-Layer Perceptron
 
 ** Classification: Generative modelling
    #+TOC: headlines [currentsection,hideothersubsections]
@@ -541,6 +551,8 @@ Assume $k$ classes, then
 \end{tikzpicture}
 - $y \mid \param \sim \Mult(\param)$
 - $x \mid y, \mu, \sigma \sim \Normal(\mu_y, \sigma^2_y)$
+
+
 ** Density estimation
 *** Density estimation
 The simplest type of generative model is just modelling the distribution of $x$. 
@@ -622,7 +634,7 @@ p(x | \param, \mu, \Sigma) = \sum_{z \in [k]} p(x \mid \mu_z, \Sigma_z) P(z \mid
 
 ** Gradient algorithms
 *** Gradient ascent
-In the following we use $\param$ for all the parameters of the Gaussian mixture model,
+In the following we use $\param$ for *all* the parameters of the Gaussian mixture model,
 with $x = (x_1, \ldots, x_T)$ and $z = (z_1, \ldots, z_T)$
 **** Objective function
 One way to estimate $\param$ is through maximising the likelihood
@@ -747,7 +759,6 @@ f(\vparam^{(k)}) = Q(\vparam^{(k)} | \vparam^{(k)}),
 **** Algorithm
 - Calculate: $Q(\vparam | \vparam^{(k)})$
 - Optimise: $\vparam^{(k+1)} = \argmax_\vparam Q(\vparam | \vparam^{(k)})$.
-
 
 ** Bayesian Inference
 *** Bayesian inference for the GMM
