@@ -63,7 +63,7 @@ There are three types of sessions:
 |--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
 | Module |  Date | Topic                       | Details                                             | Python              | Type    |
 |--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
-|      1 | 09.19 | Introduction                | Mean estimation, Classification, kNN                | nympy, pandas       | Lecture |
+|      1 | 09.18 | Introduction                | Mean estimation, Classification, kNN                | nympy, pandas       | Lecture |
 |      2 | 09.26 | Learning and Generalisation | Train/Test, XV, Bootstrapping, Simulation           | pandas, scikitlearn | Mixed   |
 |--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
 |      3 | 10.03 | Classification, Perceptron  | Margin, Regret, Gradient Descent                    | scikit learn        | Mixed   |
