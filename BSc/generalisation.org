@@ -464,18 +464,7 @@ the difference between the performance of $\pol^*$ and $\hat{\pol}$ our \alert{r
 We can bound the regret by bounding each term separately.
 - The \alert{approximation error} tells us how expressive our class of rules is, i.e. how much we lose by looking at a restricted class $\hat{\Pi}$ of rules. It is similar to estimator \alert{bias}.
 - The \alert{statistical error} tells us how well the empirical performance on $D$ approximates the true performance. It is similar to estimator \alert{variance}.
-- As a rule of thumb, the larger our class $\hat{Pi}$, the better the possible approximation but the higher the statistical error.
-**(a) $\Pols^⊂\Pols\hat\Pols \subset \Pols$
-\Pols^​⊂\Pols** — what I drew. This is the only case where U(\pol∗,P)≥U(\pol^∗,P)U(\pol^*,P)\geq U(\hat\pol^*,P)
-U(\pol∗,P)≥U(\pol^​∗,P) is guaranteed: restricting your search space can only hurt or do nothing.
-**(b) \Pols⊂\Pols^\Pols \subset \hat\Pols
-\Pols⊂\Pols^​** — e.g. comparing an overparameterized model (\Pols^\hat\Pols
-\Pols^​) against a simpler reference class (\Pols\Pols
-\Pols). Here "approximation error" can come out negative — the bigger class can only do as well or better.
-(c) disjoint — two genuinely unrelated model families (e.g. trees vs. linear models, in general). No nesting at all, so there's no automatic ordering between U(\pol∗,P)U(\pol^*,P)
-U(\pol∗,P) and U(\pol^∗,P)U(\hat\pol^*,P)
-U(\pol^​∗,P) — you have to measure it.
-(d) overlapping, neither contains the other — the realistic case for most real model comparisons. Same conclusion as (c): no free ordering.
+- As a rule of thumb, the larger our class $\hat{\Pi}$, the better the possible approximation but the higher the statistical error.
 
 *** Geometric intuition
 **** Col A                                                           :BMCOL:
