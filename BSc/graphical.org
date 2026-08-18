@@ -1,10 +1,10 @@
-#+TITLE: Generative Modelling (BSc)
+#+TITLE: Graphical Models
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \include{preamble}
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
-#+TAGS: activity advanced definition exercise homework project example theory code
+#+TAGS: activity advanced MSc definition exercise homework project example theory code
 #+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
 #+OPTIONS:   H:3
 
@@ -63,7 +63,7 @@ $\Pr(x)$ as a general shorthand. This allows us to also write
 \Pr(x \in A) = P_x(A).
 \]
 
-*** Joint distributions, multiple variables
+*** Joint distributions, multiple variables :MSc:
 If you thought things were messy, wait to see what happens when you have more than one variable! 
 - $x : \omega \to X$, $y: \omega \to Y$.
 - The measure $P_{x,y}$ has to be defined on the subsets of $X \times Y$.
@@ -154,6 +154,13 @@ so that there are no cycles in the graph.
 *** Conditional independence
 - Graphical models tell us what *directly* depends on what
 - Consequently, they also specify *conditional independence*
+**** Conditional independence :B_definition:
+     :PROPERTIES:
+     :BEAMER_env: definition
+     :END:
+- We say that $x, y$ are *conditionally* independent given $z$ and write $x \indep y \mid z$ if and only if $\Pr(x, y \mid z) = \Pr(x \mid z) \Pr(y \mid z)$.
+- The graphical model expresses this via *separation*: $x$ influences $y$ only through $z$.
+
 **** Example
 ***** Col A                                                           :BMCOL:
       :PROPERTIES:
@@ -162,7 +169,7 @@ so that there are no cycles in the graph.
     \begin{tikzpicture}
       \node[RV] at (2,0) (xi) {$x_3$};
       \node[RV] at (0,0) (xB) {$x_1$};
-      \node[RV] at (1,1) (xD) {$x_2$};
+      \node[RV] at (1,0) (xD) {$x_2$};
       \draw[->] (xB)--(xD);
       \draw[->] (xD)--(xi);
     \end{tikzpicture}
@@ -173,15 +180,29 @@ so that there are no cycles in the graph.
     \[
     \Pr(x_1, x_2, x_3) = \Pr(x_3 \mid x_2) \Pr(x_2 \mid x_1) \Pr(x_1)
     \]
+
+Here  $x_3 \indep x_1 \mid x_2$.  
+*** Conditional independence (general)
+- Consider variables $x_1, \ldots, x_n$.
+- Let $B, D$ be subsets of $[n]$, and
+- $\bx_B \defn (x_i)_{i \in B}$ be the variables with indices in $B$.
+- $\bx_{-j} \defn (x_i)_{i \neq i}$ all the variables apart from $x_j$.
 **** Conditional independence :B_definition:
      :PROPERTIES:
      :BEAMER_env: definition
      :END:
-We say that variables $x, y$ are *conditionally* independent given $z$ and write $x \indep y \mid z$ if and only if
-\[
-\Pr(x, y \mid z) = \Pr(x \mid z) \Pr(y \mid z)
-\]
-- In the above example, it holds that $x_3 \indep x_1 \mid x_2$.
+  We say $x_i$ is *conditionally independent* of $\bx_B$ given $\bx_D$ and write 
+  \[x_i \indep \bx_B \mid \bx_D\]
+  if and only if:
+  \[
+  \Pr(x_i, \bx_B \mid \bx_D)
+  =
+  \Pr(x_i \mid \bx_D)
+  \Pr(\bx_B \mid \bx_D).
+  \]
+- For this to hold in graphical model, $D$ must separate $i$ from $B$ in the graph.
+
+
 
 *** Smoking and lung cancer
 
@@ -207,7 +228,7 @@ We say that variables $x, y$ are *conditionally* independent given $z$ and write
 *** Time of arrival at work
       \begin{tikzpicture}
         \node[RV] at (0,0) (x1) {$x_1$};
-        \node[RV] at (1,1) (x2) {$T$};
+        \node[RV] at (1,0) (x2) {$T$};
         \node[RV] at (2,0) (x3) {$x_2$};
         \draw[->] (x2)--(x3);
         \draw[->] (x2)--(x1);
@@ -278,8 +299,12 @@ Is admission independent of gender?
         \end{tikzpicture}
 
 	How about here?
-*** Time-series
-**** Markov chain
+*** Time-series: Markov chain                                      :advanced:
+Graphical models can be used for time-series modelling and prediction. The basic idea is that preceding measurements only influence future measurements, so it is natural for the arrows to point the same way.
+
+**** Markov chain                                                       :MSc:
+A Markov chain is the simplest such model. The state of the world, at time $t$ ,$x_t$ is all we need to know to predict what will happen at the next time period $x_{t+1}$.
+
       \begin{tikzpicture}
         \node[RV] at (0,0) (x1) {$x_1$};
         \node[RV] at (1,0) (x2) {$x_2$};
@@ -287,7 +312,15 @@ Is admission independent of gender?
         \draw[->] (x1)--(x2);
         \draw[->] (x2)--(x3);
       \end{tikzpicture}
+      
+Consequently, the independence condition
 
+\[
+\Pr(x_{t+1} \mid x_t, x_{t-1}, x_{t-2}) = \Pr(x_{t+1} \mid x_t)
+\]
+holds.
+*** Time series: Hidden Markov model
+However convenient, an *observable* state of the world is never really achievable. If it exists, it gives rise to *visible* measurements that depend on the *hidden* state. However, the observable measurements $y_t$ do *not* have this independence structure.
 **** Hidden Markov model
       \begin{tikzpicture}
         \node[RV, hidden] at (0,0) (x1) {$x_1$};
@@ -303,7 +336,37 @@ Is admission independent of gender?
         \draw[->] (x3)--(y3);
       \end{tikzpicture}
 
-** Conditional independence 
+- Show that $P(y_3 | y_2, y_1) \neq \Pr(y_3 \mid y_2)$
+*** More complex example
+       \begin{tikzpicture}
+          \node[RV] at (0,0) (a) {$x_1$};
+          \node[RV] at (0,2) (b) {$x_2$};
+          \node[RV] at (2,0) (c) {$x_3$};
+          \node[RV] at (2,2) (d) {$x_4$};
+          \node[RV] at (4,0) (x) {$x_5$};
+          \node[RV] at (4,2) (y) {$x_6$};
+          \node[RV] at (6,1) (z) {$x_7$};
+          \draw[->] (a)--(c);
+          \draw[->] (c)--(d);
+          \draw[->] (b)--(d);
+          \draw[->] (d)--(y);
+          \draw[->] (c)--(x);
+          \draw[->] (y)--(z);
+          \draw[->] (x)--(z);
+        \end{tikzpicture}
+
+In this example, we have:
+\[
+x_7 \indep x_1, x_2 \mid x_3, x_4
+\]
+and 
+\[
+x_7 \indep x_3 \mid x_4, x_5
+\]
+
+
+
+** Conditional independence exercises
 *** What is the model for this graph?
        \begin{tikzpicture}
           \node[RV] at (0,0) (a) {$a$};
@@ -390,57 +453,10 @@ P(a, b, c, d) = P(a) P(b | a) P (c | a) P(d | b, c)
 
 
 
-*** Conditional independence (general)
-- Consider variables $x_1, \ldots, x_n$.
-- Let $B, D$ be subsets of $[n]$, and
-- $\bx_B \defn (x_i)_{i \in B}$ be the variables with indices in $B$.
-- $\bx_{-j} \defn (x_i)_{i \neq i}$ all the variables apart from $x_j$.
-**** Conditional independence :B_definition:
-     :PROPERTIES:
-     :BEAMER_env: definition
-     :END:
-  We say $x_i$ is *conditionally independent* of $\bx_B$ given $\bx_D$ and write 
-  \[x_i \indep \bx_B \mid \bx_D\]
-  if and only if:
-  \[
-  \Pr(x_i, \bx_B \mid \bx_D)
-  =
-  \Pr(x_i \mid \bx_D)
-  \Pr(\bx_B \mid \bx_D).
-  \]
-- For this to hold in graphical model, $D$ must separate $i$ from $B$ in the graph.
 
-
-*** More complex example
-       \begin{tikzpicture}
-          \node[RV] at (0,0) (a) {$x_1$};
-          \node[RV] at (0,2) (b) {$x_2$};
-          \node[RV] at (2,0) (c) {$x_3$};
-          \node[RV] at (2,2) (d) {$x_4$};
-          \node[RV] at (4,0) (x) {$x_5$};
-          \node[RV] at (4,2) (y) {$x_6$};
-          \node[RV] at (6,1) (z) {$x_7$};
-          \draw[->] (a)--(c);
-          \draw[->] (c)--(d);
-          \draw[->] (b)--(d);
-          \draw[->] (d)--(y);
-          \draw[->] (c)--(x);
-          \draw[->] (y)--(z);
-          \draw[->] (x)--(z);
-        \end{tikzpicture}
-
-In this example, we have:
-\[
-x_7 \indep x_1, x_2 \mid x_3, x_4
-\]
-and 
-\[
-x_7 \indep x_3 \mid x_4, x_5
-\]
-
-* Example Machine Learning Tasks
+* Machine Learning Tasks
 ** Classification: Discriminative modelling
-*** Discrimiative modelling
+*** Discriminative modelling
 **** General idea
 - Data $(x_t,y_t)$.
 - Need to model $P(y | x)$.
