@@ -7,6 +7,7 @@
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 #+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
+#+MACRO: color @@latex:{\color{$1}@@$2@@latex:}@@
 * Quality metrics
 ** Supervised machine learning problems
 *** Classification
@@ -163,14 +164,18 @@ If $(x, y) \sim P$, the expected MSE of a deterministic decision rule $\pi : \CX
 **** The regressor as a stochastic decision rule
 A decision rule $\pi$ generates a *decision* $a \in \Reals^m$.
 - For *stochastic* rules $\pi(a | x)$ defines a density over predictions.
-- In this case it is natural to define $\pi(y_t, x_t)$ as our metric.
+- In this case it is natural to define $\pi(y_t | x_t)$ as our metric.
 **** Likelihood on a Dataset
-The mean-square error is simply the squared difference in predicted versus actual values:
+The likelihood of the observed data under our decision rule is
 \[
-\prod{t=1}^T \pi(y_t | x_t)
+\prod_{t=1}^T \pi(y_t | x_t).
 \]
-
-We will later see a link between this metric, mean-square error and estimation.
+Let us call
+\[
+\hat{y}_t = \argmax_y \pi(y \mid x_t)
+\]
+the *predicted* or *most likely* value.
+When $\pi(a | x)$ has a Gaussian form, then the mean-square error between $\hat{y}_t$ and $y$ is related to the negative likelihood of the Gaussian model, as we will see later.
 
 
 * Generalisation
@@ -327,19 +332,28 @@ The sample mean estimator $f(D) = \sum_{t} x_t / T$ is unbiased, as :
 \]
 
 *** Example of a biased and unbiased estimator: Training error
-- $U(\pi, D)$ is the measured accuracy of a classifier $\pi$ on $D$ 
-- $U(\pi, P) = \E_{D \sim P} [U(\pi, D)]$ is the actual accuracy. So $U(\pi, D)$ is unbiased.
-- $\lambda(D) = \argmax_\pi U(\pi, D)$ is a learning algorithm picking the best classifier for a dataset $D$.
-- Then $U(\lambda(D), D)$ is biased, as for any $\pi'$
+#+ATTR_BEAMER: :overlay <+->
+- $U(\mathcolor{blue}{\pi}, \mathcolor{green}{D})$ is the measured accuracy of a {{{color(blue,classifier $\pi$)}}}  on {{{color(green, data $D$)}}}
+- $U(\mathcolor{blue}{\pi}, \mathcolor{red}{P}) = \E_{D \sim P} [U(\pi, D)]$ is the *actual* accuracy.
+- So $U(\mathcolor{blue}{\pi}, \mathcolor{green}{D})$ is an unbiased estimate of $U(\mathcolor{blue}{\pi}, \mathcolor{red}{P})$.
+- $\mathcolor{magenta}{\lambda}(D) = \argmax_\pi U(\pi, D)$ is a {{{color(magenta,learning algorithm)}}}, picking the best classifier for a dataset $D$.
+- Then $U(\mathcolor{magenta}{\lambda}(D), D)$ is biased, as for any $\pi'$
 \begin{align}
-\E_{D \sim P} [U(\lambda(D), D)]
- &= \int_{D} dP(D)  U(\lambda(D), D)\\
+\uncover<4->{
+\E_{D \sim P} [U(\mathcolor{magenta}{\lambda}(D), D)]
+ &= \int_{D} dP(D)  U(\mathcolor{magenta}{\lambda}(D), D)\\
+}
+\uncover<5->{
  &= \int_{D} dP(D) \max_\pi U(\pi, D)\\
+}
+\uncover<6->{
  &\geq \int_{D} dP(D) U(\pi', D)\\
- &= U(\pi', P) 
+}
+\uncover<7->{
+ &= U(\pi', P)
+}
 \end{align}
-i.e. the expected value of the training accuracy is higher than the accuracy of *any* classifier.
-
+- i.e. the expected training accuracy is higher than that of any classifier.
 *** The bias/variance trade-off
 - Dataset $D \sim P$.
 - Predictor $f_D(x)$
@@ -373,7 +387,7 @@ To minimise the MSE, we use $f^* = \mu$. This gives us two ideas:
 - $\Var(f_D) = \E [f_D - \mu] = 1/\sqrt{T}$
 - $\Bias(f_D) = 0$. (unbiased estimator)
 **** Laplace mean estimator:
-- $f_D = \sum_{t=1}^T (\lambda + x_t) / T$.
+- $f_D = \sum_{t=1}^T (\mathcolor{magenta}{\lambda} + x_t) / T$.
 - $\Var(f_D) = \E [f_D - \mu] = \frac{1}{1 + \sqrt{T}}$
 - $\Bias(f_D) = O(1/T)$.
 
