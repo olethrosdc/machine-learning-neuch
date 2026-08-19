@@ -3,6 +3,7 @@
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \input{preamble}
 #+LaTeX_CLASS_OPTIONS: [smaller]
+#+LATEX_HEADER: \setbeameroption{show notes}
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code BSc MSc
 #+OPTIONS:   H:3
@@ -319,6 +320,9 @@ classifier is 50%.
 - Using just this subset of predictors, build a multivariate classifier, using all of the samples except those in fold k.
 - Use the classifier to predict the class labels for the samples in fold k.
 **** Level notes
+:PROPERTIES:
+:BEAMER_env: note
+:END:
 - *BSc*: The point isn't the procedure itself: it's noticing that cross-validation can silently give you a fake guarantee if information from outside a fold leaked into the model-building step before validation happened. Spotting this kind of methodological trap is a core scientific-method skill, and one you should actively check for in your own project.
 - *MSc*:  *Why* does the wrong version give a near-zero apparent error despite a true error of $50\%$? Connect it to the estimation-error bound above: what is $|\hat\Pols|$ effectively doing once you've screened 5000 predictors first?
 
@@ -342,12 +346,13 @@ How well can decision rule perform?
 **** Estimation theory view
 - Bias: The *expected difference* between the estimated value and the unknown parameter
 - Variance: Just the *variance* of that estimator, as a random variable.
+- Related to generalisation error.
+  
 **** Learning theory view
-- Approximation ability: How well a class of rules can approximate the optimal one.
-- Statistical error: How easy it is to choose the best rule in the class.
-**** Which one do we use?
-This course mainly follows the *Learning theory view*: it talks directly about $U(\pol, P)$, the quantity we actually care about, rather than about estimating some unrelated parameter $\theta$. The *Estimation theory view* is covered next for completeness. It's the classical framing you'll meet in statistics courses, and the two turn out to be closely related, but it doesn't add much that's new about *generalisation error* specifically.
-
+- Approximation ability: How well a *class of rules* can approximate the *optimal* one.
+- Statistical error: How *easy* it is to choose the best rule in the class from *data*
+- Directly bounds the generalisation error.
+  
 ** Bias and variance
 *** Unbiased estimators
 **** Estimator :B_definition:
@@ -414,6 +419,7 @@ What is the expected deviation from the true function
 \Bias(f_D) \defn \E[(f_D - f)]
 \]
 **** Level notes
+
 - *BSc*: You can skip this subsection. The geometric picture two slides back already gives you the intuition you need for generalisation error.
 - *MSc*: Worth knowing — you'll meet "bias" and "variance" used exactly this way in statistics courses, and it's good to be fluent translating between the two framings.
 *** Example: mean estimation
