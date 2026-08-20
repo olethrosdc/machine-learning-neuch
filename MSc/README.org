@@ -60,30 +60,29 @@ There are three types of sessions:
 - Mixed
 - Lab
 
-|--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
-| Module |  Date | Topic                       | Details                                             | Python              | Type    |
-|--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
-|      1 | 09.18 | Introduction                | Mean estimation, Classification, kNN                | nympy, pandas       | Lecture |
-|      2 | 09.26 | Learning and Generalisation | Train/Test, XV, Bootstrapping, Simulation           | pandas, scikitlearn | Mixed   |
-|--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
-|      3 | 10.03 | Classification, Perceptron  | Margin, Regret, Gradient Descent                    | scikit learn        | Mixed   |
-|      6 | 10.10 | Neural Networks             | Logistic Regression, Backpop, Stochastic GD         | pyTorch intro       | Mixed   |
-|      5 | 10.17 | Neural Network Lab          | Project discussion, Linear Regression Lab           | pyTorch             | Lab     |
-|      4 | 10.24 | Regression, Linear          | Linear regression, Least Squares, Probabilistic     | pyTorch             | Mixed   |
-|--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
-|      7 | 10.31 | Probabilistic models        | ML, MAP, Bayes, Beta-Bernoulli, Hypothesis testing  |                     | Lecture |
-|      8 | 11.07 | Generative modelling        | Bayesian Networks, Markov Models, Tree Models, CRFs |                     | Mixed   |
-|--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
-|      9 | 11.14 | Project Highlights          |                                                     |                     | Misc    |
-|--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
-|     10 | 11.21 | Learning Theory             |                                                     |                     | Lecture |
-|     11 | 11.28 | Fairness                    |                                                     |                     | Mixed   |
-|     12 | 12.05 | Reinforcement Learning      |                                                     |                     | Mixed   |
-|--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
-|     13 | 12.12 | Project Presentations       |                                                     |                     | EXAM    |
-|--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
-|     14 | 12.19 | Special Exam                |                                                     |                     | EXAM    |
-|--------+-------+-----------------------------+-----------------------------------------------------+---------------------+---------|
+|--------+-------+--------------------------------+-----------------------------------------------------+---------------------+---------|
+| Module |  Date | Topic                          | Details                                             | Python              | Type    |
+|--------+-------+--------------------------------+-----------------------------------------------------+---------------------+---------|
+|      1 | 09.17 | Introduction                   | Mean estimation, Classification, kNN                | nympy, pandas       | Lecture |
+|      2 | 09.24 | Learning and Generalisation    | Train/Test, XV, Bootstrapping, Simulation           | pandas, scikitlearn | Mixed   |
+|--------+-------+--------------------------------+-----------------------------------------------------+---------------------+---------|
+|      3 | 10.01 | Classification, Perceptron     | Margin, Regret, Gradient Descent                    | scikit learn        | Mixed   |
+|      6 | 10.08 | Neural Networks                | Logistic Regression, Backpop, Stochastic GD         | pyTorch intro       | Mixed   |
+|      5 | 10.15 | Neural Network Lab             | Project discussion, Linear Regression Lab           | pyTorch             | Lab     |
+|      4 | 10.22 | Regression, Linear             | Linear regression, Least Squares, Probabilistic     | pyTorch             | Mixed   |
+|--------+-------+--------------------------------+-----------------------------------------------------+---------------------+---------|
+|      7 | 10.29 | Probabilistic models           | ML, MAP, Bayes, Beta-Bernoulli, Hypothesis testing  |                     | Lecture |
+|      8 | 11.05 | Generative modelling           | Bayesian Networks, Markov Models, Tree Models, CRFs |                     | Mixed   |
+|      9 | 11.12 | Approximate Bayesian Inference | Markov Chain Monte Carlo                            |                     | Misc    |
+|--------+-------+--------------------------------+-----------------------------------------------------+---------------------+---------|
+|     10 | 11.19 | Learning Theory                |                                                     |                     | Lecture |
+|     11 | 11.26 | Fairness                       |                                                     |                     | Mixed   |
+|     12 | 12.03 | Reinforcement Learning         |                                                     |                     | Mixed   |
+|--------+-------+--------------------------------+-----------------------------------------------------+---------------------+---------|
+|     13 | 12.10 | Lab                            |                                                     |                     | EXAM    |
+|--------+-------+--------------------------------+-----------------------------------------------------+---------------------+---------|
+|     14 | 12.17 | Mock Exam                      |                                                     |                     | EXAM    |
+|--------+-------+--------------------------------+-----------------------------------------------------+---------------------+---------|
 
 **** 1. Introduction, KNN
 
