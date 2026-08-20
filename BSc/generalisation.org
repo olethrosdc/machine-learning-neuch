@@ -2,11 +2,12 @@
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \input{preamble}
-#+LaTeX_CLASS_OPTIONS: [smaller]
+#+LaTeX_CLASS_OPTIONS: [smaller,notes]
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code BSc MSc
 #+OPTIONS:   H:3
 #+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
+#+MACRO: color @@latex:{\color{$1}@@$2@@latex:}@@
 * Quality metrics
 ** Supervised machine learning problems
 *** Classification
@@ -319,6 +320,9 @@ classifier is 50%.
 - Using just this subset of predictors, build a multivariate classifier, using all of the samples except those in fold k.
 - Use the classifier to predict the class labels for the samples in fold k.
 **** Level notes
+:PROPERTIES:
+:BEAMER_env: note
+:END:
 - *BSc*: The point isn't the procedure itself: it's noticing that cross-validation can silently give you a fake guarantee if information from outside a fold leaked into the model-building step before validation happened. Spotting this kind of methodological trap is a core scientific-method skill, and one you should actively check for in your own project.
 - *MSc*:  *Why* does the wrong version give a near-zero apparent error despite a true error of $50\%$? Connect it to the estimation-error bound above: what is $|\hat\Pols|$ effectively doing once you've screened 5000 predictors first?
 
@@ -343,8 +347,8 @@ How well can decision rule perform?
 - Bias: The *expected difference* between the estimated value and the unknown parameter
 - Variance: Just the *variance* of that estimator, as a random variable.
 **** Learning theory view
-- Approximation ability: How well a class of rules can approximate the optimal one.
-- Statistical error: How easy it is to choose the best rule in the class.
+- Approximation error: How well a class of rules can approximate the optimal one.
+- Etimation error: How easy it is to choose the best rule in the class.
 **** Which one do we use?
 This course mainly follows the *Learning theory view*: it talks directly about $U(\pol, P)$, the quantity we actually care about, rather than about estimating some unrelated parameter $\theta$. The *Estimation theory view* is covered next for completeness. It's the classical framing you'll meet in statistics courses, and the two turn out to be closely related, but it doesn't add much that's new about *generalisation error* specifically.
 
@@ -375,22 +379,28 @@ The sample mean estimator $f(D) = \sum_{t} x_t / T$ is unbiased, as :
 \]
 
 *** Example of a biased and unbiased estimator: Training error
-- $U(\pi, D)$ is the measured accuracy of a classifier $\pi$ on $D$ 
-- $U(\pi, P) = \E_{D \sim P} [U(\pi, D)]$ is the actual accuracy. So $U(\pi, D)$ is unbiased.
-- $\lambda(D) = \argmax_\pi U(\pi, D)$ is a learning algorithm picking the best classifier for a dataset $D$.
-- Then $U(\lambda(D), D)$ is biased, as for any $\pi'$
+#+ATTR_BEAMER: :overlay <+->
+- $U(\mathcolor{blue}{\pi}, \mathcolor{green}{D})$ is the {{{color(green,measured)}}} accuracy of a {{{color(blue,classifier $\pi$)}}}  on {{{color(green, data $D$)}}}
+- $U(\mathcolor{blue}{\pi}, \mathcolor{red}{P}) = \E_{D \sim P} [U(\pi, D)]$ is the *actual* accuracy on distribution *$P$*.
+- So $U(\mathcolor{blue}{\pi}, \mathcolor{green}{D})$ is an unbiased estimate of $U(\mathcolor{blue}{\pi}, \mathcolor{red}{P})$.
+- $\mathcolor{magenta}{\lambda}(D) = \argmax_\pi U(\pi, D)$ is a {{{color(magenta,learning algorithm)}}}, picking the best classifier for a dataset $D$.
+- Then $U(\mathcolor{magenta}{\lambda}(D), D)$ is biased, as its expectation obeys:
 \begin{align}
-\E_{D \sim P} [U(\lambda(D), D)]
- &= \int_{D} dP(D)  U(\lambda(D), D)\\
- &= \int_{D} dP(D) \max_\pi U(\pi, D)\\
- &\geq \int_{D} dP(D) U(\pi', D)\\
- &= U(\pi', P) 
+\uncover<5->{
+\E_{D \sim P} [U(\mathcolor{magenta}{\lambda}(D), D)]
+ &= \int_{D} d\alert{P}(D)  U(\mathcolor{magenta}{\lambda}(D), D)\\
+}
+\uncover<6->{
+ &= \int_{D} d \alert{P}(D) \max_\pi U(\pi, D)\\
+}
+\uncover<7->{
+ &\geq \int_{D} d \alert{P}(D) U(\pi', D) && \forall \pi'\\
+}
+\uncover<8->{
+ &= U(\pi', \alert{P})
+}
 \end{align}
-i.e. the expected value of the training accuracy is higher than the accuracy of *any* classifier.
-
-*** The bias/variance trade-off :advanced:MSc:
-This is the classical statistics formulation, applied to a regression estimator $f_D$,
- not generally for $U(\pol,P)$. It's good background, and the proof below is worth doing for the practice, but it's *optional*: the regret decomposition already covers what you need to know about generalisation error in this course.
+- i.e. the expected training accuracy is higher than that of any classifier.
 *** Bias/Variance tradeoff
 - Dataset $D \sim P$  (the dataset $D = \{(x_t, y_t) | t=1, \ldots, T\}$ is sampled from the unknown distribution $P$)
 - Predictor $f_D(x)$ (it makes predictions about indiviudal $x$)
@@ -413,9 +423,12 @@ What is the expected deviation from the true function
 \[
 \Bias(f_D) \defn \E[(f_D - f)]
 \]
-**** Level notes
-- *BSc*: You can skip this subsection. The geometric picture two slides back already gives you the intuition you need for generalisation error.
-- *MSc*: Worth knowing — you'll meet "bias" and "variance" used exactly this way in statistics courses, and it's good to be fluent translating between the two framings.
+**** The bias/variance trade-off.                              :advanced:MSc:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+This is the classical statistics formulation, applied to a regression estimator $f_D$,
+ not generally for $U(\pol,P)$. It's good background, and the proof below is worth doing for the practice, but it's only needed at the *MSc level*: the regret decomposition already covers what you need to know about generalisation error in the BSc course.
 *** Example: mean estimation
 - Data $D = y_1, \ldots, y_T$ with $\E[y_t] = \mu$.
 - Goal: estimate $\mu$ with some estimator $f_D$ to minimise
@@ -449,8 +462,11 @@ To minimise the MSE, we use $f^* = \mu$. This gives us two ideas:
 \end{align*}
 #+END_EXPORT
 **** Level notes
-- *BSc*: Optional — skip unless you want the algebra practice.
-- *MSc*: A clean derivation to be able to reproduce; every line uses only linearity of expectation and the i.i.d. noise assumption.
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+- *BSc*: Make sure you understand each and every step of the derivation.
+- *MSc*: Uou should be able to re-use the ideas in this proof for similar proofs.
 ** Generalisation
 *** Generalisation error
 **** Regret decomposition
@@ -472,17 +488,17 @@ We can bound the regret by bounding each term separately.
       :BEAMER_col: 0.5
       :END:
 \begin{tikzpicture}[scale=0.85]
-\draw[thick] (0,0) ellipse (3.3 and 2.2);
-\node at (-2.0,1.85) {\footnotesize $\Pols$};
-\draw[thick,fill=gray!10] (0.9,-0.1) ellipse (1.9 and 1.3);
+\draw[thick] (0,0) ellipse (3 and 2);
+\node at (-2.0, 1.85) {\footnotesize $\Pols$};
+\draw[thick] (1,-0.5) ellipse (0.7 and 1);
 \node at (0.9,1.05) {\footnotesize $\hat\Pols$};
-\filldraw (-1.8,0) circle (1.6pt);
+\draw (-1.8, 0) circle (1.6pt);
 \node[below] at (-1.8,-0.15) {\footnotesize $\pol^*$};
-\filldraw (0.5,0.2) circle (1.6pt);
+\filldraw (0.5, 0.2) circle (1.6pt);
 \node[above] at (0.5,0.35) {\footnotesize $\hat\pol^*$};
-\filldraw (1.5,-0.5) circle (1.6pt);
+\filldraw (1.5, -0.5) circle (1.6pt);
 \node[below] at (1.5,-0.65) {\footnotesize $\hat\pol$};
-\draw[dashed] (0.5,0.2) circle (1.1);
+\draw[dashed] (0.5, 0.2) circle (0.5);
 \draw[<->] (-1.8,0) -- (0.5,0.2);
 \node[align=center] at (-0.8,0.65) {\footnotesize approximation\\\footnotesize error};
 \draw[<->] (0.5,0.2) -- (1.5,-0.5);
@@ -498,11 +514,11 @@ We can bound the regret by bounding each term separately.
 \begin{tikzpicture}[scale=0.85]
 \draw[->] (0,0) -- (6.2,0);
 \node[right] at (6.2,0) {\footnotesize $U(\cdot, P)$};
-\filldraw (0.8,0) circle (1.6pt);
+\draw (0.8,0) circle (1.6pt);
 \node[below] at (0.8,-0.1) {\footnotesize $U(\hat\pol,P)$};
-\filldraw (2.8,0) circle (1.6pt);
+\draw (2.8,0) circle (1.6pt);
 \node[below] at (2.8,-0.1) {\footnotesize $U(\hat\pol^*,P)$};
-\filldraw (5.2,0) circle (1.6pt);
+\draw (5.2,0) circle (1.6pt);
 \node[below] at (5.2,-0.1) {\footnotesize $U(\pol^*,P)$};
 \draw[<->] (0.8,0.6) -- (2.8,0.6);
 \node[align=center] at (1.8,1.0) {\footnotesize estimation\\\footnotesize error};
@@ -512,9 +528,15 @@ We can bound the regret by bounding each term separately.
 \node at (3.0,3.0) {\footnotesize regret};
 \end{tikzpicture}
 - Both panels show the *same* three rules. On the left, the gaps come from /where/ the rules sit (inside or outside $\hat\Pols$, and where exactly within it). On the right, the same gaps are measured in the only unit that actually matters: utility.
-**** Level notes
-- *BSc*: Don't worry about reproducing this diagram — just be able to say, in your own words, which gap is "the model's fault" and which is "bad luck with the data," for a model you're using in your project.
-- *MSc*: Notice the dashed circle is doing real work: it's the only *random* element in the picture. Convince yourself that the approximation error is a fixed number once the model class is fixed, while the estimation error is a random variable (a function of $D$) — that distinction is exactly what the Hoeffding bound below is quantifying.
+**** Notes
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+- Understand which gap is "the model's fault" and which is "bad luck with the data".
+- The approximation error only depends on the model class. We give a specific example below, where we can bound it no matter what the true model is.
+- The estimation error is a random variable: a function of the randomly generated data $D$. While we do not know how much this can be, we can bound it with high probabilty.
+- The discussion below is aimed at the *MSc* level.
+  
 *** Approximation error
 - Our model limits us to a set of decision rules $\hat{\Pi} \neq \Pi$.
 - The most we could do is find the best rule in $\hat{\Pi}$.
