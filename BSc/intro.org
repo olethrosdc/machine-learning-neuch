@@ -379,7 +379,39 @@ X.iat[2,0] # row 2, column 0
 #+END_SRC
 - The mean is *random*, so we get a different answer every time we re-run this.
 
-*** One variable: expectations and distributions 
+*** Randomness and Uncertainty
+We use probability to model *randomness* and *uncertainty*
+
+**** Elements of probability                                          :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+#+ATTR_BEAMER: :overlay +-
+- Random outcomes $\omega \in \Omega$
+- An *event* $A \subseteq \Omega$ occurs if $\omega \in A$.
+- *Probability* $P(A)$ measures the likelihood of events $A$.
+- If $P(A) > P(B)$, then $A$ is more likely than $B$.
+- For finite $\Omega$, we can use $P(\omega)$ instead of $P(\{\omega\})$.
+**** Diagram                                                          :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+\begin{tikzpicture}
+\node (Omega) at (0,1)   [draw, circle, minimum size=2cm]  {};
+\end{tikzpicture}
+
+*** Axions of probability
+**** Axioms                                                           :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+#+ATTR_BEAMER: :overlay +-
+- $P(\Omega) = 1$
+- $P(A) \geq 0$.
+- If $A \cap B = \emptyset$ then $P(A \cup B) = P(A) + P(B)$.
+
+
+*** One variable: expectations
 
 **** The expected value :B_definition:
      :PROPERTIES:

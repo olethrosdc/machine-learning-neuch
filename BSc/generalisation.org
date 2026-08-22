@@ -2,12 +2,8 @@
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \input{preamble}
-<<<<<<< HEAD
-#+LaTeX_CLASS_OPTIONS: [smaller,notes]
-=======
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+LATEX_HEADER: \setbeameroption{show notes}
->>>>>>> cbf4f0f6d1e51425e01a31c732b9fe25bb012e09
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code BSc MSc
 #+OPTIONS:   H:3
@@ -354,18 +350,17 @@ How well can decision rule perform?
 - Related to generalisation error.
   
 **** Learning theory view
-<<<<<<< HEAD
 - Approximation error: How well a class of rules can approximate the optimal one.
 - Etimation error: How easy it is to choose the best rule in the class.
+
 **** Which one do we use?
 This course mainly follows the *Learning theory view*: it talks directly about $U(\pol, P)$, the quantity we actually care about, rather than about estimating some unrelated parameter $\theta$. The *Estimation theory view* is covered next for completeness. It's the classical framing you'll meet in statistics courses, and the two turn out to be closely related, but it doesn't add much that's new about *generalisation error* specifically.
 
-=======
 - Approximation ability: How well a *class of rules* can approximate the *optimal* one.
 - Statistical error: How *easy* it is to choose the best rule in the class from *data*
 - Directly bounds the generalisation error.
   
->>>>>>> cbf4f0f6d1e51425e01a31c732b9fe25bb012e09
+
 ** Bias and variance
 *** Unbiased estimators
 **** Estimator :B_definition:
@@ -437,19 +432,13 @@ What is the expected deviation from the true function
 \[
 \Bias(f_D) \defn \E[(f_D - f)]
 \]
-<<<<<<< HEAD
 **** The bias/variance trade-off.                              :advanced:MSc:
 :PROPERTIES:
 :BEAMER_env: note
 :END:
 This is the classical statistics formulation, applied to a regression estimator $f_D$,
  not generally for $U(\pol,P)$. It's good background, and the proof below is worth doing for the practice, but it's only needed at the *MSc level*: the regret decomposition already covers what you need to know about generalisation error in the BSc course.
-=======
-**** Level notes
 
-- *BSc*: You can skip this subsection. The geometric picture two slides back already gives you the intuition you need for generalisation error.
-- *MSc*: Worth knowing — you'll meet "bias" and "variance" used exactly this way in statistics courses, and it's good to be fluent translating between the two framings.
->>>>>>> cbf4f0f6d1e51425e01a31c732b9fe25bb012e09
 *** Example: mean estimation
 - Data $D = y_1, \ldots, y_T$ with $\E[y_t] = \mu$.
 - Goal: estimate $\mu$ with some estimator $f_D$ to minimise
