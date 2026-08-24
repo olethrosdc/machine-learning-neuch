@@ -3,12 +3,12 @@
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+EXCLUDE_TAGS: notes
 #+LaTeX_HEADER: \include{preamble}
-#+LaTeX_CLASS_OPTIONS: [10pt]
+#+LaTeX_CLASS_OPTIONS: [smaller]
+#+LATEX_HEADER: \setbeameroption{show notes}
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 #+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
-
 
 * The problems of Machine Learning (1 week)
 ** Introduction
@@ -141,9 +141,9 @@
 *** Assignments, teaching and questions
 **** Course structure
 - In-class exercises.
-- Take-home assignments.
+- Take-home assignments (ungraded).
 - Quizzes.
-- Group project with oral presentation.
+- In-class group work.
 
 **** Other questions
 - Use Moodle for technical/administrative questions: That way everybody gets the same information.
@@ -153,10 +153,11 @@
 - Tuesdays 13:15-14:00: book with an email to avoid clashes.
 - Email me for an appointment outside those hours.
 
-*** The project
+*** The project pipeline
 - Builds on in-class exercises and take-home assignment
 - Every group must create a github repository and commit regularly.
-- Each project should have a brief report explaining their methodology.
+- A short presentation will be given.
+
 **** Key points
 - Define a scientific question.
 - Identify relevant variables and their relationships.
@@ -378,6 +379,43 @@ X.iat[2,0] # row 2, column 0
   np.mean(y)
 #+END_SRC
 - The mean is *random*, so we get a different answer every time we re-run this.
+
+*** Probabilities: Basic notions.
+**** Probability space
+- Defined on subsets of $\Omega$, a random *outcome space*. 
+- Subsets $A$ of $\Omega$,  $A \subseteq \Omega$, are called *events*.
+
+**** Probability axioms
+A probability $P$, is a function from subsets\footnote{Formally, an algebra} of $\Omega$ to $[0,1]$ and it functions like an area:
+- $P(\Omega) = 1$ (whatever happens must be in $\Omega$).
+- $P(A) \geq 0$ is the *probability* of $A \subseteq \Omega$.
+- If $A, B$ are *mutually exclusive* ($A \cap B = \emptyset$), then:
+\[
+P(A \cup B) = P(A) + P(B).
+\]
+*** Meaning of proability
+- We usually do not deal with probability spaces directly. We use them as the underlying 'source of randomness' and instead look at *random variables*, functions $\Omega \to \Reals$
+- Probabilities are usually subjective (exception: quantum physics).
+
+*** Special cases
+**** Implication
+If $A \subset B$, then, which of the following is true?
+- P(A) = P(B)
+- P(A) > P(B)
+- P(A) < P(B)
+**** Discrete $\Omega$
+- Consider throwing two coins. Then possible outcomes are
+ e.g. $\Omega = \{HH, HT, TH, TT\}$.
+- Consider throwing one die. Then possible outcomes are
+ e.g. $\Omega = \{1, 2, 3, 4, 5, 6\}$.
+- Consider selecting an individual in Switzerland by randomly generating an AVS number:
+$\Omega = [10^12]$.
+
+**** Continous $\Omega$
+- Consider throwing a die inside a $1 \times 1$ box. Then possible outcomes can be described as
+$\Omega = [0,1]^2\times[0,360]^3$, because we need:
+- $1$ variable
+
 
 *** One variable: expectations and distributions 
 
