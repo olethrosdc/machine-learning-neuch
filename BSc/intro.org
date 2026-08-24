@@ -380,6 +380,7 @@ X.iat[2,0] # row 2, column 0
 #+END_SRC
 - The mean is *random*, so we get a different answer every time we re-run this.
 
+<<<<<<< HEAD
 *** Probabilities: Basic notions.
 **** Probability space
 - Defined on subsets of $\Omega$, a random *outcome space*. 
@@ -417,7 +418,7 @@ $\Omega = [0,1]^2\times[0,360]^3$, because we need:
 - $1$ variable
 
 
-*** One variable: expectations and distributions 
+*** One variable: expectations
 
 **** The expected value :B_definition:
      :PROPERTIES:
