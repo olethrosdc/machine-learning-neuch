@@ -103,45 +103,61 @@ Chapter 13: 13.1-13.4
 
 * Activities
 ** Assignments
-*** Assignment 0: Probability exercise, classification/regression
+*** Lab  1: Probability exercise, classification/regression
 **** Pen-and-paper
 - Reminder of probability and expectation: for a general random variable $x$ on a small outcome space with unspecified (symbolic) probabilities, derive $\E[x]$ and $\Var(x)$ as formulas, not numbers.
 - Given a list of problem descriptions, classify each as classification, regression, or neither, and identify the input/output variables.
+
 **** In-class coding
 - Compute a sample mean on a small dataset and compare it against the symbolic formula above.
 - Fit a toy classifier and a toy regressor, just to see the difference in what each one predicts.
-**** Project (home)
-- Sketch a candidate scientific question for your project, and identify one variable that would be central to answering it.
 
+**** Project 
+- Sketch a candidate scientific question for your project, and
+  identify one variable that would be central to answering it.
 
-*** Assignment 1: k-Nearest Neighbour, performance
- Here we look at different methods to measure model performance.
- Using scikitlearn, see how data rescaling affects performance.
- Then measure performance under an alternative measure.
+*** Lab 2: k-Nearest Neighbour, performance.
+- First look at data (height, weight, gender).
+- Use kNN to classify without rescaling.
+- Rescale the data before doing kNN classificaiton.
+- Change the distance function in the kNN to achieve the same effect.
+
 **** Pen-and-paper
-- Without picking any specific dataset: argue why the *training* accuracy of $k$-NN is always $100\%$ when $k=1$, and why training accuracy can only get worse (or stay the same) as $k$ grows towards $T$.
-- Given a generic utility matrix $U(y, a)$ (symbols, not numbers) and a model $P(y \mid x)$, derive the action $a^*$ maximising expected utility. Under what condition on $U$ does $a^*$ coincide with "predict the most likely class"? Give a $U$ for which it does not.
-**** In-class coding
-Here we look at different methods to measure model performance. Using scikit-learn, see how data rescaling affects performance. Then measure performance under the utility-based alternative above, instead of accuracy.
-**** Project (home)
-- Apply the same performance measure to a variable from your own project (real or simulated data).
+- Without picking any specific dataset: argue why the *training*
+  accuracy of $k$-NN is always $100\%$ when $k=1$, and why training
+  accuracy can only get worse (or stay the same) as $k$ grows towards
+  $T$.
 
+- Given a generic utility matrix $U(y, a)$ (symbols, not numbers) and
+  a model $P(y \mid x)$, derive the action $a^*$ maximising expected
+  utility. Under what condition on $U$ does $a^*$ coincide with
+  "predict the most likely class"? Give a $U$ for which it does not.
+
+**** In-class coding
+- Here we look at different methods to measure model
+  performance. Using scikit-learn, see how data rescaling affects
+  performance. Then measure performance under the utility-based
+  alternative above, instead of accuracy.
  
-*** Assignment 2: Perceptron, model comparison
+*** Lab 3: Perceptron, model comparison
  In this assignment we compare classification models. 
  We apply the basic ideas of train, test, validation, cross-validation and bootstrapping. 
  They should develop this using scikitlearn.
 
 **** Pen-and-paper
-- Go through the mistake-bound proof line by line. For each of its two key inequalities ($\param^t \cdot \param^*$ grows by *at least* $\rho$ per mistake; $\|\param^t\|^2$ grows by *at most* $1$ per mistake), explain in words the geometric fact it captures.
-- What step of the proof breaks down if the data is *not* linearly separable? What step breaks down if $\|x_t\|$ is unbounded?
+- Go through the mistake-bound proof line by line. For each of its two
+  key inequalities ($\param^t \cdot \param^*$ grows by *at least*
+  $\rho$ per mistake; $\|\param^t\|^2$ grows by *at most* $1$ per
+  mistake), explain in words the geometric fact it captures.
+- What step of the proof breaks down if the data is *not* linearly
+  separable? What step breaks down if $\|x_t\|$ is unbounded?
 **** In-class coding
-In this assignment we compare classification models. We apply the basic ideas of train, test, validation, cross-validation and bootstrapping, using scikit-learn, to compare the perceptron against another classifier.
-**** Project (home)
-- Apply train/test or cross-validation to a variable from your own project.
-
+- In this assignment we compare classification models. We apply the
+  basic ideas of train, test, validation, cross-validation and
+  bootstrapping, using scikit-learn, to compare the perceptron against
+  another classifier.
  
-*** Assignment 3: Linear regression and simulation
+*** Lab 4: Linear regression and simulation
 
 **** Regression
 Complete the in-class exercise:
@@ -210,7 +226,8 @@ In what way are your results different?
 Extend the simulation to generate data resembling your own project's variables: correct dimensionality, and a plausible noise model.
 
 
-*** Assignment 4: Basic neural networks
+*** Quiz 1: Classification and regression
+*** Lab 5: Basic neural networks
 
 **** Pen-and-paper
 - For two linear layers $z = Ax$, $y = Bz$ with *general* matrices $A, B$, show that $y = Cx$ for some matrix $C$, stacking linear layers (i.e. combinging two linear layers) makes no difference. Why does the argument break once a nonlinearity sits between the two layers?
@@ -224,7 +241,7 @@ Extend the simulation to generate data resembling your own project's variables: 
   (b) Increase the amount of training data.
   (c) Increase the number of neural network parameters.
 
-*** Assignment 5: Probabilistic Models
+*** Lab 6: Probabilistic Models
 
 **** Pen-and-paper
 - Moderate: Derive the Beta likelihood functions for iid data.
@@ -233,7 +250,7 @@ Extend the simulation to generate data resembling your own project's variables: 
 **** In-class coding
 Complete the notebook in https://github.com/olethrosdc/machine-learning-neuch/blob/main/BSc/src/bayesian/priors-posteriors.ipynb to calculate the beta-Bernoulli posterior
 
-*** Assignment 6: Graphical models, generative models and simulation
+*** Lab 7: Graphical models, generative models and simulation
 
 **** Pen-and-paper
 - Describe the main variables of your project.
@@ -249,8 +266,8 @@ Complete the notebook in https://github.com/olethrosdc/machine-learning-neuch/bl
 
 You should do this in groups. One submission per group, with all member names in the notebook and/or report.
 
-
-*** Assignment 7: Tree-based methods
+*** Quiz 2: Gradient methods and probability
+*** Lab 8: Tree-based methods
 **** Pen-and-paper
 - Write the Gini index and entropy as functions of a class-proportion vector $p \in \Simplex^C$. Show both are zero when $p$ is a point mass (a pure node) and maximal when $p$ is uniform.
 - Construct, on paper, a small two-dimensional labelled dataset where *no single split* on either feature improves the Gini index, but a depth-2 tree classifies it perfectly (hint: think about XOR). What does this tell you about greedy tree construction?
@@ -260,13 +277,15 @@ Complete all the notebook tasks in https://github.com/olethrosdc/machine-learnin
 
 
 
-*** Assignment 8: Neural networks
+*** Lab 9: Neural networks
     Image classification example.
 **** Pen-and-paper
 - For a convolutional layer with $C$ channels and a $k \times k$ kernel applied to an $n \times n$ image, write the number of parameters as a function of $k, C, n$. Compare it, symbolically, to a fully-connected layer mapping the same input to the same output size. What does weight-sharing buy you structurally, and what does it cost?
 **** In-Class-Coding
 Complete Assignment 1 of this notebook: [[https://github.com/olethrosdc/machine-learning-neuch/blob/main/BSc/src/Image%20Processing/image_processing.ipynb]]  and assignment 2 of the second notebook : 
 [[https://github.com/olethrosdc/machine-learning-neuch/blob/main/BSc/src/Image%20Processing/cnn.ipynb]]
+
+
 
 
 ** Projects
