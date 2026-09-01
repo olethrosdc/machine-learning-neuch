@@ -67,9 +67,9 @@ There are three types of sessions:
 |      2 | 09.24 | Learning and Generalisation    | Train/Test, XV, Bootstrapping, Simulation           | pandas, scikitlearn | Mixed   |
 |--------+-------+--------------------------------+-----------------------------------------------------+---------------------+---------|
 |      3 | 10.01 | Classification, Perceptron     | Margin, Regret, Gradient Descent                    | scikit learn        | Mixed   |
-|      6 | 10.08 | Neural Networks                | Logistic Regression, Backpop, Stochastic GD         | pyTorch intro       | Mixed   |
+|      4 | 10.08 | Neural Networks                | Logistic Regression, Backpop, Stochastic GD         | pyTorch intro       | Mixed   |
 |      5 | 10.15 | Neural Network Lab             | Project discussion, Linear Regression Lab           | pyTorch             | Lab     |
-|      4 | 10.22 | Regression, Linear             | Linear regression, Least Squares, Probabilistic     | pyTorch             | Mixed   |
+|      6 | 10.22 | Regression, Linear             | Linear regression, Least Squares, Probabilistic     | pyTorch             | Mixed   |
 |--------+-------+--------------------------------+-----------------------------------------------------+---------------------+---------|
 |      7 | 10.29 | Probabilistic models           | ML, MAP, Bayes, Beta-Bernoulli, Hypothesis testing  |                     | Lecture |
 |      8 | 11.05 | Generative modelling           | Bayesian Networks, Markov Models, Tree Models, CRFs |                     | Mixed   |
