@@ -27,7 +27,7 @@ The course focuses on fundamental modelling problems and general machine learnin
 |--------+-------+---------------------------------+---------------------------------------------------------+---------------------+-------|
 | Module |  Date | Topic                           | Details                                                 | Python              | Type  |
 |--------+-------+---------------------------------+---------------------------------------------------------+---------------------+-------|
-|      1 | 09.15 | Introduction                    | Mean estimation, kNN, Train/Test                        | nympy, pandas       | Mixed |
+|      1 | 09.15 | Introduction                    | Mean estimation, ML Problems                            | nympy, pandas       | Mixed |
 |      2 | 09.22 | kNN, Decision problems          | kNN, Decision Problems                                  | pandas, scikitlearn | Mixed |
 |      3 | 09.29 | Generalisation                  | Cross-Validation, Bootstrapping                         | sklearn             | Mixed |
 |      4 | 10.06 | The Perceptron                  | The Preceptron, Gradient Descent, Generalisation        | sklearn             | Mixed |

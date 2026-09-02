@@ -67,15 +67,15 @@ There are three types of sessions:
 |      2 | 09.24 | Learning and Generalisation    | Train/Test, XV, Bootstrapping, Simulation           | pandas, scikitlearn | Mixed   |
 |--------+-------+--------------------------------+-----------------------------------------------------+---------------------+---------|
 |      3 | 10.01 | Classification, Perceptron     | Margin, Regret, Gradient Descent                    | scikit learn        | Mixed   |
-|      6 | 10.08 | Neural Networks                | Logistic Regression, Backpop, Stochastic GD         | pyTorch intro       | Mixed   |
+|      4 | 10.08 | Neural Networks                | Logistic Regression, Backpop, Stochastic GD         | pyTorch intro       | Mixed   |
 |      5 | 10.15 | Neural Network Lab             | Project discussion, Linear Regression Lab           | pyTorch             | Lab     |
-|      4 | 10.22 | Regression, Linear             | Linear regression, Least Squares, Probabilistic     | pyTorch             | Mixed   |
+|      6 | 10.22 | Regression, Linear             | Linear regression, Least Squares, Probabilistic     | pyTorch             | Mixed   |
 |--------+-------+--------------------------------+-----------------------------------------------------+---------------------+---------|
 |      7 | 10.29 | Probabilistic models           | ML, MAP, Bayes, Beta-Bernoulli, Hypothesis testing  |                     | Lecture |
 |      8 | 11.05 | Generative modelling           | Bayesian Networks, Markov Models, Tree Models, CRFs |                     | Mixed   |
 |      9 | 11.12 | Approximate Bayesian Inference | Markov Chain Monte Carlo                            |                     | Misc    |
 |--------+-------+--------------------------------+-----------------------------------------------------+---------------------+---------|
-|     10 | 11.19 | Learning Theory                |                                                     |                     | Lecture |
+|     10 | 11.19 | Learning Theory                | Chernoff bounds (Perceptron II)                     |                     | Lecture |
 |     11 | 11.26 | Fairness                       |                                                     |                     | Mixed   |
 |     12 | 12.03 | Reinforcement Learning         |                                                     |                     | Mixed   |
 |--------+-------+--------------------------------+-----------------------------------------------------+---------------------+---------|
@@ -146,6 +146,196 @@ PML2: Probabilistic Machine Learning: Advanced Topics
 | Hypothesis tesing           |   13 |   18 |      |      |
 | High-Dimensional Statisitcs |    6 |   18 |      |      |
 |-----------------------------+------+------+------+------|
+
+* Activities
+** Assignments
+*** Lab  1: Probability exercise, classification/regression
+**** Pen-and-paper
+- Reminder of probability and expectation: for a general random
+  variable $x$ on a small outcome space with unspecified 
+  probabilities, derive conditional expectations and apply to simple examples.
+- Some things you can compute easily: expected height if you are man vs woman. 
+- Some things are not obvious: what is the 'likelihood' that you are a man given your height?
+- Given a list of problem descriptions, classify each as
+  classification, regression, or neither, and identify the
+  input/output variables.
+
+
+**** In-class coding
+- Compute a sample mean on a small dataset and compare it against the symbolic formula above.
+- Include conditional probabilities and expectations on the given tables from the class data.
+
+**** Project 
+- Sketch a candidate scientific question for your project, and
+  identify one variable that would be central to answering it.
+
+*** Lab 2: k-Nearest Neighbour, performance.
+- First look at data (height, weight, gender).
+- Use kNN to classify without rescaling.
+- Rescale the data before doing kNN classificaiton.
+- Change the distance function in the kNN to achieve the same effect.
+
+**** Pen-and-paper
+- Without picking any specific dataset: argue why the *training*
+  accuracy of $k$-NN is always $100\%$ when $k=1$, and why training
+  accuracy can only get worse (or stay the same) as $k$ grows towards
+  $T$.
+
+- Given a generic utility matrix $U(y, a)$ (symbols, not numbers) and
+  a model $P(y \mid x)$, derive the action $a^*$ maximising expected
+  utility. Under what condition on $U$ does $a^*$ coincide with
+  "predict the most likely class"? Give a $U$ for which it does not.
+
+**** In-class coding
+- Here we look at different methods to measure model
+  performance. Using scikit-learn, see how data rescaling affects
+  performance. Then measure performance under the utility-based
+  alternative above, instead of accuracy.
+ 
+*** Lab 3: Perceptron, model comparison
+ In this assignment we compare classification models. 
+ We apply the basic ideas of train, test, validation, cross-validation and bootstrapping. 
+ They should develop this using scikitlearn.
+
+**** Pen-and-paper
+- BSc: Given 1-2 datasets, draw a line through the two classes. 
+- BSc: Write the hyperplane in the form Ax = b
+- MSc: Write a formula for calculating the number of mistakes that a hyperplane Ax = b does.
+- MSc: Chain rule test: Alternative cost functions for the perceptron, derive the update rule.
+
+
+**** In-class coding
+- In this assignment we compare classification models. We apply the
+  basic ideas of train, test, validation, cross-validation and
+  bootstrapping, using scikit-learn, to compare the perceptron against
+  another classifier.
+- MSc: Chain rule test: Try it and see what happens.
+
+*** Lab 4: Linear regression and simulation
+
+**** Regression
+Complete the in-class exercise:
+
+(a) Use the sm.OLS() function to perform a multiple linear regression
+with weight as the response and all other variables (except name) as
+the predictors. Use the summarize() function to print the results.
+
+Comment on the output: this is interpretation, not recomputation:
+
+i. Is there a relationship between the predictors and the re-
+sponse? 
+
+ii. What does the coefficient for the gender variable suggest?
+
+iii. Produce some diagnostic plots of the linear regression fit as
+described in the lab. Comment on any problems you see with the
+fit. Do the residual plots suggest any unusually large outliers?
+Does the leverage plot identify any observations with unusually
+high leverage?
+
+iv. Try a few different transformations of the variables, such as \(\log(x)\) or \(\sqrt{x}\), and discuss how the interpretation of the coefficients changes.
+
+
+
+**** Pen-and-paper: why least squares can fail
+- Show that $X^\top X$ is singular if and only if the columns of $X$ are linearly ependent. What does this mean in practice when two predictors are highly correlated?
+- Without plugging in any specific numbers, argue why $\E[\hat\param] = \param$ for the OLS estimator under the standard assumptions (hint: linearity of expectation).
+
+**** Simulation: in-class coding
+
+In this exercise you will create some \emph{simulated} data and will fit 
+\emph{linear regression models} to it. 
+
+(a) Generate 100 values \(x_t\) from the normal distribution, i.e. \(x_t \sim N(0,1)\).
+
+(b) Generate a vector \(y\) using the formula
+\[
+y_t = 1 - 2 x_t + \epsilon_t, 
+\]
+with \(\epsilon_t \sim N(0,0.5)\), i.e. with zero mean and variance 0.5.
+
+(c) Create a scatterplot between x, y and comment on what you observe.
+
+
+(d) Fit a least squares linear model to predict y using x . Comment
+on the model obtained. How do the estimated \(\param_0, \param_1\) compare to the true values?
+
+(e) Plot the true regression line  with the given parameters, alongside the fitted one.
+
+(f) Repeat steps \(a-e\) with the following modification:
+
+i. Generate 10-dimensional \(x_t\) from the normal distribution, i.e. \(x_{t,i} \sim N(0,1)\).
+
+ii. Generate the vector \(y\) only using the first feature, \(x_{t,1}\), i.e.
+\[
+y_t = 1 - 2 x_{t,1} + \epsilon_t.
+\]
+This means that the coefficients \(\param_2, \ldots, \param_{10} = 0\).1$
+
+In what way are your results different?
+
+(g) Repeat (f), but generate 10,000 points \((x_t, y_t)\) instead of only 100. What changes, and why?
+
+**** Project (home)
+Extend the simulation to generate data resembling your own project's variables: correct dimensionality, and a plausible noise model.
+
+
+*** Quiz 1: Classification and regression
+- Examples of x/y variables and if they are C or R.
+
+*** Lab 5: Basic neural networks
+
+**** Pen-and-paper
+- For two linear layers $z = Ax$, $y = Bz$ with *general* matrices $A,
+  B$, show that $y = Cx$ for some matrix $C$, stacking linear layers
+  (i.e. combinging two linear layers) makes no difference. Why does
+  the argument break once a nonlinearity sits between the two layers?
+- [Advanced: Multi-task case]
+
+
+**** In-class coding
+- sigmoid functions, single-layer and multi-layer networks, a numerical example, the computational graph
+- A short example fitting a network (sklearn or PyTorch) to toy data, just to see training in action.
+- Use the noisy data from the previous week's assignment. See what happens in the *training* and *testing* error when you:
+  (a) Increase the amount of noisy dimensions
+  (b) Increase the amount of training data.
+  (c) Increase the number of neural network parameters.
+
+*** Lab 6: Probabilistic Models
+
+**** Pen-and-paper
+- Moderate: Derive the Beta likelihood functions for iid data.
+- Harder: Derive the Beta-Bernoulli posterior for a *general* prior $\Beta(\alpha_0, \alpha_1)$ and *general* data $x_1, \ldots, x_T$. Use the derivation from the slides without looking, then check it.
+- Easy: Looking only at the *form* of the posterior parameters $\alpha_1 + \sum_t x_t$ and $\alpha_0 + T - \sum_t x_t$: which part stays fixed as $T$ grows, and which part grows with $T$? Use this, without plotting anything, to argue that the prior's influence shrinks as data accumulates.
+**** In-class coding
+Complete the notebook in https://github.com/olethrosdc/machine-learning-neuch/blob/main/BSc/src/bayesian/priors-posteriors.ipynb to calculate the beta-Bernoulli posterior
+
+*** Lab 7: Graphical models, generative models and simulation
+
+**** Pen-and-paper
+- Describe the main variables of your project.
+- Define their possible dependencies with a graphical model.
+- Write down the factorisation of the joint distribution implied by your graphical model.
+- Propose a *second*, competing graphical model for a different hypothesis about your variables (e.g. direct dependence vs. mediation by a third variable), and write its factorisation too. What differs between the two, as expressions — not just as pictures?
+**** In-class coding
+- Given a small graphical model provided in class, write a short (around five lines) sampler that generates data consistent with it.
+- Complete both tasks in the notebook at https://github.com/olethrosdc/machine-learning-neuch/blob/main/BSc/src/Featureselection/feature_selection.ipynb related to your group project.
+**** Project (home)
+- Create a generative model that satisfies the dependencies you defined, even if the exact probabilistic relationship between variables is not yet known (simplify if needed).
+- Use this generative model as a simulator to generate data similar to your own project. This is a stepping stone to performing your analysis on simulated data before touching anything real.
+
+You should do this in groups. One submission per group, with all member names in the notebook and/or report.
+
+*** Exercises: Gradient methods and probability
+*** Lab 8: Neural networks: advanced (can be done at 6)
+    Image classification example.
+**** Pen-and-paper
+- For a convolutional layer with $C$ channels and a $k \times k$ kernel applied to an $n \times n$ image, write the number of parameters as a function of $k, C, n$. Compare it, symbolically, to a fully-connected layer mapping the same input to the same output size. What does weight-sharing buy you structurally, and what does it cost?
+**** In-Class-Coding
+Complete Assignment 1 of this notebook: [[https://github.com/olethrosdc/machine-learning-neuch/blob/main/BSc/src/Image%20Processing/image_processing.ipynb]]  and assignment 2 of the second notebook : 
+[[https://github.com/olethrosdc/machine-learning-neuch/blob/main/BSc/src/Image%20Processing/cnn.ipynb]]
+
+
 
 * Projects
 
