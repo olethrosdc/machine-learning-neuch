@@ -15,6 +15,7 @@
 #+LaTeX_HEADER: \DeclareMathOperator*{\sgn}{sgn}
 #+LaTeX_HEADER: \newcommand \defn {\mathrel{\triangleq}}
 #+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
+#+LaTeX_HEADER: \newcommand \CX {\mathcal{X}}
 #+LaTeX_HEADER: \newcommand \Param {\Theta}
 #+LaTeX_HEADER: \newcommand \param {\theta}
 #+LaTeX_HEADER: \newcommand \vparam {\vectorsym{\theta}}
@@ -36,11 +37,24 @@
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
 
 
-* Probability background
-#+TOC: headlines [currentsection]
-** Logic and Set theory
+* Elementary background
+** Set theory and logic
+*** Set theory
+- First, consider some universal set $\Omega$ and the empty set $\emptyset$
+- A set $A$ is a collection of points $x$ in $\Omega$.
+- $\{x \in \Omega : f(x)\}$: the set of points in $\Omega$ for which $f(x)$ is true.
+**** Unary operators
+- Negation: $\neg A =  \{x \in \Omega : x \notin A\} = \Omega \setminus A$.
+**** Binary operators
+- Union: $A \cup B = \{x \in \Omega : x \in A \vee x \in B\}$ - (c.f. $A \vee B$)
+- Intersection: $A \cap B = \{x \in \Omega : x \in A \wedge x \in B\}$ - (c.f. $A \wedge B$)
+- Difference: $A \setminus B = \{x \in \Omega: x \in A \wedge x \notin B\}$ (c.f. $A \wedge \not B$)
+**** Binary relations
+- $A \subset B$ if $x \in A \Rightarrow x \in B$ - (c.f. $A \implies B$)
+- $A = B$ if $x \in A \Leftrightarrow x \in B$ - (c.f. $A \Leftrightarrow B$)
 *** Logic
 **** Statements
 - A statement $A$ may be true or false
@@ -57,38 +71,72 @@
 **** Operator precedence
 $\neg, \wedge, \vee, \Rightarrow, \Leftrightarrow$
 
+** Functions, sequences and sums
+*** Functions
 
-*** Set theory
-- First, consider some universal set $\Omega$ and the empty set $\emptyset$
-- A set $A$ is a collection of points $x$ in $\Omega$.
-- $\{x \in \Omega : f(x)\}$: the set of points in $\Omega$ for which $f(x)$ is true.
+**** Definition
+A function $f : X \to Y$ is a relation from a set $X$ to a set $Y$ so that,
+for any $x \in X$,  there exists a unique $y \in Y$ so that $y = f(x)$.
+
+**** Inverse of a function
+A function $f : X \to Y$ has an inverse $f^{-1} : Y \to X$ if, for any $y \in Y$, there exists a *unique* $x \in X$ such that $f(x) = y$, and so that $f^{-1}(y) = x$.
+
+*** Sequences
+
+**** Sequences
+A sequence $x_1, \ldots, x_t$ is written $\{x_i | i = 1, \ldots, t\}$ or $\{x_i\}$ for brevity
+
+**** Sums
+A sum of a sequence of variables $\{x_i\}$ is defined as:
+\[
+\sum_{i=1}^t x_i = x_1 + x_2 + \cdots + x_t.
+\]
+The python notation \texttt{sum([f(x) for x in A])} corresponds to:
+\[
+\sum_{x \in A} f(x)
+\]
+**** Products
+A product is similarly defined at
+\[
+\prod_{i=1}^t x_i = x_1 \times x_2 \times \cdots \times x_t.
+\]
 
 
-**** Unary operators
-- $\neg A =  \{x \in \Omega : x \notin A\}$.
-**** Binary operators
-- $A \cup B$ if $\{x \in \Omega : x \in A \vee x \in B\}$ - (c.f. $A \vee B$)
-- $A \cap B$ if $\{x \in \Omega : x \in A \wedge x \in B\}$ - (c.f. $A \wedge B$)
-**** Binary relations
-- $A \subset B$ if $x \in A \Rightarrow x \in B$ - (c.f. $A \implies B$)
-- $A = B$ if $x \in A \Leftrightarrow x \in B$ - (c.f. $A \Leftrightarrow B$)
+* Probability background
 
-
-**** Interesting cases
-- If $A \cap B = \emptyset$, then they are \alert{disjoint}, or mutually exclusive.
-- If $A \cap B = A$ only if $A \subset B$.
 ** Probability facts
+*** Events as sets
+**** The universe and random outcomes
+- The $\Omega$ contains all events that can happen.
+- When something happens, we observe an  element $\omega \in \Omega$.
+**** Events in the universe
+- An event is true if $\omega \in A$, and false if $\omega \notin A$.
+- The negative event $\neg A$ is the set $\Omega \setminus A$
+- The possible events are a collection of subsets $\Sigma$ of $\Omega$ so that
+(i) $\Omega \in \Sigma$, (ii) $A, B \in \Sigma \Rightarrow A \cup B \in \Sigma$ (iii) $A \in \Sigma \Rightarrow \neg A \in \Sigma$
+**** Example: Traffic violation
+- A car is moving with speed $\omega \in [0,\infty)$ in front of the speed camera.
+- $A_0 = [0,50]$: below the speed limit
+- $A_1 = (50,60]$: low fine
+- $A_2 = (60,\infty]$: high fine
+- $A_3 = (100, \infty)$: Suspension of license
+- All combinations of the above events are interesting.
+
 *** Probability fundamentals
 **** Probability measure $P$
+Probability can be seen as an area-like function assigning a likelihood to sets.
 - Defined on a universe $\Omega$
-- $P : \Sigma \to [0,1]$ is a function of subsets of $\Omega$.
+- $P : \Sigma \to [0,1]$ is a function of subsets ($\Sigma$ is the collection of subsets) of $\Omega$.
 - A subset $A \subset \Omega$ is an *event* and $P$ measures its likelihood.
 **** Axioms of probability
 - $P(\Omega) = 1$
-- For $A, B \subset \Omega$, if $A \cap B = \emptyset$ then $P(A \cup B) = P(A) + P(B)$.
+- For all $A \subseteq \Omega$, $P(A) \geq 0$.
+- For $A, B \subseteq \Omega$, if $A \cap B = \emptyset$ then $P(A \cup B) = P(A) + P(B)$.
+*** Probability tricks
+**** Implication
+If $A \subseteq B$ then $P(A) \leq P(B)$.
 **** Partition
 $\{A_i\}$ is a partition of $\Omega$ if $A_i \cap A_j = \emptyset$  $\forall i \neq j$ and $\bigcup_{i=1}^n A_i = \Omega$. A partition of $\Omega$ defines a \alert{complete set of mutually exclusive alternatives.}
-
 **** Marginalisation
 Let $A_1, \ldots, A_n \subset \Omega$ be a \alert{partition} of $\Omega$. Then
 \[
@@ -121,10 +169,9 @@ where $\Param$ is an arbitrary set.
     :BEAMER_env: theorem
     :END:
 \[
-P(A | B) = \frac{P(B | A)}{P(B)} 
+P(A | B) = \frac{P(B | A) P(A)}{P(B)} 
 \]
 #+BEAMER: \pause
-
 **** The general case
 If $A_1, \ldots, A_n$ are a partition of $\Omega$, meaning that they
 are mutually exclusive events (i.e. $A_i \cap A_j = \emptyset$ for $i
@@ -135,7 +182,7 @@ P(B) = \sum_{i=1}^n P(B | A_i) P(A_i)
 \]
 and 
 \[
-P(A_j | B) = \frac{P(B | A_j)}{\sum_{i=1}^n P(B | A_i) P(A_i)}
+P(A_j | B) = \frac{P(B | A_j) P(A_j)}{\sum_{i=1}^n P(B | A_i) P(A_i)}
 \]
 
 *** Independence
@@ -163,23 +210,37 @@ A sequence $x_t$ of r.v.s is IID if $x_t \sim P$
 $(x_1, \ldots, x_t, \ldots, x_T) \sim P^T$.
 
 
-*** Expectation
+
 For any real-valued random variable $f: \Omega \to \Reals$, the expectation with respect to a probability measure $P$ is
 \[
 \E_P(f) = \sum_{\omega \in \Omega} f(\omega) P(\omega).
 \]
+When $\Omega$ is continuous, we can use a density $p$
+\[
+\E_P(f) = \int_{\Omega} f(\omega) p(\omega) d\omega.
+\]
+
 **** Linearity of expectations
+For any RVs $x, y$:
+\[
+\E_P(x + y) = \E_P(x) + \E_P(y)
+\]
+**** Independence
+If $x,y$ are independent RVs then $\E_P(xy) = \E(x)\E(y)$.
 For any RVs $x, y$, $\E_P(x + y) = \E_P(x) + \E_P(y)$
+======= end
 **** Correlation
 If $x,y$ are *not* correlated then $\E_P(xy) = \E(x)\E(y)$.
+
+*** Conditional expectation
 **** Independence
 If $x,y$ are independent RVs then they are also uncorrelated (but not vice-versa)
 **** Conditional expectation
+======= end
 The conditional expectation of a random variable $f: \Omega \to \Reals$, with respect to a probability measure $P$ conditioned on some event $B$ is simply
 \[
 \E_P(f | B) = \sum_{\omega \in \Omega} f(\omega) P(\omega | B).
 \]
-
 
 *** Variance
 For any real-valued random variable $f: \Omega \to \Reals$, the variance with respect to a probability measure $P$ is
@@ -198,29 +259,28 @@ If $f,g$ are independent RVs
 \]
 
 
-
-
-
 * Linear algebra
-#+TOC: headlines [currentsection]
 ** Vectors
+*** Vector space $F$ 
+- The Euclidean space $\Reals^d$ is a vector space.
+- Vector spaces have the following properties.
+**** Axioms of $F$
 *** Vector space $F$ axioms
 Here we consider a vector space $F$. Typically, it is a subset of the Euclidean d-dimensional space, ie. $F \subset \Reals^d$.
-
-
 - $(x + y) + z = x + (y + z)$, for all $x, y, z \in F$.
 - $x + y = y + x$, for all $x, y \in F$.
-- There is a zero element $0 \in F$ such that $x + 0 = 0$ for all $x \in F$.
+- There is a zero element $0 \in F$ such that $x + 0 = x$ for all $x \in F$.
+======= end
 - For all $x \in F$, there is an element $-x \in F$ so that $x + (-x) = 0$.
 - $a(x + y) = ax + ay$, For any $a \in \Reals$, $x, y \in F$.
 - $(a+b)x = ax + bx$, For any $a,b \in \Reals$, $x \in F$.
 *** The real vector space $F = \Reals^d$
 For $a \in \Reals$ and $x, y \in F$, 
-- $x = (x_1, \ldots, x_d)$, $y = (y_1, \ldots, y_d)$
-- $x + y = (x_1 + y_1, \ldots, x_d + y_d)$.
-- $ax = (a x_1, \ldots, a x_d)$.
-- $-x = (-1) x$.
-- $0 = (0, \ldots, 0)$
+- Elements: $x = (x_1, \ldots, x_d)$, $y = (y_1, \ldots, y_d)$
+- Addition: $x + y = (x_1 + y_1, \ldots, x_d + y_d)$.
+- Scalar multiplication: $ax = (a x_1, \ldots, a x_d)$.
+- Negation: $-x = (-1) x$.
+- Zero element: $0 = (0, \ldots, 0)$
 ** Norms and distances
 *** Norms
 A norm $\|\cdot\|$ is a scalar operator on a vector with the properties
@@ -244,20 +304,24 @@ A metric (or distance) on $\CX$ is a function $d: \CX \times \CX \to \Reals$ wit
 \[
 d_2(x,y) = \|x - y\|_2
 \]
-  
+
 ** Linear operators and matrices
 *** Linear operators
-**** Linear operator $A : F \to G$
-- $A(x + y) = Ax + Ay$
-- $A(ax) = a(Ax)$.
+**** Linear operator $A : F \to G$.
+A linear operator $A$ from one vector space $F$ to another, $G$ has the following properties:
+- $A(x + y) = Ax + Ay$ for all $x, y \in F$.
+- $A(ax) = a(Ax)$, for all $a \in \Reals$, $x \in F$.
 **** Matrices in $\Reals^{n \times m}$.
 A matrix $\bA \in \Reals^{n \times m}$ is a tabular array
-\(\bA= \begin{bmatrix}
+\[
+\bA= \begin{bmatrix}
 a_{1,1} & \cdots & a_{1, m}\\
 \vdots  & \ddots & \vdots \\
-a_{n,1} & \cdots & a_{n, m}
-\end{bmatrix}\)
-Matrices can be seen as linear operators when used to multiply vectors.
+A_{n,1} & \cdots & A_{n, m}
+\end{bmatrix}
+\]
+
+Matrices can be seen as linear operators $A : \Reals^n \to \Reals^m$, mapping vectors in $\Reals^n$ to vectors in $\Reals^m$. 
 *** Multiplication operators
 **** Matrix multiplication
 For $A \in \Reals^{n \times d}$, $B \in \Reals^{d \times m}$, the
@@ -290,7 +354,6 @@ $A^{-1}$ is called the inverse of $A$ if
 
 
 * Calculus
-#+TOC: headlines [currentsection]
 ** Univariate caclulus
 *** Derivatives
 **** Derivative
@@ -313,13 +376,16 @@ The Reimann integral is obtained by taking a *horizontal* discretisation of a fu
 \qquad 
 x_t = a + (t-1) \cdot \frac{b - a}{n}
 \]
+Because the Reimann integral does *not always* exist, it is more convenient to use
+this more advanced concept:
 **** Lebesgue integral
 This integral is obtained by taking a *vertical* discretisation of a function to the limit.
 Let $\lambda$ be the Lebesgue measure (i.e. area) of a set. Then:
 \[
 \int_X f(x) d\lambda(x) = \lim_{n \to \infty} \sum_{t=1}^n y_t \lambda(S_t),
 \]
-$S_t = \{x : f(x) \in (y_{t-1}, y_t\}$, $y_0 = -\infty$, $y_n = \sup_x f(x)$.
+where $S_t = \{x : f(x) \in (y_{t-1}, y_t]\}$, are the "slices" of $y$ values, with
+$y_0 = -\infty$, $y_n = \sup_x f(x)$.
 
 *** Fundamental theorem of calculus
 \[
@@ -361,8 +427,18 @@ This is the vector of all its partial derivatives:
 \]
 When $f : \Reals^n \to \Reals^m$, the gradient is an $n \times m$ matrix called *the Jacobian*.
 **** Directional derivative
-We can also define the derivative with respect to a *direction \delta \in \Reals^n$*:
+We can also define the derivative with respect to a *direction* $\delta \in \Reals^n$:
 \[
 D_\delta f(x) = \lim_{\epsilon \to 0} \frac{f(x + \epsilon \delta) - f(x)}{\epsilon}.
 \]
+*** Multi-dinemsional integrals
+We only rarely use explicit such integrals:
+\[
+\int_{X_1} \int_{X_2} f(x_1,x) \, dx_1 \,  dx_2, \qquad x_1 \in X_1, x_2 \in X_2
+\]
+For a general integral over multiple dimensions, we will use Lebesgue integrals:
+\[
+\int_X f(x) d\lambda(x), \qquad x \in X,
+\]
+where e.g. $X = X_1 \times X_2$ so that $x = (x_1, x_2)$. This avoids having multiple $\int$ and $dx_i$ symbols.
 For simplicity say that $\|\delta\| = 1$.
