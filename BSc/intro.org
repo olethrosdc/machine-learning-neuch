@@ -497,22 +497,23 @@ The sample mean is \(O(1/\sqrt{T})\)-close to $\E_P[x_t]$ with high probability.
      :PROPERTIES:
      :BEAMER_env: exampleblock
      :END:
-What are the expected winnings if you play this game?
 - [a] With probability 1%, you win 100 CHF
 - [b] With probability 40%, you win 20 CHF.
 - [c] Otherwise, you win nothing
+**** Exercises
+- What are the expected winnings if you play this game? (on paper)
+- Implement a method in python that generates draws from this random variable, using a uniform random outcomes in $[0,1]$ as an input.
 **** Solution
-#+BEAMER: \pause
+:PROPERTIES:
+:BEAMER_env: note
+:END:
 - Let $x$ be the amount won, then $x(a) = 100, x(b) = 20, x(c) = 0$.
-#+BEAMER: \pause
 - We need to calculate
 \[
 \E_P(x) = \sum_{\omega \in \{a, b, c\}} \!\!\! x(\omega) P(\omega) =
 x(a) P(a) + x(b) P(b) + x(c) P(c) 
 \]
-#+BEAMER: \pause
 - $P(c) = 59\%$, as $P(\Omega) = 1$. Substituting,
-#+BEAMER: \pause
 \[
 \E_P(x) = 1 + 8 + 0 = 9.
 \]
