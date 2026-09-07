@@ -131,7 +131,7 @@ Or pre-scale the data
 \[
 d(x,y) = \|x - y\|_p
 \]
-*** Norms;
+*** Norms
 **** A norm $\|\cdot\|$
 - Zero element $\|0\| = 0$.
 - Homogeneity $\|cx\| = c \|x\|$ for any scalar $a$.
