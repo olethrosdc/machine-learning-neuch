@@ -502,11 +502,12 @@ The sample mean is \(O(1/\sqrt{T})\)-close to $\E_P[x_t]$ with high probability.
 - [c] Otherwise, you win nothing
 **** Exercises
 - What are the expected winnings if you play this game? (on paper)
-- Implement a method in python that generates draws from this random variable, using a uniform random outcomes in $[0,1]$ as an input.
+- Implement a method in python that generates draws from this random variable, using a uniformly random outcomes in $[0,1]$ as an input.
 **** Solution
 :PROPERTIES:
 :BEAMER_env: note
 :END:
+***** Calculation
 - Let $x$ be the amount won, then $x(a) = 100, x(b) = 20, x(c) = 0$.
 - We need to calculate
 \[
@@ -517,6 +518,8 @@ x(a) P(a) + x(b) P(b) + x(c) P(c)
 \[
 \E_P(x) = 1 + 8 + 0 = 9.
 \]
+
+
 
 *** Models
 **** Models as summaries

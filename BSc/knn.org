@@ -95,6 +95,9 @@ p_i = \sum_{t=1}^k \ind{y_{s_t} = i} / k
 
 ** Extensions and parameters
 *** The number of neighbours
+
+Discuss in groups of 2-3 people. Write down your answers.
+
 **** $k=1$
 - How does it perform on the training data?
 - How might it perform on unseen data?
@@ -133,7 +136,7 @@ d(x,y) = \|x - y\|_p
 - Zero element $\|0\| = 0$.
 - Homogeneity $\|cx\| = c \|x\|$ for any scalar $a$.
 - Triangle inequality $\|x + y\| \leq \|x\| + \|y\|$.
-**** $p$-norm
+**** \(p\)-norm
 \[
 \|z\|_p = \left(\sum_i z_i^p\right)^{1/p}
 \]
