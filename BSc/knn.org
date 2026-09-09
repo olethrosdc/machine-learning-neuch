@@ -139,7 +139,7 @@ Or pre-scale the data
 \[
 d(x,y) = \|x - y\|_p
 \]
-*** Norms;
+*** Norms
 **** A norm $\|\cdot\|$
 - Zero element $\|0\| = 0$.
 - Homogeneity $\|cx\| = c \|x\|$ for any scalar $a$.
@@ -207,18 +207,24 @@ What utility function would you use for the spam detection problem?
 
   
 * Activities
-** Activity 1: kNN in practice :activity:
-*** Setup
+** Activity 1: kNN parameters                                      :activity:
+*** Using kNN in scikitlearn
+**** Setup
 - Use the class dataset from earlier (or another dataset given in class).
 - Use scikit-learn's =KNeighborsClassifier= (or =KNeighborsRegressor= if your target is continuous).
-*** Tasks
+**** The effect of $k$ and $d$                                         :code:
 - Fit the model for several values of $k$ (e.g. $k = 1, 3, 5, 15, T$), recording both *training* and *test* accuracy for each.
 - Rescale the features (e.g. with =StandardScaler=) and repeat. Does the ranking of neighbours change? Does performance change?
 - Instead of rescaling the fetaures, change the *distance* function. Can you change it so it has the same effect?
+*** Behaviour of $k$:
+- Argue why the *training* accuracy of $k$-NN is always exactly $100\%$ when $k=1$.
+- What is the training accuracy when $k=T$, assuming $n_i$ examples in class $i$?
+- Does the same hold for *test* accuracy when $k=1$? How about $k=T$? Check this against the plot you made.
+
   
-** Activity 2: Predicitons vs Decisions           :activity:
+** Activity 2: Predictions vs Decisions                            :activity:
 *** Setup
-As a class, agree on a utility matrix $U(y,a)$ for the spam example from the slides, by filling in the table:
+In a group, choose a utility matrix $U(y,a)$ for the spam example from the slides, by filling in the table:
 |----------+------+------+-------|
 | Utility  | Pass | Flag | Trash |
 |----------+------+------+-------|
@@ -226,27 +232,27 @@ As a class, agree on a utility matrix $U(y,a)$ for the spam example from the sli
 | Spam     |      |      |       |
 | Virus    |      |      |       |
 |----------+------+------+-------|
-*** Tasks
+**** The effect of different utilities                                 :code:
 - Fit a kNN classifier and call =predict_proba()= to get $P(y \mid x)$ for each test point.
 - Write a function /utilityScore(y, actions, U)/ that takes the true labels $y_t$ and chosen actions $a_t$, and returns $\sum_{t=1}^T U(y_t, a_t) / T$.
 - Write a second function /utilityAction(probs, U)/ that returns, for each test point, the action $a^*$ maximising expected utility under $P(y\mid x)$ and your $U$.
-- Compare the average utility of plain =predict()= (most likely class) against your =utilityAction()=. Which one wins? Does the answer depend on which $U$ you chose?
+- Compare the average utility of plain =predict()= (most likely class) against your =utilityAction()=.
+**** The math behind predictions and decisions  :theory:
 - Once you have $a^* = \argmax_a \sum_y P(y|x) U(y,a)$, *prove* that no other decision rule can achieve higher expected utility under your model.
 - Show that if $A = Y$ and if $U(y, a) = \ind{y = a}$ (you only care about being right), then $a^*$ is the most likely class, $\argmax_y P(y \mid x)$.
 - Bonus: What changes once $P(y|x)$ is *estimated* (e.g. via kNN) rather than known exactly? For example, say that $P^*(y|x)$ is the true model.
 
-*** Behaviour of $k$ (pen and paper)
-- Argue why the *training* accuracy of $k$-NN is always exactly $100\%$ when $k=1$.
-- Argue why training accuracy can only get *worse, or stay the same*, as $k$ grows from $1$ towards $T$. (Hint: what does the prediction become when $k=T$?)
-- Does the same argument apply to *test* accuracy? Why, or why not? Check this against the plot you made in Activity 1.
-*** Average behaviour of $k$
-- Calculate the accuracy for 100 different synthetically generated training and testing datasets
+** Homework 
+*** Exercise 1 :homework:
+- Define a method to create an arbitrary amount of *synthetic* data for two classes. Call this method =[x, y] = generate_data(n_dim, n_data)= so that it genenerates =n_data= points,  with =n_dim= dimensions per point. One way to do that is to generate points from two gaussians.
+- Calculate the accuracy for 100 different synthetically generated training and testing datasets as $k$ increases.
 - Average the training and testing accuracy over these 100 runs.
-- What do you see?
+- Plot the resulting curves. What do you see?
   
-*** Deciding from a generic utility
-Let $U(y, a)$ be an arbitrary utility matrix and $P(y \mid x)$ an arbitrary model.
-- Write down the expected utility of action some $a$.
+
+
+
+
 
 
 
