@@ -1,7 +1,6 @@
 #+TITLE: Introduction to Machine Learning
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
-#+EXCLUDE_TAGS: notes
 #+LaTeX_HEADER: \include{preamble}
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+LATEX_HEADER: \setbeameroption{show notes}
