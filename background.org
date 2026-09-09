@@ -209,34 +209,33 @@ In that sense, $f \sim P_f$ and $g \sim P_g$.
 A sequence $x_t$ of r.v.s is IID if $x_t \sim P$
 $(x_1, \ldots, x_t, \ldots, x_T) \sim P^T$.
 
-
-
-For any real-valued random variable $f: \Omega \to \Reals$, the expectation with respect to a probability measure $P$ is
+*** Expectation
+For any real-valued random variable $f: \Omega \to \Reals$, the expectation with respect to a discrete probability measure $P$ is
 \[
-\E_P(f) = \sum_{\omega \in \Omega} f(\omega) P(\omega).
+\E_P(f) \defn \sum_{\omega \in \Omega} f(\omega) P(\omega).
 \]
-When $\Omega$ is continuous, we can use a density $p$
+When $\Omega$ is continuous, we can use a density $p$ or a general measure $P$
 \[
-\E_P(f) = \int_{\Omega} f(\omega) p(\omega) d\omega.
+\E_P(f) \defn \int_{\Omega} f(\omega) p(\omega) d\omega,
+\qquad
+\E_P(f) \defn \int_{\Omega} f(\omega) p(\omega) dP(\omega).
 \]
 
 **** Linearity of expectations
-For any RVs $x, y$:
 \[
-\E_P(x + y) = \E_P(x) + \E_P(y)
+\E_P(x + y) = \E_P(x) + \E_P(y)\qquad \textrm{for any RVs $x,y$}.
 \]
 **** Independence
 If $x,y$ are independent RVs then $\E_P(xy) = \E(x)\E(y)$.
-For any RVs $x, y$, $\E_P(x + y) = \E_P(x) + \E_P(y)$
-======= end
 **** Correlation
 If $x,y$ are *not* correlated then $\E_P(xy) = \E(x)\E(y)$.
+
+
 
 *** Conditional expectation
 **** Independence
 If $x,y$ are independent RVs then they are also uncorrelated (but not vice-versa)
 **** Conditional expectation
-======= end
 The conditional expectation of a random variable $f: \Omega \to \Reals$, with respect to a probability measure $P$ conditioned on some event $B$ is simply
 \[
 \E_P(f | B) = \sum_{\omega \in \Omega} f(\omega) P(\omega | B).
@@ -270,7 +269,6 @@ Here we consider a vector space $F$. Typically, it is a subset of the Euclidean 
 - $(x + y) + z = x + (y + z)$, for all $x, y, z \in F$.
 - $x + y = y + x$, for all $x, y \in F$.
 - There is a zero element $0 \in F$ such that $x + 0 = x$ for all $x \in F$.
-======= end
 - For all $x \in F$, there is an element $-x \in F$ so that $x + (-x) = 0$.
 - $a(x + y) = ax + ay$, For any $a \in \Reals$, $x, y \in F$.
 - $(a+b)x = ax + bx$, For any $a,b \in \Reals$, $x \in F$.
