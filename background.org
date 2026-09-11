@@ -25,6 +25,8 @@
 #+LaTeX_HEADER: \newcommand \wi {\vectorsym{w}_i}
 #+LaTeX_HEADER: \newcommand \wij {w_{i,j}}
 #+LaTeX_HEADER: \newcommand \bA {\matrixsym{A}}
+#+LaTeX_HEADER: \newcommand \bB {\matrixsym{B}}
+#+LaTeX_HEADER: \newcommand \bI {\matrixsym{I}}
 #+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
 #+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
 #+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
@@ -323,42 +325,42 @@ A linear operator $A$ from one vector space $F$ to another, $G$ has the followin
 A matrix $\bA \in \Reals^{n \times m}$ is a tabular array
 \[
 \bA= \begin{bmatrix}
-a_{1,1} & \cdots & a_{1, m}\\
+A_{1,1} & \cdots & A_{1, m}\\
 \vdots  & \ddots & \vdots \\
 A_{n,1} & \cdots & A_{n, m}
 \end{bmatrix}
 \]
 
-Matrices can be seen as linear operators $A : \Reals^n \to \Reals^m$, mapping vectors in $\Reals^n$ to vectors in $\Reals^m$. 
+Matrices can be seen as linear operators $\bA : \Reals^n \to \Reals^m$, mapping vectors in $\Reals^n$ to vectors in $\Reals^m$. 
 *** Multiplication operators
 **** Matrix multiplication
-For $A \in \Reals^{n \times d}$, $B \in \Reals^{d \times m}$, the
-\(ij\)-th element of the result of the multiplication $AB$ is
+For $\bA \in \Reals^{n \times d}$, $\bB \in \Reals^{d \times m}$, the
+\(ij\)-th element of the result of the multiplication $\bA\bB$ is
  \[
- (AB)_{i,j} = \sum_{k=1}^d A_{i,k} B_{k,j}.
+ (\bA\bB)_{i,j} = \sum_{k=1}^d A_{i,k} B_{k,j}.
  \]
-so that $AB \in \Reals^{n \times m}$.
+so that $\bA\bB \in \Reals^{n \times m}$.
 **** Matrix-vector multiplication
-A matrix $A \in \Reals^{n \times m}$ defines the following linear operator $A : \Reals^m \to \Reals^n$.
+A matrix $\bA \in \Reals^{n \times m}$ defines the following linear operator $\bA : \Reals^m \to \Reals^n$.
 \[
-Ax = \left(\sum_{j=1}^m A_{i,j} x_j : i = 1, \ldots, n \right)
+\bA \bx = \left(\sum_{j=1}^m A_{i,j} x_j : i = 1, \ldots, n \right)
 \]
-All vectors $x \in \Reals^m$ are equivalent to matrices in $\Reals^{m \times 1}$.
+All vectors $\bx \in \Reals^m$ are equivalent to matrices in $\Reals^{m \times 1}$.
 
 
 *** Matrix inverses
-**** The identity matrix $I \in \Reals^{n \times n}$
+**** The identity matrix $\bI \in \Reals^{n \times n}$
 - For this matrix, $I_{i,i} = 1$ and $I_{i,j} = 0$ when $j \neq i$.
-- $Ix = x$ and $IA = A$.
+- $\bI \bx = \bx$ and $\bI\bA = \bA$.
 
-**** The inverse of a matrix $A \in \Reals^{n \times n}$
-$A^{-1}$ is called the inverse of $A$ if
-- $A A^{-1} = I$.
-- or equivalently $A^{-1} A = I$.
+**** The inverse of a matrix $\bA \in \Reals^{n \times n}$
+$\bA^{-1}$ is called the inverse of $A$ if
+- $\bA \bA^{-1} = \bI$.
+- or equivalently $\bA^{-1} \bA = \bI$.
 
-**** The pseudo-inverse of a matrix $A \in \Reals^{n \times m}$
-- $\tilde{A}^{-1}$ is called the *left pseudoinverse* of $A$ if $\tilde{A}^{-1} A = I$.
-- $\tilde{A}^{-1}$ is called the *right pseudoinverse* of $A$ if $A \tilde{A}^{-1} = I$.
+**** The pseudo-inverse of a matrix $\bA \in \Reals^{n \times m}$
+- $\tilde{\bA}^{-1}$ is called the *left pseudoinverse* of $\bA$ if $\tilde{\bA}^{-1} \bA = \bI$.
+- $\tilde{\bA}^{-1}$ is called the *right pseudoinverse* of $\bA$ if $\bA \tilde{\bA}^{-1} = I$.
 
 
 * Calculus
