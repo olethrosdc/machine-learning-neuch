@@ -214,12 +214,6 @@ For any real-valued random variable $f: \Omega \to \Reals$, the expectation with
 \[
 \E_P(f) \defn \sum_{\omega \in \Omega} f(\omega) P(\omega).
 \]
-When $\Omega$ is continuous, we can use a density $p$ or a general measure $P$
-\[
-\E_P(f) \defn \int_{\Omega} f(\omega) p(\omega) d\omega,
-\qquad
-\E_P(f) \defn \int_{\Omega} f(\omega) p(\omega) dP(\omega).
-\]
 
 **** Linearity of expectations
 \[
@@ -230,6 +224,22 @@ If $x,y$ are independent RVs then $\E_P(xy) = \E(x)\E(y)$.
 **** Correlation
 If $x,y$ are *not* correlated then $\E_P(xy) = \E(x)\E(y)$.
 
+
+
+*** Expectation for general $\Omega$ :advanced:
+$\Omega$ is not always finite (or even discrete). 
+When $\Omega$ is continuous, we can instead define the *density $p$* so that
+\[
+\E_P(f) \defn \int_{\Omega} f(\omega) p(\omega) d\omega.
+\]
+The density $p$ is related to the probability $P$ as follows:
+- for any subset $A \subset \Omega$, $P(A) = \int_A p(\omega) d\omega$.
+
+In mathematical statistics and probability, people prefer using a so-called probability *measure $P$*, which allows us to use the following notation no matter whether $\Omega$ is discrete, continuous, or something else.
+\[
+\E_P(f) \defn \int_{\Omega} f(\omega) dP(\omega).
+\]
+Measure theory is an advanced topic, but if you see this notation, it means something similar to the standard integral and sum (see the Calculus section).
 
 
 *** Conditional expectation
@@ -376,7 +386,7 @@ x_t = a + (t-1) \cdot \frac{b - a}{n}
 \]
 Because the Reimann integral does *not always* exist, it is more convenient to use
 this more advanced concept:
-**** Lebesgue integral
+**** Lebesgue integral :advanced:
 This integral is obtained by taking a *vertical* discretisation of a function to the limit.
 Let $\lambda$ be the Lebesgue measure (i.e. area) of a set. Then:
 \[
