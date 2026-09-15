@@ -161,15 +161,15 @@ If we have $T$ datapoints
 **** kNN as a *model*
 - Given features $x$, we get a vector $p$ of class probabilities:
 \[
-p_i = P(y = i | x),
+p_i = \Pr(y = i | x),
 \]
-where $P(y = i | x)$ is the probability that  $y$ is $i$, given $x$.
+where $\Pr(y = i | x)$ is the probability that  $y$ is $i$, given $x$.
 #+BEAMER: \pause
 **** Decisions to maximise accuracy
 At time $t$:
 #+ATTR_BEAMER: :overlay <+->
 - We observe features $x_t$
-- We *predict* label $a_t = \argmax_i P(y_t = i | x_t)$
+- We *predict* label $a_t = \argmax_i \Pr(y_t = i | x_t)$
 - We observe the actual label $y_t$.
 - We *win* if $y_t = a_t$ and *lose* otherwise
 #+BEAMER: \pause
@@ -199,7 +199,7 @@ What utility function would you use for the spam detection problem?
 **** Classification decision to maximise expected utility
 - Expected utility of a single decision
 \[
-\E[U | a, x] = \sum_y P(y | x, a) U(y, a) = \sum_y P(y | x) U(y, a)
+\E[U | a, x] = \sum_y \Pr(y | x, a) U(y, a) = \sum_y \Pr(y | x) U(y, a)
 \]
 - The decision maximising expected utility: $a^* = \argmax_a \E[U | a, x]$
 
@@ -233,14 +233,14 @@ In a group, choose a utility matrix $U(y,a)$ for the spam example from the slide
 | Virus    |      |      |       |
 |----------+------+------+-------|
 **** The effect of different utilities                                 :code:
-- Fit a kNN classifier and call =predict_proba()= to get $P(y \mid x)$ for each test point.
+- Fit a kNN classifier and call =predict_proba()= to get $\Pr(y \mid x)$ for each test point.
 - Write a function /utilityScore(y, actions, U)/ that takes the true labels $y_t$ and chosen actions $a_t$, and returns $\sum_{t=1}^T U(y_t, a_t) / T$.
-- Write a second function /utilityAction(probs, U)/ that returns, for each test point, the action $a^*$ maximising expected utility under $P(y\mid x)$ and your $U$.
+- Write a second function /utilityAction(probs, U)/ that returns, for each test point, the action $a^*$ maximising expected utility under $\Pr(y\mid x)$ and your $U$.
 - Compare the average utility of plain =predict()= (most likely class) against your =utilityAction()=.
 **** The math behind predictions and decisions  :theory:
-- Once you have $a^* = \argmax_a \sum_y P(y|x) U(y,a)$, *prove* that no other decision rule can achieve higher expected utility under your model.
-- Show that if $A = Y$ and if $U(y, a) = \ind{y = a}$ (you only care about being right), then $a^*$ is the most likely class, $\argmax_y P(y \mid x)$.
-- Bonus: What changes once $P(y|x)$ is *estimated* (e.g. via kNN) rather than known exactly? For example, say that $P^*(y|x)$ is the true model.
+- Once you have $a^* = \argmax_a \sum_y \Pr(y|x) U(y,a)$, *prove* that no other decision rule can achieve higher expected utility under your model.
+- Show that if $A = Y$ and if $U(y, a) = \ind{y = a}$ (you only care about being right), then $a^*$ is the most likely class, $\argmax_y \Pr(y \mid x)$.
+- Bonus: What changes once $\Pr(y|x)$ is *estimated* (e.g. via kNN) rather than known exactly? For example, say that $P^*(y|x)$ is the true model.
 
 ** Homework 
 *** Exercise 1 :homework:
