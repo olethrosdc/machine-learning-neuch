@@ -73,7 +73,7 @@ if __name__== "__main__":
 
     import pandas as pd
 
-    data = pd.read_csv("./class.csv")
+    data = pd.read_csv("class.csv")
     x = data[["Height (cm)", "Weight (kg)"]].to_numpy()
     y = data["Sex"].to_numpy()
     print(y)
