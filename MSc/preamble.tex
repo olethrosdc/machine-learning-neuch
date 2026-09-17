@@ -2,34 +2,34 @@
 \usepackage{tikz}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{mathrsfs}
 \usepackage{isomath}
 \usepackage{algorithmic}
 \usepackage{fontawesome}
-\usepackage[bbgreekl]{mathbbol}
-\usepackage{color}
+\usepackage{xcolor}
 \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
 \newcommand \Var {\mathop{\mbox{\ensuremath{\mathbb{V}}}}\nolimits}
 \newcommand \Bias {\mathop{\mbox{\ensuremath{\mathbb{B}}}}\nolimits}
 \newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
+\newcommand{\indep}{\mathrel{\text{\scalebox{1.07}{$\perp\mkern-10mu\perp$}}}}
 \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\sgn}{sgn}
 \newcommand \defn {\mathrel{\triangleq}}
-\newcommand{\indep}{\mathrel{\text{\scalebox{1.07}{$\perp\mkern-10mu\perp$}}}}
 \newcommand \loss {L}
 \newcommand \cost {\ell}
 \newcommand \util {U}
 \newcommand \rewrad {r}
 \newcommand \Reals {\mathbb{R}}
 \newcommand \Naturals {\mathbb{N}}
-\newcommand \Param {\Theta}
-\newcommand \param {\theta}
+\newcommand \Param {\mathcal{B}}
+\newcommand \param {\beta}
 \newcommand \pol {\pi}
 \newcommand \Pols {\Pi}
-\newcommand \vparam {\vectorsym{\param}}
-\newcommand \mparam {\matrixsym{\Theta}}
-\newcommand \CH {\mathcal{H}}
+\newcommand \vparam {\vectorsym{\beta}}
+\newcommand \mparam {\matrixsym{B}}
+\newcommand \CD {\mathcal{D}}
 \newcommand \CX {\mathcal{X}}
 \newcommand \CA {\mathcal{A}}
 \newcommand \CY {\mathcal{Y}}
@@ -46,23 +46,26 @@
 \newcommand \bz {\vectorsym{z}}
 \newcommand \bx {\vectorsym{x}}
 \newcommand \bX {\matrixsym{X}}
-\newcommand \bel {\beta}
-\newcommand \dbel {\beta}
-\newcommand \Bel {\mathcal{B}}
+\newcommand \dbel {\phi}
+\newcommand \bel {\phi}
+\newcommand \Bel {\Phi}
+\newcommand \Ber {\textrm{Bernoulli}}
 \newcommand \Unif {\textrm{Unif}}
 \newcommand \Mult {\textrm{Mult}}
 \newcommand \Beta {\textrm{Beta}}
-\newcommand \Wish {\textrm{Wish}}
 \newcommand \Dir {\textrm{Dir}}
-\newcommand \Ber {\textrm{Bernoulli}}
-\newcommand \Lapl {\textrm{Laplace}}
-\newcommand \Binom {\textrm{Binomial1}}
+\newcommand \Wish {\textrm{Wish}}
 \newcommand \Normal {\textrm{Normal}}
 \newcommand \Simplex {\mathbb{\Delta}}
+\newcommand \outcome {\omega}
+\newcommand \Outcomes {\Omega}
+\newcommand \cset[2] {\left\{#1 : #2 \right\}}
 \usetikzlibrary{shapes.geometric}
-\usetikzlibrary{arrows}
 \tikzstyle{utility}=[diamond,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=8mm]
 \tikzstyle{select}=[rectangle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
 \tikzstyle{hidden}=[dashed,draw=black,fill=red!10]
 \tikzstyle{RV}=[circle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
+\tikzstyle{transition}=[rectangle,draw=black!50,fill=black!20,thick]
+\tikzstyle{someset}=[circle,draw=black,minimum size=8mm]
+\tikzstyle{point}=[circle,draw=black,fill=black]
 

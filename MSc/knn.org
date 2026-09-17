@@ -2,43 +2,26 @@
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \include{preamble}
-#+LaTeX_CLASS_OPTIONS: [10pt]
+#+LaTeX_CLASS_OPTIONS: [smaller]
+#+LATEX_HEADER: \setbeameroption{show notes}
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 #+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
 * Introduction
 ** The hidden secret of machine learning
-*** Fill-in class data
+*** Supervised learning
 
-#+CAPTION: Spreadsheet link
-#+ATTR_LATEX: :width 0.5\textwidth
-[[./fig/class_data_QR.png]]
-
-
-
-
-*** (Batch) learning from data
-
-- $x_t \in \CX$, the *input* variables (or *features*)
+- Given labelled training examples $(x_1, y_1), \ldots (x_T, y_T)$ where
+- $x_t \in X$ are *features* 
+- $y_t \in Y$ are *labels*..
+**** Feature space $\CX$
 - Usually $\CX = \Reals^n$: the n-dimensional Euclidean space
-#+BEAMER: \pause
- 
-**** Unsupervised learning:
-- Training examples $(x_1, \ldots  x_T)$,
-- Predict $x_{t}$ for $t > T$.
-
-#+BEAMER: \pause
-**** Supervised learning:  
-- Given labelled training examples $(x_1, y_1), \ldots (x_T, y_T)$
-- $y_t \in \CY$, the *output* variables (or *labels*)
-- For new $x_t$, $t > T$, predict $y_t$.
-#+BEAMER: \pause
-**** Classification vs Regression
-- Classification: $\CY = \{1, \ldots, m\}$ are *discrete* labels
-- Regression: $\CY = \Reals^m$ are *continuous* values
-
-
+- How do we use your class data?
+**** Classification
+- $Y = \{1, \ldots, m\}$ are *discrete* labels
+**** Regression
+- $Y = \Reals^m$ are *continuous* values
 
 *** The kNN algorithm idea
 
@@ -71,15 +54,25 @@
 
 - Really simple!
 - Can outperform really complex models!
-
+  
 * The algorithm
 ** $k$ Nearest Neighbours
 
 *** The Nearest Neighbour algorithm
 **** Pseudocode
 - Input: Data $(x_t, y_t)_{t=1}^T$, test point $x$, distance $d$ 
-- $t^* = \argmin_t d(x_t, x)$ /// How do we implement this?
+- $t^* = \argmin_t d(x_t, x)$ // How do we implement this?
 - Return $\hat{y}_t = y_{t^*}$
+**** Explanation of $\argmax$.
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+
+If $S = \{x_1, \ldots, x_n\}$ is a set of elements with the $>$  and $=$ relations, then:
+- $\max S \geq x_i \quad \forall x_i \in S$.
+- $\exists x_i \in S$ s.t. $\max S = x_i$.
+In addition
+- $\argmax S$ are the *indices* $i$ for which $\max S = x_i$.
 
 **** Classification
      $\hat{y}_t  \in [m] \equiv \{1, \ldots, m\}$
@@ -90,33 +83,29 @@ $\hat{y}_t  \in \Reals^m$
 *** The k-Nearest Neighbour algorithm
 
 **** Pseudocode
+#+ATTR_BEAMER: :overlay <+->
 - Input: Data $(x_t, y_t)_{t=1}^T$, test point $x$, distance $d$, neighbours \(k\)
 - Calculate $h_t = d(x_t, x)$ for all $t$.
-- Get sorted indices $s = \texttt{argsort}(h)$ so that $d(x_{s_i}, x) \leq d(x_{s_{i+1}}, x)$ for all $i$. (How?)
+- Get sorted indices $s = \texttt{argsort}(h)$ so that $d(x_{s_i}, x) \leq d(x_{s_{i+1}}, x)$ for all $i$. 
 - Return $\sum_{i=1}^k y_{s_i} / k$.
 
+#+BEAMER: \pause
 **** Classification
-- It is not convenient to work with discrete labels.
-- We use a *one-hot encoding* $(0, \ldots, 0, 1, 0, \ldots, 0)$.
-- $y_t \in \{0,1\}^m$ with $\|y_t\|_1 = 1$, so that the class of the \(t\)-th example is $j$ iff $y_{t,j} = 1$.
-
+- We use a *one-hot encoding* $(0, \ldots, 0, 1, 0, \ldots, 0)$, with $y_t \in \{0,1\}^m$.
+- The class of the \(t\)-th example is $j$ $\Leftrightarrow$ $y_{t,j} = 1$.
+- Equivalently, return $p$ with 
+\[
+p_i = \sum_{t=1}^k \ind{y_{s_t} = i} / k
+\]
+#+BEAMER: \pause
 **** Regression
 - $y_t  \in \Reals^m$, so we need do nothing
 
-*** Making a decision
-**** kNN: A *model* of the conditional distribution $P(y | x)$
-- Given features $x$, we get a vector
-- $p_i = \hat{\Pr}(y = i | x)$.
-**** The optimal decision rule $\pi$ derived from kNN
-- Classification decision $a_t \sim \pi(a | x_t)$
-- $a_t \in \CA$ but $\CA \neq \CY$, e.g. can include "Do not Know", or "Alert" etc.
-- Actual label $y_t$
-- $U(a_t, y_t)$: utility function depending on the application.
-**** Decision rule maximising accuracy
-- $a_t = \argmax_i \hat{\Pr}(y = i | x)$.
-
 ** Extensions and parameters
 *** The number of neighbours
+
+Discuss in groups of 2-3 people. Write down your answers.
+
 **** $k=1$
 - How does it perform on the training data?
 - How might it perform on unseen data?
@@ -135,6 +124,13 @@ When features having varying scales:
 d(x,y) = \|S x - S y\|_p
 \]
 Or pre-scale the data
+***** Data pre-scaling
+:PROPERTIES:
+:BEAMER_ENV: note
+:END:
+\[
+\|Sx - Sy\|_2 = |\sum_i Sx  - Sx\|
+\]
 
 **** Complex data
 - Manifold distances
@@ -146,16 +142,16 @@ Or pre-scale the data
 - Positivity $d(x,y) > 0$ if $x \neq y$.
 - Symmetry $d(y,x) = d(x,y)$.
 - Triangle inequality $d(x,y) \leq d(x,z) + d(z,y)$.
-**** For data in $\Reals^n$, \(p\)-norm
+**** For data in $\Reals^n$, $p$-norm
 \[
 d(x,y) = \|x - y\|_p
 \]
-*** Norms;
+*** Norms
 **** A norm $\|\cdot\|$
 - Zero element $\|0\| = 0$.
 - Homogeneity $\|cx\| = c \|x\|$ for any scalar $a$.
 - Triangle inequality $\|x + y\| \leq \|x\| + \|y\|$.
-**** $p$-norm
+**** \(p\)-norm
 \[
 \|z\|_p = \left(\sum_i z_i^p\right)^{1/p}
 \]
@@ -168,12 +164,102 @@ If we have $T$ datapoints
 - $c$ depends on the data distribution.
 
 
+*** Making a decision
+**** kNN as a *model*
+- Given features $x$, we get a vector $p$ of class probabilities:
+\[
+p_i = \Pr(y = i | x),
+\]
+where $\Pr(y = i | x)$ is the probability that  $y$ is $i$, given $x$.
+#+BEAMER: \pause
+**** Decisions to maximise accuracy
+At time $t$:
+#+ATTR_BEAMER: :overlay <+->
+- We observe features $x_t$
+- We *predict* label $a_t = \argmax_i \Pr(y_t = i | x_t)$
+- We observe the actual label $y_t$.
+- We *win* if $y_t = a_t$ and *lose* otherwise
+#+BEAMER: \pause
+**** The model versus the prediction
+- The *model* $P$ tells us the probability of different classes.
+- When we *decide* what our prediction should be, we can *use* the model.
+- We will use $\pi$ to denote the *decision rule* or *policy*.
+*** Decisions versus predictions
+- We frequently need to make a *decision*, instead of just a *prediction*.
+- Our *utility* function $U(y, a)$ represents our *preferences*.
+- The space of *actions* $A$ is /not identical/ to the set of *labels* $Y$.
+#+BEAMER: \pause
+**** Minimise spam annoyance                                 :B_exampleblock:
+	 :PROPERTIES:
+	 :BEAMER_env: exampleblock
+	 :END:
+What utility function would you use for the spam detection problem?
+|----------+------+------+-------|
+| Utility  | Pass | Flag | Trash |
+|----------+------+------+-------|
+| Normal   |      |      |       |
+| Spam     |      |      |       |
+| Virus    |      |      |       |
+|----------+------+------+-------|
+
+#+BEAMER: \pause
+**** Classification decision to maximise expected utility
+- Expected utility of a single decision
+\[
+\E[U | a, x] = \sum_y \Pr(y | x, a) U(y, a) = \sum_y \Pr(y | x) U(y, a)
+\]
+- The decision maximising expected utility: $a^* = \argmax_a \E[U | a, x]$
+
+  
+
+  
 * Activities
+** Activity 1: kNN parameters                                      :activity:
+*** Using kNN in scikitlearn
+**** Setup
+- Use the class dataset from earlier (or another dataset given in class).
+- Use scikit-learn's =KNeighborsClassifier= (or =KNeighborsRegressor= if your target is continuous).
+**** The effect of $k$ and $d$                                         :code:
+- Fit the model for several values of $k$ (e.g. $k = 1, 3, 5, 15, T$), recording both *training* and *test* accuracy for each.
+- Rescale the features (e.g. with =StandardScaler=) and repeat. Does the ranking of neighbours change? Does performance change?
+- Instead of rescaling the fetaures, change the *distance* function. Can you change it so it has the same effect?
+*** Behaviour of $k$:
+- Argue why the *training* accuracy of $k$-NN is always exactly $100\%$ when $k=1$.
+- What is the training accuracy when $k=T$, assuming $n_i$ examples in class $i$?
+- Does the same hold for *test* accuracy when $k=1$? How about $k=T$? Check this against the plot you made.
+
+  
+** Activity 2: Predictions vs Decisions                            :activity:
+*** Setup
+In a group, choose a utility matrix $U(y,a)$ for the spam example from the slides, by filling in the table:
+|----------+------+------+-------|
+| Utility  | Pass | Flag | Trash |
+|----------+------+------+-------|
+| Normal   |      |      |       |
+| Spam     |      |      |       |
+| Virus    |      |      |       |
+|----------+------+------+-------|
+**** The effect of different utilities                                 :code:
+- Fit a kNN classifier and call =predict_proba()= to get $\Pr(y \mid x)$ for each test point.
+- Write a function /utilityScore(y, actions, U)/ that takes the true labels $y_t$ and chosen actions $a_t$, and returns $\sum_{t=1}^T U(y_t, a_t) / T$.
+- Write a second function /utilityAction(probs, U)/ that returns, for each test point, the action $a^*$ maximising expected utility under $\Pr(y\mid x)$ and your $U$.
+- Compare the average utility of plain =predict()= (most likely class) against your =utilityAction()=.
+**** The math behind predictions and decisions  :theory:
+- Once you have $a^* = \argmax_a \sum_y \Pr(y|x) U(y,a)$, *prove* that no other decision rule can achieve higher expected utility under your model.
+- Show that if $A = Y$ and if $U(y, a) = \ind{y = a}$ (you only care about being right), then $a^*$ is the most likely class, $\argmax_y \Pr(y \mid x)$.
+- Bonus: What changes once $\Pr(y|x)$ is *estimated* (e.g. via kNN) rather than known exactly? For example, say that $P^*(y|x)$ is the true model.
+
+** Homework 
+*** Exercise 1 :homework:
+- Define a method to create an arbitrary amount of *synthetic* data for two classes. Call this method =[x, y] = generate_data(n_dim, n_data)= so that it genenerates =n_data= points,  with =n_dim= dimensions per point. One way to do that is to generate points from two gaussians.
+- Calculate the accuracy for 100 different synthetically generated training and testing datasets as $k$ increases.
+- Average the training and testing accuracy over these 100 runs.
+- Plot the resulting curves. What do you see?
+  
 
 
-*** KNN activity
-- Implement nearest neighbours
-[[./src/KNearestNeighbours/NearestNeighbourClassifier.py]]
-- Introduction to scikitlearn nearest neighbours
-[[./src/KNearestNeighbours/KNN-scikit.ipynb]]
-- Introduction to generalisation errors
+
+
+
+
+

@@ -3,8 +3,9 @@
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \input{preamble}
 #+LaTeX_CLASS_OPTIONS: [smaller]
+#+LATEX_HEADER: \setbeameroption{show notes}
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
-#+TAGS: activity advanced definition exercise homework project example theory code
+#+TAGS: activity advanced definition exercise homework project example theory code BSc MSc
 #+OPTIONS:   H:3
 #+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
 #+MACRO: color @@latex:{\color{$1}@@$2@@latex:}@@
@@ -81,7 +82,6 @@ We can calculate the expected utility of any decision
 \]
 Here the first equality follows from the definition of conditional expectation and 
 $P(y | x, a) = P(y | x)$ as the label does not depend on our actions.
-
 #+BEAMER: \pause
 **** The optimal decision
 For any observation $x$, and $P$, we take the action maximising expected utility:
@@ -107,13 +107,13 @@ U(\pi, D) \defn \E[U | \pi, D]
 \]
 Here the first equality follows from the definition of conditional expectation and 
 $P(y | x, a) = P(y | x)$ as the label does not depend on our actions.
-
 #+BEAMER: \pause
+
 **** Expected utility over $P$
 We can marginalise over possible datasets $D$
 \[
 U(\pi, P) \defn 
-\E_P[U | \pi] 
+\E^\pi_P[U]
 = \int_{\mathcal{D}} \!\!dP(D) U(\pi, D)
 \overset{\textrm{i.i.d.}}{=} \!\! \int_{\CX} dP(x) \sum_{\CY} P(y | x) \sum_a \pi(a|x) U(y,a)
 \]
@@ -133,9 +133,7 @@ The average probability of the actual class:
 - If we always assign probability $1/m$ to all labels, the score is $1/m$.
 *** Negative Log-Loss
 Here we assign look at the *logarithm* of the probability. This really penalises bad guesses.
-\[
-\sum_{t=1}^T \ln P(y_t | x_t) / T
-\]
+- $\sum_{t=1}^T \ln P(y_t | x_t) / T$
 - If we always assign probability 1 to the correct label, this score is 0.
 - If we assign probability 0 to even a single label, the score is $-\infty$.
 #+BEGIN_SRC python
@@ -147,7 +145,7 @@ in scikitlearn implements log-loss (*not* negative)
 **** The regressor as a deterministic decision rule
 A decision rule $\pi$ generates a *decision* $a \in \Reals^m$.
 - For *deterministic* rules $\pi(x)$ is the prediction for $x$.
-- Since we can almost never guess correctly, we need to define the quality of our predictions somehow, either as a utility $U(y_t, a_t)$ or a loss function $\ell(y_t, a_t)$.
+- We need to define the quality of our predictions, either as a utility $U(y_t, a_t)$ (to maximise) or a loss function $\ell(y_t, a_t)$ (to minimise).
 
 **** Mean-Squared Error Loss on a Dataset
 This is the squared difference in predicted versus actual values:
@@ -156,26 +154,22 @@ This is the squared difference in predicted versus actual values:
 \]
 
 **** Expected MSE
-If $(x, y) \sim P$, the expected MSE of a deterministic decision rule $\pi : \CX \to \Reals$ is
+If $(x, y) \sim P$, the expected MSE of a deterministic rule $\pi : \CX \to \Reals$ is:
 \[
-\int_\CX \int_\CY dP(x,y) [y - \pi(x)]^2.
+\E(y - \pi)^2 = \int_\CX \E[(y - \pi(x))^2 \mid x] dP(x) = \int_\CX \int_\CY dP(x,y) [y - \pi(x)]^2.
 \]
 *** Probabilistic regression
 **** The regressor as a stochastic decision rule
 A decision rule $\pi$ generates a *decision* $a \in \Reals^m$.
 - For *stochastic* rules $\pi(a | x)$ defines a density over predictions.
-- In this case it is natural to define $\pi(y_t | x_t)$ as our metric.
+- In this case it is natural to define $\pi(y_t, x_t)$ as our metric.
 **** Likelihood on a Dataset
-The likelihood of the observed data under our decision rule is
+The mean-square error is simply the squared difference in predicted versus actual values:
 \[
-\prod_{t=1}^T \pi(y_t | x_t).
+\prod_{t=1}^T \pi(y_t | x_t)
 \]
-Let us call
-\[
-\hat{y}_t = \argmax_y \pi(y \mid x_t)
-\]
-the *predicted* or *most likely* value.
-When $\pi(a | x)$ has a Gaussian form, then the mean-square error between $\hat{y}_t$ and $y$ is related to the negative likelihood of the Gaussian model, as we will see later.
+
+We will later see a link between this metric, mean-square error and estimation.
 
 
 * Generalisation
@@ -184,6 +178,7 @@ When $\pi(a | x)$ has a Gaussian form, then the mean-square error between $\hat{
 - $D = ((x_t, y_t) : t = 1, \ldots, T)$.
 - $x_t \in \CX$, $y_t \in \CY$.
 #+BEAMER: \pause
+
 **** Assumption: The data is generated i.i.d.
 - $(x_t, y_t) \sim P$ for all $t$ (identical)
 - $D \sim P^T$ (independent)
@@ -197,20 +192,21 @@ Here we measure performance for the data *distribution $P$.*
 \(\max_\pi U(\pi, D)=  \max_\pi \sum_{(x,y) \in D} \sum_a \pi(a | x) U(a,y).\)
 
 Performance is measured over the *data $D$*
+
 *** Generalisation
 **** The fundamental problem
 - We want to maximise $U(\pi, P)$, the *actual* performance.
 - We can only measure $U(\pi, D)$, over *some data*.
-- We have a *learning algorithm $\lambda$*
+- We have a *learning algorithm $\lambda : \CD \to \Pols$*
 - If $\pi = \lambda(D)$, then we instead measure $U(\lambda(D), D)$.
 - However $\E_P[U(\lambda(D), D)] \geq U(\pi, P)$ $\forall \pi$ (*biased* estimator)
 #+BEAMER: \pause
 **** Training and testing
 - Split $D$ in $D_{\textrm{train}}$, $D_{\textrm{test}}$
-- Obtain $\pi = \lambda(D_{\textrm{train}})$
-- Calculate $U(\pi, D_{\textrm{test}})$
-- For all $\pi$, $\E_P[U(\pi, D_{\textrm{test}})] = U(\pi, P)$ (*unbiased* estimator)
-
+- Obtain $\pol = \lambda(D_{\textrm{train}})$
+- Calculate $U(\pol, D_{\textrm{test}})$
+- $\E_P[U(\pol, D_{\textrm{test}})] \alert{=} U(\pol, P)$ for any fixed $\pol$ (unbiased estimator)
+- $\E_P[U(\lambda(D_{\textrm{train}}), D_{\textrm{train}})] \alert{\geq} U(\pi, P)$ (biased estimator)
 *** kNN Classifier Accuracy on a single dataset
 [[../fig/knn-gaussian-train.pdf]]
 *** kNN Classifier Accuracy on a single dataset
@@ -248,10 +244,43 @@ Use to measure the final quality of a model
 - Use all the remaining $k-1$ subsets for training
 - Average results on validation sets
 
+*** Cross-validation example: A mean estimate
+Live coding in Python:
+- Get a mean estimate
+- Perform cross-validation
+**** Hand-crafted 
+#+BEGIN_SRC python
+  def xv_shuffler(x, estimator, scoring, n_folds):
+	  rng = np.random.default_rng
+	  # shuffle data
+	  T = len(x)
+	  indices = np.arange(T)
+	  shuffle(indices)
+	  fold_size = np.ceil(T / n_folds)
+	  fold_start = np.zeros(n_folds)
+	  fold_end = np.zeros(n_folds)
+	  # create folds
+	  for k in range(n_folds):
+		  fold_start = k * fold_size
+		  fold_end = np.min((k+1) * fold_size, T)
+	  # for each fold:
+	  # 1. Run estimator on k-1 folds
+
+        
+	  # 2. Score estimator on k-th set
+
+#+END_SRC
+
+**** sklearn built-in method
+#+BEGIN_SRC python
+from sklearn.model_selection import cross_val_score
+scores = cross_val_score(classifier, X, y, cv = n_folds)
+#+END_SRC
+
 *** Bootstrapping
 - Express uncertainty by resampling the data.
 - Repeat your calculations for each resample
-
+#+BEAMER: \pause
 **** BootstrapSample(D)
 \begin{algorithmic}
 \STATE \textbf{input} Data $D = (z_1, \ldots, z_T)$, of size $T$
@@ -261,7 +290,7 @@ Use to measure the final quality of a model
 \ENDFOR
 \STATE \textbf{return} $D_b$
 \end{algorithmic}
-
+#+BEAMER: \pause
 **** BootstrapEstimate($D, \lambda, N$)
 \begin{algorithmic}
 \STATE \textbf{input} Data $D \in \mathcal{D}$, algorithm $\lambda : \mathcal{D} \to \Theta$, $N > 0$ number of samples
@@ -271,7 +300,7 @@ Use to measure the final quality of a model
 \STATE \textbf{return} $\{\theta_n : n \in [N]\}$
 \end{algorithmic}
 
-*** Bootstrapping example: A mean estimate
+
 
 *** The wrong way to do XV for subset selection :activity:
 
@@ -291,19 +320,49 @@ classifier is 50%.
 - Find a subset of “good” predictors that show fairly strong (univariate) correlation with the class labels, using all of the samples except those in fold k.
 - Using just this subset of predictors, build a multivariate classifier, using all of the samples except those in fold k.
 - Use the classifier to predict the class labels for the samples in fold k.
+**** Level notes
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+- *BSc*: The point isn't the procedure itself: it's noticing that cross-validation can silently give you a fake guarantee if information from outside a fold leaked into the model-building step before validation happened. Spotting this kind of methodological trap is a core scientific-method skill, and one you should actively check for in your own project.
+- *MSc*:  *Why* does the wrong version give a near-zero apparent error despite a true error of $50\%$? Connect it to the estimation-error bound above: what is $|\hat\Pols|$ effectively doing once you've screened 5000 predictors first?
 
 
+*** Lab
+- scikitlearn KNN
+- scikitlearn performance measures
+- train/test/validate plot with increasing k
+- XV plot with increasing k
+- Scaling and other preprocessing
+- Effect of outliers on preprocessing
+- Optional: Bootstrap performance evaluation
+  
+  
+ 
 * Learning and generalisation
 ** Introduction
 *** Learning and generalisation
 How well can decision rule perform?
 
 **** Estimation theory view
-- Bias: The expected difference between the estimated value and the unknown parameter
-- Variance: The expected difference between the estimated value and the unknown parameter
+- Bias: The *expected difference* between the estimated value and the unknown parameter
+- Variance: Just the *variance* of that estimator, as a random variable.
+- Related to generalisation error.
+  
 **** Learning theory view
-- Approximation ability: How well a class of rules can approximate the optimal one.
-- Statistical error: How easy it is to choose the best rule in the class.
+- Approximation error: How well a class of rules can approximate the optimal one.
+- Etimation error: How easy it is to choose the best rule in the class.
+
+**** Which one do we use?
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+
+This course mainly follows the *learning theory view*: it talks directly about $U(\pol, P)$, the quantity we actually care about, rather than about estimating some parameter $\theta$. It bounds the generalisation error directly.
+
+The *estimation theory view* is covered later for completeness. It's a standard statistics framing, where we care about how well we can estimate a parameter, rather than how well we perform. It can be used to indirectly bound the generalisation error.
+
+  
 
 ** Bias and variance
 *** Unbiased estimators
@@ -333,32 +392,32 @@ The sample mean estimator $f(D) = \sum_{t} x_t / T$ is unbiased, as :
 
 *** Example of a biased and unbiased estimator: Training error
 #+ATTR_BEAMER: :overlay <+->
-- $U(\mathcolor{blue}{\pi}, \mathcolor{green}{D})$ is the measured accuracy of a {{{color(blue,classifier $\pi$)}}}  on {{{color(green, data $D$)}}}
-- $U(\mathcolor{blue}{\pi}, \mathcolor{red}{P}) = \E_{D \sim P} [U(\pi, D)]$ is the *actual* accuracy.
+- $U(\mathcolor{blue}{\pi}, \mathcolor{green}{D})$ is the {{{color(green,measured)}}} accuracy of a {{{color(blue,classifier $\pi$)}}}  on {{{color(green, data $D$)}}}
+- $U(\mathcolor{blue}{\pi}, \mathcolor{red}{P}) = \E_{D \sim P} [U(\pi, D)]$ is the *actual* accuracy on distribution *$P$*.
 - So $U(\mathcolor{blue}{\pi}, \mathcolor{green}{D})$ is an unbiased estimate of $U(\mathcolor{blue}{\pi}, \mathcolor{red}{P})$.
 - $\mathcolor{magenta}{\lambda}(D) = \argmax_\pi U(\pi, D)$ is a {{{color(magenta,learning algorithm)}}}, picking the best classifier for a dataset $D$.
-- Then $U(\mathcolor{magenta}{\lambda}(D), D)$ is biased, as for any $\pi'$
+- Then $U(\mathcolor{magenta}{\lambda}(D), D)$ is biased, as its expectation obeys:
 \begin{align}
-\uncover<4->{
-\E_{D \sim P} [U(\mathcolor{magenta}{\lambda}(D), D)]
- &= \int_{D} dP(D)  U(\mathcolor{magenta}{\lambda}(D), D)\\
-}
 \uncover<5->{
- &= \int_{D} dP(D) \max_\pi U(\pi, D)\\
+\E_{D \sim P} [U(\mathcolor{magenta}{\lambda}(D), D)]
+ &= \int_{D} d\alert{P}(D)  U(\mathcolor{magenta}{\lambda}(D), D)\\
 }
 \uncover<6->{
- &\geq \int_{D} dP(D) U(\pi', D)\\
+ &= \int_{D} d \alert{P}(D) \max_\pi U(\pi, D)\\
 }
 \uncover<7->{
- &= U(\pi', P)
+ &\geq \int_{D} d \alert{P}(D) U(\pi', D) && \forall \pi'\\
+}
+\uncover<8->{
+ &= U(\pi', \alert{P})
 }
 \end{align}
 - i.e. the expected training accuracy is higher than that of any classifier.
-*** The bias/variance trade-off
-- Dataset $D \sim P$.
-- Predictor $f_D(x)$
-- Target function $y = f(x) + \epsilon$
-- $\E \epsilon = 0$ zero-mean noise with variance $\sigma^2 = \Var(\epsilon)$
+*** Bias/Variance tradeoff
+- Dataset $D \sim P$  (the dataset $D = \{(x_t, y_t) | t=1, \ldots, T\}$ is sampled from the unknown distribution $P$)
+- Predictor $f_D(x)$ (it makes predictions about indiviudal $x$)
+- Target function $y = f(x) + \epsilon$ (we want $f_D \approx f$).
+- $\E(\epsilon)= 0$ zero-mean noise with variance $\sigma^2 = \Var(\epsilon)$
 **** MSE decomposition
 \[
 \E[(f - f_D)^2]= \Var(f_D) + \Bias(f_D)^2 + \sigma^2
@@ -376,6 +435,13 @@ What is the expected deviation from the true function
 \[
 \Bias(f_D) \defn \E[(f_D - f)]
 \]
+**** The bias/variance trade-off.                              :advanced:MSc:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+This is the classical statistics formulation, applied to a regression estimator $f_D$,
+ not generally for $U(\pol,P)$. It's good background, and the proof below is worth doing for the practice, but it's only needed at the *MSc level*: the regret decomposition already covers what you need to know about generalisation error in the BSc course.
+
 *** Example: mean estimation
 - Data $D = y_1, \ldots, y_T$ with $\E[y_t] = \mu$.
 - Goal: estimate $\mu$ with some estimator $f_D$ to minimise
@@ -384,14 +450,14 @@ What is the expected deviation from the true function
 To minimise the MSE, we use $f^* = \mu$. This gives us two ideas:
 **** Empirical mean estimator:
 - $f_D = \sum_{t=1}^T x_t / T$.
-- $\Var(f_D) = \E [f_D - \mu] = 1/\sqrt{T}$
+- $\Var(f_D) = \E [f_D - \mu]^2 = \sigma^2/T$
 - $\Bias(f_D) = 0$. (unbiased estimator)
 **** Laplace mean estimator:
-- $f_D = \sum_{t=1}^T (\mathcolor{magenta}{\lambda} + x_t) / T$.
+- $f_D = \sum_{t=1}^T (\lambda + x_t) / T$.
 - $\Var(f_D) = \E [f_D - \mu] = \frac{1}{1 + \sqrt{T}}$
 - $\Bias(f_D) = O(1/T)$.
 
-*** A proof of the bias/variance trade-off
+*** A proof of the bias/variance trade-off :advanced:MSc:
 - RV's $y_t \sim P$, $\E[y_t] = \mu$, $y_t = \mu + \epsilon_t$.
 - Estimator $f_D$, $D = y_1, \ldots, y_{t-1}$.
 #+BEGIN_EXPORT latex
@@ -408,10 +474,16 @@ To minimise the MSE, we use $f^* = \mu$. This gives us two ideas:
 &= \Var(f_D) + \Bias(f_D)^2 + \sigma^2
 \end{align*}
 #+END_EXPORT
+**** Level notes
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+- *BSc*: Make sure you understand each and every step of the derivation.
+- *MSc*: Uou should be able to re-use the ideas in this proof for similar proofs.
 ** Generalisation
 *** Generalisation error
 **** Regret decomposition
-Let the optimal rule be $\pol^* \in \Pols$, the best approximate rule be $\hat{\pi}^* \in \Pols$ and our rule be $\hat{\pol} \in \hat{\Pols}$. We call
+Let the optimal rule be $\pol^* \in \Pols$, the best approximate rule be $\hat{\pol}^* \in \hat{\Pols}$ and our rule be $\hat{\pol} \in \hat{\Pols}$. We call
 the difference between the performance of $\pol^*$ and $\hat{\pol}$ our \alert{regret}:
 \[
 \underbrace{U(\pol^*, P) - U(\hat{\pol}, P)}_{\textrm{regret}} =
@@ -421,9 +493,65 @@ the difference between the performance of $\pol^*$ and $\hat{\pol}$ our \alert{r
 We can bound the regret by bounding each term separately.
 - The \alert{approximation error} tells us how expressive our class of rules is, i.e. how much we lose by looking at a restricted class $\hat{\Pi}$ of rules. It is similar to estimator \alert{bias}.
 - The \alert{statistical error} tells us how well the empirical performance on $D$ approximates the true performance. It is similar to estimator \alert{variance}.
-- As a rule of thumb, the larger our class, the better the possible approximation but the higher the statistical error.
+- As a rule of thumb, the larger our class $\hat{\Pi}$, the better the possible approximation but the higher the statistical error.
+
+*** Geometric intuition
+**** Col A                                                           :BMCOL:
+      :PROPERTIES:
+      :BEAMER_col: 0.5
+      :END:
+\begin{tikzpicture}[scale=0.85]
+\draw[thick] (0,0) ellipse (3 and 2);
+\node at (-2.0, 1.85) {\footnotesize $\Pols$};
+\draw[thick] (1,-0.5) ellipse (0.7 and 1);
+\node at (0.9,1.05) {\footnotesize $\hat\Pols$};
+\draw (-1.8, 0) circle (1.6pt);
+\node[below] at (-1.8,-0.15) {\footnotesize $\pol^*$};
+\filldraw (0.5, 0.2) circle (1.6pt);
+\node[above] at (0.5,0.35) {\footnotesize $\hat\pol^*$};
+\filldraw (1.5, -0.5) circle (1.6pt);
+\node[below] at (1.5,-0.65) {\footnotesize $\hat\pol$};
+\draw[dashed] (0.5, 0.2) circle (0.5);
+\draw[<->] (-1.8,0) -- (0.5,0.2);
+\node[align=center] at (-0.8,0.65) {\footnotesize approximation\\\footnotesize error};
+\draw[<->] (0.5,0.2) -- (1.5,-0.5);
+\node[align=center] at (1.55,0.25) {\footnotesize estimation\\\footnotesize error};
+\end{tikzpicture}
+- The fact that to $\hat\Pols \neq \Pols$ creates the *approximation error*.
+- $\pol$ is a function of dataset $D$, which is random. This noise results in *estimation error* (dashed circle: where $\hat\pol$ could land, over different draws of $D$).
+
+**** Col B                                                           :BMCOL:
+      :PROPERTIES:
+      :BEAMER_col: 0.5
+      :END:
+\begin{tikzpicture}[scale=0.85]
+\draw[->] (0,0) -- (6.2,0);
+\node[right] at (6.2,0) {\footnotesize $U(\cdot, P)$};
+\draw (0.8,0) circle (1.6pt);
+\node[below] at (0.8,-0.1) {\footnotesize $U(\hat\pol,P)$};
+\draw (2.8,0) circle (1.6pt);
+\node[below] at (2.8,-0.1) {\footnotesize $U(\hat\pol^*,P)$};
+\draw (5.2,0) circle (1.6pt);
+\node[below] at (5.2,-0.1) {\footnotesize $U(\pol^*,P)$};
+\draw[<->] (0.8,0.6) -- (2.8,0.6);
+\node[align=center] at (1.8,1.0) {\footnotesize estimation\\\footnotesize error};
+\draw[<->] (2.8,1.6) -- (5.2,1.6);
+\node[align=center] at (4.0,2.0) {\footnotesize approximation\\\footnotesize error};
+\draw[<->] (0.8,2.6) -- (5.2,2.6);
+\node at (3.0,3.0) {\footnotesize regret};
+\end{tikzpicture}
+- Both panels show the *same* three rules. On the left, the gaps come from /where/ the rules sit (inside or outside $\hat\Pols$, and where exactly within it). On the right, the same gaps are measured in the only unit that actually matters: utility.
+**** Notes
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+- Understand which gap is "the model's fault" and which is "bad luck with the data".
+- The approximation error only depends on the model class. We give a specific example below, where we can bound it no matter what the true model is.
+- The estimation error is a random variable: a function of the randomly generated data $D$. While we do not know how much this can be, we can bound it with high probabilty.
+- The discussion below is aimed at the *MSc* level.
+  
 *** Approximation error
-- Our model limits us to a set of decision rules $\hat{\Pi} \subset \Pi$.
+- Our model limits us to a set of decision rules $\hat{\Pi} \neq \Pi$.
 - The most we could do is find the best rule in $\hat{\Pi}$.
 - This still leaves a gap:
 \[
