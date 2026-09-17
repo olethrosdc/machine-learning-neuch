@@ -247,12 +247,16 @@ Measure theory is an advanced topic, but if you see this notation, it means some
 *** Conditional expectation
 **** Independence
 If $x,y$ are independent RVs then they are also uncorrelated (but not vice-versa)
-**** Conditional expectation
+**** Conditional expectation of $f$ given some *event $B$*
 The conditional expectation of a random variable $f: \Omega \to \Reals$, with respect to a probability measure $P$ conditioned on some event $B$ is simply
 \[
 \E_P(f | B) = \sum_{\omega \in \Omega} f(\omega) P(\omega | B).
 \]
-
+**** Conditional expectatio of $f$ wrt *RV $g$*.
+This uses a similar notation, but the meaning is different. It is *not* a single number, but a function of what value $g$ takes:
+\[
+\E_P(f | g = y) = \sum_{\omega \in \Omega} f(\omega) P(\omega | B), \qquad B = \cset{\omega}{\omega = y}
+\]
 *** Variance
 For any real-valued random variable $f: \Omega \to \Reals$, the variance with respect to a probability measure $P$ is
 \[
