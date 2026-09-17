@@ -162,7 +162,6 @@
 - Identify relevant variables and their relationships.
 - Generate data from counterfactual simulations.
 - Analyse the data from the different counterfactuals.
-
   
 * Estimation
 ** Answering a scientific problem
@@ -700,7 +699,6 @@ The empirical conditional expectation
   np.mean(h[g==1])
 #+END_SRC
 
-
     
 * Statistics, validation and model selection
 *** Populations, samples, and distributions
@@ -758,7 +756,6 @@ P(S) = T/N, \qquad \forall S \subset \Omega.
 
 
 
-
 *** Data, models, and reproducibility.
 **** Training data
 - Calculations, optimisation
@@ -806,7 +803,6 @@ P(S) = T/N, \qquad \forall S \subset \Omega.
 **** Privacy
 - Accidental data disclosure
 - Re-identification risk
-
 
 
 * For next week
