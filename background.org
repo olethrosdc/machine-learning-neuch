@@ -407,12 +407,14 @@ If $\frac{d}{dx} F = f$ then its integral from $a$ to $b$ is:
 \]
 ** Multivariate calculus
 *** Multivariate Functions
-We consider functions operating in multi-dimensional Euclidean spaces.
-**** $f: \Reals^n \to \Reals$. 
+We consider functions operating in multi-dimensional Euclidean spaces, i.e. with multiple inputs and/or multiple outputs.
+**** $f: \Reals^n \to \Reals$.
+These are functions with multiple arguments, and a single output.
 - Any $x \in \Reals^n$ is $x = (x_1, \ldots, x_n)$, with $x_i \in \Reals$.
 - We write $f(x)$ instead of $f(x_1, \ldots, x_n)$.
 
-**** $f: \Reals^n \to \Reals^m$. 
+**** $f: \Reals^n \to \Reals^m$.
+These functions have multiple inputs and outputs.
 - If $y = f(x)$ then $y_i$ is the \(i\)-th component of $y \in \Reals^m$.
 - Can be seen as $m$ functions $f_i: \Reals^n \to \Reals$, with $y_i = f_i(x)$.
 
@@ -441,6 +443,7 @@ We can also define the derivative with respect to a *direction* $\delta \in \Rea
 \[
 D_\delta f(x) = \lim_{\epsilon \to 0} \frac{f(x + \epsilon \delta) - f(x)}{\epsilon}.
 \]
+For simplicity,  $\|\delta\| = 1$.
 *** Multi-dinemsional integrals
 We only rarely use explicit such integrals:
 \[
@@ -451,4 +454,4 @@ For a general integral over multiple dimensions, we will use Lebesgue integrals:
 \int_X f(x) d\lambda(x), \qquad x \in X,
 \]
 where e.g. $X = X_1 \times X_2$ so that $x = (x_1, x_2)$. This avoids having multiple $\int$ and $dx_i$ symbols.
-For simplicity say that $\|\delta\| = 1$.
+
