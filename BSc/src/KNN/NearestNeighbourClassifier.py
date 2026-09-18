@@ -75,23 +75,10 @@ class NearestNeighbourClassifier:
 
         """
         # 1. Calculate distances to all points
-        distances = [self.metric(x, x[i]) for i in range(self.n_points)]
-
         # 2. Sort the points        
-        neighbours = np.argsort(distances)[:self.K]
-
         # 3. Calculate the proportion of labels for the K closest points 
-        proportions = np.zeros(self.n_classes)
-        # go through every neigbhour and increase counts of labels
-        for k in range(self.K):
-            idx = neighbours[k] # get the corresponding example
-            label = self.label[idx] # get label
-            proportions[label] += 1
-
-        proportions /= self.K
-            # return the proportion of each label
-        return proportions
-
+        # - Go through every neigbhour and increase counts of labels
+        # 4. Return the proportions of all label
 
 x = np.random.uniform(size=[10, 4])
 y = 1 + np.random.choice(2, size=10)
