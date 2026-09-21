@@ -1,0 +1,26 @@
+Name,grade %,device,sport (hours),drugs (Alc/Coffee),"AI use [0, 1, 2, 3]: 3 means it solves everything, 1 means I use it when stuck, and 2 is: I verify what it does"
+CD,65,8,7,Alc+Coffee,1.00
+JU,50,5,6,Coffe ,1
+BV,85,8,7,Alc+Coffee,1
+FM,55,3,3,-,2
+EG,68,5,9,Alc,2
+EG,76,10,2,Coffee,1
+AH,85,6,3,Coffee,1
+DC,70,8,5,Coffee,1
+DY,99.5,12,0,Coffee ,2
+FB,77,8,4,,2
+EY,80,10,2,Alc+Coffee,2
+AH,100,14,0,Alc+Coffee,2
+PK,100,6,1,El Tony,
+AA,80,10,2,Alc+Coffee,2
+ZZ,80,8,5,Alc+Coffee,1
+SN,99.999,9,7,Coffee,1
+RD,80,8,2,-,1
+EH,75,8,3,Coffee,2
+MM,67,10,3,Coffee,2
+YA,,,,,
+YC,80,12,0,Coffee,1
+TM,85,4,12,Coffee,1
+LP,80,8,6,Alc + Coffe,1
+NS,72,8,3,Coffee,1
+HE,78,5,5,Coffee,2
