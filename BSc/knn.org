@@ -73,23 +73,27 @@ If $S = \{x_1, \ldots, x_n\}$ is a set of elements with the $>$  and $=$ relatio
 - $\exists x_i \in S$ s.t. $\max S = x_i$.
 In addition
 - $\argmax S$ are the *indices* $i$ for which $\max S = x_i$.
-
+- The converse relation applies to $\argmin$.
+  
 **** Classification
-     $\hat{y}_t  \in [m] \equiv \{1, \ldots, m\}$
-     
-**** Regression
-$\hat{y}_t  \in \Reals^m$
+$\hat{y}_t  \in [m] \equiv \{1, \ldots, m\}$
+***** Labels:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+
+In a classification problem, we need to predict one of $m$ possible labels. It is customary to use the numbers $\{1, \ldots, m\}$ as the set of labels, also denoted $[m]$ for brevity.
+
+In a regression problem, we need to predict an m-dimensional real-valued variable, i.e. a value in $\Reals^m$. In simple regression, $m=1$. 
 
 *** The k-Nearest Neighbour algorithm
 
 **** Pseudocode
-#+ATTR_BEAMER: :overlay <+->
 - Input: Data $(x_t, y_t)_{t=1}^T$, test point $x$, distance $d$, neighbours \(k\)
 - Calculate $h_t = d(x_t, x)$ for all $t$.
 - Get sorted indices $s = \texttt{argsort}(h)$ so that $d(x_{s_i}, x) \leq d(x_{s_{i+1}}, x)$ for all $i$. 
 - Return $\sum_{i=1}^k y_{s_i} / k$.
 
-#+BEAMER: \pause
 **** Classification
 - We use a *one-hot encoding* $(0, \ldots, 0, 1, 0, \ldots, 0)$, with $y_t \in \{0,1\}^m$.
 - The class of the \(t\)-th example is $j$ $\Leftrightarrow$ $y_{t,j} = 1$.
@@ -97,9 +101,17 @@ $\hat{y}_t  \in \Reals^m$
 \[
 p_i = \sum_{t=1}^k \ind{y_{s_t} = i} / k
 \]
-#+BEAMER: \pause
+
 **** Regression
 - $y_t  \in \Reals^m$, so we need do nothing
+
+***** Multiple neighbours.
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+We need multiple neighbours to smooth out the influence of spurious closest neighbours. To do so, we sort all the neighbours according to their distance, so that we was.
+
+In particular, if we are sorting an array =z= then =s = argsort(z)= returns the indices =s= so that =z[s[i]] > z[s[i+1]]=
 
 ** Extensions and parameters
 *** The number of neighbours
@@ -124,6 +136,13 @@ When features having varying scales:
 d(x,y) = \|S x - S y\|_p
 \]
 Or pre-scale the data
+***** Data pre-scaling
+:PROPERTIES:
+:BEAMER_ENV: note
+:END:
+\[
+\|Sx - Sy\|_2 = |\sum_i Sx  - Sx\|
+\]
 
 **** Complex data
 - Manifold distances
@@ -237,7 +256,7 @@ In a group, choose a utility matrix $U(y,a)$ for the spam example from the slide
 - Write a function /utilityScore(y, actions, U)/ that takes the true labels $y_t$ and chosen actions $a_t$, and returns $\sum_{t=1}^T U(y_t, a_t) / T$.
 - Write a second function /utilityAction(probs, U)/ that returns, for each test point, the action $a^*$ maximising expected utility under $\Pr(y\mid x)$ and your $U$.
 - Compare the average utility of plain =predict()= (most likely class) against your =utilityAction()=.
-**** The math behind predictions and decisions  :theory:
+*** The math behind predictions and decisions                        :theory:
 - Once you have $a^* = \argmax_a \sum_y \Pr(y|x) U(y,a)$, *prove* that no other decision rule can achieve higher expected utility under your model.
 - Show that if $A = Y$ and if $U(y, a) = \ind{y = a}$ (you only care about being right), then $a^*$ is the most likely class, $\argmax_y \Pr(y \mid x)$.
 - Bonus: What changes once $\Pr(y|x)$ is *estimated* (e.g. via kNN) rather than known exactly? For example, say that $P^*(y|x)$ is the true model.
