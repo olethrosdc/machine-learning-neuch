@@ -18,7 +18,6 @@ class NearestNeighbourClassifier:
         self.n_points = data.shape[0] # np array dimensions
         self.n_features = data.shape[1]
         print("classes: ", self.n_classes)
-        pass
 
     # Gives a utility for every possible choice made by the algorithm
     def decide(self, U, x):
@@ -36,36 +35,23 @@ class NearestNeighbourClassifier:
         # Need to use the get_probabilities function to return the action with the highest
         # expected utility
         # i.e. maximising sum_y P(y|x) U(a,y)
-        n_actions = U.shape[0]
-        value = np.zeros(n_actions)
-        probs = self.get_probabilities(x)
-        for a in range(n_actions):
-            value[a] = np.dot(probs, U[a,:])
-        return np.argmax(value)
+        pass
     
     ## predict the most likely label
     def predict(self, x):
         # calculate the probabilities of different clases
-        p = self.get_probabilities(x)
-        # return the y value for the closest point, i.e. the class with the highest proportion
-        return np.argmax(p)
+        pass
     
 
     ## return a vector of probabilities, one for each label
     ## Each component of the vector corresponds to the ratio of that same label in the set of neighbours
     def get_probabilities(self, x):
-        # calculate distances
-        distances = [self.metric(x, self.data[t]) for t in range(self.n_points)] 
-        # sort data using argsort
-        # get K closest neighbours
-        neighbours = np.argsort(distances)[:self.K] # t^*
-        proportions = np.zeros(self.n_classes)
-        # get the proportion of each label so that proportions[y] is the proportion of label y in the neighbourhood
-        for k in range(self.K):
-            idx = int(self.labels[neighbours[k]])
-            proportions[idx] += 1
-        proportions /= self.K
-        return proportions
+        # 1. calculate distances
+        # 2. sort data using argsort
+        # 3. get K closest neighbours
+        # 4. get the proportion of each label so that proportions[y] is the proportion of label y in the neighbourhood
+        # 5. Return proportion
+        pass
 
 
 if __name__== "__main__":

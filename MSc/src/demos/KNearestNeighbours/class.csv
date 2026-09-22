@@ -1,25 +1,26 @@
-Name,Specialisation,Sex,Height (cm),Weight (kg),Age,
-Christos,AI,0,178,80,50.00,
-Mateo,ML,0,176,70,24,
-Flaminia,Security,1,158,55,24,
-Aurélie ,ML,1,170,70,25,
-Andrew,CS,0,185,90,29,
-Flora,NLP,1,165,40,34,
-Frodo,ML,0,165,65,30,
-Eva ,CS,1,150,40,20,
-Fabia,ML,1,165,50,21,
-George,DS,0,174,66,24,
-Clément,CS,0,173,60,21,
-Sanika,AI,1,158,50,21,
-Jan,CS,0,182,80,25,
-Ajue,Bioinfo,0,175,1000,22,
-Hira,AI,1,160,60,27,
-Lydia,BI,1,170,85,27,
-Johan,CS,0,192,80,32,
-Mengmeng,CS,1,174,80,28,
-Yuting,CS,1,162,55,29,
-Alessandro,Geo,0,181,80,23,
-Andrew,CS,0,185,136,36,
-Ghulam,CS,0,179,74,29,
-Songzhi,cs,0,188,,,
-Guodong,NLP,0,183,90,21,
+Name,grade %,device,sport (hours),drugs (Alc/Coffee),"AI use [0, 1, 2, 3]: 3 means it solves everything, 1 means I use it when stuck, and 2 is: I verify what it does"
+CD,65,8,7,Alc+Coffee,1.00
+JU,50,5,6,Coffe ,1
+BV,85,8,7,Alc+Coffee,1
+FM,55,3,3,-,2
+EG,68,5,9,Alc,2
+EG,76,10,2,Coffee,1
+AH,85,6,3,Coffee,1
+DC,70,8,5,Coffee,1
+DY,99.5,12,0,Coffee ,2
+FB,77,8,4,,2
+EY,80,10,2,Alc+Coffee,2
+AH,100,14,0,Alc+Coffee,2
+PK,100,6,1,El Tony,
+AA,80,10,2,Alc+Coffee,2
+ZZ,80,8,5,Alc+Coffee,1
+SN,99.999,9,7,Coffee,1
+RD,80,8,2,-,1
+EH,75,8,3,Coffee,2
+MM,67,10,3,Coffee,2
+YA,,,,,
+YC,80,12,0,Coffee,1
+TM,85,4,12,Coffee,1
+LP,80,8,6,Alc + Coffe,1
+NS,72,8,3,Coffee,1
+HE,78,5,5,Coffee,2
