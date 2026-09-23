@@ -101,7 +101,7 @@ ISLP Chapter 2, 4.7.6
 *** Textbooks
 **** Primary
 - Introduction to Statistical Learning with Python
-https://hastie.su.domains/ISLP/ISLP_website.pdf
+https://www.statlearning.com/
 - Elements of Statistical Learning
 https://hastie.su.domains/ElemStatLearn/
 **** Secondary
