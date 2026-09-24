@@ -443,20 +443,46 @@ This is the classical statistics formulation, applied to a regression estimator 
  not generally for $U(\pol,P)$. It's good background, and the proof below is worth doing for the practice, but it's only needed at the *MSc level*: the regret decomposition already covers what you need to know about generalisation error in the BSc course.
 
 *** Example: mean estimation
-- Data $D = y_1, \ldots, y_T$ with $\E[y_t] = \mu$.
-- Goal: estimate $\mu$ with some estimator $f_D$ to minimise
-- MSE: $\E[(y - f_D)^2]$, the expected square difference between new samples our guess.
+- Data $D = x_1, \ldots, x_T$ with $\E[x_t] = \mu$.
+- Goal: estimate $\mu$ with some estimator $f_D$ to minimise MSE: $\E[(x - f_D)^2]$, the expected square difference between new samples our guess.
 **** Optimal estimate
 To minimise the MSE, we use $f^* = \mu$. This gives us two ideas:
 **** Empirical mean estimator:
 - $f_D = \sum_{t=1}^T x_t / T$.
-- $\Var(f_D) = \E [f_D - \mu]^2 = \sigma^2/T$
 - $\Bias(f_D) = 0$. (unbiased estimator)
-**** Laplace mean estimator:
-- $f_D = \sum_{t=1}^T (\lambda + x_t) / T$.
-- $\Var(f_D) = \E [f_D - \mu] = \frac{1}{1 + \sqrt{T}}$
-- $\Bias(f_D) = O(1/T)$.
+- $\Var(f_D) = \sigma^2/T$
+***** Proofs.
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+Due to the linearity of expectations, if $\E[x_t]=\mu$ for all $t$ then:
+\[
+\E[f_D]
+&=\E[\sum_t x_t/T] = \sum_t \E[x_t]/T = \mu.
+\]
+Consequently, $\Bias(f_D) = \E[f_D - \mu] = 0$.
+If $x, y$ are independent then $\Var(x +y) = \Var(x) + \Var(y)$. In addition, $\Var(cx) = c^2 \Var(x)$ for any constant $c$. Hence,
+if $\Var[x_t] = \sigma^2$ for all $t$:
+\[
+\Var[f_D]
+&=\Var[\sum_t x_t/T] = \sum_t \Var[x_t/T] = \sum_t \frac{\sigma^2}{T^2} = \frac{\sigma^2}{T}.
+\]
 
+**** Smoothed mean estimator:
+- $f_D = (\lambda + \sum_{t=1}^T x_t) / (T + 1)$.
+- $\Bias(f_D) = O(1/T)$.
+- $\Var(f_D) = \frac{T \sigma^2 }{(T+1)^2}$
+
+***** Smoothed estimator.
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+We can rewrite the sum as $\frac{\lambda}{T+1} + \frac{T}{T+1} \times \sum_{t=1}^T x_t/T$. We can follow the previous proof, to show that there is a slight $O(T^{-1})$ bias. The variance is then also $\sigma^2 T/(T+1)^2$, so very slightly lower.
+
+
+
+
+  
 *** A proof of the bias/variance trade-off :advanced:MSc:
 - RV's $y_t \sim P$, $\E[y_t] = \mu$, $y_t = \mu + \epsilon_t$.
 - Estimator $f_D$, $D = y_1, \ldots, y_{t-1}$.
