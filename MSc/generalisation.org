@@ -74,7 +74,6 @@ The utility function $U(y, a)$ is a real-valued function so that, for a label $y
 *** The optimal decision
 - A *model* $P(y | x)$ of class probabilities
 - A *utility* $U(y, a)$ for each class and action combination
-#+BEAMER: \pause
 **** Expected utility
 We can calculate the expected utility of any decision
 \[
@@ -94,20 +93,19 @@ This defines a function $\CX \to \CA$, which is the Bayes-optimal decision rule.
 - A *model* $P(y | x)$ of class probabilities
 - A *utility* $U(y, a)$ for each class and action combination
 - A *decision rule* $\pi(a | x)$ assigning probability to action $a$ for every possible input $x$
+ 
 
-#+BEAMER: \pause
 **** Expected utility over a dataset.
 We obtain the expected utility of the *decision rule* by marginalising over all actions
 \[
 U(\pi, D) \defn \E[U | \pi, D]
 \overset{D = (x_t, y_t)_{t=1}^T}{=}
-\sum_{t=1}^T \E[U | \pi, x_t]
+\frac{1}{T} \sum_{t=1}^T \E[U | \pi, y_t, x_t]
 = 
-\sum_{t=1}^T \sum_{a \in \CA} U(y_t, a)\pi(a | x_t)
+\frac{1}{T} \sum_{t=1}^T \sum_{a \in \CA} U(y_t, a)\pi(a | x_t)
 \]
 Here the first equality follows from the definition of conditional expectation and 
 $P(y | x, a) = P(y | x)$ as the label does not depend on our actions.
-#+BEAMER: \pause
 
 **** Expected utility over $P$
 We can marginalise over possible datasets $D$
@@ -118,12 +116,94 @@ U(\pi, P) \defn
 \overset{\textrm{i.i.d.}}{=} \!\! \int_{\CX} dP(x) \sum_{\CY} P(y | x) \sum_a \pi(a|x) U(y,a)
 \]
 
+***** Explanation.
+:PROPERTIES:
+:BEAMER_env: note
+:END:
 
+The utility on a dataset is fixed once we know the dataset.
+The expectation in $U(\pi, D)$ is taken over the
+randomness of $\pi$ itself. 
+
+We define $U(\pi, P)$ in terms of the randomness of both $P$ and
+$\pi$. First, we fix the decision rule $\pi$. Then, we sample a
+dataset randomly $D \sim P$. This makes $U(\pi, D)$ random.  
+
+To make things more concrete, the formulas expand for the case the
+utility is a sum of the utilities over individual examples, with $D = (x_t, y_t)_{t=1}^T$ 
+
+However, *irrespective* of whether or not the utility is decomposed into a sum of per-example utilities, the definition 
+\[
+U(\pi, P) \defn \int_{\mathcal{D}} \!\!dP(D) U(\pi, D)
+\]
+says that *$U(\pi, P)$ is the expected utility  if we randomly draw some dataset $D$ from $P$*.
+
+
+
+
+
+*** Notes on the derivation:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+To keep the slide compact, the full derivation of how we go from datasets to a single random example was omitted. Here it is, for completeness.
+
+\begin{align*}
+\int_{\mathcal{D}} dP(D) U(\pi, D)
+&= 
+\int_{\mathcal{D}}  \!\!  d \left[\prod_t P(x_t, y_t)\right] U(\pi, D)
+\\
+&= 
+\int_{\mathcal{D}}  \!\!  d \left[\prod_t P(x_t, y_t)\right] 
+\frac{1}{T} \sum_t \E[U \mid \pi, x_t, y_t]
+\\
+&\overset{(a)}{=} 
+\int_{\mathcal{D}}  \!\!  d 
+\frac{1}{T} \sum_t P(x, y)  \E[U \mid \pi, x, y]
+= 
+\int_{\mathcal{X \times Y}} \!\!\!\!  d 
+P(x, y)  \E[U \mid \pi, x, y].
+\end{align*}
+
+For the last step, it suffices to note that
+$P(x, y) = P(y | x) P(x)$, so that:
+\[
+\int_{\mathcal{X \times Y}}
+P(x, y)  \E[U \mid \pi, x, y]
+=
+\int_{\mathcal{X}}
+dP(x) 
+\sum_{y \in \mathcal{Y}}
+P(y | x) \sum_{a \in A} \pi(a | x) U(a,y)
+\]
+
+
+*** More notes on the independence step (a)
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+
+Step (a) is perhaps not trivial. The idea is the same as the following example:
+$f(x,z) = g(x) + g(z)$, and $P(x,z) = P(x)P(z)$.
+
+\begin{align*}
+\sum_{x,z} P(x,z) f(x,z)
+&= \sum_{x,z} P(x) P(z) [g(x) + g(z)]\\
+&= \sum_x P(x) \sum_z P(z) [g(x) + g(z)]\\
+&= \sum_x P(x) \sum_z P(z) g(x) + \sum_x P(x) \sum_z P(z) g(z)\\
+&= \sum_x P(x)  g(x) \sum_z P(z) + \sum_x P(x) \sum_z P(z) g(z)\\
+&= \E_P[g] \times 1 + \E_P[g] \times 1
+= 2 \E_P[g].
+\end{align*}
+Essentially, each term in the sum gets linked to one random element, and the others sum to one.
 
 *** Taking into account the probability
+The basic accuracy metric we had for classification decision rules was just to count whether or not we classified something correctly. This made sense, as our decision was a distinct action or label.
+However, our decision may be to generate class probabilities instead, which can then be used in some other way.
+
 - For classification, it makes sense to look at the probability of the labels.
-- If we are not very confident about our prediction, this should be taken into account:
-- Define $P(y | x)$ to be our classifier's probability for label $y$, given features $x$. Then we can use two simple metrics:
+- If we are not very confident about our prediction, this should be taken into account.
+- Define $P(y | x)$ to be our classifier's probability for label $y$, given features $x$. Then we can use two simple metrics: precision and log-loss.
 *** Precision
 The average probability of the actual class:
 \[
@@ -131,11 +211,13 @@ The average probability of the actual class:
 \]
 - If we always assign probability 1 to the correct label, this score is 1. 
 - If we always assign probability $1/m$ to all labels, the score is $1/m$.
+- Exercise: if our model $P$ is correct, and we always decide the maximum-probability class, show that the accuracy (as previously defined) is the same with precision.
+
 *** Negative Log-Loss
 Here we assign look at the *logarithm* of the probability. This really penalises bad guesses.
 - $\sum_{t=1}^T \ln P(y_t | x_t) / T$
 - If we always assign probability 1 to the correct label, this score is 0.
-- If we assign probability 0 to even a single label, the score is $-\infty$.
+- If we assign probability 0 to even a single true label, the score is $-\infty$.
 #+BEGIN_SRC python
 from sklearn.metrics import log_loss
 #+END_SRC
