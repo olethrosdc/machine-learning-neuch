@@ -24,25 +24,25 @@ The course focuses on fundamental modelling problems and general machine learnin
 
 
 ** Schedule
-|--------+-------+---------------------------------+---------------------------------------------------------+---------------------+-------|
-| Module |  Date | Topic                           | Details                                                 | Python              | Type  |
-|--------+-------+---------------------------------+---------------------------------------------------------+---------------------+-------|
-|      1 | 09.15 | Introduction                    | Mean estimation, ML Problems                            | nympy, pandas       | Mixed |
-|      2 | 09.22 | kNN, Decision problems          | kNN, Decision Problems                                  | pandas, scikitlearn | Mixed |
-|      3 | 09.29 | Generalisation                  | Cross-Validation, Bootstrapping                         | sklearn             | Mixed |
-|      4 | 10.06 | The Perceptron                  | The Preceptron, Gradient Descent, Generalisation        | sklearn             | Mixed |
-|      5 | 10.13 | Regression, Simulation, Project | Linear Regression, Feature Selection for Regression     | sklearn, statstools | Lab   |
-|      6 | 10.20 | Multi-layer Perceptrons         | Cost functions, Backpropagation, Layers                 | sklearn             | Mix   |
-|      7 | 10.27 | Probabilistic machine learning  | ML, MAP, Bayesian Infernece, Beta-Bernoulli: hypotheses |                     | Lab   |
-|      8 | 11.03 | Generative models               | Naive Bayes, Graphical models, independence             |                     | Mix   |
-|      9 | 11.10 | Sequence prediction             | Markov models, text prediction, LLMs                    |                     | Mixed |
-|     10 | 11.17 | Large Language Models           |                                                         |                     | Mixed |
-|     11 | 11.24 | Computer Vision                 |                                                         |                     | Lab   |
-|     12 | 12.01 | Fairness and Privacy            |                                                         |                     | Mixed |
-|     13 | 12.08 | Project Presentations           |                                                         |                     | Lab   |
-|--------+-------+---------------------------------+---------------------------------------------------------+---------------------+-------|
-|     14 | 12.15 | Project work                    |                                                         |                     | Lab   |
-|--------+-------+---------------------------------+---------------------------------------------------------+---------------------+-------|
+|--------+-------+-----------------------------------------------------+-----------------------------------------------------+---------------------+-------|
+| Module |  Date | Topic                                               | Details                                             | Python              | Type  |
+|--------+-------+-----------------------------------------------------+-----------------------------------------------------+---------------------+-------|
+|      1 | 09.15 | Introduction                                        | Mean estimation, ML Problems                        | nympy, pandas       | Mixed |
+|      2 | 09.22 | kNN, Decision problems                              | kNN, Decision Problems                              | pandas, scikitlearn | Mixed |
+|      3 | 09.29 | Generalisation                                      | Cross-Validation, Bootstrapping                     | sklearn             | Mixed |
+|      4 | 10.06 | The Perceptron                                      | The Preceptron, Gradient Descent, Generalisation    | sklearn             | Mixed |
+|      5 | 10.13 | Regression                                          | Linear Regression, Feature Selection for Regression | sklearn, statstools | Lab   |
+|      6 | 10.20 | Multi-layer Perceptrons                             | Cost functions, Backpropagation, Layers             | sklearn             | Mix   |
+|      7 | 10.27 | Quiz                                                |                                                     |                     |       |
+|      8 | 11.03 | Probabilistic machine learning                      | Naive Bayes, Graphical models, independence         |                     | Mix   |
+|      9 | 11.10 | Generative models                                   | Markov models, text prediction, LLMs                |                     | Mixed |
+|     10 | 11.17 |                                                     |                                                     |                     | Mixed |
+|     11 | 11.24 | Large Language Models                               |                                                     |                     | Lab   |
+|     12 | 12.01 | Computer Vision                                     |                                                     |                     | Mixed |
+|     13 | 12.08 | Fairness and Privacy          Project Presentations |                                                     |                     | Lab   |
+|--------+-------+-----------------------------------------------------+-----------------------------------------------------+---------------------+-------|
+|     14 | 12.15 | Quiz                                                |                                                     |                     | Lab   |
+|--------+-------+-----------------------------------------------------+-----------------------------------------------------+---------------------+-------|
 
 *** Note on pacing
 Tree-based and ensemble methods (Assignment 7), and the convolutional-network material (Assignment 8), are covered *only if time permits*. By default, that time goes to in-class project work instead: (re)forming the scientific question, drawing the graphical model, and building the simulator, testing the pipeline and discussing the project with the professor and TA(s).
