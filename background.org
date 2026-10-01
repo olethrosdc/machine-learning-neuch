@@ -382,6 +382,23 @@ For non-differential functions, we can sometimes define the set of all subderiva
 \partial{f(x)} =  [\lim_{\epsilon \to 0} \frac{f(x) - f(x - \epsilon)}{\epsilon}, \lim_{\epsilon \to 0} \frac{f(x + \epsilon) - f(x)}{\epsilon}]
 \]
 
+*** Elementary differentiation 
+**** The chain rule
+If we have two real-valued functions: $f(y), g(x)$, their composition $f \circ g$ or $fg$ is defined as:
+\[
+z = fg(x) = f[g(x)], \qquad y = g(x), z = f(y).
+\]
+The chain rule of differentiation states that
+\[
+\frac{df}{dx} = \frac{df}{dg} \frac{dg }{dx},
+\qquad \frac{dz}{dx} = \frac{dz}{dy} \frac{dy}{dx},
+\]
+where we used function and value names on the left and right side respectively.
+**** Common derivatives
+- $dx^n/dx = n^{x-1}$
+- $d(1/x)/dx = \ln (x)$
+- $\frac{f g}{dx} = \frac{df}{dx} g + f \frac{dg}{dx}$.
+
 *** Integrals
 **** Riemann integral
 The Reimann integral is obtained by taking a *horizontal* discretisation of a function to the limit:
@@ -409,6 +426,7 @@ If $\frac{d}{dx} F = f$ then its integral from $a$ to $b$ is:
 \[
 \int_a^b f(x) dx = F(b) - F(a),
 \]
+
 ** Multivariate calculus
 *** Multivariate Functions
 We consider functions operating in multi-dimensional Euclidean spaces, i.e. with multiple inputs and/or multiple outputs.
