@@ -413,8 +413,20 @@ given in three variant notations.
 - $\frac{d}{dx} (1/x) = \ln (x)$.
 - $\frac{d}{dx} (e^x) = e^x$.
 *** Exercises
+    :PROPERTIES:
+    :BEAMER_envargs: [shrink]
+    :END:
+**** Simple Derivatives
+Show that $\frac{d}{dx} 2^x= 2_2 x$, using the fact that $c^x = e^{x \ln c}$.
+# Solution:  Set $y = x \ln 2$. By the chain rule:
+# \[
+# \frac{d}{dx} 2^x = \frac{d}{dx} e^{x \ln 2} = \frac{d}{dy} (e^{y}) \frac{d}{dx} (x \ln 2) =
+# e^y \ln 2 = 2^x \ln 2.
+# \]
+
+
 **** Squared error
-Let
+For some sequence $x_1, \ldots, x_T$ of bounded real numbers, let
 \[
 f(\theta) \defn -\left[\frac{1}{T}\sum_{t=1}^T (x_t - \theta)^2\right]
 \]
@@ -432,13 +444,6 @@ Show that this equals $\theta^* = \frac{1}{T} \sum_{t=1}^T x_t$. Bonus: show the
 # \]
 # Giving $T\theta = \sum_{t=1}^T x_t$.
 
-**** Simple Derivatives
-Show that $\frac{d}{dx} 2^x= 2_2 x$, using the fact that $c^x = e^{x \ln c}$.
-# Solution:  Set $y = x \ln 2$. By the chain rule:
-# \[
-# \frac{d}{dx} 2^x = \frac{d}{dx} e^{x \ln 2} = \frac{d}{dy} (e^{y}) \frac{d}{dx} (x \ln 2) =
-# e^y \ln 2 = 2^x \ln 2.
-# \]
 
 *** Integrals
 **** Riemann integral
