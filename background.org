@@ -384,20 +384,44 @@ For non-differential functions, we can sometimes define the set of all subderiva
 
 *** Elementary differentiation 
 **** The chain rule
-If we have two real-valued functions: $f(y), g(x)$, their composition $f \circ g$ or $fg$ is defined as:
+The composition $fg$ of two real-valued functions: $f(y), g(x)$, is:
 \[
-z = fg(x) = f[g(x)], \qquad y = g(x), z = f(y).
+fg(x) = f[g(x)], \qquad y \defn g(x), z \defn f(y).
 \]
-The chain rule of differentiation states that
+The chain rule of differentiation states that:
 \[
 \frac{df}{dx} = \frac{df}{dg} \frac{dg }{dx},
+\qquad
+\frac{df[g(x)]}{dx} = \frac{df(y)}{dy} \frac{dg(x)}{dx}
 \qquad \frac{dz}{dx} = \frac{dz}{dy} \frac{dy}{dx},
 \]
-where we used function and value names on the left and right side respectively.
+given in three variant notations.
 **** Common derivatives
-- $dx^n/dx = n^{x-1}$
-- $d(1/x)/dx = \ln (x)$
-- $\frac{f g}{dx} = \frac{df}{dx} g + f \frac{dg}{dx}$.
+***** Rules                                                           :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+
+- $\frac{d}{dx}[cf] = c \frac{df}{dx}$ for any constant $c \in \Reals$.
+- $\frac{d}{dx}[f + g] = \frac{df}{dx} + \frac{dg}{dx}$
+- $\frac{d}{dx} [f g]= \frac{df}{dx} g + f \frac{dg}{dx}$.
+***** Elementary                                                      :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+- $\frac{d}{dx}x^n = nx^{n-1}$.
+- $\frac{d}{dx} (1/x) = \ln (x)$.
+- $\frac{d}{dx} (e^x) = e^x$.
+*** Exercises
+**** Squared error
+Let
+\[
+f(\theta) \defn -\left[\frac{1}{T}\sum_{t=1}^T (x_t - \theta)^2\right]
+\]
+be the *mean-squared error*. To minimise the squared error, we need to find $\theta$ such that $\frac{d}{d\theta} f(\theta) = 0$.
+
+Show that this equals $\theta^* = \frac{1}{T} \sum_{t=1}^T x_t$.
+
 
 *** Integrals
 **** Riemann integral
