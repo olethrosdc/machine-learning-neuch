@@ -418,10 +418,27 @@ Let
 \[
 f(\theta) \defn -\left[\frac{1}{T}\sum_{t=1}^T (x_t - \theta)^2\right]
 \]
-be the *mean-squared error*. To minimise the squared error, we need to find $\theta$ such that $\frac{d}{d\theta} f(\theta) = 0$.
+be the *mean-squared error*. To minimise the squared error, we need to find $\theta$ such that $\frac{d}{d\theta} f(\theta) = 0$, if the second derivative is positive.
 
-Show that this equals $\theta^* = \frac{1}{T} \sum_{t=1}^T x_t$.
+Show that this equals $\theta^* = \frac{1}{T} \sum_{t=1}^T x_t$. Bonus: show the second derivative $\frac{d^2}{d \theta^2} f(\theta)$ is positive.
 
+# **** Solution
+# Since we only need to show this is zero, we can ignore the constants. So we end up with
+# \[
+# 0 = \frac{d}{d\theta} \sum_{t=1}^T (x_t - \theta)^2
+# = \sum_{t=1}^T \frac{d}{d\theta} (x_t - \theta)^2
+# = \sum_{t=1}^T 2 (x_t - \theta) \frac{d}{d\theta} (x_t - \theta) 
+# = \sum_{t=1}^T 2 (\theta - x_t)
+# \]
+# Giving $T\theta = \sum_{t=1}^T x_t$.
+
+**** Simple Derivatives
+Show that $\frac{d}{dx} 2^x= 2_2 x$, using the fact that $c^x = e^{x \ln c}$.
+# Solution:  Set $y = x \ln 2$. By the chain rule:
+# \[
+# \frac{d}{dx} 2^x = \frac{d}{dx} e^{x \ln 2} = \frac{d}{dy} (e^{y}) \frac{d}{dx} (x \ln 2) =
+# e^y \ln 2 = 2^x \ln 2.
+# \]
 
 *** Integrals
 **** Riemann integral
