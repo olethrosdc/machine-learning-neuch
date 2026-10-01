@@ -74,7 +74,6 @@ The utility function $U(y, a)$ is a real-valued function so that, for a label $y
 *** The optimal decision
 - A *model* $P(y | x)$ of class probabilities
 - A *utility* $U(y, a)$ for each class and action combination
-#+BEAMER: \pause
 **** Expected utility
 We can calculate the expected utility of any decision
 \[
@@ -94,20 +93,19 @@ This defines a function $\CX \to \CA$, which is the Bayes-optimal decision rule.
 - A *model* $P(y | x)$ of class probabilities
 - A *utility* $U(y, a)$ for each class and action combination
 - A *decision rule* $\pi(a | x)$ assigning probability to action $a$ for every possible input $x$
+ 
 
-#+BEAMER: \pause
 **** Expected utility over a dataset.
 We obtain the expected utility of the *decision rule* by marginalising over all actions
 \[
 U(\pi, D) \defn \E[U | \pi, D]
 \overset{D = (x_t, y_t)_{t=1}^T}{=}
-\sum_{t=1}^T \E[U | \pi, x_t]
+\frac{1}{T} \sum_{t=1}^T \E[U | \pi, y_t, x_t]
 = 
-\sum_{t=1}^T \sum_{a \in \CA} U(y_t, a)\pi(a | x_t)
+\frac{1}{T} \sum_{t=1}^T \sum_{a \in \CA} U(y_t, a)\pi(a | x_t)
 \]
 Here the first equality follows from the definition of conditional expectation and 
 $P(y | x, a) = P(y | x)$ as the label does not depend on our actions.
-#+BEAMER: \pause
 
 **** Expected utility over $P$
 We can marginalise over possible datasets $D$
@@ -118,12 +116,101 @@ U(\pi, P) \defn
 \overset{\textrm{i.i.d.}}{=} \!\! \int_{\CX} dP(x) \sum_{\CY} P(y | x) \sum_a \pi(a|x) U(y,a)
 \]
 
+***** Explanation.
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+
+The utility on a dataset is fixed once we know the dataset.
+The expectation in $U(\pi, D)$ is taken over the
+randomness of $\pi$ itself. 
+
+We define $U(\pi, P)$ in terms of the randomness of both $P$ and
+$\pi$. First, we fix the decision rule $\pi$. Then, we sample a
+dataset randomly $D \sim P$. This makes $U(\pi, D)$ random.  
+
+To make things more concrete, the formulas expand for the case the
+utility is a sum of the utilities over individual examples, with $D = (x_t, y_t)_{t=1}^T$ 
+
+However, *irrespective* of whether or not the utility is decomposed into a sum of per-example utilities, the definition 
+\[
+U(\pi, P) \defn \int_{\mathcal{D}} \!\!dP(D) U(\pi, D)
+\]
+says that *$U(\pi, P)$ is the expected utility  if we randomly draw some dataset $D$ from $P$*.
 
 
-*** Taking into account the probability
-- For classification, it makes sense to look at the probability of the labels.
-- If we are not very confident about our prediction, this should be taken into account:
-- Define $P(y | x)$ to be our classifier's probability for label $y$, given features $x$. Then we can use two simple metrics:
+
+
+
+*** Notes on the derivation:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+To keep the slide compact, the full derivation of how we go from datasets to a single random example was omitted. Here it is, for completeness.
+
+\begin{align*}
+\int_{\mathcal{D}} dP(D) U(\pi, D)
+&= 
+\int_{\mathcal{D}}  \!\!  d \left[\prod_t P(x_t, y_t)\right] U(\pi, D)
+\\
+&= 
+\int_{\mathcal{D}}  \!\!  d \left[\prod_t P(x_t, y_t)\right] 
+\frac{1}{T} \sum_t \E[U \mid \pi, x_t, y_t]
+\\
+&\overset{(a)}{=} 
+\int_{\mathcal{D}}  \!\!  d 
+\frac{1}{T} \sum_t P(x, y)  \E[U \mid \pi, x, y]
+= 
+\int_{\mathcal{X \times Y}} \!\!\!\!  d 
+P(x, y)  \E[U \mid \pi, x, y].
+\end{align*}
+
+For the last step, it suffices to note that
+$P(x, y) = P(y | x) P(x)$, so that:
+\[
+\int_{\mathcal{X \times Y}}
+P(x, y)  \E[U \mid \pi, x, y]
+=
+\int_{\mathcal{X}}
+dP(x) 
+\sum_{y \in \mathcal{Y}}
+P(y | x) \sum_{a \in A} \pi(a | x) U(a,y)
+\]
+
+
+*** More notes on step (a).
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+The proof idea is the same as the following example:
+$f(x,z) = g(x) + g(z)$, and $P(x,z) = P(x)P(z)$.
+
+\begin{align*}
+\sum_{x,z} P(x,z) f(x,z)
+&= \sum_{x,z} P(x) P(z) [g(x) + g(z)]\\
+&= \sum_x P(x) \sum_z P(z) [g(x) + g(z)]\\
+&= \sum_x P(x) \sum_z P(z) g(x) + \sum_x P(x) \sum_z P(z) g(z)\\
+&= \sum_x P(x)  g(x) \sum_z P(z) + \sum_x P(x) \sum_z P(z) g(z)\\
+&= \E_P[g] \times 1 + \E_P[g] \times 1
+= 2 \E_P[g].
+\end{align*}
+Essentially, each term in the sum gets linked to one random element, and the others sum to one.
+
+* Metrics for model quality
+
+In fact, we may want to simply find a good model, and do not have a specific decision problem to solve. How should we select a model?
+
+The basic accuracy metric we had for classification decision rules was just to count whether or not we classified something correctly. This made sense, as our decision was a distinct action or label. We used a utility function to modify this in a way that reflects our preferences. However, we sometimes want to instead measure the *accuracy of our model*. What is the best way to do that?
+
+For classification, it makes sense to look at the label probability.
+If we are not very confident about our prediction, this should be taken into account.
+Let $P(y | x)$ be our model's probability for label $y$, given features $x$. Then we can use two simple metrics: precision and log-loss.
+
+Label probability is also useful for selecting a regression model. However, in that case, a notion of distance from the target is also useful. The two are actually equivalent in some cases.
+
+** Classifcation
+
+  
 *** Precision
 The average probability of the actual class:
 \[
@@ -131,15 +218,20 @@ The average probability of the actual class:
 \]
 - If we always assign probability 1 to the correct label, this score is 1. 
 - If we always assign probability $1/m$ to all labels, the score is $1/m$.
+- Exercise: if our model $P$ is correct, and we always decide the maximum-probability class, show that the accuracy (as previously defined) is the same with precision.
+
 *** Negative Log-Loss
 Here we assign look at the *logarithm* of the probability. This really penalises bad guesses.
 - $\sum_{t=1}^T \ln P(y_t | x_t) / T$
 - If we always assign probability 1 to the correct label, this score is 0.
-- If we assign probability 0 to even a single label, the score is $-\infty$.
+- If we assign probability 0 to even a single true label, the score is $-\infty$.
 #+BEGIN_SRC python
 from sklearn.metrics import log_loss
 #+END_SRC
 in scikitlearn implements log-loss (*not* negative)
+
+** Regression
+
 *** Regression
 
 **** The regressor as a deterministic decision rule
@@ -162,9 +254,9 @@ If $(x, y) \sim P$, the expected MSE of a deterministic rule $\pi : \CX \to \Rea
 **** The regressor as a stochastic decision rule
 A decision rule $\pi$ generates a *decision* $a \in \Reals^m$.
 - For *stochastic* rules $\pi(a | x)$ defines a density over predictions.
-- In this case it is natural to define $\pi(y_t, x_t)$ as our metric.
+- In this case it is natural to define $\pi(y_t \mid x_t)$ as our metric.
 **** Likelihood on a Dataset
-The mean-square error is simply the squared difference in predicted versus actual values:
+The likelihood is simply the probability of the labels 
 \[
 \prod_{t=1}^T \pi(y_t | x_t)
 \]
@@ -304,28 +396,27 @@ scores = cross_val_score(classifier, X, y, cv = n_folds)
 
 *** The wrong way to do XV for subset selection :activity:
 
-1. Screen the predictors: find a subset of “good” predictors that show fairly strong (univariate) correlation with the class labels.
-2. Using just this subset of predictors, build a multivariate classifier.
+1. Screen the features: find a subset of “good” features that show fairly strong (univariate) correlation with the class labels.
+2. Using just this subset of features, build a multivariate classifier.
 3. Use cross-validation to estimate the unknown tuning parameters and to estimate the prediction error of the final model.
 
 **** Is this a correct application of cross-validation?
-Consider a scenario with N = 50 samples in two equal-sized classes,
-and p = 5000 quantitative predictors (standard Gaussian) that are
-independent of the class labels.  The true (test) error rate of any
-classifier is 50%.
+Consider a scenario with $N = 50$ samples in two equal-sized classes,
+and $p = 5000$ quantitative features that are independent of the class
+labels (e.g. normally distributed).  The true error rate of any classifier in that set is 50%. Can you still find some "good" classifiers?
 
 *** The right way to do XV for feature selection :activity:
 1. Divide the samples into K cross-validation folds (groups) at random.
 2. For each fold $k = 1, 2, \ldots, K$
-- Find a subset of “good” predictors that show fairly strong (univariate) correlation with the class labels, using all of the samples except those in fold k.
-- Using just this subset of predictors, build a multivariate classifier, using all of the samples except those in fold k.
+- Find a subset of “good” features that show fairly strong (univariate) correlation with the class labels, using all of the samples except those in fold k.
+- Using just this subset of features, build a multivariate classifier, using all of the samples except those in fold k.
 - Use the classifier to predict the class labels for the samples in fold k.
 **** Level notes
 :PROPERTIES:
 :BEAMER_env: note
 :END:
-- *BSc*: The point isn't the procedure itself: it's noticing that cross-validation can silently give you a fake guarantee if information from outside a fold leaked into the model-building step before validation happened. Spotting this kind of methodological trap is a core scientific-method skill, and one you should actively check for in your own project.
-- *MSc*:  *Why* does the wrong version give a near-zero apparent error despite a true error of $50\%$? Connect it to the estimation-error bound above: what is $|\hat\Pols|$ effectively doing once you've screened 5000 predictors first?
+- *BSc*: Be careful not to leak information from another fold. 
+- *MSc*:  *Why* does the wrong version give a near-zero apparent error despite a true error of $50\%$? Connect it to the estimation-error bound above: what is $|\hat\Pols|$ effectively doing once you've screened 5000 features first?
 
 
 *** Lab
@@ -354,11 +445,14 @@ How well can decision rule perform?
 - Etimation error: How easy it is to choose the best rule in the class.
 
 **** Which one do we use?
-This course mainly follows the *Learning theory view*: it talks directly about $U(\pol, P)$, the quantity we actually care about, rather than about estimating some unrelated parameter $\theta$. The *Estimation theory view* is covered next for completeness. It's the classical framing you'll meet in statistics courses, and the two turn out to be closely related, but it doesn't add much that's new about *generalisation error* specifically.
+:PROPERTIES:
+:BEAMER_env: note
+:END:
 
-- Approximation ability: How well a *class of rules* can approximate the *optimal* one.
-- Statistical error: How *easy* it is to choose the best rule in the class from *data*
-- Directly bounds the generalisation error.
+This course mainly follows the *learning theory view*: it talks directly about $U(\pol, P)$, the quantity we actually care about, rather than about estimating some parameter $\theta$. It bounds the generalisation error directly.
+
+The *estimation theory view* is covered later for completeness. It's a standard statistics framing, where we care about how well we can estimate a parameter, rather than how well we perform. It can be used to indirectly bound the generalisation error.
+
   
 
 ** Bias and variance
@@ -440,20 +534,46 @@ This is the classical statistics formulation, applied to a regression estimator 
  not generally for $U(\pol,P)$. It's good background, and the proof below is worth doing for the practice, but it's only needed at the *MSc level*: the regret decomposition already covers what you need to know about generalisation error in the BSc course.
 
 *** Example: mean estimation
-- Data $D = y_1, \ldots, y_T$ with $\E[y_t] = \mu$.
-- Goal: estimate $\mu$ with some estimator $f_D$ to minimise
-- MSE: $\E[(y - f_D)^2]$, the expected square difference between new samples our guess.
+- Data $D = x_1, \ldots, x_T$ with $\E[x_t] = \mu$.
+- Goal: estimate $\mu$ with some estimator $f_D$ to minimise MSE: $\E[(x - f_D)^2]$, the expected square difference between new samples our guess.
 **** Optimal estimate
 To minimise the MSE, we use $f^* = \mu$. This gives us two ideas:
 **** Empirical mean estimator:
 - $f_D = \sum_{t=1}^T x_t / T$.
-- $\Var(f_D) = \E [f_D - \mu]^2 = \sigma^2/T$
 - $\Bias(f_D) = 0$. (unbiased estimator)
-**** Laplace mean estimator:
-- $f_D = \sum_{t=1}^T (\lambda + x_t) / T$.
-- $\Var(f_D) = \E [f_D - \mu] = \frac{1}{1 + \sqrt{T}}$
-- $\Bias(f_D) = O(1/T)$.
+- $\Var(f_D) = \sigma^2/T$
+***** Proofs.
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+Due to the linearity of expectations, if $\E[x_t]=\mu$ for all $t$ then:
+\[
+\E[f_D]
+=\E[\sum_t x_t/T] = \sum_t \E[x_t]/T = \mu.
+\]
+Consequently, $\Bias(f_D) = \E[f_D - \mu] = 0$.
+If $x, y$ are independent then $\Var(x +y) = \Var(x) + \Var(y)$. In addition, $\Var(cx) = c^2 \Var(x)$ for any constant $c$. Hence,
+if $\Var[x_t] = \sigma^2$ for all $t$:
+\[
+\Var[f_D]
+=\Var[\sum_t x_t/T] = \sum_t \Var[x_t/T] = \sum_t \frac{\sigma^2}{T^2} = \frac{\sigma^2}{T}.
+\]
 
+**** Smoothed mean estimator:
+- $f_D = (\lambda + \sum_{t=1}^T x_t) / (T + 1)$.
+- $\Bias(f_D) = O(1/T)$.
+- $\Var(f_D) = \frac{T \sigma^2 }{(T+1)^2}$
+
+***** Smoothed estimator.
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+We can rewrite the sum as $\frac{\lambda}{T+1} + \frac{T}{T+1} \times \sum_{t=1}^T x_t/T$. We can follow the previous proof, to show that there is a slight $O(T^{-1})$ bias. The variance is then also $\sigma^2 T/(T+1)^2$, so very slightly lower.
+
+
+
+
+  
 *** A proof of the bias/variance trade-off :advanced:MSc:
 - RV's $y_t \sim P$, $\E[y_t] = \mu$, $y_t = \mu + \epsilon_t$.
 - Estimator $f_D$, $D = y_1, \ldots, y_{t-1}$.
