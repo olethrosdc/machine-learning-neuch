@@ -96,6 +96,23 @@ ESL Chapter 13
 PML1 Chapter 5.1, 5.3
 ISLP Chapter 2, 4.7.6
 
+** Grading
+The course is mainly graded through an *exam*, but part of the assessment involves participation, in-class exercises, assignments, and a quiz.
+
+Most weeks you will have both a take-home assignment and an in-class exercise. You can do these in 2-person groups or individually. They
+are only graded for effort, not for correctness.
+
+The in-class exercises work your critical ability and your basic mathematical skills. (If there is programming involved, it should be very simple). You are welcome to try and finish them at home, but you should hand the pen-and-paper ones in at the end of the class.
+
+The take-home assignments mainly coding exercises, and are also an integral part of the teaching: they require you to search on your own for solutions, using whatever resources you want. We will explain some important aspects of coding in-class, and we expect you to come to us with questions on the forum, during office hours, or in class.
+
+The quiz and final exam will examine your conceptual and technical understanding in the preceding material. These are to be done individually. The mid-term quiz will be 60'. The final exam is 120'.
+
+*** Grade breakdown
+
+- 20% Exercises and assignments. You can skip 3 weeks without any penalty.
+- 20% Mid-Term Quiz
+- 60% Final Exam
 
 ** Material
 *** Textbooks

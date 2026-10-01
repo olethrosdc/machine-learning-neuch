@@ -92,7 +92,26 @@ Chapter 13: 13.1-13.4
 
 
 
-* Course evaluation
+* Evaluation
+** Grading
+The course is *continuous control*, graded through participation, in-class exercises, assignments, and quizzes.
+
+Most weeks you will have both a take-home assignment and an in-class exercise. You can do these in 2-person groups or individually. They
+are only graded for effort, not for correctness.
+
+The in-class exercises work your critical ability and your basic mathematical skills. (If there is programming involved, it should be very simple). You are welcome to try and finish them at home, but you should hand the pen-and-paper ones in at the end of the class.
+
+The take-home assignments mainly coding exercises, and are also an integral part of the teaching: they require you to search on your own for solutions, using whatever resources you want. We will explain some important aspects of coding in-class, and we expect you to come to us with questions on the forum, during office hours, or in class.
+
+The quizzes will examine your conceptual and technical understanding in the preceding material. These are to be done individually. The first quiz will be 60'. The second 120'.
+
+*** Grade breakdown
+
+- 30% Exercises and assignments. You can skip 3 weeks without any penalty.
+- 30% First Quiz
+- 40% Second Quiz
+  
+
 ** Course evaluation
 *** Course evaluation
 - Remember to do the course evaluation on is-academia.
