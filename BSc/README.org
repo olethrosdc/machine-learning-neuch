@@ -91,6 +91,35 @@ Chapter 13: 13.1-13.4
 
 
 
+* Use of External Aids (Books, LLMs, Wikipedia, etc)
+
+In this course, the use of automated methods for writing and translating text, such generative AI models, web-based translation and code development tools is allowed under certain conditions.
+
+The general principle is the following:
+
+*To understand it, you must do it yourself.*
+
+The recommended workflow is this: read the material, think of a solution for yourself, try and implement it, and then ask for help in the specific place you get stuck. If you remain in class during the exercises, then you will be able to solve most of the high-level problems with me or the assistant. You can also ask for help in the forums. Do so early.
+If you are at home, use, in order of priority.
+1. Course textbook
+2. Course slides/notes
+3. Wikipedia
+4. Use a chatbot as a way to (a) get an informal description of a concept (b) get (possibly wrong) answers that you must verify in authoritative sources (c) find possible (?) mistakes in your own answers.
+
+The general idea for the use of advanced algorithms is the same as when you are using any other external resource, such as verbal advice, online forums, or material from books or websites.  In all cases, you are /not/ allowed to present anybody's work as your own work. This includes both human and machine generated output. Misrepresentation will be considered misuses in this class.  So, you must cite each and every use of any external tool, reference, or personal help. Here are some examples:
+
+    1. Verbal advice: Cite as "A. Student: Personal Communication"
+    2. Online forums: Stackoverflow is an example. Cite as "We based this part of the work on URL where we modified the code to ... "
+    3. Books or websites: Cite normally  explaining how you used the material, e.g. "From Theorem 1 (Aardvark et al, 1975) which we reproduce here..."
+    4. Automated translation: Specify what you used and where. Note, however, that you can write your reports in French or English. Use [*] superscripts.
+    5. Advanced coding aids: Specify what you used, including generative-AI. Say where you used it exactly, so we can filter out. eg "We used X-Bot to implement to set up the data structures". 
+    6. Advanced models for grammar and rewriting: Specify which model you used and for which parts of the text. Highlight the edited text in a different colour.
+    7. Advanced models for text structuring and code architecture. You are not encouraged to do that: we can discuss this in class if needed. However, if you do make use of such models, then you must explain how you used them, including a copy of the intermediate output.
+    8. You must use a git repository to create your work. This way we can track changes.
+    9. If you do not stick to the above advice, then the automated AI-detection tools may provide false positives, or you may fail.
+   10. You will be tested in the oral presentation. 
+
+When using any external tool, you must be aware that the answers can be incorrect, or you may apply them in the wrong way. We have seen examples of this even before the chatbot era, when people were copying from other students, or collating answers from stackoverflow to produce a Frankestein monster of a project.
 
 * Evaluation
 ** Grading

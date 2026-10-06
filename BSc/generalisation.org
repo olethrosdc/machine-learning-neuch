@@ -476,7 +476,10 @@ An estimator is *unbiased* if, for any $\theta$ and corresponding distribution $
      :BEAMER_env: example
      :END:
 Consider $D = (x_1, \ldots, x_T)$ with $x_t \sim P$ being i.i.d samples with $\E[x_t] = \theta$.
-The sample mean estimator $f(D) = \sum_{t} x_t / T$ is unbiased, as :
+
+**** Theorem
+The sample mean estimator $f(D) = \sum_{t} x_t / T$ is unbiased.
+**** Proof.
 \[
 \E[f] = \E\left[\sum_{t=1} x_t / T\right] = \frac{1}{T} \sum_{t=1} \E[x_t] = \frac{1}{T} \sum_{t=1}^T \theta = \theta.
 \]
