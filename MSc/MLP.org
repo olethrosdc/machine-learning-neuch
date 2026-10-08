@@ -303,16 +303,16 @@ where $\mparam = [\vparam_i]_{i=1}^m$, $\param_{i,j} \sim \Normal(0,1)$
 - Use the chain rule to "backpropagate" errors.
 
 *** The chain rule of differentiation
-#+ATTR_LATEX: :width 150px
+#+ATTR_LATEX: :width 150pt
 [[../fig/liebniz.jpeg]]
 [1673] Liebniz
 
 *** Chain rule applied to the perceptron
-#+ATTR_LATEX: :width 150px
+#+ATTR_LATEX: :width 150pt
 [[../fig/rosenblatt.jpeg]]
 [1976] Rosenblat
 *** Chain rule for deep neural netowrks
-#+ATTR_LATEX: :width 100px
+#+ATTR_LATEX: :width 100pt
 [[../fig/werbos.jpg]]
 [1982] Werbos
 *** Backpropagation given a name
@@ -321,21 +321,21 @@ where $\mparam = [\vparam_i]_{i=1}^m$, $\param_{i,j} \sim \Normal(0,1)$
      :PROPERTIES:
      :BEAMER_col: 0.3
      :END:
-#+ATTR_LATEX: :width 100px
+#+ATTR_LATEX: :width 100pt
 [[../fig/DERumelhart.png]]
 Rumelhart
 **** Hinton                                                           :BMCOL:
      :PROPERTIES:
      :BEAMER_col: 0.3
      :END:
-#+ATTR_LATEX: :width 75px
+#+ATTR_LATEX: :width 75pt
 [[../fig/hinton.jpg]]
 Hinton
 **** Williams                                                         :BMCOL:
      :PROPERTIES:
      :BEAMER_col: 0.3
      :END:
-#+ATTR_LATEX: :width 100px
+#+ATTR_LATEX: :width 100pt
 [[../fig/williams.jpg]]
 Williams
 *** Elementary back-propagation: linear regression
