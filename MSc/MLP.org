@@ -601,7 +601,6 @@ is a contraction as long as $\eta \leq 2/\ell$.
 
 [See Nesterov 04 or Appendix A of Iterative Privacy Amplification for proofs]
 
-
 ** Stochastic gradient descent in practice
 *** Gradient descent in practice
 **** The ideal gradient descent algorithm:
@@ -630,6 +629,21 @@ However, it is a bit better to look at $K$ examples at a time before we change t
 \vparam_{n+1}= \vparam_n -  \alpha_n \frac{1}{K} \sum_{k=nK}^{(n+1)K-1} \nabla_\vparam \cost(x_{[k]_T}, y_{[k]_T}, \vparam)
 \]
 This also helps with parallelisation, since we can compute $\cost, \nabla_\vparam \cost$ in parallel for each example.
+
+** Other learning rules
+*** Hebbian learning
+Let us consider neural connections $\theta_{ij}$ between inputs $x_i$ and outputs $y_j$ so that
+\[
+y_j^t = f\left(\sum_{k} x_k^t \theta_{kj}^t\right),
+\]
+where $f$ is a sigmoid.
+The principle of *Hebbian* learning is to increase the strength of those connections whose input contributed to an activation. When $x,y \in [0,1]$, one interpretation of this principle is this parameter update:
+\[
+\theta_{ij}^{t+1} = \theta_{ij}^{t} + \alpha x_i^t y_j^t.
+\]
+Of course, this learning rule diverges, so we need to explicitly normalise by dividing
+with \|\theta_{\cdot j}\|$, or to subtract a term proportional to $\theta_{ij}$ to stabilise.
+
 
 * Python libraries
 ** sklearn
