@@ -164,9 +164,10 @@ y_i = \vparam_i \bx
 :PROPERTIES:
 :BEAMER_env: note
 :END:
-A sparse linear layer is again $\by = \mparam \bx$, but $\param$ is a *sparse* matrix (i.e. with a number of non-zero values in the order of $o(\sqrt{nm}$)). Sparse matrices matrices are particularly useful for random projections.
+- A sparse linear layer is again $\by = \mparam \bx$, but $\mparam$ is a *sparse* matrix (i.e. with a number of non-zero values in the order of $o(\sqrt{nm}$)). Sparse matrices matrices are particularly useful for random projections.
 
-A convolutional layer is a special case of a linear layer with *tied* variables. There, the same parameter value is applied in many matrix positions.
+- A convolutional layer is a special case of a linear layer with *tied* variables. There, the same parameter value is applied in many matrix positions. This is used to e.g. take into account spatial invariance in images. It can be thought of as convolving a small matrix with the whole image, rather a single bix matrix being applied everywhere.
+  
 
 
 *** Multiple linear layers
@@ -225,7 +226,7 @@ Typically used in the hidden layers of neural networks, as it is:
      :BEAMER_col: 0.5
      :END:
 ***** Example: Logistic regression
-- Input $\bx \in \Reals^n$
+- Input $\bx \in \Reals^n$, Labels $y \in \{0,1\}$.
 - Intermediate output: $z \in \Reals$,
 \[
 z = \sum_{i=1}^n \param_i x_i.
@@ -237,7 +238,7 @@ f(z) =  1/[1 + \exp(-z)].
 Now we can interpret $\hy = P_\vparam(y = 1 | x)$.
 ***** Loss function: negative log likelihood
 \[
-\cost(\hy, y) = - [\ind{y=1} \ln (\hy) + \ind{y=-1} \ln (1 - \hy)]
+\cost(\hy, y) = - [\ind{y=1} \ln (\hy) + \ind{y=0} \ln (1 - \hy)]
 \]
 **** Figure                                                           :BMCOL:
      :PROPERTIES:
@@ -256,6 +257,16 @@ Now we can interpret $\hy = P_\vparam(y = 1 | x)$.
       \draw[->] (z) to (y);
 \end{tikzpicture}
 
+**** When to use.
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+Sigmoid activation has two main uses.
+- For logistic regression, it is used as the output layer. Then the output corresponds to the probability of the positive class. In that case, it is combiend with the negative log-likelihood loss.  Note that the negative log likelihood as is the same as the cross-entropy loss. We can rewrite it as
+  \[
+  \cost(\hy, y) = \ln(\hy)^{y} + \ln(1 - \hy)^{1 - y}.
+  \]
+  
 *** Softmax layer
 **** Description                                                      :BMCOL:
      :PROPERTIES:
