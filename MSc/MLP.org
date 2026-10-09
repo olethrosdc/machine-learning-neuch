@@ -3,12 +3,14 @@
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \input{preamble}
 #+LaTeX_CLASS_OPTIONS: [smaller]
+#+LATEX_HEADER: \setbeameroption{show notes}
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 #+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
 #+name: setup-minted
 * Features and layers
+
 ** Introduction
 *** Perceptron vs linear regression
 **** Network architecture                                             :BMCOL:
@@ -27,15 +29,15 @@
 #+ATTR_BEAMER: :overlay <+->
 - Network output
 \[
-\hy = \beta_0 + \beta_1 x_1 + \beta_2 x_2
+\hy = \param_0 + \param_1 x_1 + \param_2 x_2
 \]
 - Chain rule
 \[
-\nabla_\beta \loss = \nabla_{\hy} \loss \nabla_\beta \hy
+\nabla_\param \loss = \nabla_{\hy} \loss \nabla_\param \hy
 \]
 - Network gradient
 \[
-\nabla_\beta \hy = (x_1, x_2)
+\nabla_\param \hy = (x_1, x_2)
 \]
 **** Cost functions:                                                  :BMCOL:
      :PROPERTIES:
@@ -60,6 +62,18 @@ with
 \[
 \nabla_{\hy} \loss = 2(\hy - y).
 \]
+
+**** Summary.
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+This example looks at a model with just two inputs, and three parameters. The graph determines dependencies. More specifically, the nodes are variables, and the arcs show that we need  $x_1, x_2$ to calculate $\hy$. We can use such graphical models as *computation graphs* or *decision networks*.
+
+Both the perceptron and linear regression share the same structure. However, the variable $\hy$ is interpreted differently. In the perceptron it is the distance (and side) from the hyperplane. In linear regression, it is the predicted target. For that reason, it makes sense to use a different function for the two methds.
+
+We can obtain parameters for both models using the chain rule, to split the gradient of the loss with respect to the parameters in two parts: the gradient of the loss with respect to the output, and the gradient of the output with respect to the parameters.
+
+This principle can be extended to more complex transformations between $x, y$ as well as other cost functions. A typical idea is to use a sequence of nonlinear transformations to project the data into higher or lower dimensional spaces. These are called *layers*.
 
 ** Layers
 *** Layering and features
@@ -118,6 +132,19 @@ with
       \draw[->] (v2) to (y1);
       \draw[->] (v2) to (y2);
 \end{tikzpicture}
+**** Explanation.
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+Here we have a "neural network" with three "layers". The "input layer" is simply the observations. The first linear layer is called "hidden", and the last linear layer is called the "output" layer. Each intermediate output is called a "neuron".
+
+For historical reasons related to neuroscience, the non-linear layers are called "activation" functions, because of how a neuron activates depending on the total incoming current.
+
+The simplest type of layer is the linear, but here we have many types.
+A dense layer from $n$ to $m$ is multiplication with an $n \times m$ matrix. A sparse layer is a sparse such matrix. Convolutional layers are used in computer vision as a way to obtain space invariance.
+
+Note that the softmax layer and the sigmoid layer have different dependencies. As you'll see later, the sigmoid layer involves an activation function for a single "neuron", while the softmax is like a "winner-takes-all" approach.
+
 *** Linear layers
 **** Example: Linear regression with $n$ inputs, $m$ outputs.
 - Input: Features $\bx \in \Reals^n$
@@ -133,6 +160,15 @@ y_i = \vparam_i \bx
 \[
 \by = \mparam \bx 
 \]
+**** Sparse layers and convolution.
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+A sparse linear layer is again $\by = \mparam \bx$, but $\param$ is a *sparse* matrix (i.e. with a number of non-zero values in the order of $o(\sqrt{nm}$)). Sparse matrices matrices are particularly useful for random projections.
+
+A convolutional layer is a special case of a linear layer with *tied* variables. There, the same parameter value is applied in many matrix positions.
+
+
 *** Multiple linear layers
 **** Repeated linear transformations are linear
 It does not really help to have multiple linear layers one after the other. For example, if we transform  $x \in \Reals^n$ to $z \in \Reals^k$ to $y \in \Reals^m$ through two matrices
@@ -281,7 +317,12 @@ where $\mparam = [\vparam_i]_{i=1}^m$, $\param_{i,j} \sim \Normal(0,1)$
 **** The reason for random projections
 - The high dimension makes it easier to learn.
 - The randomness ensures we are not learning something spurious.
-
+**** Sparseness.
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+While $\Theta$ is not sparse in the traditional sense, most of its values are close to zero, few are very large. Hence, it is a bit like a noisy sparse matrix. 
+  
 ** Back propagation
 *** Background on back-propagation
 **** Gradient descent algorithm
@@ -290,11 +331,11 @@ where $\mparam = [\vparam_i]_{i=1}^m$, $\param_{i,j} \sim \Normal(0,1)$
 \[
 \nabla_\vparam \E_\vparam[\loss]
 \approx 
-\frac{1}{T} \sum_{t=1}^T \nabla_\vparam \cost(x_t, y_t, \vparam).
+\frac{1}{T} \sum_{t=1}^T \nabla_\vparam \cost(x^t, y^t, \vparam).
 \]
 - We can then update our parameters to reduce the *empirical loss*
 \[
-\vparam_{t+1} = \vparam_t - \alpha_t \nabla_\vparam \cost(x_t, y_t, \vparam).
+\vparam^{t+1} = \vparam^t - \alpha_t \nabla_\vparam \cost(x^t, y^t, \vparam).
 \]
 **** The problem
 - However $\cost$ is a complex function of $\vparam$.
@@ -368,15 +409,13 @@ Williams
 &=
 \nabla_{\vparam} \alert<5>{f(\vparam, \bx)} \times \alert<4>{\nabla_{\hy} \cost(\hy, y)}
 \\
-&=
-\nabla_\vparam f(\vparam, \bx) 
-\times 2 [\hy - y] 
+&=\bx \times 2 [\hy - y] 
 \end{align}
 #+BEAMER: \pause
 #+BEAMER: \pause
 - Update:
 \[
-\vparam_{t+1} = \vparam_t - \alpha_t \times \nabla_\vparam \ell(\hy_t, y_t) 
+\vparam_{t+1} = \vparam_t - \alpha_t \times \nabla_\vparam \ell(\hy^t, y^t) 
 \]
 
 
@@ -606,27 +645,27 @@ is a contraction as long as $\eta \leq 2/\ell$.
 **** The ideal gradient descent algorithm:
 If we could calculte $\nabla_\vparam \E_\vparam[\loss]$, we could do:
 \[
-\vparam_{n+1} = \vparam_n - \alpha_n \nabla_\vparam \E_\vparam[\loss]
+\vparam^{n+1} = \vparam^n - \alpha_n \nabla_\vparam \E_\vparam[\loss]
 \]
 for a suitable $\alpha_n$ schedule.
 **** Gradient descent on the empirical error
 Since we only have the data, we can try to minimse the empirical loss
-$\frac{1}{T} \sum_{t=1}^T \cost(x_t, y_t, \vparam)$ through gradient descent
+$\frac{1}{T} \sum_{t=1}^T \cost(x^t, y^t, \vparam)$ through gradient descent
 \[
-\vparam_{n+1} = \vparam_{n} - \alpha_n \frac{1}{T} \sum_{t=1}^T \nabla_\vparam \cost(x_t, y_t, \vparam)
+\vparam^{n+1} = \vparam^{n} - \alpha_n \frac{1}{T} \sum_{t=1}^T \nabla_\vparam \cost(x^t, y^t, \vparam)
 \]
 This is also called *batch* gradient descent.
 *** Stochastic gradient descent
 **** Gradient descent on one example:
-We don't have to wait calculate $\nabla_\vparam \cost(x_t, y_t, \vparam)$ for all $t$ before applying the update. We can do it at every example:
+We don't have to wait calculate $\nabla_\vparam \cost(x^t, y^t, \vparam)$ for all $t$ before applying the update. We can do it at every example:
 \[
-\vparam_{n+1}= \vparam_n -  \alpha_n \nabla_\vparam \cost(x_{[n]_T}, y_{[n]_T}, \vparam).
+\vparam^{n+1}= \vparam^n -  \alpha_n \nabla_\vparam \cost(x_{[n]_T}, y_{[n]_T}, \vparam).
 \]
 Here $[n]_T$ is 1 + n modulo T to ensure $n \in \{1, \ldots, T\}$.
 **** Minibatch gradient descent
 However, it is a bit better to look at $K$ examples at a time before we change the parameters. This is called a *minibatch*
 \[
-\vparam_{n+1}= \vparam_n -  \alpha_n \frac{1}{K} \sum_{k=nK}^{(n+1)K-1} \nabla_\vparam \cost(x_{[k]_T}, y_{[k]_T}, \vparam)
+\vparam^{n+1}= \vparam^n -  \alpha_n \frac{1}{K} \sum_{k=nK}^{(n+1)K-1} \nabla_\vparam \cost(x_{[k]_T}, y_{[k]_T}, \vparam)
 \]
 This also helps with parallelisation, since we can compute $\cost, \nabla_\vparam \cost$ in parallel for each example.
 
@@ -642,7 +681,7 @@ The principle of *Hebbian* learning is to increase the strength of those connect
 \theta_{ij}^{t+1} = \theta_{ij}^{t} + \alpha x_i^t y_j^t.
 \]
 Of course, this learning rule diverges, so we need to explicitly normalise by dividing
-with \|\theta_{\cdot j}\|$, or to subtract a term proportional to $\theta_{ij}$ to stabilise.
+with $\|\theta_{\cdot j}\|$, or to subtract a term proportional to $\theta_{ij}$ to stabilise.
 
 
 * Python libraries
@@ -654,7 +693,7 @@ Uses the *cross entropy* cost
 from sklearn.neural_network import MLPClassifier
 clf = MLPClassifier(hidden_layer_sizes=(5, 2))
 clf.fit(X, y)
-clf.predict(X_test)
+clf.predict(x^test)
 #+END_SRC
 - Main condition is layer sizes.
 
@@ -667,8 +706,8 @@ model = MLPRegressor(hidden_layer_sizes=(5, 2))
 *** PyTorch
 **** Data set-up
 #+BEGIN_SRC python :exports code
-X_train = torch.tensor(X_train, dtype=torch.float32)
-train_dataset = TensorDataset(X_train, y_train)  
+x_train = torch.tensor(x_train, dtype=torch.float32)
+train_dataset = TensorDataset(x_train, y_train)  
 train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True)
 #+END_SRC
 *** PyTorch: Manual training
