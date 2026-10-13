@@ -1,37 +1,7 @@
 #+TITLE: Linear Regression
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
-#+LaTeX_HEADER: \usepackage{tikz}
-#+LaTeX_HEADER: \usepackage{amsmath}
-#+LaTeX_HEADER: \usepackage{amssymb}
-#+LaTeX_HEADER: \usepackage{isomath}
-#+LaTeX_HEADER: \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
-#+LaTeX_HEADER: \newcommand \Var {\mathop{\mbox{\ensuremath{\mathbb{V}}}}\nolimits}
-#+LaTeX_HEADER: \newcommand \Bias {\mathop{\mbox{\ensuremath{\mathbb{B}}}}\nolimits}
-#+LaTeX_HEADER: \newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
-#+LaTeX_HEADER: \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
-#+LaTeX_HEADER: \DeclareMathOperator*{\argmax}{arg\,max}
-#+LaTeX_HEADER: \DeclareMathOperator*{\argmin}{arg\,min}
-#+LaTeX_HEADER: \DeclareMathOperator*{\sgn}{sgn}
-#+LaTeX_HEADER: \newcommand \defn {\mathrel{\triangleq}}
-#+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
-#+LaTeX_HEADER: \newcommand \Param {B}
-#+LaTeX_HEADER: \newcommand \param {\beta}
-#+LaTeX_HEADER: \newcommand \vparam {\vectorsym{\beta}}
-#+LaTeX_HEADER: \newcommand \mparam {\matrixsym{B}}
-#+LaTeX_HEADER: \newcommand \bW {\matrixsym{W}}
-#+LaTeX_HEADER: \newcommand \bw {\vectorsym{w}}
-#+LaTeX_HEADER: \newcommand \wi {\vectorsym{w}_i}
-#+LaTeX_HEADER: \newcommand \wij {w_{i,j}}
-#+LaTeX_HEADER: \newcommand \bA {\matrixsym{A}}
-#+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
-#+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
-#+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
-#+LaTeX_HEADER: \newcommand \by {\vectorsym{y}}
-#+LaTeX_HEADER: \newcommand \bel {\beta}
-#+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
-#+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
-#+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
+#+LaTeX_HEADER: \input{preamble}
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
@@ -41,17 +11,17 @@
 ** Simple linear regression
 *** Simple linear regression
 **** Input and output
-- Data pairs $(x_t, y_t)$, $t = 1, \ldots, T$.
-- Input $x_t \in \Reals$
-- Output $y_t \in \Reals$.
-**** Modelling the conditional expectation $\E[y_t | x_t]$
+- Data pairs $(x^t, y^t)$, $t = 1, \ldots, T$.
+- Input $x^t \in \Reals$
+- Output $y^t \in \Reals$.
+**** Modelling the conditional expectation $\E[y^t | x^t]$
 - Parameters $\param_0, \param_1 \in \Reals$
 - Function $\pi_\param : \Reals \to \Reals$, defined as
 \[
-\pi_\param(x_t) = \param_0 + \param_1 x_{t}
+\pi_\param(x^t) = \param_0 + \param_1 x_{t}
 \]
-**** Probabilistic predictions: Modelling the conditional probability $\Pr[y_t | x_t]$
-- $y_t = \E[y_t | x_t] + \epsilon_t$, with $\epsilon_t \in \Reals$ being zero-mean *noise*.
+**** Probabilistic predictions: Modelling the conditional probability $\Pr[y^t | x^t]$
+- $y^t = \E[y^t | x^t] + \epsilon_t$, with $\epsilon_t \in \Reals$ being zero-mean *noise*.
 - Simplest model: variance $\sigma = \Var(\epsilon) =  \E[\epsilon_t^2]$
   
 *** Linear models
@@ -83,7 +53,7 @@
 *** Learning as Optimisation 
 Find the parameters $\param$ minimising squared error
 \[
-\min_\param \frac{1}{T} \sum_{t=1}^T \big[\underbrace{y_t - \pi_\param(x_t)}_{\textrm{residual}}\big]^2
+\min_\param \frac{1}{T} \sum_{t=1}^T \big[\underbrace{y^t - \pi_\param(x^t)}_{\textrm{residual}}\big]^2
 \]
 [[../fig/linear_regression_fit.pdf]]
 
@@ -111,29 +81,30 @@ Find the parameters $\param$ minimising squared error
 *** Maximum likelihood inference
 **** Gaussian noise model:
 \[
-y_t = f(x_t) + \epsilon_t,  \qquad \epsilon_t \sim \Normal(0, \sigma)
+y^t = f(x^t) + \epsilon_t,  \qquad \epsilon_t \sim \Normal(0, \sigma)
 \]
 With conditional density
 \[
-p_\param(y_t| x_t) 
+p_\param(y^t| x^t) 
 \propto
-\exp(-[y_t - \pi_\param(x_t)]^2 / 2\sigma^2)
+\exp(-[y^t - \pi_\param(x^t)]^2 / 2\sigma^2)
 \]
 #+BEAMER: \pause
 **** Maximum likelihood inference
 *Idea: For data $D$, find parameters maximising $P_\beta(D)$*
 #+BEAMER: \pause
 \begin{align*}
-\argmax_\param P_\beta(D) 
+\argmax_\param P_\beta(D)
 &= 
-\argmax_\param p_\param(y_1, \ldots, y_t| x_1, \ldots, x_T) 
+\argmax_\param \alert<3>{p_\param(y^1, \ldots, y^t| x^1, \ldots, x^T)}
 =
-\argmax_\param \ln \prod_t p_\param(y_t| x_t) \\
+\argmax_\param \alert<4>{\ln \prod_t p_\param(y^t| x^t)} \\
 &=
-\argmax_\param \sum \ln p_\param(y_t| x_t) \\
-&= \argmax_\param \sum_t \ln\left\{\exp\left(-[y_t - \pi_\param(x_t)]^2 / 2\sigma^2\right)\right\}\\
-&= \argmax_\param \sum_t -[y_t - \pi_\param(x_t)]^2 / 2\sigma^2
-= \argmin_\param \sum_t |y_t - \pi_\param(x_t)|^2
+\argmax_\param \alert<5>{\sum  \ln} p_\param(y^t| x^t) \\
+&= \argmax_\param \sum_t \ln\left\{
+\alert<6>{\exp\left(-[y^t - \pi_\param(x^t)]^2 / 2\sigma^2\right)}\right\}\\
+&= \argmax_\param \sum_t -[y^t - \pi_\param(x^t)]^2 / \alert<7>{2\sigma^2}
+= \argmin_\param \sum_t |y^t - \pi_\param(x^t)|^2
 \end{align*}
 *** Coding break
 src/Regression/RegressionDemonstration.ipynb
@@ -145,18 +116,18 @@ src/Regression/RegressionDemonstration.ipynb
 ** Multiple linear regression
 *** Multiple linear regression
 **** Input and output
-- Data pairs $(x_t, y_t)$, $t = 1, \ldots, T$.
-- Input $x_t \in \Reals^n$
-- Output $y_t \in \Reals^m$.
+- Data pairs $(x^t, y^t)$, $t = 1, \ldots, T$.
+- Input $x^t \in \Reals^n$
+- Output $y^t \in \Reals^m$.
 #+BEAMER: \pause
-**** Point predictions: Modelling the conditional expectation $\E[y_t | x_t]$
-- Parameters $\param \in \Reals^{n \times m}$
-- Function $\pi_\param : \Reals^n \to \Reals^m$, defined as
+**** Point predictions: Modelling the conditional expectation $\E[y^t | x^t]$
+- Parameters $\mparam \in \Reals^{n \times m}$
+- Function $\pi_\mparam : \Reals^n \to \Reals^m$, defined as
 \[
-\pi_\param(x_t) = \param^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
+\pi_\param(x^t) = \mparam^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
 \]
-**** Probabilistic predictions: Modelling the conditional probability $\Pr[y_t | x_t]$
-- $y_t = \E[y_t | x_t] + \epsilon_t$, with $\epsilon_t \in \Reals^m$ being zero-mean *noise*.
+**** Probabilistic predictions: Modelling the conditional probability $\Pr[y^t | x^t]$
+- $y^t = \E[y^t | x^t] + \epsilon_t$, with $\epsilon_t \in \Reals^m$ being zero-mean *noise*.
 - Noise *covariance* matrix $\Sigma = \Var(\epsilon) =  \E[\epsilon_t \mid \epsilon_t \top]$ 
 
 
@@ -182,7 +153,7 @@ src/Regression/RegressionDemonstration.ipynb
 
 *** Gradient descent for squared error
 **** The cost function
-$L(\param, D) = \sum_{t=1}^T (y_t - \pi_\param(x_t))^2 =  \sum_{t=1}^T \epsilon_t^2$, with $\epsilon_t \defn y_t - \pi_\param(x_t)$.
+$L(\param, D) = \sum_{t=1}^T (y^t - \pi_\param(x^t))^2 =  \sum_{t=1}^T \epsilon_t^2$, with $\epsilon_t \defn y^t - \pi_\param(x^t)$.
 #+BEAMER: \pause
 **** Cost gradient
 Using the chain rule of differentiation, $\nabla_\beta f(\epsilon) = \nabla_\epsilon f(\epsilon) \nabla_\beta \epsilon$.
@@ -193,14 +164,14 @@ Using the chain rule of differentiation, $\nabla_\beta f(\epsilon) = \nabla_\eps
 = \sum_{t=1}^T \nabla_{\epsilon_t} \epsilon_t^2 \nabla_\beta \epsilon
 \\
 &
-= \sum_{t=1}^T 2 \epsilon_t \nabla_\param[y_t -  \pi_\param(x_t)]
-= \sum_{t=1}^T 2 [y_t - \pi_\param(x_t)] [- \nabla_\beta \pi_\param(x_t)]
+= \sum_{t=1}^T 2 \epsilon_t \nabla_\param[y^t -  \pi_\param(x^t)]
+= \sum_{t=1}^T 2 [y^t - \pi_\param(x^t)] [- \nabla_\beta \pi_\param(x^t)]
 \end{align*}
 #+BEAMER: \pause
 **** Parameter gradient for linear regression
 Remember $\nabla_\beta f = (\partial / \partial_1 f, \ldots, \partial / \partial_n f)$
 \[
-\frac{\partial}{\partial \param_j} \pi_\param(x_t) 
+\frac{\partial}{\partial \param_j} \pi_\param(x^t) 
 =
 \frac{\partial}{\partial \param_j} \sum_{i=1}^n \param_i x_{t,i}
 =
@@ -231,11 +202,11 @@ f(\param) = \int_X dP(x) g(x, \param).
 We need to solve the following equations for $A$:
 \begin{equation*}
 \begin{matrix}
-y_1 &= x_1^\top \param\\
+y^1 &= (\bx^1)^\top \vparam\\
 \cdots & \cdots\\
-y_t &= x_t^\top \param\\
+y^t &= (\bx^t)^\top \vparam\\
 \cdots & \cdots\\
-y_T &= x_T^\top \param
+y^T &= (\bx^T)^\top \vparam
 \end{matrix}
 \end{equation*}
 #+BEAMER: \pause
@@ -250,65 +221,65 @@ y_T
 \end{pmatrix}
 = 
 \begin{pmatrix}
-x_1^\top\\
+\bx_1^\top\\
 \vdots\\
-x_t^\top\\
+\bx_t^\top\\
 \vdots\\
-x_T^\top
+\bx_T^\top
 \end{pmatrix}
-\param
+\vparam
 \end{equation*}
 #+BEAMER: \pause
 Resulting in 
 \[
-\by = X \param.
+\by = \bX \vparam.
 \]
 #+BEAMER: \pause
-How can we get $\param?$
+How can we get $\vparam$?
 
 *** Finding the $\param$
 We now have a linear equation,
 \[
-\by = X \param.
+\by = \bX \vparam.
 \]
 We want to solve for $\param$.
-If $X$ had an inverse $X^{-1}$, we could obtain 
+If $\bX$ had an inverse $\bX^{-1}$, we could obtain 
 \[
-X^{-1} \by = X^{-1}  X \param = I \param = \param.
+\bX^{-1} \by = \bX^{-1}  \bX \vparam = I \vparam = \vparam.
 \]
-But $X^{-1}$ *does not exist*.
+But $\bX^{-1}$ *does not exist*.
 
 #+BEAMER: \pause
 **** Least-squares solution
-The *left-pseudo inverse* $\tilde{X}^{-1} \defn (X^\top X)^{-1} X^\top$ can be used to obtain
+The *left-pseudo inverse* $\tilde{\bX}^{-1} \defn (\bX^\top \bX)^{-1} \bX^\top$ can be used to obtain
 \[
-\param = \tilde{X}^{-1} \by,
+\vparam = \tilde{\bX}^{-1} \by,
 \]
 This follows as:
 \begin{align*}
-\by &= X \param \\
- \tilde{X}^{-1} \by &=  \tilde{X}^{-1} X \param\\
- \tilde{X}^{-1} \by &= \underbrace{(X^\top X)^{-1}}_{A^{-1}} \underbrace{X^\top X}_{A} \param.
+\by &= \bX \vparam \\
+ \tilde{\bX}^{-1} \by &=  \tilde{\bX}^{-1} X \vparam\\
+ \tilde{\bX}^{-1} \by &= \underbrace{(\bX^\top \bX)^{-1}}_{\bA^{-1}} \underbrace{\bX^\top \bX}_{\bA} \vparam.
 \end{align*}
 
 *** Some matrix algebra reminders
-**** The identity matrix $I \in \Reals^{n \times n}$
+**** The identity matrix $\bI \in \Reals^{n \times n}$
 - For this matrix, $I_{i,i} = 1$ and $I_{i,j} = 0$ when $j \neq i$.
-- $Ix = x$ and $IA = A$.
+- $\bI \bx = \bx$ and $\bI \bA = \bA$.
 #+BEAMER: \pause
-**** The inverse of a matrix $A \in \Reals^{n \times n}$
-$A^{-1}$ is called the inverse of $A$ if
-- $A A^{-1} = I$.
-- or equivalently $A^{-1} A = I$.
+**** The inverse of a matrix $\bA \in \Reals^{n \times n}$
+$\bA^{-1}$ is called the inverse of $\bA$ if
+- $\bA \bA^{-1} = \bI$.
+- or equivalently $\bA^{-1} \bA = \bI$.
 #+BEAMER: \pause
-**** The pseudo-inverse of a matrix $A \in \Reals^{n \times m}$
-- $\tilde{A}^{-1}$ is called the *left pseudoinverse* of $A$ if $\tilde{A}^{-1} A = I$.
+**** The pseudo-inverse of a matrix $\bA \in \Reals^{n \times m}$
+- $\tilde{\bA}^{-1}$ is called the *left pseudoinverse* of $\bA$ if $\tilde{\bA}^{-1} \bA = \bI$.
 \[
-\tilde{A}^{-1} = (A^\top A)^{-1} A^\top, \qquad n > m
+\tilde{\bA}^{-1} = (\bA^\top \bA)^{-1} \bA^\top, \qquad n > m
 \]
-- $\tilde{A}^{-1}$ is called the *right pseudoinverse* of $A$ if $A \tilde{A}^{-1} = I$.
+- $\tilde{\bA}^{-1}$ is called the *right pseudoinverse* of $\bA$ if $\bA \tilde{\bA}^{-1} = \bI$.
 \[
-\tilde{A}^{-1} =  A^\top (AA^\top)^{-1}, \qquad m > n
+\tilde{\bA}^{-1} =  \bA^\top (\bA\bA^\top)^{-1}, \qquad m > n
 \]
 
 
