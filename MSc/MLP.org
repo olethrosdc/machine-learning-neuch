@@ -4,6 +4,7 @@
 #+LaTeX_HEADER: \input{preamble}
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+LATEX_HEADER: \setbeameroption{show notes}
+#+LATEX_HEADER: \setbeamerfont{note page}{size=\footnotesize}
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
@@ -164,9 +165,10 @@ y_i = \vparam_i \bx
 :PROPERTIES:
 :BEAMER_env: note
 :END:
-A sparse linear layer is again $\by = \mparam \bx$, but $\param$ is a *sparse* matrix (i.e. with a number of non-zero values in the order of $o(\sqrt{nm}$)). Sparse matrices matrices are particularly useful for random projections.
+- A sparse linear layer is again $\by = \mparam \bx$, but $\mparam$ is a *sparse* matrix (i.e. with a number of non-zero values in the order of $o(\sqrt{nm}$)). Sparse matrices matrices are particularly useful for random projections.
 
-A convolutional layer is a special case of a linear layer with *tied* variables. There, the same parameter value is applied in many matrix positions.
+- A convolutional layer is a special case of a linear layer with *tied* variables. There, the same parameter value is applied in many matrix positions. This is used to e.g. take into account spatial invariance in images. It can be thought of as convolving a small matrix with the whole image, rather a single bix matrix being applied everywhere.
+  
 
 
 *** Multiple linear layers
@@ -225,7 +227,7 @@ Typically used in the hidden layers of neural networks, as it is:
      :BEAMER_col: 0.5
      :END:
 ***** Example: Logistic regression
-- Input $\bx \in \Reals^n$
+- Input $\bx \in \Reals^n$, Labels $y \in \{0,1\}$.
 - Intermediate output: $z \in \Reals$,
 \[
 z = \sum_{i=1}^n \param_i x_i.
@@ -237,7 +239,7 @@ f(z) =  1/[1 + \exp(-z)].
 Now we can interpret $\hy = P_\vparam(y = 1 | x)$.
 ***** Loss function: negative log likelihood
 \[
-\cost(\hy, y) = - [\ind{y=1} \ln (\hy) + \ind{y=-1} \ln (1 - \hy)]
+\cost(\hy, y) = - [\ind{y=1} \ln (\hy) + \ind{y=0} \ln (1 - \hy)]
 \]
 **** Figure                                                           :BMCOL:
      :PROPERTIES:
@@ -256,6 +258,17 @@ Now we can interpret $\hy = P_\vparam(y = 1 | x)$.
       \draw[->] (z) to (y);
 \end{tikzpicture}
 
+**** When to use.
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+Sigmoid activation has two main uses.
+- For logistic regression, it is used as the output layer. Then the output corresponds to the probability of the positive class. In that case, it is combined with the negative log-likelihood loss.  We can rewrite it as
+  \[
+  \cost(\hy, y) = \ln(\hy)^{y} + \ln(1 - \hy)^{1 - y}.
+  \]
+- Sigmoid activations are also used in hidden layers, to confer some nonlinearity. However, these days ReLU activation is favoured as it is simpler and has a non-vanishing gradient.
+  
 *** Softmax layer
 **** Description                                                      :BMCOL:
      :PROPERTIES:
@@ -269,7 +282,7 @@ Now we can interpret $\hy = P_\vparam(y = 1 | x)$.
 \]
 - *Softmax* output
 \[
-\hy_i = \frac{\exp(z_i)}{\sum_{j = 1 ^m} \exp(z_j)}
+\hy_i = \frac{\exp(z_i)}{\sum_{j = 1}^m \exp(z_j)}
 \]
 We can also interpret this as
 \[
@@ -299,6 +312,18 @@ with usual loss $\cost(\hy, y) = - \ln \hy_y$
       \draw[->] (z2) to (y1);
       \draw[->] (z2) to (y2);
 \end{tikzpicture}
+**** Notes.
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+The softmax layer can be seen as a soft \emph{winner-takes-all} layer. For that reason, it is represented through connections from the previous layer to all the nodes. The higher the inputs are, the closer it is to winner-takes-all. In fact, sometimes you can add a factor $\beta$ to represent this explicitly
+\[
+\hy_i = \frac{\exp( \beta z_i)}{\sum_{j = 1}^m \exp(\beta z_j)}
+\]
+When $\beta \to \infty$, the maximum output approaches $1$ and the rest $0$.
+When $\beta \to 0$, it approaches $0$. However, $\beta$ is usually simply set to 1.
+- The standard use is an output layer in multi-class classification.
+- It can also be used in intermediate layers, to obtain neurons that activate for specific types of data, while others are suppressed. It used in that way as part of *attention* mechanisms.
 
 
 * Algorithms
