@@ -3,7 +3,9 @@
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \input{preamble}
 #+LaTeX_CLASS_OPTIONS: [smaller]
-#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+#+LATEX_HEADER: \setbeameroption{show notes}
+#+LATEX_HEADER: \setbeamerfont{note page}{size=\footnotesize}
+#+COLUMNS: %40ITEM %10replBEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
 #+OPTIONS:   H:3
@@ -11,17 +13,17 @@
 ** Simple linear regression
 *** Simple linear regression
 **** Input and output
-- Data pairs $(x^t, y^t)$, $t = 1, \ldots, T$.
-- Input $x^t \in \Reals$
+- Data pairs $(\xt, y^t)$, $t = 1, \ldots, T$.
+- Input $\xt \in \Reals$
 - Output $y^t \in \Reals$.
-**** Modelling the conditional expectation $\E[y^t | x^t]$
+**** Modelling the conditional expectation $\E[y^t | \xt]$
 - Parameters $\param_0, \param_1 \in \Reals$
 - Function $\pi_\param : \Reals \to \Reals$, defined as
 \[
-\pi_\param(x^t) = \param_0 + \param_1 x_{t}
+\pi_\param(\xt) = \param_0 + \param_1 x_{t}
 \]
-**** Probabilistic predictions: Modelling the conditional probability $\Pr[y^t | x^t]$
-- $y^t = \E[y^t | x^t] + \epsilon_t$, with $\epsilon_t \in \Reals$ being zero-mean *noise*.
+**** Probabilistic predictions: Modelling the conditional probability $\Pr[y^t | \xt]$
+- $y^t = \E[y^t | \xt] + \epsilon_t$, with $\epsilon_t \in \Reals$ being zero-mean *noise*.
 - Simplest model: variance $\sigma = \Var(\epsilon) =  \E[\epsilon_t^2]$
   
 *** Linear models
@@ -53,7 +55,7 @@
 *** Learning as Optimisation 
 Find the parameters $\param$ minimising squared error
 \[
-\min_\param \frac{1}{T} \sum_{t=1}^T \big[\underbrace{y^t - \pi_\param(x^t)}_{\textrm{residual}}\big]^2
+\min_\param \frac{1}{T} \sum_{t=1}^T \big[\underbrace{y^t - \pi_\param(\xt)}_{\textrm{residual}}\big]^2
 \]
 [[../fig/linear_regression_fit.pdf]]
 
@@ -75,37 +77,74 @@ Find the parameters $\param$ minimising squared error
 [[../fig/Legendre.jpg]]
 *** The orbit of Ceres
 [[../fig/ceres.jpg]]
+**** On Gauss and Legendre.
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+Gauss applied the method of least squares to calculate the orbit of Ceres, an asteroid detected in the solar system. At the time, astronomers were keen to establish what the orbit was, but they did not even know where to point their telescopes. He was the only one who predicted the orbit sufficiently well to tell them where to look. He apparently had already developed the method when he was aged 18, but he only published it much later. He also, of course, famously defined the normal (Gaussian) distribution, which is closely linked to the least-squares method.
 
-
+[[https://www.actuaries.asn.au/research-analysis/gauss-least-squares-and-the-missing-planet][The full story of Gauss, Laplace, Legendre and Ceres.]]
 
 *** Maximum likelihood inference
 **** Gaussian noise model:
 \[
-y^t = f(x^t) + \epsilon_t,  \qquad \epsilon_t \sim \Normal(0, \sigma)
+y^t = f(\xt) + \epsilon_t,  \qquad \epsilon_t \sim \Normal(0, \sigma)
 \]
-With conditional density
+With conditional density:
 \[
-p_\param(y^t| x^t) 
+p_\param(y^t| \xt)
 \propto
-\exp(-[y^t - \pi_\param(x^t)]^2 / 2\sigma^2)
+\exp(-[y^t - \pi_\param(\xt)]^2 / 2\sigma^2)
 \]
 #+BEAMER: \pause
 **** Maximum likelihood inference
 *Idea: For data $D$, find parameters maximising $P_\beta(D)$*
-#+BEAMER: \pause
 \begin{align*}
 \argmax_\param P_\beta(D)
 &= 
-\argmax_\param \alert<3>{p_\param(y^1, \ldots, y^t| x^1, \ldots, x^T)}
+\argmax_\param \alert<3>{p_\param(y^1, \ldots, y^t| x^1, \ldots, \xt)}
 =
-\argmax_\param \alert<4>{\ln \prod_t p_\param(y^t| x^t)} \\
+\argmax_\param \alert<4>{\ln \prod_t p_\param(y^t| \xt)} \\
 &=
-\argmax_\param \alert<5>{\sum  \ln} p_\param(y^t| x^t) \\
+\argmax_\param \alert<5>{\sum  \ln} p_\param(y^t| \xt) \\
 &= \argmax_\param \sum_t \ln\left\{
-\alert<6>{\exp\left(-[y^t - \pi_\param(x^t)]^2 / 2\sigma^2\right)}\right\}\\
-&= \argmax_\param \sum_t -[y^t - \pi_\param(x^t)]^2 / \alert<7>{2\sigma^2}
-= \argmin_\param \sum_t |y^t - \pi_\param(x^t)|^2
+\alert<6>{\exp\left(-[y^t - \pi_\param(\xt)]^2 / 2\sigma^2\right)}\right\}\\
+&= \argmax_\param \sum_t -[y^t - \pi_\param(\xt)]^2 / \alert<7>{2\sigma^2}
+= \argmin_\param \sum_t |y^t - \pi_\param(\xt)|^2
 \end{align*}
+*** Gaussian noise mode
+:PROPERTIES:
+:BEAMER_ENV: note
+:END:
+One way to write the Gaussian noise mode is to say that $\yt$ is the result of adding some  noise $\epsilon_t$ to the output of the mean function $f(\xt)$
+\[
+y^t = f(\xt) + \epsilon_t,  \qquad \epsilon_t \sim \Normal(0, \sigma),
+\]
+where $\Normal(0, \sigma0)$ means the normal distributione
+With conditional density:
+\[
+p_\param(y^t| \xt)i
+\propto
+\exp(-[y^t - \pi_\param(\xt)]^2 / 2f\sigma^2)
+\]
+#+BEAMER: \pause
+**** Maximum likelihood inference
+*Idea: For data $D$, find parameters maximising $P_\beta(D)$*
+\begin{align*}
+\argmax_\param P_\beta(D)
+&= 
+\argmax_\param \alert<3>{p_\param(y^1, \ldots, y^t| x^1, \ldots, \xt)}
+=
+\argmax_\param \alert<4>{\ln \prod_t p_\param(y^t| \xt)} \\
+&=
+\argmax_\param \alert<5>{\sum  \ln} p_\param(y^t| \xt) \\
+&= \argmax_\param \sum_t \ln\left\{
+\alert<6>{\exp\left(-[y^t - \pi_\param(\xt)]^2 / 2\sigma^2\right)}\right\}\\
+&= \argmax_\param \sum_t -[y^t - \pi_\param(\xt)]^2 / \alert<7>{2\sigma^2}
+= \argmin_\param \sum_t |y^t - \pi_\param(\xt)|^2
+\end{align*}
+
+
 *** Coding break
 src/Regression/RegressionDemonstration.ipynb
 - Show implementation
@@ -116,18 +155,18 @@ src/Regression/RegressionDemonstration.ipynb
 ** Multiple linear regression
 *** Multiple linear regression
 **** Input and output
-- Data pairs $(x^t, y^t)$, $t = 1, \ldots, T$.
-- Input $x^t \in \Reals^n$
+- Data pairs $(\xt, y^t)$, $t = 1, \ldots, T$.
+- Input $\xt \in \Reals^n$
 - Output $y^t \in \Reals^m$.
 #+BEAMER: \pause
-**** Point predictions: Modelling the conditional expectation $\E[y^t | x^t]$
+**** Point predictions: Modelling the conditional expectation $\E[y^t | \xt]$
 - Parameters $\mparam \in \Reals^{n \times m}$
 - Function $\pi_\mparam : \Reals^n \to \Reals^m$, defined as
 \[
-\pi_\param(x^t) = \mparam^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
+\pi_\param(\xt) = \mparam^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
 \]
-**** Probabilistic predictions: Modelling the conditional probability $\Pr[y^t | x^t]$
-- $y^t = \E[y^t | x^t] + \epsilon_t$, with $\epsilon_t \in \Reals^m$ being zero-mean *noise*.
+**** Probabilistic predictions: Modelling the conditional probability $\Pr[y^t | \xt]$
+- $y^t = \E[y^t | \xt] + \epsilon_t$, with $\epsilon_t \in \Reals^m$ being zero-mean *noise*.
 - Noise *covariance* matrix $\Sigma = \Var(\epsilon) =  \E[\epsilon_t \mid \epsilon_t \top]$ 
 
 
@@ -153,7 +192,7 @@ src/Regression/RegressionDemonstration.ipynb
 
 *** Gradient descent for squared error
 **** The cost function
-$L(\param, D) = \sum_{t=1}^T (y^t - \pi_\param(x^t))^2 =  \sum_{t=1}^T \epsilon_t^2$, with $\epsilon_t \defn y^t - \pi_\param(x^t)$.
+$L(\param, D) = \sum_{t=1}^T (y^t - \pi_\param(\xt))^2 =  \sum_{t=1}^T \epsilon_t^2$, with $\epsilon_t \defn y^t - \pi_\param(\xt)$.
 #+BEAMER: \pause
 **** Cost gradient
 Using the chain rule of differentiation, $\nabla_\beta f(\epsilon) = \nabla_\epsilon f(\epsilon) \nabla_\beta \epsilon$.
@@ -164,14 +203,14 @@ Using the chain rule of differentiation, $\nabla_\beta f(\epsilon) = \nabla_\eps
 = \sum_{t=1}^T \nabla_{\epsilon_t} \epsilon_t^2 \nabla_\beta \epsilon
 \\
 &
-= \sum_{t=1}^T 2 \epsilon_t \nabla_\param[y^t -  \pi_\param(x^t)]
-= \sum_{t=1}^T 2 [y^t - \pi_\param(x^t)] [- \nabla_\beta \pi_\param(x^t)]
+= \sum_{t=1}^T 2 \epsilon_t \nabla_\param[y^t -  \pi_\param(\xt)]
+= \sum_{t=1}^T 2 [y^t - \pi_\param(\xt)] [- \nabla_\beta \pi_\param(\xt)]
 \end{align*}
 #+BEAMER: \pause
 **** Parameter gradient for linear regression
 Remember $\nabla_\beta f = (\partial / \partial_1 f, \ldots, \partial / \partial_n f)$
 \[
-\frac{\partial}{\partial \param_j} \pi_\param(x^t) 
+\frac{\partial}{\partial \param_j} \pi_\param(\xt) 
 =
 \frac{\partial}{\partial \param_j} \sum_{i=1}^n \param_i x_{t,i}
 =
@@ -204,9 +243,9 @@ We need to solve the following equations for $A$:
 \begin{matrix}
 y^1 &= (\bx^1)^\top \vparam\\
 \cdots & \cdots\\
-y^t &= (\bx^t)^\top \vparam\\
+y^t &= (\bxt)^\top \vparam\\
 \cdots & \cdots\\
-y^T &= (\bx^T)^\top \vparam
+y^T &= (\bxt)^\top \vparam
 \end{matrix}
 \end{equation*}
 #+BEAMER: \pause
