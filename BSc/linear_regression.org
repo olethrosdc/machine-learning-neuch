@@ -96,9 +96,10 @@ p_\param(y^t| \xt)
 \propto
 \exp(-[y^t - \pol_\param(\xt)]^2 / 2\sigma^2)
 \]
+\vspace{-1em}
 #+BEAMER: \pause
-**** Maximum likelihood inference
-*Idea: For data $D$, find parameters maximising $P_\beta(D)$*
+**** Maximum likelihood inference: Find parameters maximising $P_\beta(D)$
+\vspace{-1em}
 \begin{align*}
 \argmax_\param P_\beta(D)
 &= 
@@ -142,11 +143,11 @@ While the Gaussian noise model is not the only possibility, it has some interest
 
 Now that we have a probabilistic model, we can assign probabilities to the data we have. This is the central idea of the maximum likelihood principle:
 
--  For data $D$, find parameters $\beta$ maximising $P_\beta(D)$.
-
-**** Proof explanation.
-
-Let us apply this principle to our case. Here, first of all, we only care about predicting $y$ from $x$. For that reason, we define
+- For data $D$, find parameters $\beta$ maximising $P_\beta(D)$.
+- Let us apply this principle to our case, and show that maximising the likelihood is the same as minimising the squared errors, when the noise is Gaussian.
+  
+*Proof details*.
+Here, first of all, we only care about predicting $y$ from $x$. For that reason, we define
 \[
 P_\beta(D) p_\param(y^1, \ldots, y^t| x^1, \ldots, \xt)
 \]
@@ -159,9 +160,7 @@ $\ln \prod_t p_\param(y^t| \xt)$ instead. And since $\ln (a + b) = \ln(a) \ln(b)
 
 Finally, note that if $\exp(a) = b$ then $a = \ln(b)$.
 
-**** What this means
 
-So, the $\beta$ maximising the likelihood with a Gaussian noise model, is the same $\beta$ that maximises the squared error. So the two different approaches lead to the same result.
 
 *** Coding break
 src/Regression/RegressionDemonstration.ipynb
@@ -173,20 +172,34 @@ src/Regression/RegressionDemonstration.ipynb
 ** Multiple linear regression
 *** Multiple linear regression
 **** Input and output
-- Data pairs $(\xt, y^t)$, $t = 1, \ldots, T$.
-- Input $\xt \in \Reals^n$
-- Output $y^t \in \Reals^m$.
+- Data pairs $(\bxt, y^t)$, $t = 1, \ldots, T$.
+- Input $\bxt \in \Reals^n$
+- Output $\by^t \in \Reals^m$.
 #+BEAMER: \pause
 **** Point predictions: Modelling the conditional expectation $\E[y^t | \xt]$
 - Parameters $\mparam \in \Reals^{n \times m}$
 - Function $\pi_\mparam : \Reals^n \to \Reals^m$, defined as
 \[
-\pi_\param(\xt) = \mparam^\top x_{t} = \sum_{i=1}^n \param_i x_{t,i}
+\pi_\mparam(\xt) = \mparam^\top \bxt = \sum_{i=1}^n \vparam_i^\top \xti
 \]
 **** Probabilistic predictions: Modelling the conditional probability $\Pr[y^t | \xt]$
 - $y^t = \E[y^t | \xt] + \epsilon_t$, with $\epsilon_t \in \Reals^m$ being zero-mean *noise*.
 - Noise *covariance* matrix $\Sigma = \Var(\epsilon) =  \E[\epsilon_t \mid \epsilon_t \top]$ 
 
+*** Multiple linear regression
+:PROPERTIES:
+:BEAMER_ENV: note
+:END:
+Here, both the input and output are multi-dimensional. For that reason, we need an $n \times m$ matrix $\mparam$ to predict the mean.
+
+In fact, since the output has $m$ dimensions, and since the input has $n$, then
+\[
+\by = \mparam^\top \times \bx
+\]
+corresponds to a multiplication between matrices of the form
+\[
+[m,1] = [m,n] \times [n,1].
+\]
 
 
 * Optimisation algorithms
