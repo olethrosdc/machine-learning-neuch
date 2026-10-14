@@ -86,15 +86,15 @@ Gauss applied the method of least squares to calculate the orbit of Ceres, an as
 [[https://www.actuaries.asn.au/research-analysis/gauss-least-squares-and-the-missing-planet][The full story of Gauss, Laplace, Legendre and Ceres.]]
 
 *** Maximum likelihood inference
-**** Gaussian noise model:
+**** Gaussian noise model.
 \[
-y^t = f(\xt) + \epsilon_t,  \qquad \epsilon_t \sim \Normal(0, \sigma)
+y^t = \pol(\xt) + \epsilon_t,  \qquad \epsilon_t \sim \Normal(0, \sigma)
 \]
 With conditional density:
 \[
 p_\param(y^t| \xt)
 \propto
-\exp(-[y^t - \pi_\param(\xt)]^2 / 2\sigma^2)
+\exp(-[y^t - \pol_\param(\xt)]^2 / 2\sigma^2)
 \]
 #+BEAMER: \pause
 **** Maximum likelihood inference
@@ -112,38 +112,56 @@ p_\param(y^t| \xt)
 &= \argmax_\param \sum_t -[y^t - \pi_\param(\xt)]^2 / \alert<7>{2\sigma^2}
 = \argmin_\param \sum_t |y^t - \pi_\param(\xt)|^2
 \end{align*}
-*** Gaussian noise mode
+*** *Gaussian noise model*.
 :PROPERTIES:
 :BEAMER_ENV: note
 :END:
-One way to write the Gaussian noise mode is to say that $\yt$ is the result of adding some  noise $\epsilon_t$ to the output of the mean function $f(\xt)$
+In regression, we can never exactly predict $\yt$. In terms of loss minimisation, we are simply trying to minimise some measure of error in our predictions. However, an alternative approach is to assume that $\yt$ is inherently unpredictable, but that it follows a *specific* distribution, with a mean centered around the prediction $\pol_\vparam(\xt)$. Mathematically, we express this by saying that
+ $\yt$ is the result of adding some  noise $\epsilon_t$ to the output of the mean function $\pol(\xt)$,
 \[
-y^t = f(\xt) + \epsilon_t,  \qquad \epsilon_t \sim \Normal(0, \sigma),
+y^t = \pol_\param(\xt) + \epsilon_t.
 \]
-where $\Normal(0, \sigma0)$ means the normal distributione
-With conditional density:
+Since we have to assume something about the noise, a common assumption is that it is normally distributed. We write this as
+\[
+\epsilon_t \sim \Normal(0, \sigma),
+\]
+where $\Normal(0, \sigma)$ means the normal distribution with mean 0 and variance $\sigma^2$. We can also write this in terms of a conditional density function.
 \[
 p_\param(y^t| \xt)i
 \propto
-\exp(-[y^t - \pi_\param(\xt)]^2 / 2f\sigma^2)
+\exp(-[y^t - \pol_\param(\xt)]^2 / 2\sigma^2),
 \]
-#+BEAMER: \pause
-**** Maximum likelihood inference
-*Idea: For data $D$, find parameters maximising $P_\beta(D)$*
-\begin{align*}
-\argmax_\param P_\beta(D)
-&= 
-\argmax_\param \alert<3>{p_\param(y^1, \ldots, y^t| x^1, \ldots, \xt)}
-=
-\argmax_\param \alert<4>{\ln \prod_t p_\param(y^t| \xt)} \\
-&=
-\argmax_\param \alert<5>{\sum  \ln} p_\param(y^t| \xt) \\
-&= \argmax_\param \sum_t \ln\left\{
-\alert<6>{\exp\left(-[y^t - \pi_\param(\xt)]^2 / 2\sigma^2\right)}\right\}\\
-&= \argmax_\param \sum_t -[y^t - \pi_\param(\xt)]^2 / \alert<7>{2\sigma^2}
-= \argmin_\param \sum_t |y^t - \pi_\param(\xt)|^2
-\end{align*}
+where the proportionality symbol hides the constant $1/\sqrt{2\pi\sigma^2}$.
 
+While the Gaussian noise model is not the only possibility, it has some interesting properties.
+
+*** *Maximum likelihood*.
+:PROPERTIES:
+:BEAMER_ENV: note
+:END:
+
+Now that we have a probabilistic model, we can assign probabilities to the data we have. This is the central idea of the maximum likelihood principle:
+
+-  For data $D$, find parameters $\beta$ maximising $P_\beta(D)$.
+
+**** Proof explanation.
+
+Let us apply this principle to our case. Here, first of all, we only care about predicting $y$ from $x$. For that reason, we define
+\[
+P_\beta(D) p_\param(y^1, \ldots, y^t| x^1, \ldots, \xt)
+\]
+We also assume that $\yt$ only depends on $\xt$ if we know the mean and variance,
+so that $p_\param(y^1, \ldots, y^t| x^1, \ldots, \xt) = \prod_t p_\param(y^t| \xt)$.
+
+The maximum point of some function $f(\param)$ is the same of some monotonically increasing transformation $g$ of it, i.e. if $f(\param^*) \geq f(\param)$, then
+$g[f(\param^*)] \geq g[f(\param)]$. Hence, we can maximise
+$\ln \prod_t p_\param(y^t| \xt)$ instead. And since $\ln (a + b) = \ln(a) \ln(b)$.
+
+Finally, note that if $\exp(a) = b$ then $a = \ln(b)$.
+
+**** What this means
+
+So, the $\beta$ maximising the likelihood with a Gaussian noise model, is the same $\beta$ that maximises the squared error. So the two different approaches lead to the same result.
 
 *** Coding break
 src/Regression/RegressionDemonstration.ipynb
