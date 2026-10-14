@@ -200,7 +200,7 @@ corresponds to a multiplication between matrices of the form
 \[
 [m,1] = [m,n] \times [n,1].
 \]
-
+The other thing that changes is that the noise may be correlated between different output dimensions. For that reason, we are using a *multivariate Gaussian* distribution, with mean $\mparam^\top \times \bx$ and covariance $\Sigma^\top \Sigma$.
 
 * Optimisation algorithms
 ** Gradient Descent
