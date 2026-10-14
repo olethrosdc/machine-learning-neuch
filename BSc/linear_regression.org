@@ -202,7 +202,17 @@ corresponds to a multiplication between matrices of the form
 \]
 The other thing that changes is that the noise may be correlated between different output dimensions. For that reason, we are using a *multivariate Gaussian* distribution, with mean $\mparam^\top \times \bx$ and covariance $\Sigma^\top \Sigma$.
 
-* Optimisation algorithms
+* Solution methods
+** *General comments.*
+:PROPERTIES:
+:BEAMER_ENV: note
+:END:
+Now that we have shown that both formalisations of the problem lead to the same objective, under some conditions, let us see how we can actually find solutions.
+
+The first idea is to use *gradient descent*. This allows us to find the minimum of any convex function, and a local mimimum of a differentiable function.
+
+The second idea is to take a look at an *analytical solution* to the problem of finding the parameters $\vparam$ from the $\bx, y$ pairs, by taking advantage of matrix algebra. Interestingly, the analyical solution turns out to be quite simple to express, and (when it exists) is the same as the least-squares solution.
+
 ** Gradient Descent
 *** Gradient descent algorithm
 **** Minimising a function
@@ -239,9 +249,9 @@ Using the chain rule of differentiation, $\nabla_\beta f(\epsilon) = \nabla_\eps
 \end{align*}
 #+BEAMER: \pause
 **** Parameter gradient for linear regression
-Remember $\nabla_\beta f = (\partial / \partial_1 f, \ldots, \partial / \partial_n f)$
+Remember $\nabla_\vparam = (\frac{\partial}{\partial \param_1}, \cdots, \frac{\partial}{\partial \param_n})$ and consider the individual factors $\frac{\partial}{\partial \param_j} \pol_\vparam(\xt)$:
 \[
-\frac{\partial}{\partial \param_j} \pi_\param(\xt) 
+\frac{\partial}{\partial \param_j} \pol_\vparam(\xt) 
 =
 \frac{\partial}{\partial \param_j} \sum_{i=1}^n \param_i x_{t,i}
 =
@@ -250,12 +260,6 @@ Remember $\nabla_\beta f = (\partial / \partial_1 f, \ldots, \partial / \partial
 \]
 
 *** Stochastic gradient descent algorithm
-**** Note
- :PROPERTIES:
- :BEAMER_ENV: note
- :END:
-For the general case, we got to do this.
-
 **** When $f$ is an expectation
 \[
 f(\param) = \int_X dP(x) g(x, \param).
@@ -266,6 +270,13 @@ f(\param) = \int_X dP(x) g(x, \param).
 &= \int_X dP(x) \nabla g(x, \param)\\
 &\approx \frac{1}{K} \sum_{k=1}^K \nabla g(x^{(k)}, \param), && x^{(k)} \sim P.
 \end{align*}
+
+**** Considering the distribution.
+ :PROPERTIES:
+ :BEAMER_ENV: note
+ :END:
+Normally, we care about minimising the expected loss over the true data distribution $P(x,y) = P(y | x) P(x)$. However, we can get an unbiased estimate of the gradient by considering samples $(x,y) \sim P$ instead. This leads to a stochastic gradient descent algorithm.
+
 
 ** Least-Squares
 *** Analytical Least-Squares Solution
@@ -328,9 +339,19 @@ The *left-pseudo inverse* $\tilde{\bX}^{-1} \defn (\bX^\top \bX)^{-1} \bX^\top$ 
 This follows as:
 \begin{align*}
 \by &= \bX \vparam \\
- \tilde{\bX}^{-1} \by &=  \tilde{\bX}^{-1} X \vparam\\
+ \tilde{\bX}^{-1} \by &=  \tilde{\bX}^{-1} \bX \vparam\\
  \tilde{\bX}^{-1} \by &= \underbrace{(\bX^\top \bX)^{-1}}_{\bA^{-1}} \underbrace{\bX^\top \bX}_{\bA} \vparam.
 \end{align*}
+*** Note on least squares.
+:PROPERTIES:
+:BEAMER_ENV: note
+:END:
+This solution requires us to invert the matrix $(\bX^\top \bX)$.
+Since $\bX$ is $T \times n$, we are multiplying a $n \times T$ with a $T \times n$ matrix, to obtain a $n \times n$ matrix. The multiplication operation is quadratic is then $O(nT^2)$, and the inversion operation is $O(n^3)$. Hence, when either $T, n$ are large, matrix inversion can take a long time.
+
+In particular, when $T$ is large, then gradient descent may give you a very good solution in a shorter time than it would take to do the matrix computations.
+
+
 
 *** Some matrix algebra reminders
 **** The identity matrix $\bI \in \Reals^{n \times n}$
