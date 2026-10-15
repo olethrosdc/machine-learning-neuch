@@ -1,0 +1,107 @@
+\useoutertheme{infolines}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{isomath}
+\usepackage{algorithmic}
+\usepackage{fontawesome}
+\usepackage{xcolor}
+\DeclareFontFamily{OT1}{mathc}{}
+\DeclareFontShape{OT1}{mathc}{m}{it}{<-> mathc10}{}
+\DeclareSymbolFont{mathc}{OT1}{mathc}{m}{it}
+
+\DeclareMathSymbol{\mcalGamma}{\mathord}{mathc}{'203}
+\DeclareMathSymbol{\mcalTheta}{\mathord}{mathc}{'210}
+\DeclareMathSymbol{\mcalLambda}{\mathord}{mathc}{'213}
+\DeclareMathSymbol{\mcalPi}{\mathord}{mathc}{'220}
+\DeclareMathSymbol{\mcalTheta}{\mathord}{mathc}{'210}
+\DeclareMathSymbol{\mcalalpha}{\mathord}{mathc}{'241}
+\DeclareMathSymbol{\mcalbeta}{\mathord}{mathc}{'242}
+\DeclareMathSymbol{\mcalgamma}{\mathord}{mathc}{'243}
+\DeclareMathSymbol{\mcalvarepsilon}{\mathord}{mathc}{'245}
+\DeclareMathSymbol{\mcaleta}{\mathord}{mathc}{'247}
+\DeclareMathSymbol{\mcaltheta}{\mathord}{mathc}{'250}
+\DeclareMathSymbol{\mcalkappa}{\mathord}{mathc}{'251}
+\DeclareMathSymbol{\mcalmu}{\mathord}{mathc}{'253}
+\DeclareMathSymbol{\mcalnu}{\mathord}{mathc}{'254}
+\DeclareMathSymbol{\mcalomicron}{\mathord}{mathc}{'257}
+\DeclareMathSymbol{\mcalpi}{\mathord}{mathc}{'260}
+\DeclareMathSymbol{\mcalrho}{\mathord}{mathc}{'261}
+\DeclareMathSymbol{\mcalupsilon}{\mathord}{mathc}{'264}
+\DeclareMathSymbol{\mcalphi}{\mathord}{mathc}{'265}
+\DeclareMathSymbol{\mcalchi}{\mathord}{mathc}{'266}
+\DeclareMathSymbol{\mcalpsi}{\mathord}{mathc}{'267}
+\DeclareMathSymbol{\mcalvartheta}{\mathord}{mathc}{'272}
+\DeclareMathSymbol{\mcalvarrho}{\mathord}{mathc}{'275}
+\DeclareMathSymbol{\mcalvarphi}{\mathord}{mathc}{'277}
+
+\newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
+\newcommand \Var {\mathop{\mbox{\ensuremath{\mathbb{V}}}}\nolimits}
+\newcommand \Bias {\mathop{\mbox{\ensuremath{\mathbb{B}}}}\nolimits}
+\newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
+\newcommand{\indep}{\mathrel{\text{\scalebox{1.07}{$\perp\mkern-10mu\perp$}}}}
+\renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\sgn}{sgn}
+\newcommand \defn {\mathrel{\triangleq}}
+\newcommand \loss {L}
+\newcommand \step {\alpha}
+\newcommand \cost {\ell}
+\newcommand \util {U}
+\newcommand \rewrad {r}
+\newcommand \Reals {\mathbb{R}}
+\newcommand \Naturals {\mathbb{N}}
+\newcommand \pol {\pi}
+\newcommand \Pols {\Pi}
+\newcommand \Param {\mcalTheta}
+\newcommand \param {\theta}
+\newcommand \vparam {\vectorsym{\theta}}
+\newcommand \mparam {\matrixsym{\Theta}}
+\newcommand \CD {\mathcal{D}}
+\newcommand \CX {\mathcal{X}}
+\newcommand \CA {\mathcal{A}}
+\newcommand \CY {\mathcal{Y}}
+\newcommand \bW {\matrixsym{W}}
+\newcommand \bw {\vectorsym{w}}
+\newcommand \wi {\vectorsym{w}_i}
+\newcommand \wij {w_{i,j}}
+\newcommand \bA {\matrixsym{A}}
+\newcommand \ai {\vectorsym{a}_i}
+\newcommand \aij {a_{i,j}}
+\newcommand \by {\vectorsym{y}}
+\newcommand \hby {\vectorsym{\hat{y}}}
+\newcommand \hy {\hat{y}}
+\newcommand \bz {\vectorsym{z}}
+\newcommand \bx {\vectorsym{x}}
+\newcommand \bxt {\vectorsym{x}^t}
+\newcommand \xti {x_i^t}
+\newcommand \xtj {x_j^t}
+\newcommand \xt {x^t}
+\newcommand \yt {y^t}
+\newcommand \bX {\matrixsym{X}}
+\newcommand \bI {\matrixsym{I}}
+\newcommand \dbel {\phi}
+\newcommand \bel {\phi}
+\newcommand \Bel {\Phi}
+\newcommand \Ber {\textrm{Bernoulli}}
+\newcommand \Unif {\textrm{Unif}}
+\newcommand \Mult {\textrm{Mult}}
+\newcommand \Beta {\textrm{Beta}}
+\newcommand \Dir {\textrm{Dir}}
+\newcommand \Wish {\textrm{Wish}}
+\newcommand \Normal {\textrm{Normal}}
+\newcommand \Simplex {\mathbb{\Delta}}
+\newcommand \outcome {\omega}
+\newcommand \Outcomes {\Omega}
+\newcommand \cset[2] {\left\{#1 : #2 \right\}}
+\usetikzlibrary{shapes.geometric}
+\tikzstyle{utility}=[diamond,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=8mm]
+\tikzstyle{select}=[rectangle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
+\tikzstyle{hidden}=[dashed,draw=black,fill=red!10]
+\tikzstyle{RV}=[circle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
+\tikzstyle{transition}=[rectangle,draw=black!50,fill=black!20,thick]
+\tikzstyle{someset}=[circle,draw=black,minimum size=8mm]
+\tikzstyle{point}=[circle,draw=black,fill=black]
+
