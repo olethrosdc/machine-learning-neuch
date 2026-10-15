@@ -512,6 +512,15 @@ We can also define the derivative with respect to a *direction* $\delta \in \Rea
 D_\delta f(x) = \lim_{\epsilon \to 0} \frac{f(x + \epsilon \delta) - f(x)}{\epsilon}.
 \]
 For simplicity,  $\|\delta\| = 1$.
+*** More on multivariate
+So, $f : \Reals^n \to \Reals^m$:
+\[
+\nabla_x [f(Ax)] = A' \nabla f(Ax)
+\]
+We got: $A$ is $n \times k$, $x$ is $k \times 1$, so $Ax$ is $n \times 1$.
+Then we have $(k \times n)(n \times m) = (k \times m)$.
+
+
 *** Multi-dinemsional integrals
 We only rarely use explicit such integrals:
 \[
