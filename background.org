@@ -551,7 +551,10 @@ For a general integral over multiple dimensions, we will use Lebesgue integrals:
 \]
 where e.g. $X = X_1 \times X_2$ so that $x = (x_1, x_2)$. This avoids having multiple $\int$ and $dx_i$ symbols.
 
-These are particularly useful with distributions. Then, for example, the expectation of some rv $f$ with respect to a probability measure $P$ is:
+Lebesgue notation is particularly useful with distributions. Then, for example, the expectation of some rv $f : X \to \Reals$ with respect to a probability measure $P$ is:
 \[
-\E_P[f] = \int_X f(x) dP(x).
+\E_P[f] = \int_X f(x) dP(x),
 \]
+and it does not matter if $X$ is a discrete or continuous set.
+
+
