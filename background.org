@@ -494,31 +494,50 @@ $\frac{\partial}{\partial x_i} f(x)$,
 where we see all $x_j$ with $j \neq i$ as fixed.
 
 **** Gradient of $f$
-This is the vector of all its partial derivatives:
+This is the column vector of all its partial derivatives:
 \[
 \nabla_x f(x) = 
 \left(
-\frac{\partial}{\partial x_1} f(x)
+\frac{\partial}{\partial x_1} f(x),
 \cdots
-\frac{\partial}{\partial x_i} f(x)
+\frac{\partial}{\partial x_i} f(x),
 \cdots
 \frac{\partial}{\partial x_n} f(x)
 \right)^\top
 \]
 When $f : \Reals^n \to \Reals^m$, the gradient is an $n \times m$ matrix called *the Jacobian*.
+
+
+\scriptsize Some textbooks define the Jacobian as an *$m \times n$ matrix instead*. This *changes* how the chain rule applies
 **** Directional derivative
 We can also define the derivative with respect to a *direction* $\delta \in \Reals^n$:
 \[
 D_\delta f(x) = \lim_{\epsilon \to 0} \frac{f(x + \epsilon \delta) - f(x)}{\epsilon}.
 \]
 For simplicity,  $\|\delta\| = 1$.
-*** More on multivariate
-So, $f : \Reals^n \to \Reals^m$:
+*** Matrix calculus
+Here we review some basic facts for matrix calculus.
+
+- Gradient: If $f : \Reals^n \to \Reals^m$, then $\nabla f \in \Reals^{n \times m}$.
+- Chain rule: If $g : \Reals^k \to \Reals^n$, so that $f \circ g : \Reals^k \to \Reals^m$, i.e. $x = g(z)$, $y = f(x)$, $x \in \Reals^n$, $z \in \Reals^k$, $y \in \Reals^m$:
+  \[
+  \nabla[f \circ g] = \nabla g \nabla f,
+  \qquad
+  \textrm{or
+  }, \quad \nabla_z [f(g(z))] = \nabla_z g(z) \nabla_x f(x)
+  \]
+with $\nabla[f \circ g] \in \Reals^{k \times m}$.
+
+From this, the following facts follow:
+- If $g(z) = Az$, with $A \in \Reals^{n \times k}$, then $g : \Reals^k \to \Reals^n$. Applying the chain rule:
 \[
-\nabla_x [f(Ax)] = A' \nabla f(Ax)
+\nabla_z [f(Az)] = A^\top \nabla f(Az),
 \]
-We got: $A$ is $n \times k$, $x$ is $k \times 1$, so $Ax$ is $n \times 1$.
-Then we have $(k \times n)(n \times m) = (k \times m)$.
+where $\nabla f(Az) = \nabla_x f(x)$ for $x = Az$.
+- We also have $\nabla (v^\top v) = 2 \nabla v v$.
+
+\scriptsize If we use the definition of the Jacobian with $\nabla f \in \Reals^{m \times n}$ then the chain rule order changes to  $\nabla[f \circ g] = \nabla f \nabla g$, so be careful!
+
 
 
 *** Multi-dinemsional integrals
@@ -532,3 +551,7 @@ For a general integral over multiple dimensions, we will use Lebesgue integrals:
 \]
 where e.g. $X = X_1 \times X_2$ so that $x = (x_1, x_2)$. This avoids having multiple $\int$ and $dx_i$ symbols.
 
+These are particularly useful with distributions. Then, for example, the expectation of some rv $f$ with respect to a probability measure $P$ is:
+\[
+\E_P[f] = \int_X f(x) dP(x).
+\]
