@@ -69,12 +69,79 @@ with
 :BEAMER_env: note
 :END:
 This example looks at a model with just two inputs, and three parameters. The graph determines dependencies. More specifically, the nodes are variables, and the arcs show that we need  $x_1, x_2$ to calculate $\hy$. We can use such graphical models as *computation graphs* or *decision networks*.
+A graphical model between variable $x_1, x_2, \cdots, x_n$, is a *directed graph*, saying which variables are direct inputs to computing other variables. Examples are given later.
 
+***** Perceptron, linear regression and MLPs.
 Both the perceptron and linear regression share the same structure. However, the variable $\hy$ is interpreted differently. In the perceptron it is the distance (and side) from the hyperplane. In linear regression, it is the predicted target. For that reason, it makes sense to use a different function for the two methds.
 
 We can obtain parameters for both models using the chain rule, to split the gradient of the loss with respect to the parameters in two parts: the gradient of the loss with respect to the output, and the gradient of the output with respect to the parameters.
 
 This principle can be extended to more complex transformations between $x, y$ as well as other cost functions. A typical idea is to use a sequence of nonlinear transformations to project the data into higher or lower dimensional spaces. These are called *layers*.
+
+*** *Computation graphs.*
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+Let us start with a mathematical example:
+\begin{align*}
+\beta &= x + y,&
+z &= \alpha \beta, &
+w &= \exp(\alpha + z).
+\end{align*}
+\begin{tikzpicture}
+      \node[RV] at (0,0) (x) {$x$};
+      \node[RV] at (0,1) (y) {$y$};
+      \node[RV] at (1,0) (a) {$\alpha$};
+      \node[RV] at (1,1) (b) {$\beta$};
+      \node[RV] at (2,0) (z) {$z$};
+      \node[RV] at (2,1) (w) {$w$};
+      \draw[->] (x) to (b);
+      \draw[->] (y) to (b);
+      \draw[->] (a) to (z);
+      \draw[->] (b) to (z);
+      \draw[->] (z) to (w);
+      \draw[->] (a) to (z);
+      \draw[->] (a) to (w);
+\end{tikzpicture}
+
+Here, $w$ depends on two variables, and $\alpha$ influences two other variables. If we replace everything we get
+\[
+w = \exp[\alpha + \alpha(x+y)] = \exp[\alpha(x + y + 1)].
+\]
+Now the intermediate variables are missing, so the graph becomes simpler.
+However, we need the intermediate variables if we want to compute something about them specifically (like their partial derivative).
+
+\begin{tikzpicture}
+      \node[RV] at (0,0) (x) {$x$};
+      \node[RV] at (0,1) (y) {$y$};
+      \node[RV] at (1,0) (a) {$\alpha$};
+      \node[RV] at (2,1) (w) {$w$};
+      \draw[->] (x) to (w);
+      \draw[->] (y) to (w);
+      \draw[->] (a) to (w);
+\end{tikzpicture}
+
+
+
+*** Test
+Let us now consider a python example
+#+BEGIN_SRC python
+  W = np.tanh(np.matmul(X, A))
+  V = np.tanh(np.matmul(W+Y, B))
+#+END_SRC
+\begin{tikzpicture}
+      \node[RV] at (0,0) (X) {$X$};
+      \node[RV] at (0,1) (Y) {$Y$};
+      \node[RV] at (4,0) (A) {$A$};
+      \node[RV] at (4,1) (B) {$B$};
+      \node[RV] at (2,0) (W) {$W$};
+      \node[RV] at (2,1) (V) {$V$};
+      \draw[->] (X) to (W);
+      \draw[->] (A) to (W);
+      \draw[->] (W) to (V);
+      \draw[->] (Y) to (V);
+      \draw[->] (B) to (V);
+\end{tikzpicture}
 
 ** Layers
 *** Layering and features
@@ -346,7 +413,9 @@ where $\mparam = [\vparam_i]_{i=1}^m$, $\param_{i,j} \sim \Normal(0,1)$
 :PROPERTIES:
 :BEAMER_env: note
 :END:
-While $\Theta$ is not sparse in the traditional sense, most of its values are close to zero, few are very large. Hence, it is a bit like a noisy sparse matrix. 
+While $\Theta$ is not sparse in the traditional sense, most of its values are close to zero, few are very large. Hence, it is a bit like a noisy sparse matrix.
+
+Random projections are used either to reduce, or to increase dimensionality. If used to reduce dimensionality, it can be shown that distances between vectors are preserved with high probability.
   
 ** Back propagation
 *** Background on back-propagation
