@@ -178,12 +178,11 @@ P(y | x) \sum_{a \in A} \pi(a | x) U(a,y)
 \]
 
 
-*** More notes on the independence step (a)
+*** More notes on step (a).
 :PROPERTIES:
 :BEAMER_env: note
 :END:
-
-Step (a) is perhaps not trivial. The idea is the same as the following example:
+The proof idea is the same as the following example:
 $f(x,z) = g(x) + g(z)$, and $P(x,z) = P(x)P(z)$.
 
 \begin{align*}
@@ -197,13 +196,21 @@ $f(x,z) = g(x) + g(z)$, and $P(x,z) = P(x)P(z)$.
 \end{align*}
 Essentially, each term in the sum gets linked to one random element, and the others sum to one.
 
-*** Taking into account the probability
-The basic accuracy metric we had for classification decision rules was just to count whether or not we classified something correctly. This made sense, as our decision was a distinct action or label.
-However, our decision may be to generate class probabilities instead, which can then be used in some other way.
+* Metrics for model quality
 
-- For classification, it makes sense to look at the probability of the labels.
-- If we are not very confident about our prediction, this should be taken into account.
-- Define $P(y | x)$ to be our classifier's probability for label $y$, given features $x$. Then we can use two simple metrics: precision and log-loss.
+In fact, we may want to simply find a good model, and do not have a specific decision problem to solve. How should we select a model?
+
+The basic accuracy metric we had for classification decision rules was just to count whether or not we classified something correctly. This made sense, as our decision was a distinct action or label. We used a utility function to modify this in a way that reflects our preferences. However, we sometimes want to instead measure the *accuracy of our model*. What is the best way to do that?
+
+For classification, it makes sense to look at the label probability.
+If we are not very confident about our prediction, this should be taken into account.
+Let $P(y | x)$ be our model's probability for label $y$, given features $x$. Then we can use two simple metrics: precision and log-loss.
+
+Label probability is also useful for selecting a regression model. However, in that case, a notion of distance from the target is also useful. The two are actually equivalent in some cases.
+
+** Classifcation
+
+  
 *** Precision
 The average probability of the actual class:
 \[
@@ -222,6 +229,9 @@ Here we assign look at the *logarithm* of the probability. This really penalises
 from sklearn.metrics import log_loss
 #+END_SRC
 in scikitlearn implements log-loss (*not* negative)
+
+** Regression
+
 *** Regression
 
 **** The regressor as a deterministic decision rule
@@ -244,9 +254,9 @@ If $(x, y) \sim P$, the expected MSE of a deterministic rule $\pi : \CX \to \Rea
 **** The regressor as a stochastic decision rule
 A decision rule $\pi$ generates a *decision* $a \in \Reals^m$.
 - For *stochastic* rules $\pi(a | x)$ defines a density over predictions.
-- In this case it is natural to define $\pi(y_t, x_t)$ as our metric.
+- In this case it is natural to define $\pi(y_t \mid x_t)$ as our metric.
 **** Likelihood on a Dataset
-The mean-square error is simply the squared difference in predicted versus actual values:
+The likelihood is simply the probability of the labels 
 \[
 \prod_{t=1}^T \pi(y_t | x_t)
 \]
@@ -386,28 +396,27 @@ scores = cross_val_score(classifier, X, y, cv = n_folds)
 
 *** The wrong way to do XV for subset selection :activity:
 
-1. Screen the predictors: find a subset of “good” predictors that show fairly strong (univariate) correlation with the class labels.
-2. Using just this subset of predictors, build a multivariate classifier.
+1. Screen the features: find a subset of “good” features that show fairly strong (univariate) correlation with the class labels.
+2. Using just this subset of features, build a multivariate classifier.
 3. Use cross-validation to estimate the unknown tuning parameters and to estimate the prediction error of the final model.
 
 **** Is this a correct application of cross-validation?
-Consider a scenario with N = 50 samples in two equal-sized classes,
-and p = 5000 quantitative predictors (standard Gaussian) that are
-independent of the class labels.  The true (test) error rate of any
-classifier is 50%.
+Consider a scenario with $N = 50$ samples in two equal-sized classes,
+and $p = 5000$ quantitative features that are independent of the class
+labels (e.g. normally distributed).  The true error rate of any classifier in that set is 50%. Can you still find some "good" classifiers?
 
 *** The right way to do XV for feature selection :activity:
 1. Divide the samples into K cross-validation folds (groups) at random.
 2. For each fold $k = 1, 2, \ldots, K$
-- Find a subset of “good” predictors that show fairly strong (univariate) correlation with the class labels, using all of the samples except those in fold k.
-- Using just this subset of predictors, build a multivariate classifier, using all of the samples except those in fold k.
+- Find a subset of “good” features that show fairly strong (univariate) correlation with the class labels, using all of the samples except those in fold k.
+- Using just this subset of features, build a multivariate classifier, using all of the samples except those in fold k.
 - Use the classifier to predict the class labels for the samples in fold k.
 **** Level notes
 :PROPERTIES:
 :BEAMER_env: note
 :END:
-- *BSc*: The point isn't the procedure itself: it's noticing that cross-validation can silently give you a fake guarantee if information from outside a fold leaked into the model-building step before validation happened. Spotting this kind of methodological trap is a core scientific-method skill, and one you should actively check for in your own project.
-- *MSc*:  *Why* does the wrong version give a near-zero apparent error despite a true error of $50\%$? Connect it to the estimation-error bound above: what is $|\hat\Pols|$ effectively doing once you've screened 5000 predictors first?
+- *BSc*: Be careful not to leak information from another fold. 
+- *MSc*:  *Why* does the wrong version give a near-zero apparent error despite a true error of $50\%$? Connect it to the estimation-error bound above: what is $|\hat\Pols|$ effectively doing once you've screened 5000 features first?
 
 
 *** Lab
@@ -467,7 +476,10 @@ An estimator is *unbiased* if, for any $\theta$ and corresponding distribution $
      :BEAMER_env: example
      :END:
 Consider $D = (x_1, \ldots, x_T)$ with $x_t \sim P$ being i.i.d samples with $\E[x_t] = \theta$.
-The sample mean estimator $f(D) = \sum_{t} x_t / T$ is unbiased, as :
+
+**** Theorem
+The sample mean estimator $f(D) = \sum_{t} x_t / T$ is unbiased.
+**** Proof.
 \[
 \E[f] = \E\left[\sum_{t=1} x_t / T\right] = \frac{1}{T} \sum_{t=1} \E[x_t] = \frac{1}{T} \sum_{t=1}^T \theta = \theta.
 \]
@@ -540,14 +552,14 @@ To minimise the MSE, we use $f^* = \mu$. This gives us two ideas:
 Due to the linearity of expectations, if $\E[x_t]=\mu$ for all $t$ then:
 \[
 \E[f_D]
-&=\E[\sum_t x_t/T] = \sum_t \E[x_t]/T = \mu.
+=\E[\sum_t x_t/T] = \sum_t \E[x_t]/T = \mu.
 \]
 Consequently, $\Bias(f_D) = \E[f_D - \mu] = 0$.
 If $x, y$ are independent then $\Var(x +y) = \Var(x) + \Var(y)$. In addition, $\Var(cx) = c^2 \Var(x)$ for any constant $c$. Hence,
 if $\Var[x_t] = \sigma^2$ for all $t$:
 \[
 \Var[f_D]
-&=\Var[\sum_t x_t/T] = \sum_t \Var[x_t/T] = \sum_t \frac{\sigma^2}{T^2} = \frac{\sigma^2}{T}.
+=\Var[\sum_t x_t/T] = \sum_t \Var[x_t/T] = \sum_t \frac{\sigma^2}{T^2} = \frac{\sigma^2}{T}.
 \]
 
 **** Smoothed mean estimator:

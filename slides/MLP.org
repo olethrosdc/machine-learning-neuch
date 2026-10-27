@@ -3,12 +3,15 @@
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \input{preamble}
 #+LaTeX_CLASS_OPTIONS: [smaller]
+#+LATEX_HEADER: \setbeameroption{show notes}
+#+LATEX_HEADER: \setbeamerfont{note page}{size=\footnotesize}
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
 #+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\tableofcontents[currentsection]\end{frame}}
 #+name: setup-minted
 * Features and layers
+
 ** Introduction
 *** Perceptron vs linear regression
 **** Network architecture                                             :BMCOL:
@@ -27,15 +30,15 @@
 #+ATTR_BEAMER: :overlay <+->
 - Network output
 \[
-\hy = \beta_0 + \beta_1 x_1 + \beta_2 x_2
+\hy = \param_0 + \param_1 x_1 + \param_2 x_2
 \]
 - Chain rule
 \[
-\nabla_\beta \loss = \nabla_{\hy} \loss \nabla_\beta \hy
+\nabla_\param \loss = \nabla_{\hy} \loss \nabla_\param \hy
 \]
 - Network gradient
 \[
-\nabla_\beta \hy = (x_1, x_2)
+\nabla_\param \hy = (x_1, x_2)
 \]
 **** Cost functions:                                                  :BMCOL:
      :PROPERTIES:
@@ -60,6 +63,85 @@ with
 \[
 \nabla_{\hy} \loss = 2(\hy - y).
 \]
+
+**** Summary.
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+This example looks at a model with just two inputs, and three parameters. The graph determines dependencies. More specifically, the nodes are variables, and the arcs show that we need  $x_1, x_2$ to calculate $\hy$. We can use such graphical models as *computation graphs* or *decision networks*.
+A graphical model between variable $x_1, x_2, \cdots, x_n$, is a *directed graph*, saying which variables are direct inputs to computing other variables. Examples are given later.
+
+***** Perceptron, linear regression and MLPs.
+Both the perceptron and linear regression share the same structure. However, the variable $\hy$ is interpreted differently. In the perceptron it is the distance (and side) from the hyperplane. In linear regression, it is the predicted target. For that reason, it makes sense to use a different function for the two methds.
+
+We can obtain parameters for both models using the chain rule, to split the gradient of the loss with respect to the parameters in two parts: the gradient of the loss with respect to the output, and the gradient of the output with respect to the parameters.
+
+This principle can be extended to more complex transformations between $x, y$ as well as other cost functions. A typical idea is to use a sequence of nonlinear transformations to project the data into higher or lower dimensional spaces. These are called *layers*.
+
+*** *Computation graphs.*
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+Let us start with a mathematical example:
+\begin{align*}
+\beta &= x + y,&
+z &= \alpha \beta, &
+w &= \exp(\alpha + z).
+\end{align*}
+\begin{tikzpicture}
+      \node[RV] at (0,0) (x) {$x$};
+      \node[RV] at (0,1) (y) {$y$};
+      \node[RV] at (1,0) (a) {$\alpha$};
+      \node[RV] at (1,1) (b) {$\beta$};
+      \node[RV] at (2,0) (z) {$z$};
+      \node[RV] at (2,1) (w) {$w$};
+      \draw[->] (x) to (b);
+      \draw[->] (y) to (b);
+      \draw[->] (a) to (z);
+      \draw[->] (b) to (z);
+      \draw[->] (z) to (w);
+      \draw[->] (a) to (z);
+      \draw[->] (a) to (w);
+\end{tikzpicture}
+
+Here, $w$ depends on two variables, and $\alpha$ influences two other variables. If we replace everything we get
+\[
+w = \exp[\alpha + \alpha(x+y)] = \exp[\alpha(x + y + 1)].
+\]
+Now the intermediate variables are missing, so the graph becomes simpler.
+However, we need the intermediate variables if we want to compute something about them specifically (like their partial derivative).
+
+\begin{tikzpicture}
+      \node[RV] at (0,0) (x) {$x$};
+      \node[RV] at (0,1) (y) {$y$};
+      \node[RV] at (1,0) (a) {$\alpha$};
+      \node[RV] at (2,1) (w) {$w$};
+      \draw[->] (x) to (w);
+      \draw[->] (y) to (w);
+      \draw[->] (a) to (w);
+\end{tikzpicture}
+
+
+
+*** Test
+Let us now consider a python example
+#+BEGIN_SRC python
+  W = np.tanh(np.matmul(X, A))
+  V = np.tanh(np.matmul(W+Y, B))
+#+END_SRC
+\begin{tikzpicture}
+      \node[RV] at (0,0) (X) {$X$};
+      \node[RV] at (0,1) (Y) {$Y$};
+      \node[RV] at (4,0) (A) {$A$};
+      \node[RV] at (4,1) (B) {$B$};
+      \node[RV] at (2,0) (W) {$W$};
+      \node[RV] at (2,1) (V) {$V$};
+      \draw[->] (X) to (W);
+      \draw[->] (A) to (W);
+      \draw[->] (W) to (V);
+      \draw[->] (Y) to (V);
+      \draw[->] (B) to (V);
+\end{tikzpicture}
 
 ** Layers
 *** Layering and features
@@ -118,6 +200,19 @@ with
       \draw[->] (v2) to (y1);
       \draw[->] (v2) to (y2);
 \end{tikzpicture}
+**** Explanation.
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+Here we have a "neural network" with three "layers". The "input layer" is simply the observations. The first linear layer is called "hidden", and the last linear layer is called the "output" layer. Each intermediate output is called a "neuron".
+
+For historical reasons related to neuroscience, the non-linear layers are called "activation" functions, because of how a neuron activates depending on the total incoming current.
+
+The simplest type of layer is the linear, but here we have many types.
+A dense layer from $n$ to $m$ is multiplication with an $n \times m$ matrix. A sparse layer is a sparse such matrix. Convolutional layers are used in computer vision as a way to obtain space invariance.
+
+Note that the softmax layer and the sigmoid layer have different dependencies. As you'll see later, the sigmoid layer involves an activation function for a single "neuron", while the softmax is like a "winner-takes-all" approach.
+
 *** Linear layers
 **** Example: Linear regression with $n$ inputs, $m$ outputs.
 - Input: Features $\bx \in \Reals^n$
@@ -133,6 +228,16 @@ y_i = \vparam_i \bx
 \[
 \by = \mparam \bx 
 \]
+**** Sparse layers and convolution.
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+- A sparse linear layer is again $\by = \mparam \bx$, but $\mparam$ is a *sparse* matrix (i.e. with a number of non-zero values in the order of $o(\sqrt{nm}$)). Sparse matrices matrices are particularly useful for random projections.
+
+- A convolutional layer is a special case of a linear layer with *tied* variables. There, the same parameter value is applied in many matrix positions. This is used to e.g. take into account spatial invariance in images. It can be thought of as convolving a small matrix with the whole image, rather a single bix matrix being applied everywhere.
+  
+
+
 *** Multiple linear layers
 **** Repeated linear transformations are linear
 It does not really help to have multiple linear layers one after the other. For example, if we transform  $x \in \Reals^n$ to $z \in \Reals^k$ to $y \in \Reals^m$ through two matrices
@@ -189,7 +294,7 @@ Typically used in the hidden layers of neural networks, as it is:
      :BEAMER_col: 0.5
      :END:
 ***** Example: Logistic regression
-- Input $\bx \in \Reals^n$
+- Input $\bx \in \Reals^n$, Labels $y \in \{0,1\}$.
 - Intermediate output: $z \in \Reals$,
 \[
 z = \sum_{i=1}^n \param_i x_i.
@@ -201,7 +306,7 @@ f(z) =  1/[1 + \exp(-z)].
 Now we can interpret $\hy = P_\vparam(y = 1 | x)$.
 ***** Loss function: negative log likelihood
 \[
-\cost(\hy, y) = - [\ind{y=1} \ln (\hy) + \ind{y=-1} \ln (1 - \hy)]
+\cost(\hy, y) = - [\ind{y=1} \ln (\hy) + \ind{y=0} \ln (1 - \hy)]
 \]
 **** Figure                                                           :BMCOL:
      :PROPERTIES:
@@ -220,6 +325,17 @@ Now we can interpret $\hy = P_\vparam(y = 1 | x)$.
       \draw[->] (z) to (y);
 \end{tikzpicture}
 
+**** When to use.
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+Sigmoid activation has two main uses.
+- For logistic regression, it is used as the output layer. Then the output corresponds to the probability of the positive class. In that case, it is combined with the negative log-likelihood loss.  We can rewrite it as
+  \[
+  \cost(\hy, y) = \ln(\hy)^{y} + \ln(1 - \hy)^{1 - y}.
+  \]
+- Sigmoid activations are also used in hidden layers, to confer some nonlinearity. However, these days ReLU activation is favoured as it is simpler and has a non-vanishing gradient.
+  
 *** Softmax layer
 **** Description                                                      :BMCOL:
      :PROPERTIES:
@@ -233,7 +349,7 @@ Now we can interpret $\hy = P_\vparam(y = 1 | x)$.
 \]
 - *Softmax* output
 \[
-\hy_i = \frac{\exp(z_i)}{\sum_{j = 1 ^m} \exp(z_j)}
+\hy_i = \frac{\exp(z_i)}{\sum_{j = 1}^m \exp(z_j)}
 \]
 We can also interpret this as
 \[
@@ -263,6 +379,18 @@ with usual loss $\cost(\hy, y) = - \ln \hy_y$
       \draw[->] (z2) to (y1);
       \draw[->] (z2) to (y2);
 \end{tikzpicture}
+**** Notes.
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+The softmax layer can be seen as a soft \emph{winner-takes-all} layer. For that reason, it is represented through connections from the previous layer to all the nodes. The higher the inputs are, the closer it is to winner-takes-all. In fact, sometimes you can add a factor $\beta$ to represent this explicitly
+\[
+\hy_i = \frac{\exp( \beta z_i)}{\sum_{j = 1}^m \exp(\beta z_j)}
+\]
+When $\beta \to \infty$, the maximum output approaches $1$ and the rest $0$.
+When $\beta \to 0$, it approaches $0$. However, $\beta$ is usually simply set to 1.
+- The standard use is an output layer in multi-class classification.
+- It can also be used in intermediate layers, to obtain neurons that activate for specific types of data, while others are suppressed. It used in that way as part of *attention* mechanisms.
 
 
 * Algorithms
@@ -281,7 +409,14 @@ where $\mparam = [\vparam_i]_{i=1}^m$, $\param_{i,j} \sim \Normal(0,1)$
 **** The reason for random projections
 - The high dimension makes it easier to learn.
 - The randomness ensures we are not learning something spurious.
+**** Sparseness.
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+While $\Theta$ is not sparse in the traditional sense, most of its values are close to zero, few are very large. Hence, it is a bit like a noisy sparse matrix.
 
+Random projections are used either to reduce, or to increase dimensionality. If used to reduce dimensionality, it can be shown that distances between vectors are preserved with high probability.
+  
 ** Back propagation
 *** Background on back-propagation
 **** Gradient descent algorithm
@@ -290,11 +425,11 @@ where $\mparam = [\vparam_i]_{i=1}^m$, $\param_{i,j} \sim \Normal(0,1)$
 \[
 \nabla_\vparam \E_\vparam[\loss]
 \approx 
-\frac{1}{T} \sum_{t=1}^T \nabla_\vparam \cost(x_t, y_t, \vparam).
+\frac{1}{T} \sum_{t=1}^T \nabla_\vparam \cost(x^t, y^t, \vparam).
 \]
 - We can then update our parameters to reduce the *empirical loss*
 \[
-\vparam_{t+1} = \vparam_t - \alpha_t \nabla_\vparam \cost(x_t, y_t, \vparam).
+\vparam^{t+1} = \vparam^t - \alpha_t \nabla_\vparam \cost(x^t, y^t, \vparam).
 \]
 **** The problem
 - However $\cost$ is a complex function of $\vparam$.
@@ -303,16 +438,16 @@ where $\mparam = [\vparam_i]_{i=1}^m$, $\param_{i,j} \sim \Normal(0,1)$
 - Use the chain rule to "backpropagate" errors.
 
 *** The chain rule of differentiation
-#+ATTR_LATEX: :width 150px
+#+ATTR_LATEX: :width 150pt
 [[../fig/liebniz.jpeg]]
 [1673] Liebniz
 
 *** Chain rule applied to the perceptron
-#+ATTR_LATEX: :width 150px
+#+ATTR_LATEX: :width 150pt
 [[../fig/rosenblatt.jpeg]]
 [1976] Rosenblat
 *** Chain rule for deep neural netowrks
-#+ATTR_LATEX: :width 100px
+#+ATTR_LATEX: :width 100pt
 [[../fig/werbos.jpg]]
 [1982] Werbos
 *** Backpropagation given a name
@@ -321,21 +456,21 @@ where $\mparam = [\vparam_i]_{i=1}^m$, $\param_{i,j} \sim \Normal(0,1)$
      :PROPERTIES:
      :BEAMER_col: 0.3
      :END:
-#+ATTR_LATEX: :width 100px
+#+ATTR_LATEX: :width 100pt
 [[../fig/DERumelhart.png]]
 Rumelhart
 **** Hinton                                                           :BMCOL:
      :PROPERTIES:
      :BEAMER_col: 0.3
      :END:
-#+ATTR_LATEX: :width 75px
+#+ATTR_LATEX: :width 75pt
 [[../fig/hinton.jpg]]
 Hinton
 **** Williams                                                         :BMCOL:
      :PROPERTIES:
      :BEAMER_col: 0.3
      :END:
-#+ATTR_LATEX: :width 100px
+#+ATTR_LATEX: :width 100pt
 [[../fig/williams.jpg]]
 Williams
 *** Elementary back-propagation: linear regression
@@ -368,15 +503,13 @@ Williams
 &=
 \nabla_{\vparam} \alert<5>{f(\vparam, \bx)} \times \alert<4>{\nabla_{\hy} \cost(\hy, y)}
 \\
-&=
-\nabla_\vparam f(\vparam, \bx) 
-\times 2 [\hy - y] 
+&=\bx \times 2 [\hy - y] 
 \end{align}
 #+BEAMER: \pause
 #+BEAMER: \pause
 - Update:
 \[
-\vparam_{t+1} = \vparam_t - \alpha_t \times \nabla_\vparam \ell(\hy_t, y_t) 
+\vparam_{t+1} = \vparam_t - \alpha_t \times \nabla_\vparam \ell(\hy^t, y^t) 
 \]
 
 
@@ -568,25 +701,69 @@ If $z$ is a prediction, then
 Mixes L1 and L2 losses.
 
 ** Gradient descent
-*** Smooth function :B_definition:
+*** Continuous and Smooth functions
+**** Lipschitz continuous functions                            :B_definition:
+:PROPERTIES:
+:BEAMER_env: definition
+:END:
+
+A function $f : \Reals^n \to \Reals^m$ is \(L\)-Lipschitz continuous with respect to some norm $\|\cdot\|$ if:
+\[
+\|f(x) - f(y)\| \leq L \|x - y\|.
+\]
+
+**** Smooth function                                           :B_definition:
     :PROPERTIES:
     :BEAMER_env: definition
     :END:
-A function $f : \Reals^d \to \Reals$ is \(\ell\)-smooth if:
+
+A function $f : \Reals^n \to \Reals^m$ is \(\ell\)-smooth with respect some norm $\|\cdot\|$ if:
 \[
-\|\nabla_x f(x) - \nabla_y f(y)\|_2 \leq \ell \|x - y\|_2.
+\|\nabla f(x) - \nabla f(y)\| \leq \ell \|x - y\|.
 \]
+
 *** Contraction mappings :B_definition:
     :PROPERTIES:
     :BEAMER_env: definition
     :END:
 A function $f : \Reals^d \to \Reals^d$ is a contraction for some norm $\| \cdot \|$ if
 \[
-\|f(x) - f(y)\| \leq \|x - y\|.
+\|f(x) - f(y)\| \leq c \|x - y\|, \qquad 0 < c < 1.
 \]
-In other words, it is a contraction if it is 1-Lipschitz. 
+In other words, it is a contraction if it is c-Lipschitz, for $c < 1$.
 In addition, contraction mappings have a fixed point $x^*$ such that
 $f(x^*) = x^*$.
+
+- The usual way to apply a contraction mapping is to set:
+\[
+x^{n+1} = f(x^n)
+\]
+- Then $\|x^n - x^*\| \leq c^n \|x^0 - x^*\|$.
+
+**** Examples.                                                       :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+Contraction mappings are nice ways to obtain solutions to equations iteratively. Consider finding $\sqrt{y}$. We can rewrite this
+as the contraction mapping
+\[
+f(x) = (x + y/x)/2.
+\]
+To see this is correct, find the fixed point:
+\begin{align*}
+x &= (x + y/x)/2
+\\
+2x &= x + y/x
+\\
+2x^2 &= x^2 + y
+\\
+x^2 &=  y
+\end{align*}
+In fact, it is a general method for obtaining a fixed point equation.
+If you need to solve $g(x) = 0$, then $f(x) = x + g(x)$ is naturally a fixed point.
+
+An alternative general method is to use the gradient of the function you need solve. This corresponds to Newton's method.
+
 
 *** Gradient descent as a contraction                             :B_theorem:
     :PROPERTIES:
@@ -601,35 +778,49 @@ is a contraction as long as $\eta \leq 2/\ell$.
 
 [See Nesterov 04 or Appendix A of Iterative Privacy Amplification for proofs]
 
-
 ** Stochastic gradient descent in practice
 *** Gradient descent in practice
 **** The ideal gradient descent algorithm:
 If we could calculte $\nabla_\vparam \E_\vparam[\loss]$, we could do:
 \[
-\vparam_{n+1} = \vparam_n - \alpha_n \nabla_\vparam \E_\vparam[\loss]
+\vparam^{n+1} = \vparam^n - \alpha_n \nabla_\vparam \E_\vparam[\loss]
 \]
 for a suitable $\alpha_n$ schedule.
 **** Gradient descent on the empirical error
 Since we only have the data, we can try to minimse the empirical loss
-$\frac{1}{T} \sum_{t=1}^T \cost(x_t, y_t, \vparam)$ through gradient descent
+$\frac{1}{T} \sum_{t=1}^T \cost(x^t, y^t, \vparam)$ through gradient descent
 \[
-\vparam_{n+1} = \vparam_{n} - \alpha_n \frac{1}{T} \sum_{t=1}^T \nabla_\vparam \cost(x_t, y_t, \vparam)
+\vparam^{n+1} = \vparam^{n} - \alpha_n \frac{1}{T} \sum_{t=1}^T \nabla_\vparam \cost(x^t, y^t, \vparam)
 \]
 This is also called *batch* gradient descent.
 *** Stochastic gradient descent
 **** Gradient descent on one example:
-We don't have to wait calculate $\nabla_\vparam \cost(x_t, y_t, \vparam)$ for all $t$ before applying the update. We can do it at every example:
+We don't have to wait calculate $\nabla_\vparam \cost(x^t, y^t, \vparam)$ for all $t$ before applying the update. We can do it at every example:
 \[
-\vparam_{n+1}= \vparam_n -  \alpha_n \nabla_\vparam \cost(x_{[n]_T}, y_{[n]_T}, \vparam).
+\vparam^{n+1}= \vparam^n -  \alpha_n \nabla_\vparam \cost(x_{[n]_T}, y_{[n]_T}, \vparam).
 \]
 Here $[n]_T$ is 1 + n modulo T to ensure $n \in \{1, \ldots, T\}$.
 **** Minibatch gradient descent
 However, it is a bit better to look at $K$ examples at a time before we change the parameters. This is called a *minibatch*
 \[
-\vparam_{n+1}= \vparam_n -  \alpha_n \frac{1}{K} \sum_{k=nK}^{(n+1)K-1} \nabla_\vparam \cost(x_{[k]_T}, y_{[k]_T}, \vparam)
+\vparam^{n+1}= \vparam^n -  \alpha_n \frac{1}{K} \sum_{k=nK}^{(n+1)K-1} \nabla_\vparam \cost(x_{[k]_T}, y_{[k]_T}, \vparam)
 \]
 This also helps with parallelisation, since we can compute $\cost, \nabla_\vparam \cost$ in parallel for each example.
+
+** Other learning rules
+*** Hebbian learning
+Let us consider neural connections $\theta_{ij}$ between inputs $x_i$ and outputs $y_j$ so that
+\[
+y_j^t = f\left(\sum_{k} x_k^t \theta_{kj}^t\right),
+\]
+where $f$ is a sigmoid.
+The principle of *Hebbian* learning is to increase the strength of those connections whose input contributed to an activation. When $x,y \in [0,1]$, one interpretation of this principle is this parameter update:
+\[
+\theta_{ij}^{t+1} = \theta_{ij}^{t} + \alpha x_i^t y_j^t.
+\]
+Of course, this learning rule diverges, so we need to explicitly normalise by dividing
+with $\|\theta_{\cdot j}\|$, or to subtract a term proportional to $\theta_{ij}$ to stabilise.
+
 
 * Python libraries
 ** sklearn
@@ -640,7 +831,7 @@ Uses the *cross entropy* cost
 from sklearn.neural_network import MLPClassifier
 clf = MLPClassifier(hidden_layer_sizes=(5, 2))
 clf.fit(X, y)
-clf.predict(X_test)
+clf.predict(x^test)
 #+END_SRC
 - Main condition is layer sizes.
 
@@ -653,8 +844,8 @@ model = MLPRegressor(hidden_layer_sizes=(5, 2))
 *** PyTorch
 **** Data set-up
 #+BEGIN_SRC python :exports code
-X_train = torch.tensor(X_train, dtype=torch.float32)
-train_dataset = TensorDataset(X_train, y_train)  
+x_train = torch.tensor(x_train, dtype=torch.float32)
+train_dataset = TensorDataset(x_train, y_train)  
 train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True)
 #+END_SRC
 *** PyTorch: Manual training
