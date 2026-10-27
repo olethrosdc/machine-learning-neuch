@@ -60,29 +60,29 @@ There are three types of sessions:
 - Mixed
 - Lab
 
-|--------+-------+--------------------------------+-----------------------------------------------------+---------------------+---------|
-| Module |  Date | Topic                          | Details                                             | Python              | Type    |
-|--------+-------+--------------------------------+-----------------------------------------------------+---------------------+---------|
-|      1 | 09.17 | Introduction                   | Mean estimation, Classification, kNN                | nympy, pandas       | Lecture |
-|      2 | 09.24 | Learning and Generalisation    | Train/Test, XV, Bootstrapping, Simulation           | pandas, scikitlearn | Mixed   |
-|--------+-------+--------------------------------+-----------------------------------------------------+---------------------+---------|
-|      3 | 10.01 | Classification, Perceptron     | Margin, Regret, Gradient Descent                    | scikit learn        | Mixed   |
-|      4 | 10.08 | Neural Network                 | Logistic Regression, Backpop, Stochastic GD         | pyTorch intro       | Mixed   |
-|      5 | 10.15 | Regression, Linear             | Linear regression, Least Squares, Probabilistic     | pyTorch             | Mixed   |
-|      6 | 10.22 | Quiz + Neural Network Lab      | Quiz + Linear Regression & NN Lab                   | pyTorch             | Lab     |
-|--------+-------+--------------------------------+-----------------------------------------------------+---------------------+---------|
-|      7 | 10.29 | Probabilistic models           | ML, MAP, Bayes, Beta-Bernoulli, Hypothesis testing  |                     | Lecture |
-|      8 | 11.05 | Generative modelling           | Bayesian Networks, Markov Models, Tree Models, CRFs |                     | Mixed   |
-|      9 | 11.12 | Approximate Bayesian Inference | Markov Chain Monte Carlo                            |                     | Misc    |
-|--------+-------+--------------------------------+-----------------------------------------------------+---------------------+---------|
-|     10 | 11.19 | Learning Theory                | Chernoff bounds (Perceptron II)                     |                     | Lecture |
-|     11 | 11.26 | Fairness                       |                                                     |                     | Mixed   |
-|     12 | 12.03 | Reinforcement Learning         |                                                     |                     | Mixed   |
-|--------+-------+--------------------------------+-----------------------------------------------------+---------------------+---------|
-|     13 | 12.10 | Lab                            |                                                     |                     | EXAM    |
-|--------+-------+--------------------------------+-----------------------------------------------------+---------------------+---------|
-|     14 | 12.17 | Mock Exam                      |                                                     |                     | EXAM    |
-|--------+-------+--------------------------------+-----------------------------------------------------+---------------------+---------|
+|--------+-------+-------------------------------------------+-----------------------------------------------------+---------------------+---------|
+| Module |  Date | Topic                                     | Details                                             | Python              | Type    |
+|--------+-------+-------------------------------------------+-----------------------------------------------------+---------------------+---------|
+|      1 | 09.17 | Introduction                              | Mean estimation, Classification, kNN                | nympy, pandas       | Lecture |
+|      2 | 09.24 | Learning and Generalisation               | Train/Test, XV, Bootstrapping, Simulation           | pandas, scikitlearn | Mixed   |
+|--------+-------+-------------------------------------------+-----------------------------------------------------+---------------------+---------|
+|      3 | 10.01 | Classification, Perceptron                | Margin, Regret, Gradient Descent                    | scikit learn        | Mixed   |
+|      4 | 10.08 | Neural Network                            | Logistic Regression, MLP, Backpop, Stochastic GD    | pyTorch intro       | Mixed   |
+|      5 | 10.15 | Quiz + Regression, Linear                 | Linear regression, Least Squares, Probabilistic     | pyTorch             | Mixed   |
+|      6 | 10.22 | Nonlinear Regression + Neural Network Lab | Quiz + Linear Regression & NN Lab                   | pyTorch             | Lab     |
+|--------+-------+-------------------------------------------+-----------------------------------------------------+---------------------+---------|
+|      7 | 10.29 | Probabilistic models                      | ML, MAP, Bayes, Beta-Bernoulli, Hypothesis testing  |                     | Lecture |
+|      8 | 11.05 | Generative modelling                      | Bayesian Networks, Markov Models, Tree Models, CRFs |                     | Mixed   |
+|      9 | 11.12 | Approximate Bayesian Inference            | Markov Chain Monte Carlo                            |                     | Misc    |
+|--------+-------+-------------------------------------------+-----------------------------------------------------+---------------------+---------|
+|     10 | 11.19 | Learning Theory                           | Chernoff bounds (Perceptron II)                     |                     | Lecture |
+|     11 | 11.26 | Fairness                                  |                                                     |                     | Mixed   |
+|     12 | 12.03 | Reinforcement Learning                    |                                                     |                     | Mixed   |
+|--------+-------+-------------------------------------------+-----------------------------------------------------+---------------------+---------|
+|     13 | 12.10 | Lab                                       |                                                     |                     | EXAM    |
+|--------+-------+-------------------------------------------+-----------------------------------------------------+---------------------+---------|
+|     14 | 12.17 | Mock Exam                                 |                                                     |                     | EXAM    |
+|--------+-------+-------------------------------------------+-----------------------------------------------------+---------------------+---------|
 
 **** 1. Introduction, KNN
 
@@ -209,7 +209,7 @@ PML2: Probabilistic Machine Learning: Advanced Topics
   basic ideas of train, test, validation, cross-validation and
   bootstrapping, using scikit-learn, to compare the perceptron against
   another classifier.
-- MSc: Chain rule test: Try it and see what happens.
+- MSc: Chain rule test: Try different loss functions and see what happens?
 
 *** Lab 4: Linear regression and simulation
 
