@@ -581,3 +581,12 @@ $p(\param | \vectorsym{\alpha}) \propto \prod_i \param_i^{\alpha_i - 1}$
 Then, for any $x = x_1, \ldots, x_T$, the posterior distribution is
 - $\param \mid x \sim \Dir(\vectorsym{\alpha + \vectorsym{s}_T})$, where $s_{T,i} = \sum_{t=1}^T \ind{x_t = i}$,
 
+* Exercises
+** Probability
+*** Basic exercises
+- Prove that if $A \subset B$ then $P(A) \leq P(B)$.
+- Prove that, if $A, B$ are mutually exclusive events with $P(A) > 0, P(B) > 0$ then they are not independent.
+  # $0 = P(A \cap B) \neq P(A) P(B) > 0$. The intuition is that, if A happens then B cannot happen. So whether or nto A happens depends on B.
+*** Normal distribution
+- Find the MLE for the normal distribution. What is the sufficient statistic?
+  
