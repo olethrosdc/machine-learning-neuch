@@ -360,6 +360,7 @@ Complete the notebook in https://github.com/olethrosdc/machine-learning-neuch/bl
 *** Lab 7: Graphical models, generative models and simulation
 
 **** Pen-and-paper
+- Recap from Bayesian inference: Derive the normal-normal model
 - Describe the main variables of your project.
 - Define their possible dependencies with a graphical model.
 - Write down the factorisation of the joint distribution implied by your graphical model.
@@ -373,14 +374,11 @@ Complete the notebook in https://github.com/olethrosdc/machine-learning-neuch/bl
 
 You should do this in groups. One submission per group, with all member names in the notebook and/or report.
 
-*** Exercises: Gradient methods and probability
-*** Lab 8: Neural networks: advanced (can be done at 6)
-    Image classification example.
-**** Pen-and-paper
-- For a convolutional layer with $C$ channels and a $k \times k$ kernel applied to an $n \times n$ image, write the number of parameters as a function of $k, C, n$. Compare it, symbolically, to a fully-connected layer mapping the same input to the same output size. What does weight-sharing buy you structurally, and what does it cost?
-**** In-Class-Coding
-Complete Assignment 1 of this notebook: [[https://github.com/olethrosdc/machine-learning-neuch/blob/main/BSc/src/Image%20Processing/image_processing.ipynb]]  and assignment 2 of the second notebook : 
-[[https://github.com/olethrosdc/machine-learning-neuch/blob/main/BSc/src/Image%20Processing/cnn.ipynb]]
+*** Lab 9: Algorithms for Bayesian Computation
+Here we will focus on the Gaussian mixture model.
+**** Expectation Maximisation
+**** Monte Carlo Samples
+**** Markov Chain Monte Carlo: Gibbs sampler
 
 
 

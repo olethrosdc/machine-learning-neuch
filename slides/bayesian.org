@@ -398,18 +398,17 @@ Example: Are men's and women's heights the same?
 - Define $s_T = \sum_{t=1}^T x_t$.
 - Show that $\param_{\textrm{ML}}(x) = s_T / T$.
 - What is the problem with this estimate?
-*** Gaussian model :B_example:exercise:
+** Gaussian model                                        :B_example:exercise:
     :PROPERTIES:
     :BEAMER_env: example
     :END:
-#+ATTR_BEAMER: :overlay <+->
 - $x_t \in \Reals$, for $t \in [T]$, $\mu \in \Reals, \sigma \in \Reals_+$
 - $x_t \mid \mu, \sigma \sim \Normal(\mu, \sigma)$
 - Follow the *same steps* as for the Bernoulli model above — write the log-likelihood, differentiate with respect to *each* parameter separately, set both derivatives to zero — to show that
 \[
 \hat\mu_{\textrm{ML}}(x) = \frac{1}{T}\sum_{t=1}^T x_t,
 \qquad
-\hat\sigma^2_{\textrm{ML}}(x) = \frac{1}{T}\sum_{t=1}^T \left[x_t - hat\mu_{\textrm{ML}}(x)\right]^2.
+\hat\sigma^2_{\textrm{ML}}(x) = \frac{1}{T}\sum_{t=1}^T \left[x_t - \hat{\mu}_{\textrm{ML}}(x)\right]^2.
 \]
 - Does this estimator for $\sigma^2$ have a problem analogous to the Bernoulli one above? (Hint: what happens when $T=1$?)
 
@@ -575,98 +574,10 @@ P_\vparam(x_t = i) = \param_i
 \]
 *** Definition of the Dirichlet density 
 If $\vparam \sim \Dir(\vectorsym{\alpha})$, with $\vectorsym{\alpha} \in \Reals^n_+$ then
-\[
-p(\param | \vectorsym{\alpha}) \propto \prod_i \param_i^{\alpha_i - 1}
-\]
+$p(\param | \vectorsym{\alpha}) \propto \prod_i \param_i^{\alpha_i - 1}$
 *** Dirichlet-Multinomial conjugate pair
 - $\param \sim \Dir(\vectorsym{\alpha})$.
 - $x_t \mid \param \sim \Ber(\vparam)$.
 Then, for any $x = x_1, \ldots, x_T$, the posterior distribution is
 - $\param \mid x \sim \Dir(\vectorsym{\alpha + \vectorsym{s}_T})$, where $s_{T,i} = \sum_{t=1}^T \ind{x_t = i}$,
-
-** Discrete Bayesian Networks
-\begin{tikzpicture}
-\node[RV] at (0,0) (x1) {$x_1$};
-\node[RV] at (0,1) (x2) {$x_2$};
-\node[RV] at (1,0) (x3) {$x_3$};
-\node[RV] at (1,1) (x4) {$x_4$};
-\node[RV,hidden] at (-1,0) (m1) {$\vparam_1$};
-\node[RV,hidden] at (-1,1) (m2) {$\vparam_2$};
-\node[RV,hidden] at (2,0) (m3) {$\vparam_3$};
-\node[RV,hidden] at (2,1) (m4) {$\vparam_4$};
-\draw[->] (x1) to (x2);
-\draw[->] (x2) to (x3);
-\draw[->] (x4) to (x3);
-\draw[->] (x2) to (x4);
-\draw[->] (m1) to (x1);
-\draw[->] (m2) to (x2);
-\draw[->] (m3) to (x3);
-\draw[->] (m4) to (x4);
-\end{tikzpicture}
-
-- A directed acyclic graph (DAG) defined on variables $x_1, \ldots, x_n$ with each $x_n$ taking a finite number of values,
-- Let $S_i$ be the indices corresponding to parent variables of $x_i$.
-- $x_i \mid \vparam_i, x_{S_i} = k \sim \Mult(\vparam_{i,k})$.
-
-*** Example: Lung cancer, smoking and asbestos
-**** LSA DAG
-    :PROPERTIES:
-    :BEAMER_col: 0.4
-    :END:
-
-\begin{tikzpicture}
-\node[RV] at (0,0) (x1) {$x_S$};
-\node[RV] at (0,1) (x2) {$x_C$};
-\node[RV] at (1,0) (x3) {$x_A$};
-\node[RV,hidden] at (-1,0) (m1) {$\param_A$};
-\node[RV,hidden] at (-1,1) (m2) {$\vparam_C$};
-\node[RV,hidden] at (2,0) (m3) {$\param_S$};
-\draw[->] (x1) to (x2);
-\draw[->] (x3) to (x2);
-\draw[->] (m1) to (x1);
-\draw[->] (m2) to (x2);
-\draw[->] (m3) to (x3);
-\end{tikzpicture}
-**** LSA Equations
-    :PROPERTIES:
-    :BEAMER_col: 0.6
-    :END:
-\begin{align}
-P_{\param_A}(x_A = 1) &= \param_A\\
-P_{\param_S}(x_S = 1) &= \param_S\\
-P_{\vparam_C}(x_C = 1 \mid X_A= j, X_S = k) &= \param_{C,j,k}
-\end{align}
-
-** Markov model
-\begin{tikzpicture}
-\node[RV] at (-1,0) (x0) {$x_{t-1}$};
-\node[RV] at (0,0) (x1) {$x_t$};
-\node[RV] at (1,0) (x2) {$x_{t+1}$};
-\node[RV,hidden] at (1,1) (m1) {$\vparam$};
-\node[RV] at (0,1) (prior) {$\vectorsym{\alpha}$};
-\draw[->] (prior) to (m1);
-\draw[->] (m1) to (x0);
-\draw[->] (m1) to (x1);
-\draw[->] (m1) to (x2);
-\draw[->] (x0) to (x1);
-\draw[->] (x1) to (x2);
-\end{tikzpicture}
-
-A *Markov model* obeys
-\[
-\Pr_\vparam(x_{k+1} | x_k, \ldots, x_1) = \Pr_\vparam(x_{k+1} | x_k)
-\]
-i.e. the graphical model is a chain. We are usually interested in *homogeneous* models, where
-\[
-\Pr_\vparam(x_{k+1} = i \mid x_k = j) = \param_{i,j} \qquad \forall k
-\]
-*** Inference for finite Markov models
-- If $x_t \in [n]$ then $x_{t+1} \mid \vparam, x_t = i \sim \Mult(\vparam_i)$, $\vparam_i \in \Simplex^n$
-- Prior $\vparam_i \mid \vectorsym{\alpha} \sim \Dir(\vectorsym{\alpha})$ for all $i \in [n]$.
-- Posterior $\vparam_i \mid x_1, \ldots, x_t, \vectorsym{\alpha} \sim \Dir(\vectorsym{\alpha}^{(t)})$ with
-  \[
-  \alpha^{t}_{i,j} = \alpha_{i,j} + \sum_{k=1}^t \ind{x_k = i \wedge x_{k+1} = j},
-  \qquad
-  \vectorsym{\alpha}^0 =   \vectorsym{\alpha}.
-  \]
 
