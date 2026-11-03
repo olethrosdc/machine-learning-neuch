@@ -1,0 +1,31 @@
+* Measuring the variable of interest
+
+In most cases, you will have one variable of interest to measure,e.g. Grade or Crash. It can be continuous or binary. For simplicity, assume that continuous variables are Gaussian and discrete are Bernoulli.
+
+At the first step, generate data from your simulator for both of the two hypotheses, and see what the Bernoulli or Gaussian parameters would be, ignoring all the other variables. For example, for the Crash variable, you would be estimating the percentage of crashes in the population. For Grade, you would be estimating the overall grade distribution.
+
+* Cross-tabs and categorical variables
+
+In voting, for example, you see polls that report for different subsets of people, breaking down the voting patterns on gender, race, education, income etc. You can see this as estimating a different parameter $\theta_C$ for each category of people $C$.
+
+As a running example, I will use voting for left or right (0, 1) and variables age, gender, smoking, exercise.
+
+Look at your features, and create bins that correspond into categories $C$, so that every person is in exactly one category. If your features are discrete, e.g. taking m values, then you naturally have m bins. For continuous features, you can choose how many bins you have. The more features and bins, the more the possible categories. For example, if you split age in [18, 25), [25, 45), [45, 65), [65,$\infty$) then you have 4 bins. If we split smoking in yes/no and exercise in 0, (0,30], (30,60], (60, \infty), then we end up with $2 \times 4 \times 2 \times 4 = 64$ categories.
+
+* Estimation
+
+Generate data for both of your hypotheses. For now, fix an arbitrary amount of data.
+
+Now, estimate $\theta_C$ for every possible category using both ML and MAP. Assume all variables are observable for simplicity.
+
+- Some categories will be empty! That is, maybe there is no person who is 70-80 years old, smokes, and exercises 60-90 minutes/day. What should $\theta_C$ be in this case in the MAP and ML estimation?
+
+- Now, vary the amount of data you generate (try 10x more and 10x less). If you have a small amount of data, some categories are more likely to have nobody. Your estimates will also be more noisy. The more categories and the fewer data, the more noisy it is going to be. How does your $\theta_C$ estimate get influenced by the amount of data?
+
+- Decide on an *algorithm* for choosing one of the two hypotheses, based on your $\theta_C$ estimates. How often does the algorithm get it wrong, when $H_0$ or $H_1$ is true? How does it depend on the amount of data?
+
+* Regression/Classification
+
+Is there some way you could run a similar analysis using standard regression or classification algorithms?
+
+
