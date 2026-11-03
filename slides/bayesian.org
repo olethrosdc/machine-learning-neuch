@@ -4,6 +4,8 @@
 #+LaTeX_HEADER: \input{preamble}
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+LATEX_HEADER: \RequirePackage{fancyvrb}
+#+LATEX_HEADER: \setbeameroption{show notes}
+#+LATEX_HEADER: \setbeamerfont{note page}{size=\footnotesize}
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:2
@@ -124,8 +126,8 @@
 *** Implication
 - Prove that if $A \subset B$ then $P(A) \leq P(B)$.
 *** Independent vs mutually exclusive events
-- Prove that, if $A, B$ are mutually exclusive events with $P(A) > 0, P(B) > 0$ then they are not independent.
-[Reminder: if $A, B$ are independent then $P(A \cap B) = P(A) P(B)$.
+- Prove that, if $A, B$ are mutually exclusive events with $P(A) > 0, P(B) > 0$ then they are not independent. What is the intuition behind this result?
+[Reminder: if $A, B$ are independent then $P(A \cap B) = P(A) P(B)$]
 
 
 * Conditional Probability and the Theorem of Bayes
@@ -338,7 +340,7 @@ Example: Are men's and women's heights the same?
 ** Probabilistic models
 #+ATTR_BEAMER: :overlay <+->
 - Model family $\{P_\param |  \param \in \Param\}$
-- Data $x \sim P_{\param^*}$ for some $\param^* \in \Param$.
+- Data $x_t \mid \param^* \sim P_{\param^*}$ for some $\param^* \in \Param$ and $t = 1, \ldots, T$.
 - How can we estimate the correct $\param$?
 - How can we predict a new data point?
 #+BEAMER: \pause
@@ -351,8 +353,8 @@ Example: Are men's and women's heights the same?
      :BEAMER_col: 0.5
      :END:
 #+ATTR_BEAMER: :overlay <+->
-- $x \in \{0,1\}$, $\param \in [0,1]$
-- $x \mid \param \sim \Ber(\param)$
+- $x_t \in \{0,1\}$, $\param \in [0,1]$
+- $x_t \mid \param \sim \Ber(\param)$
 - $P_\param(1) = \param$
 - $P_\param(0) = 1 - \param$.
 **** Col B                                                            :BMCOL:
@@ -374,8 +376,8 @@ Example: Are men's and women's heights the same?
      :BEAMER_col: 0.5
      :END:
 #+ATTR_BEAMER: :overlay <+->
-- $x \in \Reals$, $\mu \in \Reals, \sigma \in \Reals_+$
-- $x \mid \mu, \sigma \sim \Normal(\mu, \sigma)$
+- $x_t \in \Reals$, $\mu \in \Reals, \sigma \in \Reals_+$
+- $x_t \mid \mu, \sigma \sim \Normal(\mu, \sigma)$
 - $p_\param(x) = \frac{1}{\sigma\sqrt{2\pi}}\exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)$
 **** Col B                                                            :BMCOL:
      :PROPERTIES:
@@ -388,6 +390,26 @@ Example: Are men's and women's heights the same?
 \draw[->] (mean) to (x);
 \draw[->] (std) to (x);
 \end{tikzpicture}
+
+** Notes on Probabilistic Models.                                    :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+The model family describes which sets of models we are interested in. For example, it can be the set of Gaussian models, the set of Bernoulli models, or anything else. $\param$ is usually called the parameter.
+
+Each model $\param$ assigns probabilities $P_\param(x)$ to possible $x$. You an alternative write this as $\Pr(x \mid \param)$, to mean the conditional probability of $x$ given $\param$.
+
+We use $x_t$ to emphasize that we have multiple samples, which in this case are i.i.d. In fact,
+\[
+P_\param(x_1, \ldots, x_T) = \prod_{t=1}^T P_\param(x_1, \ldots, x_T)
+\]
+or in the standard notation
+\[
+\Pr(x_1, \ldots, x_T \mid \param) = \prod_{t=1}^T \Pr(x_1, \ldots, x_T \mid \param)
+\]
+
+
+
 
 ** Maximum likelihood (ML) inference
 - Family $\{P_\param |  \param \in \Param\}$
@@ -405,34 +427,70 @@ Example: Are men's and women's heights the same?
 - Define $s_T = \sum_{t=1}^T x_t$.
 - Show that $\param_{\textrm{ML}}(x) = s_T / T$.
 - What is the problem with this estimate?
+** Notes on Maximum Likelihood.                                      :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+
+In maximum likelihood inference, we have a model family as before, and some data. The idea is to find the parameter that best fits the data. The natural way to do so is to use the probabilities: find $\param$ maximising the probability of the data. (This is also called the *likelihood* of the parameter), i.e.
+\[
+\param_{\textrm{ML}} = \argmax_\param P_\param(x).
+\]
+Reminder that the argument maximising a function results in the maximum value, i.e. 
+\[
+P_{\param_{\textrm{ML}}}(x) = \max_\param P_\param(x) \geq P_{\param'}(x) \forall \param'.
+\]
+
+For the Bernoulli model, consider what happens when we throw the coin only once and it comes heads. What is our estimate then? Is it reasonable? Can we use the estimate to make predictions?
+
+
+
 ** Gaussian model                                        :B_example:exercise:
     :PROPERTIES:
     :BEAMER_env: example
     :END:
 - $x_t \in \Reals$, for $t \in [T]$, $\mu \in \Reals, \sigma \in \Reals_+$
 - $x_t \mid \mu, \sigma \sim \Normal(\mu, \sigma)$
-- Follow the *same steps* as for the Bernoulli model above — write the log-likelihood, differentiate with respect to *each* parameter separately, set both derivatives to zero — to show that
-\[
-\hat\mu_{\textrm{ML}}(x) = \frac{1}{T}\sum_{t=1}^T x_t,
-\qquad
-\hat\sigma^2_{\textrm{ML}}(x) = \frac{1}{T}\sum_{t=1}^T \left[x_t - \hat{\mu}_{\textrm{ML}}(x)\right]^2.
-\]
+- We can show that the maximum likelihood parameter estimate is:
+  \[
+  \hat\mu_{\textrm{ML}}(x) = \frac{1}{T}\sum_{t=1}^T x_t,
+  \qquad
+  \hat\sigma^2_{\textrm{ML}}(x) = \frac{1}{T}\sum_{t=1}^T \left[x_t - \hat{\mu}_{\textrm{ML}}(x)\right]^2.
+  \]
+- To prove this, (1) write the log-likelihood (2) differentiate with respect to *each* parameter separately (3) set the derivative to zero.
 - Does this estimator for $\sigma^2$ have a problem analogous to the Bernoulli one above? (Hint: what happens when $T=1$?)
 
 ** Maximum a posteriori (MAP) inference
 - Family $\{P_\param |  \param \in \Param\}$
 - Data $x$ with *likelihood* $P_\param(x)$ for each parameter value $\param$.
-- *Prior* $\bel(\param)$.
+- *Prior* $\bel(\param)$ 
 - $\param_{\textrm{MAP}}(x) = \argmax_\param P_\param(x) \bel(\param)$
 - Experiment with the prior for the Bernoulli model.
 
+** Notes on Maximum A Posteriori.                                    :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+
+In maximum a posteriori inference, we have a model family as before, and some data. However, we may think of some models as *inherently* more or less likely than other models. For that reason, we temper or regulate our estimate with a prior distribution (or density) $\bel$. 
+
+For the Bernoulli model, think again about what happens when we throw the coin only once and it comes heads. Obviously the conclusion that the coin will always come up as heads afterwards is ridiculous. For that reason, we can consider a prior $\bel$ which places 0 weight on $\param = 0$ or $\param=1$. In fact, something which places more weight towards fair coins seems more reasonable. A good choice is:
+\[
+\bel(\param) \propto \param(1 - \param).
+\]
+Here we use proportionality, this must be scaled so that $\int_0^1 \bel(\param) d\param = 1$. However, this does not matter, as in MAP inference we calculate
+\[
+\argmax_\param \bel(param) P_\param(x)
+\]
+In this case, multiplication by a positive constant does not change the maximising argument.
+
 ** Bayesian Inference
-#+ATTR_BEAMER: :overlay <+->
+
 - Model family $\{P_\param |  \param \in \Param\}$
 - Each model $\param$ assigns probabilities $P_\param(x)$  to possible $x \in X$.
 - We also have a (subjective) prior distribution $\bel$ over the parameters.
-- Given $x$, we calculate the posterior distribution
-#+BEAMER: \pause
+- Given $x$, we calculate the posterior distribution:
+
 \begin{align}
 \bel(\param | x)
 & = \frac{P_\param(x) \bel(\param)}{\sum_{\param' \in \Param} P_{\param'}(x) \bel(\param')},
@@ -448,11 +506,31 @@ Example: Are men's and women's heights the same?
 && B \subset \Param
 \tag{arbitrary $\Param$, $\bel$ is a measure}
 \end{align}
-#+BEAMER: \pause
+
+
 *** Alternative notation for different probability spaces
 - The *prior* $\bel(\param) = \Pr(\param)$ and *posterior* $\bel(\param \mid x) = \Pr(\param \mid x)$ belief.
 - The *likelihood* $P_\param(x) = \Pr(x \mid \param)$
 - The *marginal* $\Pr_\bel(x) = \sum_\param P_\param(x) \bel(\param)$.
+
+** Notes on Bayesian Inference.                                      :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+The model family describes which sets of models we are interested in. For example, it can be the set of Gaussian models, the set of Bernoulli models, or anything else. $\param$ is usually called the parameter.
+
+Each model $\param$ assigns probabilities $P_\param(x)$ to possible $x$.
+
+Since we do not know $\param$, we assign a subjective prior distribution $\bel$ to every possible value of $\param \in \Param$. The mathematics gets a bit more convoluted here, because there are many different cases for what $\Param$ can be.
+
+- If $\Param$ only has a finite number of values, then $\bel$ is a probability mass function, so that $\sum_{\param \in \Param} \bel(\param) = 1$ and $\bel(\param) \in [0,1]$.
+- If $\Param$ is continuous (e.g. the interval $[0,1]$) then it $\bel$ is a probability density function, so that $\int_{\Param} \bel(\param) d\param= 1$, and $\bel(\param) \geq 0$. However, $\bel(\param)$ can be arbitrarily large!
+- In the most general case, we can define $\bel$ to be a probability measure. Then it is a function on sets (like in basic probability). Now, however, the integral is written: $\int_{\Param} d\bel(\param) = 1$, and we have that $\bel(B) \in [0,1]$ for every subset $B \subset \Param$.
+
+The reason for the alternative notation is to *conceptually* separate the *model's* probabilities for the data $P_\param(x) \defn \Pr(x \mid \param)$ from our prior and posterior *beliefs* $\bel(\param) \defn \Pr(\param)$ and $\bel(\param \mid x) \defn \Pr(\param \mid x)$ about the model. However, you can use whichever notation feels best for you, as long as you are *consistent*.
+
+
+
 ** Probabilistic machine learning
 #+ATTR_BEAMER: :overlay <+->
 - Model family $\{P_\param |  \param \in \Param\}$
