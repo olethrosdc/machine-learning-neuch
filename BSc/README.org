@@ -24,49 +24,27 @@ The course focuses on fundamental modelling problems and general machine learnin
 
 
 ** Schedule
-<<<<<<< HEAD
-|--------+-------+--------------------------------+-----------------------------------------------------+---------------------+-------|
-| Module |  Date | Topic                          | Details                                             | Python              | Type  |
-|--------+-------+--------------------------------+-----------------------------------------------------+---------------------+-------|
-|      1 | 09.15 | Introduction                   | Mean estimation, ML Problems                        | nympy, pandas       | Mixed |
-|      2 | 09.22 | kNN, Decision problems         | kNN, Decision Problems                              | pandas, scikitlearn | Mixed |
-|      3 | 09.29 | Generalisation                 | Cross-Validation, Bootstrapping                     | sklearn             | Mixed |
-|      4 | 10.06 | The Perceptron                 | The Preceptron, Gradient Descent, Generalisation    | sklearn             | Mixed |
-|      5 | 10.13 | Regression                     | Linear Regression, Feature Selection for Regression | sklearn, statstools | Lab   |
-|      6 | 10.20 | Multi-layer Perceptrons        | Cost functions, Backpropagation, Layers             | sklearn             | Mix   |
-|      7 | 10.27 | Quiz / Fake Project            | Designing a project, Getting data, Methodology      |                     |       |
-|      8 | 11.03 | Probabilistic machine learning | Bayes Theorem, Graphical models, independence       |                     | Mix   |
-|      9 | 11.10 | Generative Models              | GMM, Markov models, text prediction                 |                     | Mixed |
-|     10 | 11.17 | Latent Models                  | Expectation Maximisation                            |                     | Mixed |
-|     11 | 11.24 | Large Language Models          |                                                     |                     | Lab   |
-|     12 | 12.01 | Computer Vision                |                                                     |                     | Mixed |
-|     13 | 12.08 | Fairness and Privacy           |                                                     |                     | Lab   |
-|--------+-------+--------------------------------+-----------------------------------------------------+---------------------+-------|
-|     14 | 12.15 | Quiz                           |                                                     |                     | Exam  |
-|--------+-------+--------------------------------+-----------------------------------------------------+---------------------+-------|
-=======
-|--------+-------+--------------------------------------------+-----------------------------------------------------+---------------------+-------|
-| Module |  Date | Topic                                      | Details                                             | Python              | Type  |
-|--------+-------+--------------------------------------------+-----------------------------------------------------+---------------------+-------|
-|      1 | 09.15 | Introduction                               | Mean estimation, ML Problems                        | nympy, pandas       | Mixed |
-|      2 | 09.22 | kNN, Decision problems                     | kNN, Decision Problems                              | pandas, scikitlearn | Mixed |
-|      3 | 09.29 | Generalisation                             | Cross-Validation, Bootstrapping                     | sklearn             | Mixed |
-|--------+-------+--------------------------------------------+-----------------------------------------------------+---------------------+-------|
-|      4 | 10.06 | The Perceptron                             | The Preceptron, Gradient Descent, Generalisation    | sklearn             | Mixed |
-|      5 | 10.13 | Regression                                 | Linear Regression, Feature Selection for Regression | sklearn, statstools | Lab   |
-|      6 | 10.20 | Multi-layer Perceptrons                    | Cost functions, Backpropagation, Layers             | sklearn             | Mix   |
-|--------+-------+--------------------------------------------+-----------------------------------------------------+---------------------+-------|
-|      7 | 10.27 | Quiz                                       |                                                     |                     |       |
-|      8 | 11.03 | Probabilistic machine learning             | Naive Bayes, Graphical models, independence         |                     | Mix   |
-|      9 | 11.10 | Scientific Questions, Generative modelling |                                                     |                     | Mixed |
-|     10 | 11.17 | Simulations and Pipelines                  |                                                     |                     | Mixed |
-|     11 | 11.24 | Hypothesis testing                         |                                                     |                     | Lab   |
-|     12 | 12.01 | Causality                                  |                                                     |                     | Mixed |
-|     13 | 12.08 | Fairness and Privacy                       |                                                     |                     | Lab   |
-|--------+-------+--------------------------------------------+-----------------------------------------------------+---------------------+-------|
-|     14 | 12.15 | Quiz                                       |                                                     |                     | Exam  |
-|--------+-------+--------------------------------------------+-----------------------------------------------------+---------------------+-------|
->>>>>>> 8299f65ace91c32b3c153d11d80e84cb63d5c172
+|--------+-------+--------------------------------------------------+-----------------------------------------------------+---------------------+-------|
+| Module |  Date | Topic                                            | Details                                             | Python              | Type  |
+|--------+-------+--------------------------------------------------+-----------------------------------------------------+---------------------+-------|
+|      1 | 09.15 | Introduction                                     | Mean estimation, ML Problems                        | nympy, pandas       | Mixed |
+|      2 | 09.22 | kNN, Decision problems                           | kNN, Decision Problems                              | pandas, scikitlearn | Mixed |
+|      3 | 09.29 | Generalisation                                   | Cross-Validation, Bootstrapping                     | sklearn             | Mixed |
+|--------+-------+--------------------------------------------------+-----------------------------------------------------+---------------------+-------|
+|      4 | 10.06 | The Perceptron                                   | The Preceptron, Gradient Descent, Generalisation    | sklearn             | Mixed |
+|      5 | 10.13 | Regression                                       | Linear Regression, Feature Selection for Regression | sklearn, statstools | Lab   |
+|      6 | 10.20 | Multi-layer Perceptrons                          | Cost functions, Backpropagation, Layers             | sklearn             | Mix   |
+|--------+-------+--------------------------------------------------+-----------------------------------------------------+---------------------+-------|
+|      7 | 10.27 | Quiz, Scientific Questions, Generative modelling |                                                     |                     |       |
+|      8 | 11.03 | Bayesian Inference and Hypothesis Testing        |                                                     |                     |       |
+|      9 | 11.10 | Probabilistic models, independence               | Naive Bayes                                         |                     | Mixed |
+|     10 | 11.17 | Mixture models, Expectation Maximisation         | Gaussian Mixture Model                              |                     | Mixed |
+|     11 | 11.24 | Fairness and independence                        |                                                     |                     | Lab   |
+|     12 | 12.01 | Work week                                        |                                                     |                     | Lab   |
+|     13 | 12.08 | Reading week                                     |                                                     |                     | Lab   |
+|--------+-------+--------------------------------------------------+-----------------------------------------------------+---------------------+-------|
+|     14 | 12.15 | Quiz                                             |                                                     |                     | Exam  |
+|--------+-------+--------------------------------------------------+-----------------------------------------------------+---------------------+-------|
 
 *** Note on pacing
 Tree-based and ensemble methods (Assignment 7), and the convolutional-network material (Assignment 8), are covered *only if time permits*. By default, that time goes to in-class project work instead: (re)forming the scientific question, drawing the graphical model, and building the simulator, testing the pipeline and discussing the project with the professor and TA(s).
