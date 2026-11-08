@@ -40,7 +40,7 @@ The course focuses on fundamental modelling problems and general machine learnin
 |      9 | 11.10 | Probabilistic models, independence               | Naive Bayes                                         |                     | Mixed |
 |     10 | 11.17 | Mixture models, Expectation Maximisation         | Gaussian Mixture Model                              |                     | Mixed |
 |     11 | 11.24 | Fairness and independence                        |                                                     |                     | Lab   |
-|     12 | 12.01 | Work week                                        |                                                     |                     | Lab   |
+|     12 | 12.01 | Common pitfalls in machine learning              | Feature/model selection/scaling/garden of many paths |                     | Lab   |
 |     13 | 12.08 | Reading week                                     |                                                     |                     | Lab   |
 |--------+-------+--------------------------------------------------+-----------------------------------------------------+---------------------+-------|
 |     14 | 12.15 | Quiz                                             |                                                     |                     | Exam  |

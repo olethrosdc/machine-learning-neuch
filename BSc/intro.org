@@ -4,6 +4,7 @@
 #+LaTeX_HEADER: \include{preamble}
 #+LaTeX_CLASS_OPTIONS: [smaller]
 #+LATEX_HEADER: \setbeameroption{show notes}
+#+LATEX_HEADER: \setbeamerfont{note page}{size=\footnotesize}
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
@@ -439,15 +440,21 @@ where $1$ means winning, and $0$ means losing.
 - An equivalent definition: $x(\omega) = \ind{\omega \geq 5}$,
 uses the indicator function $\ind{}$ which takes the value $1$ when its argument is true and $0$ otherwise.
 
-**** Probabilities of RVs
-For any $x : \Omega \to X$, we can introduce a new probability measure $P_x$ so that, for any set of outcomes $S \subseteq X$ of the *random variable*, we have:
-\[
-P_x(S) = P(\cset{x(\omega) \geq 5}{\omega \in \Omega})
-\]
+*** Probability disributions of RVs
+- $P$ is a probability measure, giving us random outcomes.
+- A random variable's value depends on what the random outcome $\omega$ is.  Hence, these values are also random. What is the distribution of this random variable?
 
-***** Probability of $x = 1$
+**** The probability measure of an RV
+For any $x : \Omega \to X$, and a probability $P$ on $\Omega$, we can introduce a new probability measure $P_x$ so that, for any set of outcomes $S \subseteq X$ of the *random variable*, we have:
+\[
+P_x(S) \defn P(\cset{x(\omega) \in S}{\omega \in \Omega}).
+\]
+- This is now the probability that $x$ lies in $S$.
+- If this set is a single value, e.g. $S = \{k\}$, then we just write $P_x(j)$.
+  
+*** Probability of $x = 1$                                        :B_example:
 :PROPERTIES:
-:BEAMER_env: note
+:BEAMER_env: example
 :END:
 Since we are only interested in $x = 1$, then $S = \{1\}$. As a *shorthand*, we usually write $P_x(1)$ instead of $P_x(\{1\})$.
 \[
@@ -478,17 +485,31 @@ This second equality follows from the third axiom of probability, because $\{5\}
 = \sum_{\omega \in \Omega}  x(\omega) P(\omega) 
 \]
 #+BEAMER: \pause
-**** The sample mean :B_definition:
-     :PROPERTIES:
-     :BEAMER_env: definition
-     :END:
-- *i.i.d.* variables $x_1, \ldots, x_t, \ldots, x_T$:  with $x_t = x(\omega_t)$, $\omega_t \sim P$.
-#+BEAMER: \pause
-- The sample mean of $x_1, \ldots, x_T$ is
-\[
-\frac{1}{T} \sum_{t=1}^T x_{t}
-\]
-The sample mean is \(O(1/\sqrt{T})\)-close to $\E_P[x_t]$ with high probability.
+Here $x$ is a *function*, whose values are *random* because it depends on the random outcome $\omega$.
+
+***** Notation conventions.
+In high school you probably saw a rule $\E[x] = \sum_i x_i p_i$, where
+$x_i$ is one value, and $p_i$ is the probability of that value. This
+ is no different from $\sum_\omega x(\omega) P(\omega)$, where we
+ replace the index $i$ with an argument $\omega$. However, things get
+ interesting when $x$ takes the *same* value for *different* values
+ $\omega$, as the note below shows.
+
+*** *The Law of the Unconscious Statistician*.                       :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+ The derivation below unifies the general definition of expectation with value-based notation. We consider a random variable $x : \Omega \to X$, where $X$ is a finite set of possible values, and we have $P(\omega)$ for the probability of $\omega$. By the definition:
+\begin{align}
+\E_P[x] & = \sum_{\omega \in \Omega} x(\omega) P(\omega) \tag{definition}\\
+& = \sum_{k \in X} \sum_{\omega : x(\omega) = k} x(\omega) P(\omega) \tag{split $\Omega$ into subsets}\\
+& = \sum_{k \in X} k \sum_{\omega : x(\omega) = k}  P(\omega) \tag{$k = x(\omega)$ in the subset}\\
+& = \sum_{k \in X} k P(\{\omega : x(\omega) = k\}) \tag{3rd probability axiom}\\
+& = \sum_{k \in X} k P_x(k) \tag{Definition of $P_x$}\\
+& = \sum_{k \in X} k \Pr(x = k) \tag{Informally, $\Pr(x = k)$: prob. that x equals x}
+\end{align}
+
+
 
 *** Reminder: expectations of random variables
 **** A gambling game :B_exampleblock:
@@ -518,6 +539,24 @@ x(a) P(a) + x(b) P(b) + x(c) P(c)
 \]
 
 
+*** The sample mean
+**** i.i.d (independent, identically distributed) variables
+A *sequence* of variables $x_1, \ldots, x_t, \ldots, x_T$ is i.i.d if
+$x_t = x(\omega_t)$, $\omega_t \sim P$, with $\omega_t, \omega_j$ being independently drawn from $P$.
+
+- Alternatively, $x_t \sim P_x$ independently.
+
+**** The sample mean                                           :B_definition:
+     :PROPERTIES:
+     :BEAMER_env: definition
+     :END:
+For *i.i.d.* variables $x_1, \ldots, x_t, \ldots, x_T$:  with $x_t = x(\omega_t)$, $\omega_t \sim P$, their *sample mean* is
+\[
+\frac{1}{T} \sum_{t=1}^T x_{t}
+\]
+- The sample mean is is *not the same* as the expectation.
+- As we shall see later, the sample mean is an *unbiased estimate* of the expectation.
+- It also becomes \(O(1/\sqrt{T})\)-close to $\E_P[x_t]$ with high probability.
 
 *** Models
 **** Models as summaries

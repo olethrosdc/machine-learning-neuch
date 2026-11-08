@@ -28,4 +28,15 @@ Now, estimate $\theta_C$ for every possible category using both ML and MAP. Assu
 
 Is there some way you could run a similar analysis using standard regression or classification algorithms?
 
+* Discussion topics
+
+For this submission, you are /encouraged/ to submit your *Chatbot prompts and responses*, as well as topics of *group discussion*,  relating to this week's /lecture/ and the /assignment/. This will *not* be taken into account for your grade, but we would like to understand:
+- which concepts you found difficult,
+- which questions you asked,
+- whether the responses were helpful, confusing, or incorrect,
+- and what eventually helped you understand the material.
+
+Feel free to include both successful and unsuccessful interactions with fellow students and chatbots alike.
+
+
 
