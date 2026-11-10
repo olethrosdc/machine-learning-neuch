@@ -1,0 +1,10 @@
+* Hypothesis testing with maximum likelihood
+
+In your experiments, some of you wrote a decision rule that chooses the hypothesis with the highest likelihood.
+In which case would this fail? As a thought experiment, consider two models. $H_0$, where the variable of interest, $y$ does not depend on anything,
+and $H_1$, where it depends on 10 other binary variables. 
+
+If you have a small amount of data, generated from $H_0$, how often do you choose $H_1$ using this rule?
+Do you in fact find that your likelihood is 1 (log-likelihood is zero) for $H_1$ sometimes? Why is that?
+
+

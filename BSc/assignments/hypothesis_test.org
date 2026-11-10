@@ -16,7 +16,14 @@ Look at your features, and create bins that correspond into categories $C$, so t
 
 Generate data for both of your hypotheses. For now, fix an arbitrary amount of data.
 
-Now, estimate $\theta_C$ for every possible category using both ML and MAP. Assume all variables are observable for simplicity.
+Now, estimate $\theta_C$ for every possible category using both ML and MAP, as shown in the slides, with a prior
+\[
+p(\theta) = \theta (1 - \theta) / Z,
+\]
+where $Z > 0$ is a constant that is unimportant. The point is to have a prior that places zero probability on $\theta$ being equal to $0$ or $1$.
+
+
+Assume all variables are observable for simplicity.
 
 - Some categories will be empty! That is, maybe there is no person who is 70-80 years old, smokes, and exercises 60-90 minutes/day. What should $\theta_C$ be in this case in the MAP and ML estimation?
 
