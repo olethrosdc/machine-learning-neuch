@@ -216,7 +216,45 @@ For any real-valued random variable $f: \Omega \to \Reals$, the expectation with
 \[
 \E_P(f) \defn \sum_{\omega \in \Omega} f(\omega) P(\omega).
 \]
+Here $f$ is a *function*, whose values are *random* because it depends on the random outcome $\omega \in \Omega$.
 
+The expectation depends on both $P$, the distribution of outcomes $\omega$, and the function $f$ of $\omega$. A classical example are gambling problems. Then
+- $\Omega$ are the outcomes of a random die
+- $P$ describes the probability of each outcome
+- $f(\omega)$ is the amount of money you gain if the die comes up $\omega$.
+- $\E_P(f)$ is the expected amount of money.
+
+Changing the die ($P$) or the amounts ($f$) changes the expected wins.
+
+*** Notation conventions.
+In high school you probably saw a rule, 
+\[
+\E[x] = \sum_i x_i p_i,
+\]
+where $x_i$ is a value, and $p_i$ is the probability of that value.
+This is no different from $\sum_\omega f(\omega) P(\omega)$, where we
+ replace the index $i$ with an argument $\omega$.
+ 
+Sometimes you saw the rule:
+\[
+\E[X] = \sum_{x \in X} x \Pr(X = x).
+\]
+This *subtly different* since there can be multiple $x_i$ with the *same* value. These rules are connected as follows:
+
+
+*** *The Law of the Unconscious Statistician*.                      
+ The derivation below unifies the general definition of expectation with value-based notation. We consider a random variable $x : \Omega \to X$, where $X$ is a finite set of possible values, and we have $P(\omega)$ for the probability of $\omega$. By the definition:
+\begin{align}
+\E_P[x] & = \sum_{\omega \in \Omega} x(\omega) P(\omega) \tag{definition}\\
+& = \sum_{k \in X} \sum_{\omega : x(\omega) = k} x(\omega) P(\omega) \tag{split $\Omega$ into subsets}\\
+& = \sum_{k \in X} k \sum_{\omega : x(\omega) = k}  P(\omega) \tag{$k = x(\omega)$ in the subset}\\
+& = \sum_{k \in X} k P(\{\omega : x(\omega) = k\}) \tag{3rd probability axiom}\\
+& = \sum_{k \in X} k P_x(k) \tag{Definition of $P_x$}\\
+& = \sum_{k \in X} k \Pr(x = k) \tag{Informally, $\Pr(x = k)$: prob. that x equals x}
+\end{align}
+
+
+*** Properties of expectations
 **** Linearity of expectations
 \[
 \E_P(x + y) = \E_P(x) + \E_P(y)\qquad \textrm{for any RVs $x,y$}.
@@ -225,8 +263,6 @@ For any real-valued random variable $f: \Omega \to \Reals$, the expectation with
 If $x,y$ are independent RVs then $\E_P(xy) = \E(x)\E(y)$.
 **** Correlation
 If $x,y$ are *not* correlated then $\E_P(xy) = \E(x)\E(y)$.
-
-
 
 *** Expectation for general $\Omega$ :advanced:
 $\Omega$ is not always finite (or even discrete). 
