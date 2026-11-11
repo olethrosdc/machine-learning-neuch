@@ -1,10 +1,59 @@
 * Hypothesis testing with maximum likelihood
 
-In your experiments, some of you wrote a decision rule that chooses the hypothesis with the highest likelihood.
-In which case would this fail? As a thought experiment, consider two models. $H_0$, where the variable of interest, $y$ does not depend on anything,
-and $H_1$, where it depends on 10 other binary variables. 
+In your experiments, some of you wrote a decision rule that chooses
+the hypothesis with the highest likelihood. Let me formalise this.
+You have some parameters $\theta_1$ for hypothesis $H_1$ and some
+other parameters $\theta_0$ for $H_0$. To make things unambiguous, the
+conditional probability of data $D$, under hypothesis $H_i$, with
+parameters $\theta_i$ will be written as $P_i(\cdot \mid \theta_i)$
 
-If you have a small amount of data, generated from $H_0$, how often do you choose $H_1$ using this rule?
-Do you in fact find that your likelihood is 1 (log-likelihood is zero) for $H_1$ sometimes? Why is that?
+You then find the maximum likelihood parameters for each case:
+\[
+\theta^*_i = \arg\max_{\theta_i} P_i(D \mid \theta_i).
+\]
+This simply means: find the parameter values that make the observed data most likely under hypothesis H_i.
+This is exactly the maximum likelihood (ML) estimate you computed in the previous assignment.
+Note that the arg⁡max⁡ returns the parameter values achieving the maximum likelihood, not the value of the likelihood itself (that is max).
+
+Afterwards, you choose the hypothesis having the highest likelihood:
+\[
+H* = \arg\max_{H_i} P_i(D \mid \theta^*_i).
+\]
+For the same data, you will generally find that *more complex models
+have higher likelihood*.
+
+** Example
+In the lung cancer example, you can have two simple hypotheses:
+
+$H_0$: Smoking, cancer and asbestos are independent. Then $P_0(S,A,C) = P_0(S) P_0(A) P_0(C)$. These are all binary variables, so you need three parameters: $\theta_{0,S}, \theta_{0,C}, \theta_{0,A}$ for the probability of smoking, cancer and asbestos.
+
+$H_1$: Smoking depends on cancer and asbestos exposure, but smoking and asbestos are independent. Then  $P_1(S, A, C) = P_1(S) P_1(A) P_1(C | A, S)$. So you need $\theta_{1,S}, \theta_{1,A}, \theta_{1,C|AS}, \theta_{1,C|\neg AS}, \theta_{1,C|A \neg S}, \theta_{1,C|\neg A \negS}$, i.e. the probability of cancer given smoking and asbestos has to be defined for all 4 combinations of S and A. So we have 6 parameters.
+
+** Questions
+
+Now apply this thinking to your own problem. Make sure that $H_0$ is a
+strictly simpler model than $H_1$ (that is, the graph of $H_1$ has some added edges on top of $H_0$).
+
+1. Write down the graphical model and factors for each model (if not already done).
+2. List the variables you need to estimate in each case (if not already done)..
+3. If you have *data generated from $H_0$*, how often do you choose $H_1$ using the maximum likelihood rule? How about generating data from $H_1$? How often do you choose $H_0$? Run the experiment for smaller (e.g. 10) and larger (e.g. 10'000) amounts of data. Average over 10 runs if you need to, but if H_1 is strictly more complex, it will always 'win'.
+4. Does the same happen if you use MAP estimates to choose a hypothesis? Repeat the experiment.
+5. We have already seen method for model selection in the beginning of the course. Could you use one of them to obtain a more robust method for choosing hypotheses? Run a small experiment to verify it.
+6. Could you use the same approach when using e.g. parameter estimates from linear/logistic regression? Explain how and run a small experiment.
 
 
+
+* Discussion topics
+
+For this submission, you are /encouraged/ to submit your *Chatbot
+prompts and responses*, as well as topics of *group discussion*,
+relating to this week's /lecture/, /exercises/ and the /assignment/. This will
+*not* be taken into account for your grade, but we would like to
+understand:
+
+- which concepts you found difficult,
+- which questions you asked,
+- whether the responses were helpful, confusing, or incorrect,
+- and what eventually helped you understand the material.
+
+Feel free to include both successful and unsuccessful interactions with fellow students and chatbots alike.

@@ -1,0 +1,58 @@
+* Application on the class data
+
+Complete the in-class exercise:
+
+(a) Use the sm.OLS() function to perform a multiple linear regression
+with weight as the response and all other variables (except name) as
+the predictors. Use the summarize() function to print the results.
+
+Comment on the output. For instance:
+
+i. Is there a relationship between the predictors and the re-
+sponse? 
+
+ii. What does the coefficient for the gender variable suggest?
+
+iii. Produce some of diagnostic plots of the linear regression fit as
+described in the lab. Comment on any problems you see with the
+fit. Do the residual plots suggest any unusually large outliers?
+Does the leverage plot identify any observations with unusually
+high leverage?
+
+iv. Try a few different transformations of the variables, such as $\log(x)$ or $\sqrt{x}$
+
+* Simulated data
+
+In this exercise you will create some /simulated/ data and will fit 
+/linear regression models/ to it. 
+
+(a) Generate 100 values $x_t$ from the normal distribution, i.e. $x_t \sim N(0,1)$.
+
+(b) Generate a vector $y$ using the formula
+\[
+y_t = 1 - 2 x_t + \epsilon_t, 
+\]
+with $\epsilon_t \sim N(0,0.5)$, i.e. with zero men and variance 0.5.
+
+(c) Create a scatterplot between x, y and comment on what you observe.
+
+
+(e) Fit a least squares linear model to predict y using x . Comment
+on the model obtained. How do the estimated $\beta_0, \beta_1$ compare to the true values?
+
+(f) Plot the true regression line  with the given parameters.
+
+(g) Repeat steps $a-f$ with the following modification:
+
+i. Generate 10-dimensional $x_t$ from the normal distribution, i.e. $x_{t,i} \sim N(0,1)$.
+
+ii. Generate the vector $y$ only using the first feature, $x_{t,1}$, i.e.
+\[
+y_t = 1 - 2 x_{t,1} + \epsilon_t.
+\]
+This means that the coefficients $\beta_2, \ldots, \beta_10 = 0$.
+
+In what way are your results different?
+
+(h) Repeat (g), but generate 10,000 points $(x_t, y_t)$ instead of only 100.
+
