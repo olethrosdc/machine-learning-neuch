@@ -672,3 +672,11 @@ Then, for any $x = x_1, \ldots, x_T$, the posterior distribution is
 *** Normal distribution
 - Find the MLE for the normal distribution. What is the sufficient statistic?
   
+* Summary
+** Summary
+*** Summary
+- We learned how to estimate probabilities from data.
+- Maximum Likelihood (ML): fit parameters from observations by maximising the likelihood. This is an optimisation problem.
+- Maximum a Posteriori (MAP): fit parameters from observations and prior beliefs by maximising the posterior probability. This is also an optimisation problem.
+- Bayesian inference: compute the entire posterior distribution over parameters. This is not an optimisation problem. The result is a distribution, not a single estimate.
+- Next: Represent more complex dependencies efficiently using graphical models.  

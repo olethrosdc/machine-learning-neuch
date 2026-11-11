@@ -999,4 +999,22 @@ Which of the five lines above, if any, would have a closed-form conjugate update
 - /predict()/ should predict class labels
 - Hint: Use /predict_proba()/ and multiple GMM models
 
+* Summary
+** Summary
+*** Summary
+- CPTs store conditional probabilities for discrete random variables.
+- Conditional independence reduces the number of parameters.
+- Graphical models represent specific conditional independence structures.
+- Models can also contain \emph{latent} variables.
+- Latent variables can be parameters, cluster IDs, etc
+*** Example graphical models
+- Naive Bayes
+- Gaussian Mixture Model
+- Linear regression
+- Logistic regression
+- Many other neural networks (those with a probabilistic interpretation).
+
+Next: fairness!
+
+
 
