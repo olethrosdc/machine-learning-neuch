@@ -52,7 +52,7 @@
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:2
 #+OPTIONS: toc:nil
-* Approximate Bayesian inference
+* Approximate Bayesian Inference
 ** Approximate Bayesian inference
 *** The General problem
 - Observations $D$.
@@ -71,10 +71,45 @@ P_\param(D) = \sum_z P_\param(D, z).
 - Stochastic Variational Inference
 
 * Monte-Carlo Methods
+** The Monte-Carlo sampler
+To approximate an expectation, we can approximate the integral
+\[
+\E_P(f) \defn \int_\Omega f(\omega) dP(\omega)
+\]
+by sampling $\omega$ from $P$ and taking the sample mean:
+\[
+\E_P(f) \approx \frac{1}{N} \sum_{n=1}^N f(\omega^{(n)}),
+\]
+which as we already know, is an unbiased estimator.
+
+We can also approximate the probabilities of events $A \subset \Omega$:
+\begin{align}
+P(A) &= \int_A dP(\omega) = \int_\Omega \ind{\omega \in A} dP(\omega)\\
+&= \E_P[\ind{\omega \in A}]
+\approx \frac{1}{N} \sum_{n=1}^N \ind{\omega^{(n)} \in A}.
+\end{align}
+But what if we can not sample from $P$?
+
+** Importance sampling
+If we cannot sample from $P$, but can sample from some other distribution $Q$, we can use this trick (statisticians hate it!). Let's write it first out for finite $\Omega$, for simplicity
+\[
+\E_P(f) \defn \sum_{\omega \in \Omega} f(\omega) \frac{P(\omega)}{Q(\omega)} Q(\omega)
+= \E_Q(f P / Q) 
+\]
+Now this is the expectation of $f(\omega)P(\omega)/Q(\omega)$ with respect to $Q$. So, if we can sample from $Q$ instead, we can still approximate the integral for the general case.
+\[
+\E_P(f) \defn \int_\Omega f(\omega) \frac{dP(\omega)}{dQ(\omega)} dQ(\omega)
+\approx \frac{1}{N} \sum_{n=1}^N f(\omega^{(n)}) \frac{dP(\omega^{(n)})}{dQ(\omega^{(n)})},
+\qquad \omega^{(n)} \sim Q.
+\]
+It is easy to show that this estimator is also unbiased. However, as the probability ratio can be very large, it has a very high variance.
+
+So, how *can* we sample from $P$ for arbitrary distributions?
+
 ** Basic sampling theory
 
 *** Inversion sampler
-$F(u) = \Pr(x \geq u) = P(\{\omega : x(\omega) \geq u\})$ is the CDF of $x$.
+$F(u) \defn \Pr(x \geq u) = P(\{\omega : x(\omega) \geq u\})$ is the CDF of $x$.
 - Sample $u$ uniformly in $[0,1]$
 - Set $x = F^{-1}(u)$, i.e. $v: \Pr(x \geq v) = u$
 
