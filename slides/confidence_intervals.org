@@ -180,6 +180,7 @@ If $x \sim \Normal(\mu, \sigma^2)$ then
 e^{\mu \lambda + \sigma^2 \lambda^2 / 2}
 \end{align}
 **** Proof
+Let $y = (x-\mu)/(\sqrt{2} \sigma)$, so $x = \sqrt{2} \sigma y + \mu$.
 \begin{align*}
 \E[e^{\lambda x}]
 &=
@@ -188,7 +189,7 @@ e^{\mu \lambda + \sigma^2 \lambda^2 / 2}
 e^{\lambda x}
 e^{-\frac{|x - \mu|^2}{2 \sigma^2}}
 dx
-&=
+=
 \frac{1}{\sigma \sqrt{2 \pi}}
 \int_{-\infty}^\infty
 e^{\lambda x -\frac{|x - \mu|^2}{2 \sigma^2}}
@@ -198,9 +199,8 @@ dx
 \frac{1}{\sigma \sqrt{2 \pi}}
 \int_{-\infty}^\infty
 e^{\lambda (\sqrt{2} \sigma y + \mu) - y^2}
-dy
+dy.
 \end{align*}
-where $y = (x-\mu)/(\sqrt{2} \sigma)$, so $x = \sqrt{2} \sigma y + \mu$.
 **** Normal tail bound
 If $x_t \sim \Normal(\mu, 1)$, then
 \[
