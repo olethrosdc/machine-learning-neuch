@@ -52,8 +52,20 @@
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:2
 #+OPTIONS: toc:nil
+# SUGGESTIONS (added after reviewing the lecture transcripts). Every line below
+# is an Org comment ("# " prefix); uncomment a region to activate it. Tags:
+# FIX = error or confusion source, SUGGEST = add/explain more, CUT = trim/move,
+# NOTE = uncertain, check.
 * Approximate Bayesian Inference
 ** Approximate Bayesian inference
+# SUGGEST: add the diagram from the lecture (unknown / known / nuisance variables)
+# and the Simpson's paradox example (the department applied to is a nuisance
+# variable you may or may not care about).
+# NOTE: sum over theta' here, but integrals elsewhere (e.g. the Monte-Carlo
+# sampling slide); consider using the integral over Theta consistently.
+# NOTE: notation changes later: D / z / theta here, but x and z in the Gibbs slide.
+# CUT or SUGGEST: Variational Bayes and Stochastic Variational Inference are listed
+# under "Common methods" but not covered. Add a slide or drop them.
 *** The General problem
 - Observations $D$.
 - Nuisance variables $z$.
@@ -72,6 +84,12 @@ P_\param(D) = \sum_z P_\param(D, z).
 
 * Monte-Carlo Methods
 ** The Monte-Carlo sampler
+# SUGGEST: add after the sample-mean formula, e.g.:
+# "If $x_n = f(\omega^{(n)})$ this is exactly the sample mean. Example: $\omega$ is
+# a randomly chosen person and $f$ is the height measurement."
+# (In the lecture, the hand count showed not everyone connected the two.)
+# SUGGEST (optional): one line on where samples come from: fair coin -> n random
+# bits -> uniform on [0,1] -> everything else; pseudo-random in practice.
 To approximate an expectation, we can approximate the integral
 \[
 \E_P(f) \defn \int_\Omega f(\omega) dP(\omega)
@@ -91,6 +109,18 @@ P(A) &= \int_A dP(\omega) = \int_\Omega \ind{\omega \in A} dP(\omega)\\
 But what if we can not sample from $P$?
 
 ** Importance sampling
+# SUGGEST: state the support condition: $Q(\omega) > 0$ whenever $P(\omega) > 0$;
+# otherwise the estimator misses part of $P$.
+# SUGGEST: add the survey re-weighting example (students answer more often, older
+# voters vote more often), which worked well in the lecture.
+# SUGGEST: prepare a figure or notebook output of a bad proposal (narrow Q vs wide P
+# or vice versa; a few huge weights dominate the estimate) instead of debugging
+# live (about 7 minutes in the recording). The "bug" was a bad proposal.
+# Possible slide (replace by a real plot):
+# ** Importance sampling: a bad proposal
+# - Target $P$ = scaled Beta, proposal $Q$ = Normal.
+# - Plot the weights $P/Q$ for $N=100$ samples: a few dominate.
+# - Estimate varies wildly between runs: unbiased, but high variance.
 If we cannot sample from $P$, but can sample from some other distribution $Q$, we can use this trick (statisticians hate it!). Let's write it first out for finite $\Omega$, for simplicity
 \[
 \E_P(f) \defn \sum_{\omega \in \Omega} f(\omega) \frac{P(\omega)}{Q(\omega)} Q(\omega)
@@ -107,6 +137,28 @@ It is easy to show that this estimator is also unbiased. However, as the probabi
 So, how *can* we sample from $P$ for arbitrary distributions?
 
 ** Basic sampling theory
+# FIX (inversion sampler): $F(u) = \Pr(x \geq u)$ is the survival function, not the CDF.
+# It still works (1-U is uniform too), but is confusing. Suggested replacement:
+# *** Inversion sampler
+# $F(u) \defn \Pr(x \leq u)$ is the CDF of $x$.
+# - Sample $u$ uniformly in $[0,1]$
+# - Set $x = F^{-1}(u)$, i.e. $v: \Pr(x \leq v) = u$
+# SUGGEST: add the CDF picture you drew (y-axis = uniform draw, read off x).
+# FIX (rejection sampler): $\epsilon$ is an envelope constant, not a threshold. It
+# must satisfy $P(x) \leq \epsilon Q(x)$ for all $x$, and the acceptance
+# probability is $1/\epsilon$. In the lecture it was described as a threshold
+# where "smaller is better", which is the ABC epsilon, not this one.
+# Rename to $M$ to avoid the clash with ABC. Suggested replacement:
+# *** Rejection Sampler
+# - Input: constant $M$ with $P(x) \leq M Q(x)$ for all $x$; distribution $Q$
+# - Repeat:
+# - $\hat{x} \sim Q$.
+# - $u \sim \Unif[0,1]$
+# - Until $u \leq P(\hat{x}) / (M Q(\hat{x}))$.
+# - Return $\hat{x}$
+# SUGGEST: add a figure with P under the curve M*Q, showing accepted and rejected points.
+# NOTE: "Indirectly useful from sampling from unknown distributions" is vague. Say
+# what it is used for (e.g. building block for ABC) or drop it.
 
 *** Inversion sampler
 $F(u) \defn \Pr(x \geq u) = P(\{\omega : x(\omega) \geq u\})$ is the CDF of $x$.
@@ -127,6 +179,19 @@ $F(u) \defn \Pr(x \geq u) = P(\{\omega : x(\omega) \geq u\})$ is the CDF of $x$.
 
 
 ** Monte-Carlo sampling
+# FIX: the denominator integral is missing its measure $d\bel(\param')$.
+# FIX: the sampling approximation covers only the numerator. The slide should show the
+# ratio of two estimates (you explained this verbally):
+# \[
+# \bel(B \mid D) \approx
+# \frac{\sum_{n=1}^N \ind{\pn \in B} P_{\pn}(D)}{\sum_{n=1}^N P_{\pn}(D)},
+# \qquad \pn \sim \bel.
+# \]
+# FIX: "converges asymptotically to $\bel(\pn | D)$" should be $\bel(\param \mid D)$.
+# SUGGEST: add your figure: prior, posterior after a few data points, posterior
+# after many (sharp peak). Say why sampling from the prior fails: almost all
+# samples land where the likelihood is ~0, so a handful of samples carry all the
+# weight. Explain "high bias": the ratio of two estimates is biased.
 \[
 \bel(B \mid D) = \frac{\int_{B} P_\param(D) d \bel(\param)}{\int_{\Params} P_{\param'}(D) \bel(\param')}
 \]
@@ -146,6 +211,11 @@ We can approximate the integrals by sampling from the prior $\bel$:
 
 
 ** Markov Chain Monte Carlo
+# SUGGEST: this slide is nearly empty. Add: (1) what a Markov chain is, in one
+# sentence; (2) the idea that the chain's distribution moves towards the
+# posterior even if it starts far from it (this is why MCMC fixes the
+# prior/posterior-far-apart problem); (3) a trace plot of a chain converging, with
+# burn-in marked; (4) one sentence on dependent samples (autocorrelation).
 
 *** MCMC for posterior sampling
 - Form a Markov chain $P(\pnn \mid \pn, D)$
@@ -154,6 +224,10 @@ We can approximate the integrals by sampling from the prior $\bel$:
 - Form a Markov chain $P(z^{(n+1)} \mid z^{(n)}, D)$
 
 ** Metropolis-Hastings
+# FIX: acceptance probability should be $\min\{1, P(\hat{x}) / P(x^{(n)})\}$.
+# NOTE: I found no mention of Metropolis-Hastings in either transcript. If it is not
+# part of this session, consider moving these slides and the theory slide to an
+# appendix or the next lecture. If it is, a short demo or plot would help.
 *** Algorithm (symmetric version)
 - Input: Proposal distribution $Q(x | x') = Q(x' | x)$
 - At time $n$:
@@ -168,6 +242,11 @@ The denominator cancels out, leading to:
 \]
 The only question is which proposal to use.
 ** Metropolis-Hastings
+# FIX: "Proposal distribution $Q(x | x')$ satisfying detailed balance" is wrong. The
+# proposal need not satisfy detailed balance; the acceptance step is what makes the
+# chain satisfy it with respect to the target. Suggested replacement:
+# - Input: Proposal distribution $Q(x | x')$, target $P$ (known up to normalisation).
+# FIX: the acceptance probability is $\min\{1, \cdot\}$ of the displayed ratio.
 *** Algorithm
 - Input: Proposal distribution $Q(x | x')$ satisfying detailed balance, likelihood $P$.
 - At time $n$:
@@ -187,6 +266,9 @@ The $\Pr_\bel(D)$ term cancels out, leading to:
 \]
 
 ** M-H Theory
+# CUT or SUGGEST: this is heavy for the audience and was not in the recording.
+# Move to an appendix, or add intuition: detailed balance = probability flow from x
+# to x' equals flow from x' to x; ergodic = every state reachable and no cycles.
 *** Stationary distribution
 The Markov chain defined by the M-H algorithm must have a unique stationary distribution
 \[
@@ -205,6 +287,11 @@ P(x' | x) \sigma(x) = P(x | x') \sigma(x')
 then $\sigma(x)$ is a stationary distribution.
 - If the Markov chain is \alert{ergodic} then there is a unique $\sigma$.
 ** The Gibbs sampler
+# SUGGEST: this slide is the abstract version only. In the lecture the general
+# K-variable algorithm came before any example, and there was no worked example
+# ("believe me", "no time for an example"). Add the two slides below after it, or
+# before it, so students see an example first.
+# SUGGEST: define "until convergence": burn-in, and that samples are correlated.
 This is used when we need to sample over only some variables $z_1, \ldots, z_k$, given some fixed variables $x$.
 *** General algorithm
 - Input: Factors $P(z_k \mid z_1, \ldots z_{k-1}, z_{k+1}, \ldots, z_K, x)$
@@ -216,7 +303,55 @@ Latent variable $z$, parameter $\param$.
 - Until convergence:
 - $\param^{(n)} \sim P(\param \mid z^{(n-1)}, x)$
 - $z^{(n)} \sim  P(z \mid \param^{(n)}, x)$
+# SUGGEST (draft slide): Gibbs sampler, two-variable example
+# ** Gibbs sampler: a two-variable example
+# Let $(z_1, z_2)$ be bivariate Normal, zero mean, unit variances, correlation $\rho$.
+# The conditionals are easy to sample:
+# \[
+# z_1 \mid z_2 \sim \Normal(\rho z_2,\, 1-\rho^2),
+# \qquad
+# z_2 \mid z_1 \sim \Normal(\rho z_1,\, 1-\rho^2).
+# \]
+# - Alternate: sample $z_1$ given the current $z_2$, then $z_2$ given the new $z_1$.
+# - Figure: the samples trace axis-aligned zig-zag steps.
+# - Compare $\rho = 0.1$ and $\rho = 0.95$ (the latter mixes slowly).
+#
+# SUGGEST (draft slide): Gibbs sampler for a Gaussian mixture (the example you
+# gave verbally; known variance for simplicity)
+# ** Gibbs sampler: Gaussian mixture
+# Model: $c_t \sim \Mult(\theta)$, $x_t \mid c_t \sim \Normal(\mu_{c_t}, \sigma^2)$,
+# with priors $\theta \sim \Dir(\alpha)$ and $\mu_k \sim \Normal(m, s^2)$.
+# The three conditionals:
+# - Cluster assignment (Bayes' theorem):
+# \[
+# P(c_t = k \mid x_t, \mu, \theta) =
+# \frac{\theta_k \Normal(x_t \mid \mu_k, \sigma^2)}
+#      {\sum_{j} \theta_j \Normal(x_t \mid \mu_j, \sigma^2)}.
+# \]
+# - Cluster probabilities (counts $n_k = \sum_t \ind{c_t = k}$):
+# $\theta \mid c \sim \Dir(\alpha_1 + n_1, \ldots, \alpha_K + n_K)$.
+# - Cluster means (conjugate; uses only points with $c_t = k$):
+# \[
+# \mu_k \mid c, x \sim \Normal\!\left(
+# \frac{m/s^2 + \sum_{t: c_t = k} x_t / \sigma^2}{1/s^2 + n_k/\sigma^2},\;
+# \left(1/s^2 + n_k/\sigma^2\right)^{-1}\right).
+# \]
+# Each iteration: resample all $c_t$, then $\theta$, then $\mu$.
+# - We mostly care about $\theta$ and $\mu$, not the assignments $c$.
+# - Caveats: burn-in; label switching (clusters can swap names between iterations).
+
 ** ABC: Approximate Bayesian Computation
+# SUGGEST: add a motivating example: a simulator (e.g. a weather model) where you can
+# generate data for given parameters but cannot write down $P_\param(D)$.
+# SUGGEST: define sufficient statistic (introduced mid-talk in the lecture):
+# $f$ is sufficient if $P_\param(D \mid f(D))$ does not depend on $\param$, i.e.
+# datasets with the same $f(D)$ are indistinguishable to the model.
+# SUGGEST: state the $\epsilon$ trade-off: smaller is more accurate but rejects
+# more samples; for continuous data $\epsilon = 0$ essentially never accepts, so
+# in practice $\epsilon > 0$ gives an approximation. Add: it is distinct from
+# the rejection-sampler constant.
+# NOTE: the slide writes $P_\param(D)$ for both "sample from" and "calculate".
+# Consider "sample $D' \sim P_{\param'}$" wording throughout.
 *** When to use
 - When we can sample from $P_\param(D)$.
 - When we cannot calculate $P_\param(D)$.
@@ -231,8 +366,27 @@ Latent variable $z$, parameter $\param$.
 *** Theorem
 If $\rho(D, D') = \|f(D) - f(D')\|$ and $f$ is a \alert{sufficient statistic} and $\epsilon = 0$ then ABC Rejection Sampling is exact.
 
+# SUGGEST (draft slide): ABC toy example
+# ** ABC: a toy example
+# - Data $D = (d_1, \ldots, d_n)$, $d_i \sim \Normal(\param, 1)$; prior $\param \sim \Normal(0, 10^2)$.
+# - Statistic $f(D)$ = sample mean (sufficient here); $\rho(D, D') = |f(D) - f(D')|$.
+# - Repeat: sample $\param'$ from the prior, simulate $D'$, accept if $\rho(D, D') \leq \epsilon$.
+# - Figure: histograms of accepted $\param'$ for $\epsilon = 1, 0.1, 0.01$ against the exact posterior.
+#
+# SUGGEST (draft slide): summary of when to use which method
+# ** Which method when?
+# - Expectation under $P$, and you can sample from $P$: plain Monte Carlo.
+# - You can evaluate $P$ but not sample from it, and $Q$ is close to $P$: importance or rejection sampling.
+# - Posterior far from the prior: MCMC (Metropolis-Hastings in general; Gibbs when the conditionals are tractable).
+# - Likelihood intractable but you can simulate data: ABC.
+
 * Packages
 ** Multi-platform
+# SUGGEST: merge "Multi-platform" and "Python" into one slide, and say which library
+# the lab uses, with a 5-line model as an example.
+# FIX: PyMC3 is outdated; it is now PyMC.
+# NOTE: from the first transcript the lab library seems PyTorch-based (Pyro or
+# NumPyro?). Please check.
 - STAN
 - BUGS
 ** Python
