@@ -8,10 +8,6 @@
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:3
-# SUGGESTIONS added after review. Every line below is an Org comment ("# " prefix);
-# uncomment a region to activate it. Tags: FIX = error or confusion source,
-# SUGGEST = add/explain more, NOTE = check. Line numbers refer to the file as
-# received, before these comments were inserted.
 
 * Graphical models
 ** Random variables and probabilities
@@ -253,12 +249,6 @@ Time of arrival at work graphical model where $T$ is a traffic jam and $x_1$ is 
 - $\Pr(x_1, x_2, T) / \Pr(T) = \Pr(x_1, x_2 \mid T) = \Pr(x_2 \mid T) \Pr(x_1 \mid T)$. \qed
 
 *** School admission
-# FIX (lines 258-268): label the table, e.g. "admission rate (%)" for each school.
-# The "Average" row (50, 27) is neither the unweighted mean of the rows (about 38 and
-# 42) nor the known aggregate. The aggregate rate depends on how many applicants each
-# school received, and for the Berkeley data it is about 45% (male) vs 30% (female),
-# from memory; please check (Wikipedia, "Simpson's paradox"). Showing the aggregate
-# next to the per-school rates is the point of the example.
 **** Example
 
 ***** Col A                                                           :BMCOL:
@@ -275,7 +265,12 @@ Time of arrival at work graphical model where $T$ is a traffic jam and $x_1$ is 
 | E       |   28 |     24 |
 | F       |    6 |      7 |
 |---------+------+--------|
-| Average |   50 | 27     |
+| Average |   50 |     27 |
+|---------+------+--------|
+
+- Admission rate (%) for each school.
+- The average admission rate depends on the application rate!
+  
 ***** Col B                                                           :BMCOL:
       :PROPERTIES:
       :BEAMER_col: 0.5
@@ -342,15 +337,13 @@ In a Markov chain, the observations form a chain. In general, the following inde
 \]
 meaning that knowing $x_t$ is sufficient to predict $x_{t+1}$, and the previous observations are not required.
 *** Hidden Markov model
-# FIX (lines 338 and 341): the third hidden node is labelled $x_2$ and the third
-# observation $y_2$; they should be $x_3$ and $y_3$.
       \begin{tikzpicture}
         \node[RV, hidden] at (0,0) (x1) {$x_1$};
         \node[RV, hidden] at (1,0) (x2) {$x_2$};
-        \node[RV, hidden] at (2,0) (x3) {$x_2$};
+        \node[RV, hidden] at (2,0) (x3) {$x_3$};
         \node[RV] at (0,1) (y1) {$y_1$};
         \node[RV] at (1,1) (y2) {$y_2$};
-        \node[RV] at (2,1) (y3) {$y_2$};
+        \node[RV] at (2,1) (y3) {$y_3$};
         \draw[->] (x1)--(x2);
         \draw[->] (x2)--(x3);
         \draw[->] (x1)--(y1);
@@ -455,11 +448,10 @@ but not for $y_t$. However, if we know the current state, it is sufficient for u
 
 
 *** Conditional independence (general)
-# FIX (line 449): $\bx_{-j} \defn (x_i)_{i \neq i}$ should be $(x_i)_{i \neq j}$.
 - Consider variables $x_1, \ldots, x_n$.
 - Let $B, D$ be subsets of $[n]$, and
 - $\bx_B \defn (x_i)_{i \in B}$ be the variables with indices in $B$.
-- $\bx_{-j} \defn (x_i)_{i \neq i}$ all the variables apart from $x_j$.
+- $\bx_{-j} \defn (x_i)_{i \neq j}$ all the variables apart from $x_j$.
 **** Conditional independence :B_definition:
      :PROPERTIES:
      :BEAMER_env: definition
@@ -813,19 +805,20 @@ i.e. the graphical model is a chain. We are usually interested in *homogeneous* 
 \[
 \Pr_\vparam(x_{k+1} = i \mid x_k = j) = \param_{i,j} \qquad \forall k
 \]
-*** Inference for finite Markov models
-# FIX (line 805): stray "u" at the end of "for all $i \in [n]$.u".
-For finite Markov models, we can consider each random variable $x_{t+1}$ as having a Multinomial distribution, whose parameter depends on what the value of $x_t$.
+**** Inference for finite Markov models
+Finite Markov models are special cases of discrete Bayesian networks: we can consider each random variable $x_{t+1}$ as having a Multinomial distribution, whose parameter depends on what the value of $x_t$.
 So, when $x_t = i$, then $x_{t+1}$ is multinomial with parameter $\vparam_i$. 
 
-The conjugate prior for a Multinomial parameter is the Dirichlet distribution, which is the multivariate extension of the Beta. Its density is
-\[
-p(\vparam \mid \vectorsym{\alpha}) \propto \prod_{i=1}^n \param_i^{\alpha_i - 1}
-\]
+*** Inference for the Multinomial distribution
+**** The Multinomial distribution
+If $x_t \mid \vparam \sim \Mult(\vparam)$ then $\Pr(x_t = i \mid \vparam) = \param_i$. 
+
+**** The Dirichlet distribution
+The conjugate prior for a Multinomial parameter is the Dirichlet distribution, which is the multivariate extension of the Beta. Its density is $p(\vparam \mid \vectorsym{\alpha}) \propto \prod_{i=1}^n \param_i^{\alpha_i - 1}$.
 
 **** The Dirichlet-Multinomial conjugate pair
 - If $x_t \in [n]$ then $x_{t+1} \mid \vparam, x_t = i \sim \Mult(\vparam_i)$, $\vparam_i \in \Simplex^n$
-- Prior $\vparam_i \mid \vectorsym{\alpha} \sim \Dir(\vectorsym{\alpha})$ for all $i \in [n]$.u
+- Prior $\vparam_i \mid \vectorsym{\alpha} \sim \Dir(\vectorsym{\alpha})$ for all $i \in [n]$.
 - Posterior $\vparam_i \mid x_1, \ldots, x_t, \vectorsym{\alpha} \sim \Dir(\vectorsym{\alpha}^{(t)})$ with
   \[
   \alpha^{t}_{i,j} = \alpha_{i,j} + \sum_{k=1}^t \ind{x_k = i \wedge x_{k+1} = j},
@@ -874,19 +867,7 @@ We can approximate the sum by sampling $z^{(i)}$ to obtain:\footnote{Not really 
 We can use either the exact gradient or the stochastic estimate to perform (stochastic) gradient ascent.
 
 *** Gradient calculation (method II)
-# FIX (line 854): "is that sample from the prior" -> "is that we sample from the prior".
-# FIX (line 862): "It does not make a practical difference" contradicts the next bullet.
-# The two gradients differ by the factor $L$ ($\nabla L = L \nabla \ln L$): same
-# stationary points, different ascent paths. Suggested wording:
-# "Methods I and II have the same stationary points, but the gradient of method I is
-# scaled by $L(\param)$, which is vanishingly small for large $T$ (underflow, tiny
-# steps). They coincide only when you sum exactly and the scale does not matter."
-# FIX (line 863): add a full stop before "numerical", and "optimises over" -> "ascends".
-# SUGGEST (line 864): say that sampling from $\Pr(z \mid x, \param)$ needs a posterior
-# sampler (Gibbs in general). For the GMM, $z_t$ factorises, so sample each $z_t$
-# from its responsibility $\Pr(z_t \mid x_t, \param)$. Add that this avoids the
-# extreme weights $\Pr(x \mid z, \param)$ of method I.
-The problem with the previous method is that sample from the prior $\Pr(z \mid \param)$. Let us now start with the log-likelihood and use the log trick *twice*
+The problem with the previous method is that we sample from the prior $\Pr(z \mid \param)$. Let us now start with the log-likelihood and use the log trick *twice*
 \begin{align}
 \nabla_\param \ln \Pr(x \mid \param)
 & = \frac{\nabla \Pr(x \mid \param)}{\Pr(x \mid \param)}\\
@@ -894,9 +875,9 @@ The problem with the previous method is that sample from the prior $\Pr(z \mid \
 &= \frac{\sum_z \Pr(x, z \mid \param) \nabla \ln \Pr(x, z \mid \param) }{\Pr(x \mid \param)}\\
 &= \sum_z \Pr(z \mid x, \param) \nabla \ln \Pr(x, z \mid \param).
 \end{align}
-- It does not make a practical difference whether you use method I or method II if you sum over all $z$. They are equivalent mathematically (i.e. they have the same optima) and they work exactly for the GMM.
-- However, since method I optimises over the likelihood, and method II over the log-likelihood.  numerical performance might be better with method II.
-- Additionally, method II gives you lower-variance Monte-Carlo estimates if you sample (for more complex models), because you use $\Pr(z \mid x, \param)$ to obtain samples from $z$, which is more informative.
+- Methods I, II have the same stationary points.
+- However, since method I ascends the likelihood, and method II the log-likelihood, performance is better with method II for large $T$, as method I's gradient is vanishingly small. 
+- Method II gives you lower-variance Monte-Carlo estimates if you sample (for more complex models), because you use $\Pr(z \mid x, \param)$, which is more informative, though harder for complex models.
 *** Gradient components of GMMs
 # FIX (line 867): "$\param = (\param, \mu, \sigma)$" reuses $\param$ for the whole
 # vector and for the mixture weights. Use another symbol for the weights (e.g. $w$)
