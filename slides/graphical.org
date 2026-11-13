@@ -555,7 +555,7 @@ Here we just have $\Pr(x)$.
 \end{tikzpicture}
 **** An unsupervised image model at the pixel level
 \begin{tikzpicture}
-      \node[RV] at (0,0) (x00) {$x_{00}$}
+      \node[RV] at (0,0) (x00) {$x_{00}$};
       \node[RV] at (0,1) (x01) {$x_{01}$};
       \node[RV] at (1,0) (x10) {$x_{10}$};
       \node[RV] at (1,1) (x11) {$x_{11}$};
@@ -831,7 +831,7 @@ If we can calculate the gradient of $L$, we can use gradient ascent to update ou
 \[
 \param^{(n+1)} = \param^{(n)} + \alpha \nabla_\param L(\param).
 \]
-*** Gradient calculation
+*** Gradient calculation (method I)
 Here we use the *log trick*: $\nabla \ln f(\param) = \nabla f(\param) / f(\param)$.
 \begin{align}
 \nabla_\param L(\param)
@@ -840,16 +840,31 @@ Here we use the *log trick*: $\nabla \ln f(\param) = \nabla f(\param) / f(\param
 &= \sum_z  \Pr(z, x \mid \param) \nabla_\param \ln \Pr(z, x \mid \param)
 \\
 &= \sum_z  \Pr(x \mid z, \param)\Pr(z \mid \param) \nabla_\param \ln \Pr(z, x \mid \param)
-\\
-&\approx \frac{1}{m} \sum_{i=1}^m \Pr(x \mid z^{(i)}, \param) \nabla_\param \ln \Pr(z^{(i)}, x \mid \param)
-&&z^{(i)} \sim \Pr(z  \mid \param)
 \end{align}
-The final approximates the sum with the sample mean, sampling $z^{(i)}$ from the distribution. Hence, we can implement the following algorithm
-- For $i = 1, \ldots, m$: $z^{(i)} \sim \Pr(z  \mid \param^{(n)})$
-- $d^{(n)} = \frac{1}{m} \sum_{i=1}^m \Pr(x \mid z^{(i)}, \param) \nabla_\param \ln \Pr(z^{(i)}, x \mid \param^{(n)})$
-- $\param^{(n+1)} = \param^n + \alpha d^{(n)}$.
-*** Gradients of the GMMs
-For the Gaussian mixture model, we need to calculate the following gradient, with respect to $\param = (\param, \mu, \sigma)$.
+
+We can approximate the sum by sampling $z^{(i)}$ to obtain:\footnote{Not really necessary for GMMs, but needed for other latent variable models.}
+\[
+\frac{1}{m} \sum_{i=1}^m \Pr(x \mid z^{(i)}, \param) \nabla_\param \ln \Pr(z^{(i)}, x \mid \param),
+\qquad z^{(i)} \sim \Pr(z  \mid \param)
+\]
+
+We can use either the exact gradient or the stochastic estimate to perform (stochastic) gradient ascent.
+
+*** Gradient calculation (method II)
+The problem with the previous method is that sample from the prior $\Pr(z \mid \param)$. Let us now start with the log-likelihood and use the log trick *twice*
+\begin{align}
+\nabla_\param \ln \Pr(x \mid \param)
+& = \frac{\nabla \Pr(x \mid \param)}{\Pr(x \mid \param)}\\
+&= \frac{\sum_z \nabla \Pr(x, z \mid \param)}{\Pr(x \mid \param)}\\
+&= \frac{\sum_z \Pr(x, z \mid \param) \nabla \ln \Pr(x, z \mid \param) }{\Pr(x \mid \param)}\\
+&= \sum_z \Pr(z \mid x, \param) \nabla \ln \Pr(x, z \mid \param).
+\end{align}
+- It does not make a practical difference whether you use method I or method II if you sum over all $z$. They are equivalent mathematically (i.e. they have the same optima) and they work exactly for the GMM.
+- However, since method I optimises over the likelihood, and method II over the log-likelihood.  numerical performance might be better with method II.
+- Additionally, method II gives you lower-variance Monte-Carlo estimates if you sample (for more complex models), because you use $\Pr(z \mid x, \param)$ to obtain samples from $z$, which is more informative.
+*** Gradient components of GMMs
+Now that we looked at general latent variable models, let us see what we need to calculate for GMMs.
+Our parameters are $\param = (\param, \mu, \sigma)$.
 \[
 \nabla_\param \ln \Pr(z, x \mid \param)
 = \sum_{t=1}^T  \nabla_\param \ln \Pr(z_t, x_t \mid \param)
@@ -870,6 +885,7 @@ So the algorithm
 - Randomly assigns $z_t$ according to the current $\param$ estimate
 - Moves the centers towards the mean indicated by the $z$.
 ** Expectation maximisation
+#+TOC: headlines [currentsection,hideothersubsections]
 *** A lower bound on the likelihood
 For any distribution $G(z)$, and specifically for
 $G(z) = \Pr(z | x, \param^{(k)})$:
@@ -890,25 +906,42 @@ $G(z) = \Pr(z | x, \param^{(k)})$:
 \end{align*}
 where 
 \[
-\mathbb{H}(z \mid  x, \param^{(k)})
-= 
-\sum_z  \Pr(z \mid  x, \param^{(k)}) \ln \Pr(z \mid x, \param^{(k)})
+\mathbb{H}(z \mid  x, \param^{(k)}) = - \sum_z  \Pr(z \mid  x, \param^{(k)}) \ln \Pr(z \mid x, \param^{(k)})
 \]
 is the entropy of $z$ for a fixed $x, \param^{(k)}$. As this is not negative, $\ln \Pr(x | \param) \geq Q(\param \mid \param^{(k)})$.
-*** Some information theory
+*** Some information theory.                                         :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+
 Information theory notation can be a bit confusing. Sometimes we talk about random variables $\omega$, and sometimes about probability measures $P$. This is context-dependent.
 **** Entropy
 For a random variable $\omega$ under distribution $P$, we denote the entropy as
 \[
- \mathbb{H}_\Pr(\omega) \equiv \mathbb{H}(P) \equiv \mathbb{H}(\omega) =  \sum_{\omega \in \Omega} \Pr(\omega) \ln \Pr(\omega).
+ \mathbb{H}_P(\omega) \equiv \mathbb{H}(P) \equiv \mathbb{H}(\omega) = - \sum_{\omega \in \Omega} P(\omega) \ln P(\omega).
 \]
 **** KL Divergence
 For two probabilities $P, Q$ over random outcomes in the same space $\Omega$, we define
 \[
-D_{KL}(P \|Q) = \sum_{\omega \in \Omega} \Pr(\omega) \ln \frac{\Pr(\omega)}{Q(\omega)}
+D_{KL}(P \|Q) = \sum_{\omega \in \Omega} P(\omega) \ln \frac{P(\omega)}{Q(\omega)}
 \]
 **** The Gibbs Inequality
-$D_{KL}(P \|Q)  \geq 0$, or $\sum_x \ln \Pr(x) \Pr(x) \geq \sum_x \ln Q(x) \Pr(x)$.
+$D_{KL}(P \|Q)  \geq 0$, or $\sum_x \ln P(x) P(x) \geq \sum_x \ln Q(x) P(x)$.
+
+*** From Gradient Method II to Eexpectation Maximisation                                   
+we showed that
+\[
+\ln \Pr(x \mid \param) \geq \sum_z \Pr(z \mid x, \param^{(k)}) \ln \Pr(x, z \mid \param).
+\]
+for some *fixed* $\param^{(k)}$.
+
+- The idea of the Expectation Maximisation algorithm is, instead of
+  maximising the log-likelihood, to maximise a lower bound on it.
+- In this case, this is achieved by fixing the latent distribution.
+- This makes the optimisation problem simpler, and we can find an exact solution (at least for some models).
+
+
+
 *** EM Algorithm (Dempster et al, 1977)
 - Initial parameter $\vparam^{(0)}$, observed data $x$
 - For $k=0, 1, \ldots$

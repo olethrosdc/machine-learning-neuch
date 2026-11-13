@@ -1,57 +1,13 @@
 #+TITLE:  Approximate Bayesian Inference
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
-#+LaTeX_HEADER: \usepackage{tikz}
-#+LaTeX_HEADER: \usepackage{amsmath}
-#+LaTeX_HEADER: \usepackage{amssymb}
-#+LaTeX_HEADER: \usepackage{isomath}
-#+LaTeX_HEADER: \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
-#+LaTeX_HEADER: \newcommand \Var {\mathop{\mbox{\ensuremath{\mathbb{V}}}}\nolimits}
-#+LaTeX_HEADER: \newcommand \Bias {\mathop{\mbox{\ensuremath{\mathbb{B}}}}\nolimits}
-#+LaTeX_HEADER: \newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
-#+LaTeX_HEADER: \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
-#+LaTeX_HEADER: \DeclareMathOperator*{\argmax}{arg\,max}
-#+LaTeX_HEADER: \DeclareMathOperator*{\argmin}{arg\,min}
-#+LaTeX_HEADER: \DeclareMathOperator*{\sgn}{sgn}
-#+LaTeX_HEADER: \newcommand \defn {\mathrel{\triangleq}}
-#+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
-#+LaTeX_HEADER: \newcommand \Params {\Theta}
-#+LaTeX_HEADER: \newcommand \param {\theta}
-#+LaTeX_HEADER: \newcommand \vparam {\vectorsym{\theta}}
-#+LaTeX_HEADER: \newcommand \mparam {\matrixsym{\Theta}}
-#+LaTeX_HEADER: \newcommand \bW {\matrixsym{W}}
-#+LaTeX_HEADER: \newcommand \bw {\vectorsym{w}}
-#+LaTeX_HEADER: \newcommand \wi {\vectorsym{w}_i}
-#+LaTeX_HEADER: \newcommand \wij {w_{i,j}}
-#+LaTeX_HEADER: \newcommand \bA {\matrixsym{A}}
-#+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
-#+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
-#+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
-#+LaTeX_HEADER: \newcommand \pol {\pi}
-#+LaTeX_HEADER: \newcommand \Pols {\Pi}
-#+LaTeX_HEADER: \newcommand \bel {\beta}
-#+LaTeX_HEADER: \newcommand \Bels {\mathcal{B}}
-#+LaTeX_HEADER: \newcommand \Unif {\textrm{Unif}}
-#+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
-#+LaTeX_HEADER: \newcommand \Mult {\textrm{Mult}}
-#+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
-#+LaTeX_HEADER: \newcommand \Dir {\textrm{Dir}}
-#+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
-#+LaTeX_HEADER: \newcommand \Simplex {\mathbb{\Delta}}
-#+LaTeX_HEADER: \newcommand \pn {\param^{(n)}}
-#+LaTeX_HEADER: \newcommand \pnn {\param^{(n+1)}}
-#+LaTeX_HEADER: \newcommand \pnp {\param^{(n-1)}}
-#+LaTeX_HEADER: \usepackage[bbgreekl]{mathbbol}
-#+LaTeX_HEADER: \tikzstyle{utility}=[diamond,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=8mm]
-#+LaTeX_HEADER: \tikzstyle{select}=[rectangle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
-#+LaTeX_HEADER: \tikzstyle{hidden}=[dashed,draw=black,fill=red!10]
-#+LaTeX_HEADER: \tikzstyle{RV}=[circle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
+#+LaTeX_HEADER: \input{preamble}
 #+LaTeX_CLASS_OPTIONS: [smaller]
-#+LATEX_HEADER: \RequirePackage{fancyvrb}
+#+LATEX_HEADER: \setbeameroption{show notes}
+#+LATEX_HEADER: \setbeamerfont{note page}{size=\footnotesize}
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:2
-#+OPTIONS: toc:nil
 # SUGGESTIONS (added after reviewing the lecture transcripts). Every line below
 # is an Org comment ("# " prefix); uncomment a region to activate it. Tags:
 # FIX = error or confusion source, SUGGEST = add/explain more, CUT = trim/move,
@@ -84,12 +40,6 @@ P_\param(D) = \sum_z P_\param(D, z).
 
 * Monte-Carlo Methods
 ** The Monte-Carlo sampler
-# SUGGEST: add after the sample-mean formula, e.g.:
-# "If $x_n = f(\omega^{(n)})$ this is exactly the sample mean. Example: $\omega$ is
-# a randomly chosen person and $f$ is the height measurement."
-# (In the lecture, the hand count showed not everyone connected the two.)
-# SUGGEST (optional): one line on where samples come from: fair coin -> n random
-# bits -> uniform on [0,1] -> everything else; pseudo-random in practice.
 To approximate an expectation, we can approximate the integral
 \[
 \E_P(f) \defn \int_\Omega f(\omega) dP(\omega)
@@ -107,6 +57,25 @@ P(A) &= \int_A dP(\omega) = \int_\Omega \ind{\omega \in A} dP(\omega)\\
 \approx \frac{1}{N} \sum_{n=1}^N \ind{\omega^{(n)} \in A}.
 \end{align}
 But what if we can not sample from $P$?
+** Notes.                                                            :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+
+*** The sample mean
+- If $x_n = f(\omega^{(n)})$ this is the sample mean $\frac{1}{N} \sum_{n=1}^N x_n$.
+- Example: $\omega$ is a randomly chosen person and $f$ is the height measurement.
+
+  
+*** Sampling
+
+- In the data analysis setting, the samples come from *nature's unknown distribution $P$*.  Here, however we are using sampling to perform *approximate computation*. Nevertheless, the mathetmatical tools are the same.
+- Because we define the sampling, we can decide what distribution to sample from. But how do we sample something random in the first place?
+- If we have a fair coin, we can get $n$ random bits, to obtain a number in $\{0, 1, \ldots, 2^{n}-1\}$. Dividing by $2^n$, we can approxiamte the uniform distribution in $[0,1]$.
+- In practice, we only have a few random bits, which we combine with deterministic algorithms (Pseudo-Random Number Generators) to get the illusion of randomness.
+- Alternative notions of randomnes include Kolmogoroff Complexity.
+
+
 
 ** Importance sampling
 # SUGGEST: state the support condition: $Q(\omega) > 0$ whenever $P(\omega) > 0$;
@@ -121,7 +90,7 @@ But what if we can not sample from $P$?
 # - Target $P$ = scaled Beta, proposal $Q$ = Normal.
 # - Plot the weights $P/Q$ for $N=100$ samples: a few dominate.
 # - Estimate varies wildly between runs: unbiased, but high variance.
-If we cannot sample from $P$, but can sample from some other distribution $Q$, we can use this trick (statisticians hate it!). Let's write it first out for finite $\Omega$, for simplicity
+If we cannot sample from $P$, but can sample from some other distribution $Q$, we can use this trick\footnote{Statisticians hate it!}. Let's write it first out for finite $\Omega$, for simplicity
 \[
 \E_P(f) \defn \sum_{\omega \in \Omega} f(\omega) \frac{P(\omega)}{Q(\omega)} Q(\omega)
 = \E_Q(f P / Q) 
@@ -137,49 +106,24 @@ It is easy to show that this estimator is also unbiased. However, as the probabi
 So, how *can* we sample from $P$ for arbitrary distributions?
 
 ** Basic sampling theory
-# FIX (inversion sampler): $F(u) = \Pr(x \geq u)$ is the survival function, not the CDF.
-# It still works (1-U is uniform too), but is confusing. Suggested replacement:
-# *** Inversion sampler
-# $F(u) \defn \Pr(x \leq u)$ is the CDF of $x$.
-# - Sample $u$ uniformly in $[0,1]$
-# - Set $x = F^{-1}(u)$, i.e. $v: \Pr(x \leq v) = u$
-# SUGGEST: add the CDF picture you drew (y-axis = uniform draw, read off x).
-# FIX (rejection sampler): $\epsilon$ is an envelope constant, not a threshold. It
-# must satisfy $P(x) \leq \epsilon Q(x)$ for all $x$, and the acceptance
-# probability is $1/\epsilon$. In the lecture it was described as a threshold
-# where "smaller is better", which is the ABC epsilon, not this one.
-# Rename to $M$ to avoid the clash with ABC. Suggested replacement:
-# *** Rejection Sampler
-# - Input: constant $M$ with $P(x) \leq M Q(x)$ for all $x$; distribution $Q$
-# - Repeat:
-# - $\hat{x} \sim Q$.
-# - $u \sim \Unif[0,1]$
-# - Until $u \leq P(\hat{x}) / (M Q(\hat{x}))$.
-# - Return $\hat{x}$
-# SUGGEST: add a figure with P under the curve M*Q, showing accepted and rejected points.
-# NOTE: "Indirectly useful from sampling from unknown distributions" is vague. Say
-# what it is used for (e.g. building block for ABC) or drop it.
-
 *** Inversion sampler
-$F(u) \defn \Pr(x \geq u) = P(\{\omega : x(\omega) \geq u\})$ is the CDF of $x$.
+$F(u) \defn \Pr(x \leq u) = P(\{\omega : x(\omega) \leq u\})$ is the CDF of $x$.
 - Sample $u$ uniformly in $[0,1]$
-- Set $x = F^{-1}(u)$, i.e. $v: \Pr(x \geq v) = u$
+- Set $x = F^{-1}(u)$, i.e. $v: \Pr(x \leq v) = u$
 
 *** Rejection Sampler
-- Input: Threshold $\epsilon$, distribution $Q$
+- Input: $\epsilon > 0$, distribution $Q$ with $\epsilon P \leq Q$.
 - Repeat:
 - $\hat{x} \sim Q$.
 - $u \sim \Unif[0,1]$
-- Until $u \leq P(\hat{x}) / \epsilon Q(\hat{x})$.
+- Until $u \leq \epsilon P(\hat{x}) / Q(\hat{x})$.
 - Return $\hat{x}$
-
 *** Notes
 - Useful for sampling from a known distribution $P$.
-- Indirectly useful from sampling from unknown distributions.
-
+- A variant of rejection is used for ABC (see later).
+  
 
 ** Monte-Carlo sampling
-# FIX: the denominator integral is missing its measure $d\bel(\param')$.
 # FIX: the sampling approximation covers only the numerator. The slide should show the
 # ratio of two estimates (you explained this verbally):
 # \[
@@ -192,8 +136,12 @@ $F(u) \defn \Pr(x \geq u) = P(\{\omega : x(\omega) \geq u\})$ is the CDF of $x$.
 # after many (sharp peak). Say why sampling from the prior fails: almost all
 # samples land where the likelihood is ~0, so a handful of samples carry all the
 # weight. Explain "high bias": the ratio of two estimates is biased.
+Approximating a density is tricky, so we will instead approximate the posterior probability that the parameter is in $B \subset \Param$:
 \[
-\bel(B \mid D) = \frac{\int_{B} P_\param(D) d \bel(\param)}{\int_{\Params} P_{\param'}(D) \bel(\param')}
+\bel(B \mid D) 
+= \int_{B} d\bel(\param | D)
+=\frac{\int_{B} P_\param(D) d \bel(\param)}{\int_{\Param} P_{\param'}(D) d\bel(\param')}
+=\frac{\int_{B} P_\param(D) d \bel(\param)}{\int_{\Param} P_{\param'}(D) d\bel(\param')}
 \]
 We can approximate the integrals by sampling from the prior $\bel$:
 \[
@@ -203,10 +151,10 @@ We can approximate the integrals by sampling from the prior $\bel$:
 \sum_{n=1}^N \ind{\pn \in B} P_{\pn}(D),
 \qquad \pn \sim \bel.
 \]
-- Sampling from the prior is inefficient.
-- The estimator has high bias and variance.
-- So, we can use Markov Chain Monte Carlo. This lets us sample a
-  sequence $\pn$ which \alert{converges asymptotically} to $\bel(\pn |
+- Sampling from the prior is *inefficient*: almost all the samples land where the likelihood is *near 0*.
+- The estimator has high bias and variance, because the denominator is *also* an estimate.
+- So, we can use *Markov Chain* Monte Carlo. This lets us sample a
+  sequence $\pn$ which \alert{converges asymptotically}\footnote{You don't have to worry about asymptotics in this course.} to $\bel(\pn |
   D)$.
 
 
@@ -217,75 +165,19 @@ We can approximate the integrals by sampling from the prior $\bel$:
 # prior/posterior-far-apart problem); (3) a trace plot of a chain converging, with
 # burn-in marked; (4) one sentence on dependent samples (autocorrelation).
 
+Recall the chains from the graphical model lecture. These model a sequence of random variables so that $\Pr(x_{t+1} \mid x_t, x_{t-1}, \ldots, x_1) = \Pr(x_{t+1} \mid x_t)$.
+
+Now we are going to generate samples from a Markov chain *on the fly*. However, we can design the probabilities $\Pr(x_{t+1} \mid x_t)$ so that the distribution $\Pr(x_t)$ (for large $t$) is close to the distribution we want.
+
 *** MCMC for posterior sampling
-- Form a Markov chain $P(\pnn \mid \pn, D)$
+- Here we are interested in approximating the distribution $\Pr(\param \mid D)$.
+- To do this, we form a Markov chain $\Pr(\pnn \mid \pn, D)$
+
 
 *** MCMC for other latent variables
-- Form a Markov chain $P(z^{(n+1)} \mid z^{(n)}, D)$
+- Here we are interested in approximating the distribution $\Pr(z \mid D)$.
+- Form a Markov chain $\Pr(z^{(n+1)} \mid z^{(n)}, D)$
 
-** Metropolis-Hastings
-# FIX: acceptance probability should be $\min\{1, P(\hat{x}) / P(x^{(n)})\}$.
-# NOTE: I found no mention of Metropolis-Hastings in either transcript. If it is not
-# part of this session, consider moving these slides and the theory slide to an
-# appendix or the next lecture. If it is, a short demo or plot would help.
-*** Algorithm (symmetric version)
-- Input: Proposal distribution $Q(x | x') = Q(x' | x)$
-- At time $n$:
-- $\hat{x} \sim Q(x | x^{(n)})$
-- w.p. $P(\hat{x}) / P(x^{(n)})$, $x^{(n+1)} = \hat{x}$ else $x^{(n+1)} = x^{(n)}$
-*** Application to posterior sampling:
-The denominator cancels out, leading to:
-\[
-\frac{\bel(\param' \mid D)}{\bel(\param \mid D)}
-= 
-\frac{P_{\param'}(D) \bel(\param')}{P_{\param}(D) \bel(\param)}
-\]
-The only question is which proposal to use.
-** Metropolis-Hastings
-# FIX: "Proposal distribution $Q(x | x')$ satisfying detailed balance" is wrong. The
-# proposal need not satisfy detailed balance; the acceptance step is what makes the
-# chain satisfy it with respect to the target. Suggested replacement:
-# - Input: Proposal distribution $Q(x | x')$, target $P$ (known up to normalisation).
-# FIX: the acceptance probability is $\min\{1, \cdot\}$ of the displayed ratio.
-*** Algorithm
-- Input: Proposal distribution $Q(x | x')$ satisfying detailed balance, likelihood $P$.
-- At time $n$:
-- $\hat{x} | x^{(n)} \sim Q(x | x^{(n)})$
-- With probability
-  \[
-  \frac{P(\hat{x}) Q( x^{(n)} | \hat{x} )}{P(x^{(n)}) Q(\hat{x} | x^{(n)})},
-  \]
-  set $x^{(n+1)} = \hat{x}$
-- Otherwise $x^{(n+1)} = x^{(n)}$
-*** Application to posterior sampling:
-The $\Pr_\bel(D)$ term cancels out, leading to:
-\[
-\frac{\bel(\param' \mid D) Q(\param \mid \param') }{\bel(\param \mid D)  Q(\param' \mid \param)}
-= 
-\frac{P_{\param'}(D) \bel(\param')  Q(\param \mid \param')}{P_{\param}(D) \bel(\param)  Q(\param' \mid \param)}
-\]
-
-** M-H Theory
-# CUT or SUGGEST: this is heavy for the audience and was not in the recording.
-# Move to an appendix, or add intuition: detailed balance = probability flow from x
-# to x' equals flow from x' to x; ergodic = every state reachable and no cycles.
-*** Stationary distribution
-The Markov chain defined by the M-H algorithm must have a unique stationary distribution
-\[
-\sigma = \sigma \vectorsym{P},
-\]
-where $\vectorsym{P}$ is the transition kernel of the chain with
-\[
-P_{ij} = \Pr(x^{(n+1)} = j \mid x^{(n)} = i).
-\]
-In addition, $\lim_{n \to \infty} \vectorsym{P}^k = \vectorsym{1} \sigma$.
-*** Sufficient conditions
-- If the transition kernel satisfies \alert{detailed balance}:
-\[
-P(x' | x) \sigma(x) = P(x | x') \sigma(x')
-\]
-then $\sigma(x)$ is a stationary distribution.
-- If the Markov chain is \alert{ergodic} then there is a unique $\sigma$.
 ** The Gibbs sampler
 # SUGGEST: this slide is the abstract version only. In the lecture the general
 # K-variable algorithm came before any example, and there was no worked example
@@ -340,6 +232,61 @@ Latent variable $z$, parameter $\param$.
 # - We mostly care about $\theta$ and $\mu$, not the assignments $c$.
 # - Caveats: burn-in; label switching (clusters can swap names between iterations).
 
+** Metropolis-Hastings I
+*** Algorithm (symmetric version)
+- Input: Proposal distribution $Q(x | x') = Q(x' | x)$
+- At time $n$:
+- $\hat{x} \sim Q(x | x^{(n)})$
+- w.p. $P(\hat{x}) / P(x^{(n)})$, $x^{(n+1)} = \hat{x}$ else $x^{(n+1)} = x^{(n)}$ (capped at 1)
+*** Application to posterior sampling:
+The denominator cancels out, leading to:
+\[
+\frac{\bel(\param' \mid D)}{\bel(\param \mid D)}
+= 
+\frac{P_{\param'}(D) \bel(\param')}{P_{\param}(D) \bel(\param)}
+\]
+The only question is which proposal to use.
+** Metropolis-Hastings II
+*** Algorithm
+- Input: Proposal distribution $Q(x | x')$, likelihood $P$ (up to constant factor)
+- At time $n$:
+- $\hat{x} | x^{(n)} \sim Q(x | x^{(n)})$
+- With probability (capped at 1)
+  \[
+  \frac{P(\hat{x}) Q( x^{(n)} | \hat{x} )}{P(x^{(n)}) Q(\hat{x} | x^{(n)})},
+  \]
+  set $x^{(n+1)} = \hat{x}$
+- Otherwise $x^{(n+1)} = x^{(n)}$
+*** Application to posterior sampling:
+The $\Pr_\bel(D)$ term cancels out, leading to:
+\[
+\frac{\bel(\param' \mid D) Q(\param \mid \param') }{\bel(\param \mid D)  Q(\param' \mid \param)}
+= 
+\frac{P_{\param'}(D) \bel(\param')  Q(\param \mid \param')}{P_{\param}(D) \bel(\param)  Q(\param' \mid \param)}
+\]
+
+** M-H Theory
+# CUT or SUGGEST: this is heavy for the audience and was not in the recording.
+# Move to an appendix, or add intuition: detailed balance = probability flow from x
+# to x' equals flow from x' to x; ergodic = every state reachable and no cycles.
+*** Stationary distribution
+The Markov chain defined by the M-H algorithm must have a unique stationary distribution
+\[
+\sigma = \sigma \vectorsym{P},
+\]
+where $\vectorsym{P}$ is the transition kernel of the chain with
+\[
+P_{ij} = \Pr(x^{(n+1)} = j \mid x^{(n)} = i).
+\]
+In addition, $\lim_{n \to \infty} \vectorsym{P}^k = \vectorsym{1} \sigma$.
+*** Sufficient conditions
+- If the transition kernel satisfies \alert{detailed balance}:
+\[
+P(x' | x) \sigma(x) = P(x | x') \sigma(x')
+\]
+then $\sigma(x)$ is a stationary distribution.
+- If the Markov chain is \alert{ergodic} then there is a unique $\sigma$.
+
 ** ABC: Approximate Bayesian Computation
 # SUGGEST: add a motivating example: a simulator (e.g. a weather model) where you can
 # generate data for given parameters but cannot write down $P_\param(D)$.
@@ -352,9 +299,22 @@ Latent variable $z$, parameter $\param$.
 # the rejection-sampler constant.
 # NOTE: the slide writes $P_\param(D)$ for both "sample from" and "calculate".
 # Consider "sample $D' \sim P_{\param'}$" wording throughout.
-*** When to use
-- When we can sample from $P_\param(D)$.
-- When we cannot calculate $P_\param(D)$.
+
+In standard probabilistic learning, we compare the probability $P_\param(D)$ of the data $D$ under different parameters $\param$.
+ABC is used when $P_\param(D)$ is unavailable. There are two settings:
+ 
+*** Simulator: we can sample from $P_\param(D)$.
+- An example is a weather model. We can generate data (predictions) from the simulator for various parameters $\param$.
+- Here $\param$ includes e.g. how much light the clouds disperse, or
+heat the ocean can store. 
+- There is no analytic likelihood defined: we randomise by starting the weather model with different random seeds.
+*** Intractable likelihood: hard to calculate $P_\param(D)$.
+There may be a way to calculate the probability, but it is too costly.
+
+*** General idea
+Replace probabilities with a *distance* between *statistics*
+
+** ABC Rejection sampling
 *** A metric $\rho$ over datasets
 - $\rho(D, D')$ is distance between datasets.
 - We can use that to define a rejection sampler
@@ -366,31 +326,49 @@ Latent variable $z$, parameter $\param$.
 *** Theorem
 If $\rho(D, D') = \|f(D) - f(D')\|$ and $f$ is a \alert{sufficient statistic} and $\epsilon = 0$ then ABC Rejection Sampling is exact.
 
-# SUGGEST (draft slide): ABC toy example
-# ** ABC: a toy example
-# - Data $D = (d_1, \ldots, d_n)$, $d_i \sim \Normal(\param, 1)$; prior $\param \sim \Normal(0, 10^2)$.
-# - Statistic $f(D)$ = sample mean (sufficient here); $\rho(D, D') = |f(D) - f(D')|$.
-# - Repeat: sample $\param'$ from the prior, simulate $D'$, accept if $\rho(D, D') \leq \epsilon$.
-# - Figure: histograms of accepted $\param'$ for $\epsilon = 1, 0.1, 0.01$ against the exact posterior.
-#
-# SUGGEST (draft slide): summary of when to use which method
-# ** Which method when?
-# - Expectation under $P$, and you can sample from $P$: plain Monte Carlo.
-# - You can evaluate $P$ but not sample from it, and $Q$ is close to $P$: importance or rejection sampling.
-# - Posterior far from the prior: MCMC (Metropolis-Hastings in general; Gibbs when the conditionals are tractable).
-# - Likelihood intractable but you can simulate data: ABC.
+** ABC: a toy example
+*** Data
+- $D = (x_1, \ldots, x_n)$
+- $x_i \mid \param \sim \Normal(\param, 1)$
+- prior $\param \sim \Normal(0, 10)$. (we don't know what $\param$ is.)
+*** ABC parameters
+-  Statistic $f(D)$ = sample mean (sufficient here);
+  \[
+  \rho(D, D') = |f(D) - f(D')|
+  \]
+- Repeat: sample $\param'$ from the prior, simulate $D'$, accept if $\rho(D, D') \leq \epsilon$.
 
+** Which method when?
+ - Expectation under $P$, and you can sample from $P$: plain Monte Carlo.
+ - You can evaluate $P$ but not sample from it, and $Q$ is close to $P$: importance or rejection sampling.
+ - Posterior far from the prior, or many latent variables: MCMC (Metropolis-Hastings in general; Gibbs when the conditionals are tractable).
+ - Likelihood intractable but you can simulate data: ABC.
+ - Variational inference: not mentioned. Uses analytical approximations of the posterior. Fast but can be wrong.
+# - Stochastic Gradient ascent: (seen in GMM lecture) basically a Monte Carlo gradient method, used when we have a lot of data.
+# - Expectation Maximisation: (seen in GMM lecture) ok for small-medium data
+
+*** Parameter estimation
+- Samples from the posterior: MC, MC-IS, MCMC, ABC.
+- Approximate posterior: VI, SVI.
+- Point estimate: EM, stochastic gradient (maximum likelihood or MAP).
+
+  
+** Combinations
+If some of these methods involve an optimisation step, you can mix them with Gradient Ascent (GA), stochastic GA (SGA), Expectation Maximisation (EM). Classical approaches are:
+
+- EM with an approximate posterior = variational EM
+- SGA + VI = SVI
+- GA + MCMC = HMC; SGA + MCMC = SGLD / SGHMC
+  
+  
 * Packages
-** Multi-platform
-# SUGGEST: merge "Multi-platform" and "Python" into one slide, and say which library
-# the lab uses, with a 5-line model as an example.
-# FIX: PyMC3 is outdated; it is now PyMC.
-# NOTE: from the first transcript the lab library seems PyTorch-based (Pyro or
-# NumPyro?). Please check.
+** Packages
+Hand-coding MCMC samplers is tricky nad error-prone. There are many packages to choose from.
+*** Multi-platform
 - STAN
 - BUGS
-** Python
-- PyMC3
+*** Python
+- PyMC
 - TensorFlow Probability
-- \alert{PyStan}
-- \alert{Pyro} (Torch)
+- PyStan
+- \alert{Pyro} (Torch)\footnote{Examples in the lab. We use it because it shares commonalities with standard Torch.}
