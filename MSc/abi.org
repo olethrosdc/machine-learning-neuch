@@ -347,11 +347,11 @@ If $\rho(D, D') = \|f(D) - f(D')\|$ and $f$ is a \alert{sufficient statistic} an
 # - Stochastic Gradient ascent: (seen in GMM lecture) basically a Monte Carlo gradient method, used when we have a lot of data.
 # - Expectation Maximisation: (seen in GMM lecture) ok for small-medium data
 
-*** Parameter estimation
+*** Parameter estimation target
 - Samples from the posterior: MC, MC-IS, MCMC, ABC.
 - Approximate posterior: VI, SVI.
 - Point estimate: EM, stochastic gradient (maximum likelihood or MAP).
-
+[All methods give some distribution over the other latent variables]
   
 ** Combinations
 If some of these methods involve an optimisation step, you can mix them with Gradient Ascent (GA), stochastic GA (SGA), Expectation Maximisation (EM). Classical approaches are:
