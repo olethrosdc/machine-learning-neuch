@@ -603,32 +603,27 @@ Here $x  | \mu, \sigma \sim \Normal(\mu, \sigma^2)$
 \end{tikzpicture}
 
 *** Classification: Naive Bayes Classifier
-# FIX (line 618): $\Pr(x \mid y = i) \propto \exp(-\|\hat\mu_i - x\|^2 / \hat\sigma_i^2)$
-# is missing the factor 2 and the class-dependent normaliser. With different
-# $\hat\sigma_i$ the "$\propto$" hides a constant that differs per class, so the
-# decision rule would be wrong. Write the full density, e.g. in one dimension:
-# \[
-# \Pr(x \mid y = i) = (2\pi\hat\sigma_i^2)^{-1/2}
-# \exp\!\big(-(x - \hat\mu_i)^2 / (2\hat\sigma_i^2)\big).
-# \]
 - Data $(x,y)$
 - $x \in X$
 - $y \in Y \subset \mathbb{N}$, $N_i$: amount of data from class $i$.
 #+BEAMER: \pause
 **** Separately model each class
 - Assume each class data comes from a different normal distribution
-- $x | y = i \sim \Normal(\mu_i, \sigma_i I)$
+- $x | y = i \sim \Normal(\mu_i, \sigma_i I)$, i.e. 
 - For each class, calculate
   - Empirical mean $\hat{\mu}_i = \sum_{t : y_t = i} x_t / N_i$
   - Empirical variance $\hat{\sigma}_i$.
-#+BEAMER: \pause
-**** Decision rule
-Use Bayes's theorem:
+- This gives the estimate
 \[
-\Pr(y | x) = \Pr(x | y) \Pr(y) / \Pr(x),
+\Pr(x \mid y = i) = (2\pi\hat\sigma_i^2)^{-1/2}  \exp\!\big(-(x - \hat\mu_i)^2 / (2\hat\sigma_i^2)\big)
 \]
-choosing the $y$ with largest posterior $\Pr(y | x)$.
-- $\Pr(x | y = i) \propto \exp(- \|\hat{\mu}_i - x\|^2/\hat{\sigma}_i^2)$
+#+BEAMER: \pause
+- To decide which class $y$ is, use Bayes's theorem:
+  \[
+  \Pr(y | x) = \Pr(x | y) \Pr(y) / \Pr(x).
+  \]
+
+
 *** Graphical model for the Naive Bayes Classifier
 **** When $x \in \Reals$
 Assume $k$ classes, then
@@ -683,22 +678,21 @@ There are a number of models for this.
 - Variational Bayesian Inference (with appropriate prior)
 
 *** Details of Gaussian mixture models
-# FIX (line 678): $z_t \mid \param \sim \Mult(\param_i)$ should be $\Mult(\param)$.
 **** Col A                                                            :BMCOL:
      :PROPERTIES:
      :BEAMER_col: 0.6
      :END:
 ***** Model. For each point $x_t$:
-- $z_t \mid  \param \sim \Mult(\param_i)$, $\param \in \Simplex^k$
+- $z_t \mid  \vmulti \sim \Mult(\vmulti)$, $\vmulti \in \Simplex^k$
 - $x_t | z_t = i \sim \Normal(\mu_i, \Sigma_i)$.
-- $\Mult(\param)$ is *multinomial*
+- $\Mult(\vmulti)$ is *multinomial*
 \[
-\Pr(z_t = i \mid \param) = \param_i
+\Pr(z_t = i \mid \vmulti) = \multi_i
 \]
 - $\Normal(\mu, \Sigma)$ is *multivariate Gaussian*
 \[
 p(x \mid \mu, \Sigma)
-\propto \exp(-\frac{1}{2} (x - \mu)^\top \Sigma^{-1} (x-\mu))
+\propto \exp\left(-\frac{1}{2} (x - \mu)^\top \Sigma^{-1} (x-\mu)\right)
 \]
 - The generating distribution is
 \[
@@ -896,26 +890,33 @@ The problem with the previous method is that we sample from the prior $\Pr(z \mi
 #   replaces $r_{ti}$ by $\ind{z_t = i}$.
 # - Setting this to zero gives the EM M-step: $\mu_i = \sum_t r_{ti} x_t / \sum_t r_{ti}$.
 Now that we looked at general latent variable models, let us see what we need to calculate for GMMs.
-Our parameters are $\param = (\param, \mu, \sigma)$.
+Our parameters are $\param = (\vmulti, \mu, \sigma)$.
 \[
-\nabla_\param \ln \Pr(z, x \mid \param)
-= \sum_{t=1}^T  \nabla_\param \ln \Pr(z_t, x_t \mid \param)
-= \sum_{t=1}^T  \nabla_\param \ln [\Pr(z_t \mid \param) \Pr(x_t  \mid z_t, \mu, \sigma)]
+\nabla_\phi \ln \Pr(z, x \mid \phi)
+= \sum_{t=1}^T  \nabla_\phi \ln \Pr(z_t, x_t \mid \phi)
+= \sum_{t=1}^T  \nabla_\phi \ln [\Pr(z_t \mid \vmulti) \Pr(x_t  \mid z_t, \mu, \sigma)]
 \]
 The individual terms are:
 \[
-\nabla_\param \ln \Pr(z_t | \param)  = \frac{1}{\Pr(z_t | \param)} \nabla_\param  \Pr(z_t | \param),
+\nabla_\phi \ln \Pr(z_t | \vmulti)  = \frac{1}{\Pr(z_t | \vmulti)} \nabla_\phi  \Pr(z_t | \vmulti),
 \qquad
-\frac{\partial}{\partial \param_i} =  \frac{\ind{z_t = i}}{\Pr(z_t | \param)}
+\frac{\partial}{\partial \multi_i} \ln \Pr(z_t | \vmulti)  =  \frac{\ind{z_t = i}}{\Pr(z_t | \vmulti)}
 \]
 \[
 \frac{\partial}{\partial \mu_i} \ln \Pr(x_t  \mid z_t = i, \mu, \sigma) 
 = - \frac{\partial}{\partial \mu_i}  \frac{(x_t - \mu_i)^2}{2\sigma_i^2}
 = \sigma_i^{-2} (x_t - \mu_i) 
 \]
-So the algorithm
-- Randomly assigns $z_t$ according to the current $\param$ estimate
+*** Notes.                                                           :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+The algorithm:
+- Randomly assigns or mixes $z_t$ according to the current $\vmulti$ estimate
 - Moves the centers towards the mean indicated by the $z$.
+- We must be careful with the $\theta$ parameters. They must sum to 1 and be in $[0,1]$. So, we either reparametrise with a softmax, or project them back to a simplex.
+- If we fully maximise when we adjust the means, we set $\mu_i$ to the empirical mean of cluster $i$ according to the current $\Pr(z_t \mid x_t, \theta, \mu, \sigma)$ model. This corresponds to the EM algorithm we describe in the next section.
+  
 ** Expectation maximisation
 #+TOC: headlines [currentsection,hideothersubsections]
 *** A lower bound on the likelihood
@@ -963,7 +964,7 @@ D_{KL}(P \|Q) = \sum_{\omega \in \Omega} P(\omega) \ln \frac{P(\omega)}{Q(\omega
 **** The Gibbs Inequality
 $D_{KL}(P \|Q)  \geq 0$, or $\sum_x \ln P(x) P(x) \geq \sum_x \ln Q(x) P(x)$.
 
-*** From Gradient Method II to Eexpectation Maximisation                                   
+*** From Gradient Method II to Expectation Maximisation                                   
 # FIX: heading typo, "Eexpectation" -> "Expectation".
 # FIX (line 934): the statement $\ln \Pr(x \mid \param) \geq \sum_z \Pr(z \mid x, \param^{(k)}) \ln \Pr(x, z \mid \param)$
 # is true but loses the tight form. Write
@@ -977,15 +978,17 @@ $D_{KL}(P \|Q)  \geq 0$, or $\sum_x \ln P(x) P(x) \geq \sum_x \ln Q(x) P(x)$.
 # $\param = \param^{(k)}$ equals the method II gradient $\nabla \ln \Pr(x \mid \param^{(k)})$.
 # So EM replaces a gradient step by maximising $Q$ exactly with the posterior fixed.
 we showed that
-\[
-\ln \Pr(x \mid \param) \geq \sum_z \Pr(z \mid x, \param^{(k)}) \ln \Pr(x, z \mid \param).
-\]
-for some *fixed* $\param^{(k)}$.
+ \[
+\ln \Pr(x \mid \param) \geq Q(\param \mid \param^{(k)}) + \mathbb{H}(z \mid x, \param^{(k)})
+= \ln \Pr(x \mid \param^{(k)})
+ \]
 
+- Link to method II: $\nabla_\param Q(\param \mid \param^{(k)})$ at
+  $\param = \param^{(k)}$ equals the method II gradient.
 - The idea of the Expectation Maximisation algorithm is, instead of
   maximising the log-likelihood, to maximise a lower bound on it.
 - In this case, this is achieved by fixing the latent distribution.
-- This makes the optimisation problem simpler, and we can find an exact solution (at least for some models).
+- This makes the optimisation problem simpler, and we can find an exact solution (at least for some models, such as the GMM and the HMM).
 
 
 
@@ -1005,6 +1008,11 @@ Q(\alert{\vparam} \mid  \vparam^{(k)})
 -- Maximisation step:
 \[
 \vparam^{(k+1)} = \argmax_\vparam Q(\vparam, \vparam^{(k)}).
+\]
+**** EM leads to monotone improvement
+\[
+\ln \Pr(x \mid \param^{(k+1)}) \geq Q(\param^{(k+1)} \mid \param^{(k)}) + \mathbb{H}
+\geq Q(\param^{(k)} \mid \param^{(k)}) + \mathbb{H} = \ln \Pr(x \mid \param^{(k)}).
 \]
 
 See /Expectation-Maximization as lower bound maximization, Minka, 1998/
