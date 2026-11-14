@@ -684,19 +684,19 @@ There are a number of models for this.
      :END:
 ***** Model. For each point $x_t$:
 - $z_t \mid  \vmulti \sim \Mult(\vmulti)$, $\vmulti \in \Simplex^k$
-- $x_t | z_t = i \sim \Normal(\mu_i, \Sigma_i)$.
+- $\bx_t | z_t = i \sim \Normal(\vmean_i, \Covar_i)$.
 - $\Mult(\vmulti)$ is *multinomial*
 \[
 \Pr(z_t = i \mid \vmulti) = \multi_i
 \]
-- $\Normal(\mu, \Sigma)$ is *multivariate Gaussian*
+- $\Normal(\vmean, \Covar)$ is *multivariate Gaussian*
 \[
-p(x \mid \mu, \Sigma)
-\propto \exp\left(-\frac{1}{2} (x - \mu)^\top \Sigma^{-1} (x-\mu)\right)
+p(\bx \mid \vmean, \Covar)
+\propto \exp\left(-\frac{1}{2} (\bx - \vmean)^\top \Covar^{-1} (\bx-\vmean)\right)
 \]
 - The generating distribution is
 \[
-p(x | \param, \mu, \Sigma) = \sum_{z \in [k]} p(x \mid \mu_z, \Sigma_z) \Pr(z \mid \param).
+p(\bx | \vmulti, \vmean, \Covar) = \sum_{z \in [k]} p(\bx \mid \vmean_z, \Covar_z) \Pr(z \mid \vmulti).
 \]
 **** Col B                                                            :BMCOL:
      :PROPERTIES:
@@ -707,9 +707,9 @@ p(x | \param, \mu, \Sigma) = \sum_{z \in [k]} p(x \mid \mu_z, \Sigma_z) \Pr(z \m
 \begin{tikzpicture}
       \node[RV, hidden] at (2,0) (c) {$z$};
       \node[RV] at (0,0) (x) {$x$};
-      \node[RV,hidden] at (0,-1) (mu) {$\mu$};
-      \node[RV,hidden] at (0,1) (sigma) {$\Sigma$};
-      \node[RV,hidden] at (2,1) (theta) {$\param$};
+      \node[RV,hidden] at (0,-1) (mu) {$\vmean$};
+      \node[RV,hidden] at (0,1) (sigma) {$\Covar$};
+      \node[RV,hidden] at (2,1) (theta) {$\vmulti$};
       \draw[->] (c) to (x);
       \draw[->] (theta) to (c);
       \draw[->] (sigma) to (x);
@@ -825,8 +825,8 @@ As you can see, the parameters of the Dirichlet distribution are updated the sam
 #+TOC: headlines [currentsection,hideothersubsections]
 ** Gradient algorithms
 *** Gradient ascent
-In the following we use $\param$ for *all* the parameters of the Gaussian mixture model,
-with $x = (x_1, \ldots, x_T)$ and $z = (z_1, \ldots, z_T)$
+In the following we use $\param$ for the parameters of some latent variable model
+with $x = (x_1, \ldots, x_T)$ the observations and $z = (z_1, \ldots, z_T)$ the other latent variables
 **** Objective function
 One way to estimate $\param$ is through maximising the likelihood
 $L(\param) = \Pr(x | \param)$
@@ -1051,9 +1051,9 @@ We saw, for the Beta-Bernoulli and Dirichlet-Multinomial models, that a *conjuga
 \begin{tikzpicture}
 \node[RV] at (0,1) (x) {$x_t$};
 \node[RV,hidden] at (0,0) (c) {$z_t$};
-\node[RV,hidden] at (0,-1) (cat) {$\param$};
+\node[RV,hidden] at (0,-1) (cat) {$\vmulti$};
 \node[RV,hidden] at (1,-1) (mean) {$\vectorsym{\mu}$};
-\node[RV,hidden] at (2,-1) (var) {$\vectorsym{\Sigma}$};
+\node[RV,hidden] at (2,-1) (var) {$\vectorsym{\Covar}$};
 \draw[->] (cat) to (c);
 \draw[->] (c) to (x);
 \draw[->] (mean) to (x);
@@ -1071,10 +1071,10 @@ We saw, for the Beta-Bernoulli and Dirichlet-Multinomial models, that a *conjuga
      :END:
 \begin{align}
 \mu_i \mid \vectorsym{v} &\sim \Normal(\vectorsym{v}, I),\\
-\Sigma_i \mid \vectorsym{W} &\sim \Wish(\vectorsym{W}),\\
-\param \mid \vectorsym{\alpha} &\sim \Dir(\vectorsym{\alpha}),\\
-z_t \mid \param &\sim \Mult(\param),\\
-x_t \mid \mu, \Sigma, z_t = i & \sim \Normal(\mu_i, \Sigma_i).
+\Covar_i \mid \vectorsym{W} &\sim \Wish(\vectorsym{W}),\\
+\vmulti \mid \vectorsym{\alpha} &\sim \Dir(\vectorsym{\alpha}),\\
+z_t \mid \vmulti &\sim \Mult(\vmulti),\\
+x_t \mid \vmean, \Covar, z_t = i & \sim \Normal(\mean_i, \Covar_i).
 \end{align}
 **** Exercise :exercise:
 Which of the five lines above, if any, would have a closed-form conjugate update if all the *others* were held fixed? Compare with the Beta-Bernoulli and Dirichlet-Multinomial cases covered earlier.
