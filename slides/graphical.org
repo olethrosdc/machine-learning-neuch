@@ -116,10 +116,13 @@ A directed acyclic graph with
 - Nodes $x_1, \ldots, x_n$
 - Edges $x_i \to x_j$.
 so that there are no cycles in the graph.
-**** Conditional independence from graphical models
+**** Conditional independence and graphical models
 - Each *node* of the model corresponds to a *random variable*
 - The *parent* of a node are the *direct dependencies* of the random variable.
+- Reduces the number of *parameters* that must be estimated from data.
+- Allows reasoning about *causal* assumptions and improves *explainability*.
 
+  
 *** Model specification
 \begin{center}
     \begin{tikzpicture}
@@ -892,13 +895,13 @@ The problem with the previous method is that we sample from the prior $\Pr(z \mi
 Now that we looked at general latent variable models, let us see what we need to calculate for GMMs.
 Our parameters are $\param = (\vmulti, \mu, \sigma)$.
 \[
-\nabla_\phi \ln \Pr(z, x \mid \phi)
-= \sum_{t=1}^T  \nabla_\phi \ln \Pr(z_t, x_t \mid \phi)
-= \sum_{t=1}^T  \nabla_\phi \ln [\Pr(z_t \mid \vmulti) \Pr(x_t  \mid z_t, \mu, \sigma)]
+\nabla_\param \ln \Pr(z, x \mid \param)
+= \sum_{t=1}^T  \nabla_\param \ln \Pr(z_t, x_t \mid \param)
+= \sum_{t=1}^T  \nabla_\param \ln [\Pr(z_t \mid \vmulti) \Pr(x_t  \mid z_t, \mu, \sigma)]
 \]
 The individual terms are:
 \[
-\nabla_\phi \ln \Pr(z_t | \vmulti)  = \frac{1}{\Pr(z_t | \vmulti)} \nabla_\phi  \Pr(z_t | \vmulti),
+\nabla_\param \ln \Pr(z_t | \vmulti)  = \frac{1}{\Pr(z_t | \vmulti)} \nabla_\param  \Pr(z_t | \vmulti),
 \qquad
 \frac{\partial}{\partial \multi_i} \ln \Pr(z_t | \vmulti)  =  \frac{\ind{z_t = i}}{\Pr(z_t | \vmulti)}
 \]
@@ -914,8 +917,8 @@ The individual terms are:
 The algorithm:
 - Randomly assigns or mixes $z_t$ according to the current $\vmulti$ estimate
 - Moves the centers towards the mean indicated by the $z$.
-- We must be careful with the $\theta$ parameters. They must sum to 1 and be in $[0,1]$. So, we either reparametrise with a softmax, or project them back to a simplex.
-- If we fully maximise when we adjust the means, we set $\mu_i$ to the empirical mean of cluster $i$ according to the current $\Pr(z_t \mid x_t, \theta, \mu, \sigma)$ model. This corresponds to the EM algorithm we describe in the next section.
+- We must be careful with the $\vmulti$ parameters. They must sum to 1 and be in $[0,1]$. So, we either reparametrise with a softmax, or project them back to a simplex.
+- If we fully maximise when we adjust the means, we set $\mu_i$ to the empirical mean of cluster $i$ according to the current $\Pr(z_t \mid x_t, \vmulti, \vmean, \Covar)$ model. This corresponds to the EM algorithm we describe in the next section.
   
 ** Expectation maximisation
 #+TOC: headlines [currentsection,hideothersubsections]
@@ -979,10 +982,9 @@ $D_{KL}(P \|Q)  \geq 0$, or $\sum_x \ln P(x) P(x) \geq \sum_x \ln Q(x) P(x)$.
 # So EM replaces a gradient step by maximising $Q$ exactly with the posterior fixed.
 we showed that
  \[
-\ln \Pr(x \mid \param) \geq Q(\param \mid \param^{(k)}) + \mathbb{H}(z \mid x, \param^{(k)})
-= \ln \Pr(x \mid \param^{(k)})
- \]
-
+\ln \Pr(x \mid \param) \geq Q(\param \mid \param^{(k)}) + \mathbb{H}(z \mid x, \param^{(k)}),
+\quad \text{with equality at } \param = \param^{(k)}
+\]
 - Link to method II: $\nabla_\param Q(\param \mid \param^{(k)})$ at
   $\param = \param^{(k)}$ equals the method II gradient.
 - The idea of the Expectation Maximisation algorithm is, instead of
@@ -1098,7 +1100,17 @@ Which of the five lines above, if any, would have a closed-form conjugate update
 - /fit()/ should take X, y, arguments
 - /predict()/ should predict class labels
 - Hint: Use /predict_proba()/ and multiple GMM models
-
+*** Graphical models and model selection :exercise:
+**** Goal
+- Compare alternative graphical models.
+**** Tasks
+- Define a simpler model H0 and a more complex model H1.
+- Write down the factorisation implied by each graph.
+- Count the parameters.
+- Estimate parameters using ML and MAP.
+- Compare the hypotheses using the resulting models.
+- Investigate the effects of model complexity and dataset size.
+- Compare with regression or classification approaches.
 * Summary
 ** Summary
 *** Summary
