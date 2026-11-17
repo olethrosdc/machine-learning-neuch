@@ -208,21 +208,21 @@ Let $P(y | x)$ be our model's probability for label $y$, given features $x$. The
 
 Label probability is also useful for selecting a regression model. However, in that case, a notion of distance from the target is also useful. The two are actually equivalent in some cases.
 
-** Classifcation
+** Classification
 
   
-*** Precision
+*** Confidence score
 The average probability of the actual class:
 \[
 \sum_{t=1}^T P(y_t | x_t) / T
 \]
 - If we always assign probability 1 to the correct label, this score is 1. 
 - If we always assign probability $1/m$ to all labels, the score is $1/m$.
-- Exercise: if our model $P$ is correct, and we always decide the maximum-probability class, show that the accuracy (as previously defined) is the same with precision.
+- Exercise: if our model $P$ is correct, and we always decide the maximum-probability class, show that the accuracy (as previously defined) is the same as the confidenc score.
 
-*** Negative Log-Loss
-Here we assign look at the *logarithm* of the probability. This really penalises bad guesses.
-- $\sum_{t=1}^T \ln P(y_t | x_t) / T$
+*** Negative Log-Loss (or Log Likelihood)
+Here we look at the *logarithm* of the probability. This really penalises bad guesses.
+- $\sum_{t=1}^T \ln P(y_t | x_t)$
 - If we always assign probability 1 to the correct label, this score is 0.
 - If we assign probability 0 to even a single true label, the score is $-\infty$.
 #+BEGIN_SRC python
@@ -675,7 +675,7 @@ We can bound the regret by bounding each term separately.
 - The most we could do is find the best rule in $\hat{\Pi}$.
 - This still leaves a gap:
 \[
-\Delta \defn  \max_{\pi \in \Pi} U(\pi, P) -  \max_{\hat{\pi} \in \hat{\Pi}} U(\pi, P)
+\Delta \defn  \max_{\pi \in \Pi} U(\pi, P) -  \max_{\hat{\pi} \in \hat{\Pi}} U(\hat{\pi}, P)
 \]
 The gap can be characterised in some cases.
 **** Example: \(\epsilon\)-net on Lipschitz $U(\cdot, P)$.

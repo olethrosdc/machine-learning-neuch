@@ -968,19 +968,7 @@ D_{KL}(P \|Q) = \sum_{\omega \in \Omega} P(\omega) \ln \frac{P(\omega)}{Q(\omega
 $D_{KL}(P \|Q)  \geq 0$, or $\sum_x \ln P(x) P(x) \geq \sum_x \ln Q(x) P(x)$.
 
 *** From Gradient Method II to Expectation Maximisation                                   
-# FIX: heading typo, "Eexpectation" -> "Expectation".
-# FIX (line 934): the statement $\ln \Pr(x \mid \param) \geq \sum_z \Pr(z \mid x, \param^{(k)}) \ln \Pr(x, z \mid \param)$
-# is true but loses the tight form. Write
-# \[
-# \ln \Pr(x \mid \param) \geq Q(\param \mid \param^{(k)}) + \mathbb{H}(z \mid x, \param^{(k)}),
-# \]
-# with equality at $\param = \param^{(k)}$. Monotone improvement then follows in one line:
-# $\ln \Pr(x \mid \param^{(k+1)}) \geq Q(\param^{(k+1)} \mid \param^{(k)}) + \mathbb{H}
-# \geq Q(\param^{(k)} \mid \param^{(k)}) + \mathbb{H} = \ln \Pr(x \mid \param^{(k)})$.
-# SUGGEST: link to method II: $\nabla_\param Q(\param \mid \param^{(k)})$ at
-# $\param = \param^{(k)}$ equals the method II gradient $\nabla \ln \Pr(x \mid \param^{(k)})$.
-# So EM replaces a gradient step by maximising $Q$ exactly with the posterior fixed.
-we showed that
+We showed that
  \[
 \ln \Pr(x \mid \param) \geq Q(\param \mid \param^{(k)}) + \mathbb{H}(z \mid x, \param^{(k)}),
 \quad \text{with equality at } \param = \param^{(k)}
@@ -995,26 +983,22 @@ we showed that
 
 
 *** EM Algorithm (Dempster et al, 1977)
-# FIX (line 956): $\argmax_\vparam Q(\vparam, \vparam^{(k)})$ should be
-# $Q(\vparam \mid \vparam^{(k)})$.
-# NOTE: $k$ is the iteration index here and the number of clusters on line 663.
-# Use $n$ for iterations, as in the gradient section.
 - Initial parameter $\vparam^{(0)}$, observed data $x$
-- For $k=0, 1, \ldots$
+- For $n=0, 1, \ldots$
 -- Expectation step:
 \[
-Q(\alert{\vparam} \mid  \vparam^{(k)})
- \defn \E_{z \sim \Pr(z | x, \vparam^{(k)})} [\ln \Pr(x, z | \alert{\vparam}) ]
- = \sum_{z} [\ln \Pr(x, z | \alert{\vparam})]  \Pr(z  \mid x, \vparam^{(k)})
+Q(\alert{\vparam} \mid  \vparam^{(n)})
+ \defn \E_{z \sim \Pr(z | x, \vparam^{(n)})} [\ln \Pr(x, z | \alert{\vparam}) ]
+ = \sum_{z} [\ln \Pr(x, z | \alert{\vparam})]  \Pr(z  \mid x, \vparam^{(n)})
 \]
 -- Maximisation step:
 \[
-\vparam^{(k+1)} = \argmax_\vparam Q(\vparam, \vparam^{(k)}).
+\vparam^{(n+1)} = \argmax_\vparam Q(\vparam, \vparam^{(n)}).
 \]
 **** EM leads to monotone improvement
 \[
-\ln \Pr(x \mid \param^{(k+1)}) \geq Q(\param^{(k+1)} \mid \param^{(k)}) + \mathbb{H}
-\geq Q(\param^{(k)} \mid \param^{(k)}) + \mathbb{H} = \ln \Pr(x \mid \param^{(k)}).
+\ln \Pr(x \mid \param^{(n+1)}) \geq Q(\param^{(n+1)} \mid \param^{(n)}) + \mathbb{H}
+\geq Q(\param^{(n)} \mid \param^{(n)}) + \mathbb{H} = \ln \Pr(x \mid \param^{(n)}).
 \]
 
 See /Expectation-Maximization as lower bound maximization, Minka, 1998/
@@ -1033,15 +1017,15 @@ EM can be seen as a version of the minorise-maximise algorithm
 - $Q(\vparam | \vparam^{(k)})$: surrogate function
 **** $Q$ Minorizes $f$
 This means surrogate is always a lower bound so that
-\[
-f(\vparam) \geq Q(\vparam | \vparam^{(k)}),
-\qquad
-f(\vparam^{(k)}) = Q(\vparam^{(k)} | \vparam^{(k)}),
+ \[
+ f(\vparam) \geq Q(\vparam \mid \vparam^{(n)}) + \mathbb{H}(z \mid x, \vparam^{(n)}),
+ \qquad
+ f(\vparam^{(n)}) = Q(\vparam^{(n)} \mid \vparam^{(n)}) + \mathbb{H}(z \mid x, \vparam^{(n)}).
 \]
 
 **** Algorithm
-- Calculate: $Q(\vparam | \vparam^{(k)})$
-- Optimise: $\vparam^{(k+1)} = \argmax_\vparam Q(\vparam | \vparam^{(k)})$.
+- Calculate: $Q(\vparam | \vparam^{(n)})$
+- Optimise: $\vparam^{(n+1)} = \argmax_\vparam Q(\vparam | \vparam^{(n)})$.
 
 ** Bayesian Inference
 *** Bayesian inference for the GMM
