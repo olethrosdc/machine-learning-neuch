@@ -7,12 +7,14 @@ In this lab you will play the role of a researcher.
 
 Your task is simple:
 
-Find evidence that some variables are predictive of an outcome.
+- Find evidence that some variables are predictive of an outcome.
 
-The catch is that there is no true relationship in the data.
 
-The purpose of the exercise is to understand:
-
+** Objective
+- *Not* to obtain the best predictive model.
+- Obtain the strongest-looking scientific *conclusion* possible, and then determine whether it survives *replication*.
+** Side-quests
+These questions relate to:
 - multiple comparisons,
 - feature selection,
 - model selection,
@@ -20,167 +22,110 @@ The purpose of the exercise is to understand:
 - researcher degrees of freedom,
 - replication.
 
-* Dataset
 
-The provided code generates:
+* Activity A: Discovery
 
-- n individuals,
-- p binary genetic markers ("SNPs"),
-- a binary outcome.
+Open:
 
-#+BEGIN_SRC python
-import numpy as np
+BSc/src/Reproducibility/discovery.py
 
-def generate_data(n=500, p=10000, seed=None):
-    rng = np.random.default_rng(seed)
-    X = rng.integers(0, 2, size=(n, p))
-    y = rng.integers(0, 2, size=n)
-    return X, y
-#+END_SRC
+The script generates a synthetic dataset containing:
 
-Important:
+- individuals,
+- binary genetic markers (SNPs),
+- a disease label.
 
-The outcome y is completely independent of all features.
+Your task is simple:
 
-There is no signal.
+Find one or more features that appear predictive of the disease.
 
-* Warm-up
+You may use any method you like:
 
-Generate a dataset with:
-
-#+BEGIN_SRC python
-X, y = generate_data(
-    n=500,
-    p=10000,
-    seed=0
-)
-#+END_SRC
-
-Question:
-
-How many features would you expect to look predictive purely by chance?
-
-Write down your guess before continuing.
-
-* Task 1: GWAS
-
-For every feature j:
-
-- compare the outcome for individuals with X[:,j] = 0 and X[:,j] = 1.
-- calculate some score measuring how predictive it is.
-
-Possible choices:
-
-- classification accuracy,
 - correlation,
-- mutual information,
-- logistic regression coefficient,
-- anything else.
+- classification accuracy,
+- logistic regression,
+- feature importance,
+- visual inspection,
+- any other criterion.
 
-Choose one.
-
-* Questions
+Questions:
 
 1. Which feature appears most predictive?
-2. What score does it obtain?
-3. Would you publish this discovery?
+2. What criterion did you use?
+3. How strong is the effect?
+4. Would you publish this discovery?
 
-Record your answer.
+We then pause to discuss your results.
 
-* Task 2: Replication
+* Activity B: Replication
 
-Generate a completely new cohort.
+Open:
 
-#+BEGIN_SRC python
-X2, y2 = generate_data(
-    n=500,
-    p=10000,
-    seed=1
-)
-#+END_SRC
+BSc/src/Reproducibility/replication.py
 
-Test only your winning feature.
+The script generates a new cohort.
+
+Test only the features discovered in Activity A.
 
 Questions:
 
-1. Does it remain predictive?
-2. Is the effect size similar?
-3. Would you still publish it?
+1. Does the effect replicate?
+2. Is the effect equally strong?
+3. Would you still publish the result?
 
-* Task 3: Increasing the search space
 
-Repeat Task 1 with:
+* Activity C: Looking harder
 
-- p = 100
-- p = 1000
-- p = 10000
-- p = 100000
+Return to discovery.py.
 
-Questions:
+Try changing:
 
-1. How does the strongest discovered effect change?
-2. Does looking at more features make discoveries easier?
-
-* Task 4: Feature selection
-
-Split the data into training and testing sets.
-
-#+BEGIN_SRC python
-from sklearn.model_selection import train_test_split
-
-X_train, X_test, y_train, y_test =
-    train_test_split(
-        X,
-        y,
-        test_size=0.3,
-        random_state=0
-    )
-#+END_SRC
-
-Compare:
-
-** Procedure A
-
-- Select the best features using all available data.
-- Train using those features.
-- Evaluate on the test set.
-
-** Procedure B
-
-- Select the best features using only the training set.
-- Train using those features.
-- Evaluate on the test set.
+- the number of features,
+- the analysis method,
 
 Questions:
 
-1. Which procedure looks better?
-2. Which procedure is actually better?
-3. Why?
+1. Can you obtain a stronger result?
+2. How many different analyses did you try?
+3. What was your strongest discovery?
 
-* Task 5: Forking paths
+* Activity D: The Garden of Forking Paths
 
-Now perform as many analyses as possible.
+Discuss with your group.
+
+Questions:
+
+1. If you only reported your strongest result, what information would be missing?
+2. Would a reader know how many analyses you attempted?
+3. How is this related to:
+   - feature selection?
+   - model selection?
+   - hyperparameter tuning?
+
+
+Now perform as many analyses as possible, but on a *fixed* dataset.
+
+Generate the dataset only once.
+
+Your goal is to obtain the *most convincing result*. i.e. to find features that appear highly predictive of the
+outcome.
+
+(You already have the data, you now need to try and milk it for something interesting).
 
 Examples:
 
-- different numbers of features,
-- different train/test splits,
-- different feature-selection criteria,
-- logistic regression,
-- decision trees,
-- random forests,
-- different random seeds,
-- standardisation or not,
-- balancing classes or not.
+- different feature-selection/importance criteria,
+- different models, i.e. logistic regression, decision trees, random forests,
+- different preprocessing, e.g. standardisation or balancing classes.
 
-Keep trying until you obtain a result that looks convincing.
 
 Questions:
 
 1. How many analyses did you try?
 2. What was your best result?
 3. If you only reported the best result, would a reader know how many analyses were attempted?
-
+4. How does that reconicle with your replication experiments?
+   
 * Discussion
 
 Answer in complete sentences.
@@ -197,26 +142,4 @@ Answer in complete sentences.
    - fairness metrics,
    - scientific publication?
 
-* Optional: Dead salmon
 
-- Repeat the analysis several times with completely new datasets.
-- How often do you discover a "highly predictive" feature?
-- How confident would you be if you only saw a single successful run?
-
-* Deliverables
-
-Submit:
-
-1. Code.
-2. Figures or tables.
-3. A short discussion (1--2 pages maximum).
-
-The discussion should focus on:
-- what you discovered,
-- what failed to replicate,
-- what choices influenced the conclusions,
-- what lessons this has for machine learning and scientific practice.
-
-** Objective
-- *Not* to obtain the best predictive model.
-- Obtain the strongest-looking scientific *conclusion* possible, and then determine whether it survives *replication*.
