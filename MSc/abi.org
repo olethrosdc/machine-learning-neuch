@@ -1,59 +1,27 @@
 #+TITLE:  Approximate Bayesian Inference
 #+AUTHOR: Christos Dimitrakakis
 #+EMAIL:christos.dimitrakakis@unine.ch
-#+LaTeX_HEADER: \usepackage{tikz}
-#+LaTeX_HEADER: \usepackage{amsmath}
-#+LaTeX_HEADER: \usepackage{amssymb}
-#+LaTeX_HEADER: \usepackage{isomath}
-#+LaTeX_HEADER: \newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
-#+LaTeX_HEADER: \newcommand \Var {\mathop{\mbox{\ensuremath{\mathbb{V}}}}\nolimits}
-#+LaTeX_HEADER: \newcommand \Bias {\mathop{\mbox{\ensuremath{\mathbb{B}}}}\nolimits}
-#+LaTeX_HEADER: \newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
-#+LaTeX_HEADER: \renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
-#+LaTeX_HEADER: \DeclareMathOperator*{\argmax}{arg\,max}
-#+LaTeX_HEADER: \DeclareMathOperator*{\argmin}{arg\,min}
-#+LaTeX_HEADER: \DeclareMathOperator*{\sgn}{sgn}
-#+LaTeX_HEADER: \newcommand \defn {\mathrel{\triangleq}}
-#+LaTeX_HEADER: \newcommand \Reals {\mathbb{R}}
-#+LaTeX_HEADER: \newcommand \Params {\Theta}
-#+LaTeX_HEADER: \newcommand \param {\theta}
-#+LaTeX_HEADER: \newcommand \vparam {\vectorsym{\theta}}
-#+LaTeX_HEADER: \newcommand \mparam {\matrixsym{\Theta}}
-#+LaTeX_HEADER: \newcommand \bW {\matrixsym{W}}
-#+LaTeX_HEADER: \newcommand \bw {\vectorsym{w}}
-#+LaTeX_HEADER: \newcommand \wi {\vectorsym{w}_i}
-#+LaTeX_HEADER: \newcommand \wij {w_{i,j}}
-#+LaTeX_HEADER: \newcommand \bA {\matrixsym{A}}
-#+LaTeX_HEADER: \newcommand \ai {\vectorsym{a}_i}
-#+LaTeX_HEADER: \newcommand \aij {a_{i,j}}
-#+LaTeX_HEADER: \newcommand \bx {\vectorsym{x}}
-#+LaTeX_HEADER: \newcommand \pol {\pi}
-#+LaTeX_HEADER: \newcommand \Pols {\Pi}
-#+LaTeX_HEADER: \newcommand \bel {\beta}
-#+LaTeX_HEADER: \newcommand \Bels {\mathcal{B}}
-#+LaTeX_HEADER: \newcommand \Unif {\textrm{Unif}}
-#+LaTeX_HEADER: \newcommand \Ber {\textrm{Bernoulli}}
-#+LaTeX_HEADER: \newcommand \Mult {\textrm{Mult}}
-#+LaTeX_HEADER: \newcommand \Beta {\textrm{Beta}}
-#+LaTeX_HEADER: \newcommand \Dir {\textrm{Dir}}
-#+LaTeX_HEADER: \newcommand \Normal {\textrm{Normal}}
-#+LaTeX_HEADER: \newcommand \Simplex {\mathbb{\Delta}}
-#+LaTeX_HEADER: \newcommand \pn {\param^{(n)}}
-#+LaTeX_HEADER: \newcommand \pnn {\param^{(n+1)}}
-#+LaTeX_HEADER: \newcommand \pnp {\param^{(n-1)}}
-#+LaTeX_HEADER: \usepackage[bbgreekl]{mathbbol}
-#+LaTeX_HEADER: \tikzstyle{utility}=[diamond,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=8mm]
-#+LaTeX_HEADER: \tikzstyle{select}=[rectangle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
-#+LaTeX_HEADER: \tikzstyle{hidden}=[dashed,draw=black,fill=red!10]
-#+LaTeX_HEADER: \tikzstyle{RV}=[circle,draw=black,draw=blue!50,fill=blue!10,inner sep=0mm, minimum size=6mm]
+#+LaTeX_HEADER: \input{preamble}
 #+LaTeX_CLASS_OPTIONS: [smaller]
-#+LATEX_HEADER: \RequirePackage{fancyvrb}
+#+LATEX_HEADER: \setbeameroption{show notes}
+#+LATEX_HEADER: \setbeamerfont{note page}{size=\footnotesize}
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
 #+OPTIONS:   H:2
-#+OPTIONS: toc:nil
+# SUGGESTIONS (added after reviewing the lecture transcripts). Every line below
+# is an Org comment ("# " prefix); uncomment a region to activate it. Tags:
+# FIX = error or confusion source, SUGGEST = add/explain more, CUT = trim/move,
+# NOTE = uncertain, check.
 * Approximate Bayesian Inference
 ** Approximate Bayesian inference
+# SUGGEST: add the diagram from the lecture (unknown / known / nuisance variables)
+# and the Simpson's paradox example (the department applied to is a nuisance
+# variable you may or may not care about).
+# NOTE: sum over theta' here, but integrals elsewhere (e.g. the Monte-Carlo
+# sampling slide); consider using the integral over Theta consistently.
+# NOTE: notation changes later: D / z / theta here, but x and z in the Gibbs slide.
+# CUT or SUGGEST: Variational Bayes and Stochastic Variational Inference are listed
+# under "Common methods" but not covered. Add a slide or drop them.
 *** The General problem
 - Observations $D$.
 - Nuisance variables $z$.
@@ -89,9 +57,40 @@ P(A) &= \int_A dP(\omega) = \int_\Omega \ind{\omega \in A} dP(\omega)\\
 \approx \frac{1}{N} \sum_{n=1}^N \ind{\omega^{(n)} \in A}.
 \end{align}
 But what if we can not sample from $P$?
+** Notes.                                                            :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+
+*** The sample mean
+- If $x_n = f(\omega^{(n)})$ this is the sample mean $\frac{1}{N} \sum_{n=1}^N x_n$.
+- Example: $\omega$ is a randomly chosen person and $f$ is the height measurement.
+
+  
+*** Sampling
+
+- In the data analysis setting, the samples come from *nature's unknown distribution $P$*.  Here, however we are using sampling to perform *approximate computation*. Nevertheless, the mathetmatical tools are the same.
+- Because we define the sampling, we can decide what distribution to sample from. But how do we sample something random in the first place?
+- If we have a fair coin, we can get $n$ random bits, to obtain a number in $\{0, 1, \ldots, 2^{n}-1\}$. Dividing by $2^n$, we can approxiamte the uniform distribution in $[0,1]$.
+- In practice, we only have a few random bits, which we combine with deterministic algorithms (Pseudo-Random Number Generators) to get the illusion of randomness.
+- Alternative notions of randomnes include Kolmogoroff Complexity.
+
+
 
 ** Importance sampling
-If we cannot sample from $P$, but can sample from some other distribution $Q$, we can use this trick (statisticians hate it!). Let's write it first out for finite $\Omega$, for simplicity
+# SUGGEST: state the support condition: $Q(\omega) > 0$ whenever $P(\omega) > 0$;
+# otherwise the estimator misses part of $P$.
+# SUGGEST: add the survey re-weighting example (students answer more often, older
+# voters vote more often), which worked well in the lecture.
+# SUGGEST: prepare a figure or notebook output of a bad proposal (narrow Q vs wide P
+# or vice versa; a few huge weights dominate the estimate) instead of debugging
+# live (about 7 minutes in the recording). The "bug" was a bad proposal.
+# Possible slide (replace by a real plot):
+# ** Importance sampling: a bad proposal
+# - Target $P$ = scaled Beta, proposal $Q$ = Normal.
+# - Plot the weights $P/Q$ for $N=100$ samples: a few dominate.
+# - Estimate varies wildly between runs: unbiased, but high variance.
+If we cannot sample from $P$, but can sample from some other distribution $Q$, we can use this trick\footnote{Statisticians hate it!}. Let's write it first out for finite $\Omega$, for simplicity
 \[
 \E_P(f) \defn \sum_{\omega \in \Omega} f(\omega) \frac{P(\omega)}{Q(\omega)} Q(\omega)
 = \E_Q(f P / Q) 
@@ -107,28 +106,42 @@ It is easy to show that this estimator is also unbiased. However, as the probabi
 So, how *can* we sample from $P$ for arbitrary distributions?
 
 ** Basic sampling theory
-
 *** Inversion sampler
-$F(u) \defn \Pr(x \geq u) = P(\{\omega : x(\omega) \geq u\})$ is the CDF of $x$.
+$F(u) \defn \Pr(x \leq u) = P(\{\omega : x(\omega) \leq u\})$ is the CDF of $x$.
 - Sample $u$ uniformly in $[0,1]$
-- Set $x = F^{-1}(u)$, i.e. $v: \Pr(x \geq v) = u$
+- Set $x = F^{-1}(u)$, i.e. $v: \Pr(x \leq v) = u$
 
 *** Rejection Sampler
-- Input: Threshold $\epsilon$, distribution $Q$
+- Input: $\epsilon > 0$, distribution $Q$ with $\epsilon P \leq Q$.
 - Repeat:
 - $\hat{x} \sim Q$.
 - $u \sim \Unif[0,1]$
-- Until $u \leq P(\hat{x}) / \epsilon Q(\hat{x})$.
+- Until $u \leq \epsilon P(\hat{x}) / Q(\hat{x})$.
 - Return $\hat{x}$
-
 *** Notes
 - Useful for sampling from a known distribution $P$.
-- Indirectly useful from sampling from unknown distributions.
-
+- A variant of rejection is used for ABC (see later).
+  
 
 ** Monte-Carlo sampling
+# FIX: the sampling approximation covers only the numerator. The slide should show the
+# ratio of two estimates (you explained this verbally):
+# \[
+# \bel(B \mid D) \approx
+# \frac{\sum_{n=1}^N \ind{\pn \in B} P_{\pn}(D)}{\sum_{n=1}^N P_{\pn}(D)},
+# \qquad \pn \sim \bel.
+# \]
+# FIX: "converges asymptotically to $\bel(\pn | D)$" should be $\bel(\param \mid D)$.
+# SUGGEST: add your figure: prior, posterior after a few data points, posterior
+# after many (sharp peak). Say why sampling from the prior fails: almost all
+# samples land where the likelihood is ~0, so a handful of samples carry all the
+# weight. Explain "high bias": the ratio of two estimates is biased.
+Approximating a density is tricky, so we will instead approximate the posterior probability that the parameter is in $B \subset \Param$:
 \[
-\bel(B \mid D) = \frac{\int_{B} P_\param(D) d \bel(\param)}{\int_{\Params} P_{\param'}(D) \bel(\param')}
+\bel(B \mid D) 
+= \int_{B} d\bel(\param | D)
+=\frac{\int_{B} P_\param(D) d \bel(\param)}{\int_{\Param} P_{\param'}(D) d\bel(\param')}
+=\frac{\int_{B} P_\param(D) d \bel(\param)}{\int_{\Param} P_{\param'}(D) d\bel(\param')}
 \]
 We can approximate the integrals by sampling from the prior $\bel$:
 \[
@@ -138,27 +151,93 @@ We can approximate the integrals by sampling from the prior $\bel$:
 \sum_{n=1}^N \ind{\pn \in B} P_{\pn}(D),
 \qquad \pn \sim \bel.
 \]
-- Sampling from the prior is inefficient.
-- The estimator has high bias and variance.
-- So, we can use Markov Chain Monte Carlo. This lets us sample a
-  sequence $\pn$ which \alert{converges asymptotically} to $\bel(\pn |
+- Sampling from the prior is *inefficient*: almost all the samples land where the likelihood is *near 0*.
+- The estimator has high bias and variance, because the denominator is *also* an estimate.
+- So, we can use *Markov Chain* Monte Carlo. This lets us sample a
+  sequence $\pn$ which \alert{converges asymptotically}\footnote{You don't have to worry about asymptotics in this course.} to $\bel(\pn |
   D)$.
 
 
 ** Markov Chain Monte Carlo
+# SUGGEST: this slide is nearly empty. Add: (1) what a Markov chain is, in one
+# sentence; (2) the idea that the chain's distribution moves towards the
+# posterior even if it starts far from it (this is why MCMC fixes the
+# prior/posterior-far-apart problem); (3) a trace plot of a chain converging, with
+# burn-in marked; (4) one sentence on dependent samples (autocorrelation).
+
+Recall the chains from the graphical model lecture. These model a sequence of random variables so that $\Pr(x_{t+1} \mid x_t, x_{t-1}, \ldots, x_1) = \Pr(x_{t+1} \mid x_t)$.
+
+Now we are going to generate samples from a Markov chain *on the fly*. However, we can design the probabilities $\Pr(x_{t+1} \mid x_t)$ so that the distribution $\Pr(x_t)$ (for large $t$) is close to the distribution we want.
 
 *** MCMC for posterior sampling
-- Form a Markov chain $P(\pnn \mid \pn, D)$
+- Here we are interested in approximating the distribution $\Pr(\param \mid D)$.
+- To do this, we form a Markov chain $\Pr(\pnn \mid \pn, D)$
+
 
 *** MCMC for other latent variables
-- Form a Markov chain $P(z^{(n+1)} \mid z^{(n)}, D)$
+- Here we are interested in approximating the distribution $\Pr(z \mid D)$.
+- Form a Markov chain $\Pr(z^{(n+1)} \mid z^{(n)}, D)$
 
-** Metropolis-Hastings
+** The Gibbs sampler
+# SUGGEST: this slide is the abstract version only. In the lecture the general
+# K-variable algorithm came before any example, and there was no worked example
+# ("believe me", "no time for an example"). Add the two slides below after it, or
+# before it, so students see an example first.
+# SUGGEST: define "until convergence": burn-in, and that samples are correlated.
+This is used when we need to sample over only some variables $z_1, \ldots, z_k$, given some fixed variables $x$.
+*** General algorithm
+- Input: Factors $P(z_k \mid z_1, \ldots z_{k-1}, z_{k+1}, \ldots, z_K, x)$
+- For $n \in [N]$:
+- For $k \in [K]$:
+  $z^{(n)}_k \sim P(z_k \mid z^{(n)}_1, \ldots z^{(n)}_{k-1}, z^{(n-1)}_{k+1}, \ldots, z^{(n-1)}_K, x)$
+*** Application to posterior sampling with latent variables:
+Latent variable $z$, parameter $\param$.
+- Until convergence:
+- $\param^{(n)} \sim P(\param \mid z^{(n-1)}, x)$
+- $z^{(n)} \sim  P(z \mid \param^{(n)}, x)$
+# SUGGEST (draft slide): Gibbs sampler, two-variable example
+# ** Gibbs sampler: a two-variable example
+# Let $(z_1, z_2)$ be bivariate Normal, zero mean, unit variances, correlation $\rho$.
+# The conditionals are easy to sample:
+# \[
+# z_1 \mid z_2 \sim \Normal(\rho z_2,\, 1-\rho^2),
+# \qquad
+# z_2 \mid z_1 \sim \Normal(\rho z_1,\, 1-\rho^2).
+# \]
+# - Alternate: sample $z_1$ given the current $z_2$, then $z_2$ given the new $z_1$.
+# - Figure: the samples trace axis-aligned zig-zag steps.
+# - Compare $\rho = 0.1$ and $\rho = 0.95$ (the latter mixes slowly).
+#
+# SUGGEST (draft slide): Gibbs sampler for a Gaussian mixture (the example you
+# gave verbally; known variance for simplicity)
+# ** Gibbs sampler: Gaussian mixture
+# Model: $c_t \sim \Mult(\theta)$, $x_t \mid c_t \sim \Normal(\mu_{c_t}, \sigma^2)$,
+# with priors $\theta \sim \Dir(\alpha)$ and $\mu_k \sim \Normal(m, s^2)$.
+# The three conditionals:
+# - Cluster assignment (Bayes' theorem):
+# \[
+# P(c_t = k \mid x_t, \mu, \theta) =
+# \frac{\theta_k \Normal(x_t \mid \mu_k, \sigma^2)}
+#      {\sum_{j} \theta_j \Normal(x_t \mid \mu_j, \sigma^2)}.
+# \]
+# - Cluster probabilities (counts $n_k = \sum_t \ind{c_t = k}$):
+# $\theta \mid c \sim \Dir(\alpha_1 + n_1, \ldots, \alpha_K + n_K)$.
+# - Cluster means (conjugate; uses only points with $c_t = k$):
+# \[
+# \mu_k \mid c, x \sim \Normal\!\left(
+# \frac{m/s^2 + \sum_{t: c_t = k} x_t / \sigma^2}{1/s^2 + n_k/\sigma^2},\;
+# \left(1/s^2 + n_k/\sigma^2\right)^{-1}\right).
+# \]
+# Each iteration: resample all $c_t$, then $\theta$, then $\mu$.
+# - We mostly care about $\theta$ and $\mu$, not the assignments $c$.
+# - Caveats: burn-in; label switching (clusters can swap names between iterations).
+
+** Metropolis-Hastings I
 *** Algorithm (symmetric version)
 - Input: Proposal distribution $Q(x | x') = Q(x' | x)$
 - At time $n$:
 - $\hat{x} \sim Q(x | x^{(n)})$
-- w.p. $P(\hat{x}) / P(x^{(n)})$, $x^{(n+1)} = \hat{x}$ else $x^{(n+1)} = x^{(n)}$
+- w.p. $P(\hat{x}) / P(x^{(n)})$, $x^{(n+1)} = \hat{x}$ else $x^{(n+1)} = x^{(n)}$ (capped at 1)
 *** Application to posterior sampling:
 The denominator cancels out, leading to:
 \[
@@ -167,12 +246,12 @@ The denominator cancels out, leading to:
 \frac{P_{\param'}(D) \bel(\param')}{P_{\param}(D) \bel(\param)}
 \]
 The only question is which proposal to use.
-** Metropolis-Hastings
+** Metropolis-Hastings II
 *** Algorithm
-- Input: Proposal distribution $Q(x | x')$ satisfying detailed balance, likelihood $P$.
+- Input: Proposal distribution $Q(x | x')$, likelihood $P$ (up to constant factor)
 - At time $n$:
 - $\hat{x} | x^{(n)} \sim Q(x | x^{(n)})$
-- With probability
+- With probability (capped at 1)
   \[
   \frac{P(\hat{x}) Q( x^{(n)} | \hat{x} )}{P(x^{(n)}) Q(\hat{x} | x^{(n)})},
   \]
@@ -187,6 +266,9 @@ The $\Pr_\bel(D)$ term cancels out, leading to:
 \]
 
 ** M-H Theory
+# CUT or SUGGEST: this is heavy for the audience and was not in the recording.
+# Move to an appendix, or add intuition: detailed balance = probability flow from x
+# to x' equals flow from x' to x; ergodic = every state reachable and no cycles.
 *** Stationary distribution
 The Markov chain defined by the M-H algorithm must have a unique stationary distribution
 \[
@@ -204,22 +286,35 @@ P(x' | x) \sigma(x) = P(x | x') \sigma(x')
 \]
 then $\sigma(x)$ is a stationary distribution.
 - If the Markov chain is \alert{ergodic} then there is a unique $\sigma$.
-** The Gibbs sampler
-This is used when we need to sample over only some variables $z_1, \ldots, z_k$, given some fixed variables $x$.
-*** General algorithm
-- Input: Factors $P(z_k \mid z_1, \ldots z_{k-1}, z_{k+1}, \ldots, z_K, x)$
-- For $n \in [N]$:
-- For $k \in [K]$:
-  $z^{(n)}_k \sim P(z_k \mid z^{(n)}_1, \ldots z^{(n)}_{k-1}, z^{(n-1)}_{k+1}, \ldots, z^{(n-1)}_K, x)$
-*** Application to posterior sampling with latent variables:
-Latent variable $z$, parameter $\param$.
-- Until convergence:
-- $\param^{(n)} \sim P(\param \mid z^{(n-1)}, x)$
-- $z^{(n)} \sim  P(z \mid \param^{(n)}, x)$
+
 ** ABC: Approximate Bayesian Computation
-*** When to use
-- When we can sample from $P_\param(D)$.
-- When we cannot calculate $P_\param(D)$.
+# SUGGEST: add a motivating example: a simulator (e.g. a weather model) where you can
+# generate data for given parameters but cannot write down $P_\param(D)$.
+# SUGGEST: define sufficient statistic (introduced mid-talk in the lecture):
+# $f$ is sufficient if $P_\param(D \mid f(D))$ does not depend on $\param$, i.e.
+# datasets with the same $f(D)$ are indistinguishable to the model.
+# SUGGEST: state the $\epsilon$ trade-off: smaller is more accurate but rejects
+# more samples; for continuous data $\epsilon = 0$ essentially never accepts, so
+# in practice $\epsilon > 0$ gives an approximation. Add: it is distinct from
+# the rejection-sampler constant.
+# NOTE: the slide writes $P_\param(D)$ for both "sample from" and "calculate".
+# Consider "sample $D' \sim P_{\param'}$" wording throughout.
+
+In standard probabilistic learning, we compare the probability $P_\param(D)$ of the data $D$ under different parameters $\param$.
+ABC is used when $P_\param(D)$ is unavailable. There are two settings:
+ 
+*** Simulator: we can sample from $P_\param(D)$.
+- An example is a weather model. We can generate data (predictions) from the simulator for various parameters $\param$.
+- Here $\param$ includes e.g. how much light the clouds disperse, or
+heat the ocean can store. 
+- There is no analytic likelihood defined: we randomise by starting the weather model with different random seeds.
+*** Intractable likelihood: hard to calculate $P_\param(D)$.
+There may be a way to calculate the probability, but it is too costly.
+
+*** General idea
+Replace probabilities with a *distance* between *statistics*
+
+** ABC Rejection sampling
 *** A metric $\rho$ over datasets
 - $\rho(D, D')$ is distance between datasets.
 - We can use that to define a rejection sampler
@@ -231,12 +326,49 @@ Latent variable $z$, parameter $\param$.
 *** Theorem
 If $\rho(D, D') = \|f(D) - f(D')\|$ and $f$ is a \alert{sufficient statistic} and $\epsilon = 0$ then ABC Rejection Sampling is exact.
 
+** ABC: a toy example
+*** Data
+- $D = (x_1, \ldots, x_n)$
+- $x_i \mid \param \sim \Normal(\param, 1)$
+- prior $\param \sim \Normal(0, 10)$. (we don't know what $\param$ is.)
+*** ABC parameters
+-  Statistic $f(D)$ = sample mean (sufficient here);
+  \[
+  \rho(D, D') = |f(D) - f(D')|
+  \]
+- Repeat: sample $\param'$ from the prior, simulate $D'$, accept if $\rho(D, D') \leq \epsilon$.
+
+** Which method when?
+ - Expectation under $P$, and you can sample from $P$: plain Monte Carlo.
+ - You can evaluate $P$ but not sample from it, and $Q$ is close to $P$: importance or rejection sampling.
+ - Posterior far from the prior, or many latent variables: MCMC (Metropolis-Hastings in general; Gibbs when the conditionals are tractable).
+ - Likelihood intractable but you can simulate data: ABC.
+ - Variational inference: not mentioned. Uses analytical approximations of the posterior. Fast but can be wrong.
+# - Stochastic Gradient ascent: (seen in GMM lecture) basically a Monte Carlo gradient method, used when we have a lot of data.
+# - Expectation Maximisation: (seen in GMM lecture) ok for small-medium data
+
+*** Parameter estimation target
+- Samples from the posterior: MC, MC-IS, MCMC, ABC.
+- Approximate posterior: VI, SVI.
+- Point estimate: EM, stochastic gradient (maximum likelihood or MAP).
+[All methods give some distribution over the other latent variables]
+  
+** Combinations
+If some of these methods involve an optimisation step, you can mix them with Gradient Ascent (GA), stochastic GA (SGA), Expectation Maximisation (EM). Classical approaches are:
+
+- EM with an approximate posterior = variational EM
+- SGA + VI = SVI
+- GA + MCMC = HMC; SGA + MCMC = SGLD / SGHMC
+  
+  
 * Packages
-** Multi-platform
+** Packages
+Hand-coding MCMC samplers is tricky nad error-prone. There are many packages to choose from.
+*** Multi-platform
 - STAN
 - BUGS
-** Python
-- PyMC3
+*** Python
+- PyMC
 - TensorFlow Probability
-- \alert{PyStan}
-- \alert{Pyro} (Torch)
+- PyStan
+- \alert{Pyro} (Torch)\footnote{Examples in the lab. We use it because it shares commonalities with standard Torch.}

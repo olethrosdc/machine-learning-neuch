@@ -116,10 +116,13 @@ A directed acyclic graph with
 - Nodes $x_1, \ldots, x_n$
 - Edges $x_i \to x_j$.
 so that there are no cycles in the graph.
-**** Conditional independence from graphical models
+**** Conditional independence and graphical models
 - Each *node* of the model corresponds to a *random variable*
 - The *parent* of a node are the *direct dependencies* of the random variable.
+- Reduces the number of *parameters* that must be estimated from data.
+- Allows reasoning about *causal* assumptions and improves *explainability*.
 
+  
 *** Model specification
 \begin{center}
     \begin{tikzpicture}
@@ -265,7 +268,12 @@ Time of arrival at work graphical model where $T$ is a traffic jam and $x_1$ is 
 | E       |   28 |     24 |
 | F       |    6 |      7 |
 |---------+------+--------|
-| Average |   50 | 27     |
+| Average |   50 |     27 |
+|---------+------+--------|
+
+- Admission rate (%) for each school.
+- The average admission rate depends on the application rate!
+  
 ***** Col B                                                           :BMCOL:
       :PROPERTIES:
       :BEAMER_col: 0.5
@@ -335,10 +343,10 @@ meaning that knowing $x_t$ is sufficient to predict $x_{t+1}$, and the previous 
       \begin{tikzpicture}
         \node[RV, hidden] at (0,0) (x1) {$x_1$};
         \node[RV, hidden] at (1,0) (x2) {$x_2$};
-        \node[RV, hidden] at (2,0) (x3) {$x_2$};
+        \node[RV, hidden] at (2,0) (x3) {$x_3$};
         \node[RV] at (0,1) (y1) {$y_1$};
         \node[RV] at (1,1) (y2) {$y_2$};
-        \node[RV] at (2,1) (y3) {$y_2$};
+        \node[RV] at (2,1) (y3) {$y_3$};
         \draw[->] (x1)--(x2);
         \draw[->] (x2)--(x3);
         \draw[->] (x1)--(y1);
@@ -446,7 +454,7 @@ but not for $y_t$. However, if we know the current state, it is sufficient for u
 - Consider variables $x_1, \ldots, x_n$.
 - Let $B, D$ be subsets of $[n]$, and
 - $\bx_B \defn (x_i)_{i \in B}$ be the variables with indices in $B$.
-- $\bx_{-j} \defn (x_i)_{i \neq i}$ all the variables apart from $x_j$.
+- $\bx_{-j} \defn (x_i)_{i \neq j}$ all the variables apart from $x_j$.
 **** Conditional independence :B_definition:
      :PROPERTIES:
      :BEAMER_env: definition
@@ -555,7 +563,7 @@ Here we just have $\Pr(x)$.
 \end{tikzpicture}
 **** An unsupervised image model at the pixel level
 \begin{tikzpicture}
-      \node[RV] at (0,0) (x00) {$x_{00}$}
+      \node[RV] at (0,0) (x00) {$x_{00}$};
       \node[RV] at (0,1) (x01) {$x_{01}$};
       \node[RV] at (1,0) (x10) {$x_{10}$};
       \node[RV] at (1,1) (x11) {$x_{11}$};
@@ -604,18 +612,21 @@ Here $x  | \mu, \sigma \sim \Normal(\mu, \sigma^2)$
 #+BEAMER: \pause
 **** Separately model each class
 - Assume each class data comes from a different normal distribution
-- $x | y = i \sim \Normal(\mu_i, \sigma_i I)$
+- $x | y = i \sim \Normal(\mu_i, \sigma_i I)$, i.e. 
 - For each class, calculate
   - Empirical mean $\hat{\mu}_i = \sum_{t : y_t = i} x_t / N_i$
   - Empirical variance $\hat{\sigma}_i$.
-#+BEAMER: \pause
-**** Decision rule
-Use Bayes's theorem:
+- This gives the estimate
 \[
-\Pr(y | x) = \Pr(x | y) \Pr(y) / \Pr(x),
+\Pr(x \mid y = i) = (2\pi\hat\sigma_i^2)^{-1/2}  \exp\!\big(-(x - \hat\mu_i)^2 / (2\hat\sigma_i^2)\big)
 \]
-choosing the $y$ with largest posterior $\Pr(y | x)$.
-- $\Pr(x | y = i) \propto \exp(- \|\hat{\mu}_i - x\|^2/\hat{\sigma}_i^2)$
+#+BEAMER: \pause
+- To decide which class $y$ is, use Bayes's theorem:
+  \[
+  \Pr(y | x) = \Pr(x | y) \Pr(y) / \Pr(x).
+  \]
+
+
 *** Graphical model for the Naive Bayes Classifier
 **** When $x \in \Reals$
 Assume $k$ classes, then
@@ -675,20 +686,20 @@ There are a number of models for this.
      :BEAMER_col: 0.6
      :END:
 ***** Model. For each point $x_t$:
-- $z_t \mid  \param \sim \Mult(\param_i)$, $\param \in \Simplex^k$
-- $x_t | z_t = i \sim \Normal(\mu_i, \Sigma_i)$.
-- $\Mult(\param)$ is *multinomial*
+- $z_t \mid  \vmulti \sim \Mult(\vmulti)$, $\vmulti \in \Simplex^k$
+- $\bx_t | z_t = i \sim \Normal(\vmean_i, \Covar_i)$.
+- $\Mult(\vmulti)$ is *multinomial*
 \[
-\Pr(z_t = i \mid \param) = \param_i
+\Pr(z_t = i \mid \vmulti) = \multi_i
 \]
-- $\Normal(\mu, \Sigma)$ is *multivariate Gaussian*
+- $\Normal(\vmean, \Covar)$ is *multivariate Gaussian*
 \[
-p(x \mid \mu, \Sigma)
-\propto \exp(-\frac{1}{2} (x - \mu)^\top \Sigma^{-1} (x-\mu))
+p(\bx \mid \vmean, \Covar)
+\propto \exp\left(-\frac{1}{2} (\bx - \vmean)^\top \Covar^{-1} (\bx-\vmean)\right)
 \]
 - The generating distribution is
 \[
-p(x | \param, \mu, \Sigma) = \sum_{z \in [k]} p(x \mid \mu_z, \Sigma_z) \Pr(z \mid \param).
+p(\bx | \vmulti, \vmean, \Covar) = \sum_{z \in [k]} p(\bx \mid \vmean_z, \Covar_z) \Pr(z \mid \vmulti).
 \]
 **** Col B                                                            :BMCOL:
      :PROPERTIES:
@@ -699,9 +710,9 @@ p(x | \param, \mu, \Sigma) = \sum_{z \in [k]} p(x \mid \mu_z, \Sigma_z) \Pr(z \m
 \begin{tikzpicture}
       \node[RV, hidden] at (2,0) (c) {$z$};
       \node[RV] at (0,0) (x) {$x$};
-      \node[RV,hidden] at (0,-1) (mu) {$\mu$};
-      \node[RV,hidden] at (0,1) (sigma) {$\Sigma$};
-      \node[RV,hidden] at (2,1) (theta) {$\param$};
+      \node[RV,hidden] at (0,-1) (mu) {$\vmean$};
+      \node[RV,hidden] at (0,1) (sigma) {$\Covar$};
+      \node[RV,hidden] at (2,1) (theta) {$\vmulti$};
       \draw[->] (c) to (x);
       \draw[->] (theta) to (c);
       \draw[->] (sigma) to (x);
@@ -791,18 +802,20 @@ i.e. the graphical model is a chain. We are usually interested in *homogeneous* 
 \[
 \Pr_\vparam(x_{k+1} = i \mid x_k = j) = \param_{i,j} \qquad \forall k
 \]
-*** Inference for finite Markov models
-For finite Markov models, we can consider each random variable $x_{t+1}$ as having a Multinomial distribution, whose parameter depends on what the value of $x_t$.
+**** Inference for finite Markov models
+Finite Markov models are special cases of discrete Bayesian networks: we can consider each random variable $x_{t+1}$ as having a Multinomial distribution, whose parameter depends on what the value of $x_t$.
 So, when $x_t = i$, then $x_{t+1}$ is multinomial with parameter $\vparam_i$. 
 
-The conjugate prior for a Multinomial parameter is the Dirichlet distribution, which is the multivariate extension of the Beta. Its density is
-\[
-p(\vparam \mid \vectorsym{\alpha}) \propto \prod_{i=1}^n \param_i^{\alpha_i - 1}
-\]
+*** Inference for the Multinomial distribution
+**** The Multinomial distribution
+If $x_t \mid \vparam \sim \Mult(\vparam)$ then $\Pr(x_t = i \mid \vparam) = \param_i$. 
+
+**** The Dirichlet distribution
+The conjugate prior for a Multinomial parameter is the Dirichlet distribution, which is the multivariate extension of the Beta. Its density is $p(\vparam \mid \vectorsym{\alpha}) \propto \prod_{i=1}^n \param_i^{\alpha_i - 1}$.
 
 **** The Dirichlet-Multinomial conjugate pair
 - If $x_t \in [n]$ then $x_{t+1} \mid \vparam, x_t = i \sim \Mult(\vparam_i)$, $\vparam_i \in \Simplex^n$
-- Prior $\vparam_i \mid \vectorsym{\alpha} \sim \Dir(\vectorsym{\alpha})$ for all $i \in [n]$.u
+- Prior $\vparam_i \mid \vectorsym{\alpha} \sim \Dir(\vectorsym{\alpha})$ for all $i \in [n]$.
 - Posterior $\vparam_i \mid x_1, \ldots, x_t, \vectorsym{\alpha} \sim \Dir(\vectorsym{\alpha}^{(t)})$ with
   \[
   \alpha^{t}_{i,j} = \alpha_{i,j} + \sum_{k=1}^t \ind{x_k = i \wedge x_{k+1} = j},
@@ -815,8 +828,8 @@ As you can see, the parameters of the Dirichlet distribution are updated the sam
 #+TOC: headlines [currentsection,hideothersubsections]
 ** Gradient algorithms
 *** Gradient ascent
-In the following we use $\param$ for *all* the parameters of the Gaussian mixture model,
-with $x = (x_1, \ldots, x_T)$ and $z = (z_1, \ldots, z_T)$
+In the following we use $\param$ for the parameters of some latent variable model
+with $x = (x_1, \ldots, x_T)$ the observations and $z = (z_1, \ldots, z_T)$ the other latent variables
 **** Objective function
 One way to estimate $\param$ is through maximising the likelihood
 $L(\param) = \Pr(x | \param)$
@@ -831,7 +844,7 @@ If we can calculate the gradient of $L$, we can use gradient ascent to update ou
 \[
 \param^{(n+1)} = \param^{(n)} + \alpha \nabla_\param L(\param).
 \]
-*** Gradient calculation
+*** Gradient calculation (method I)
 Here we use the *log trick*: $\nabla \ln f(\param) = \nabla f(\param) / f(\param)$.
 \begin{align}
 \nabla_\param L(\param)
@@ -840,37 +853,79 @@ Here we use the *log trick*: $\nabla \ln f(\param) = \nabla f(\param) / f(\param
 &= \sum_z  \Pr(z, x \mid \param) \nabla_\param \ln \Pr(z, x \mid \param)
 \\
 &= \sum_z  \Pr(x \mid z, \param)\Pr(z \mid \param) \nabla_\param \ln \Pr(z, x \mid \param)
-\\
-&\approx \frac{1}{m} \sum_{i=1}^m \Pr(x \mid z^{(i)}, \param) \nabla_\param \ln \Pr(z^{(i)}, x \mid \param)
-&&z^{(i)} \sim \Pr(z  \mid \param)
 \end{align}
-The final approximates the sum with the sample mean, sampling $z^{(i)}$ from the distribution. Hence, we can implement the following algorithm
-- For $i = 1, \ldots, m$: $z^{(i)} \sim \Pr(z  \mid \param^{(n)})$
-- $d^{(n)} = \frac{1}{m} \sum_{i=1}^m \Pr(x \mid z^{(i)}, \param) \nabla_\param \ln \Pr(z^{(i)}, x \mid \param^{(n)})$
-- $\param^{(n+1)} = \param^n + \alpha d^{(n)}$.
-*** Gradients of the GMMs
-For the Gaussian mixture model, we need to calculate the following gradient, with respect to $\param = (\param, \mu, \sigma)$.
+
+We can approximate the sum by sampling $z^{(i)}$ to obtain:\footnote{Not really necessary for GMMs, but needed for other latent variable models.}
+\[
+\frac{1}{m} \sum_{i=1}^m \Pr(x \mid z^{(i)}, \param) \nabla_\param \ln \Pr(z^{(i)}, x \mid \param),
+\qquad z^{(i)} \sim \Pr(z  \mid \param)
+\]
+
+We can use either the exact gradient or the stochastic estimate to perform (stochastic) gradient ascent.
+
+*** Gradient calculation (method II)
+The problem with the previous method is that we sample from the prior $\Pr(z \mid \param)$. Let us now start with the log-likelihood and use the log trick *twice*
+\begin{align}
+\nabla_\param \ln \Pr(x \mid \param)
+& = \frac{\nabla \Pr(x \mid \param)}{\Pr(x \mid \param)}\\
+&= \frac{\sum_z \nabla \Pr(x, z \mid \param)}{\Pr(x \mid \param)}\\
+&= \frac{\sum_z \Pr(x, z \mid \param) \nabla \ln \Pr(x, z \mid \param) }{\Pr(x \mid \param)}\\
+&= \sum_z \Pr(z \mid x, \param) \nabla \ln \Pr(x, z \mid \param).
+\end{align}
+- Methods I, II have the same stationary points.
+- However, since method I ascends the likelihood, and method II the log-likelihood, performance is better with method II for large $T$, as method I's gradient is vanishingly small. 
+- Method II gives you lower-variance Monte-Carlo estimates if you sample (for more complex models), because you use $\Pr(z \mid x, \param)$, which is more informative, though harder for complex models.
+*** Gradient components of GMMs
+# FIX (line 867): "$\param = (\param, \mu, \sigma)$" reuses $\param$ for the whole
+# vector and for the mixture weights. Use another symbol for the weights (e.g. $w$)
+# or write $\vartheta = (\param, \mu, \sigma)$. The model slides use $\Sigma_i$, not
+# $\sigma_i$; make them consistent.
+# NOTE (line 877): "$\partial / \partial \param_i =$" is missing "$\ln \Pr(z_t \mid \param)$".
+# NOTE (line 881): the first equality drops a $\mu$-independent normalising term;
+# say "up to a constant".
+# SUGGEST: the gradient step on the mixture weights leaves the simplex. Use a softmax
+# parameterisation $\param_i = e^{a_i} / \sum_j e^{a_j}$ or a projection.
+# FIX (lines 885-886): "Randomly assigns $z_t$ according to the current $\param$" is
+# ambiguous. Suggested replacement for method II:
+# - Sample $z_t \sim \Pr(z_t \mid x_t, \param)$ (the responsibilities $r_{ti}$), or use the
+#   responsibilities directly for the exact gradient.
+# - Move $\mu_i$ along $\sum_t r_{ti} \sigma_i^{-2} (x_t - \mu_i)$; the stochastic version
+#   replaces $r_{ti}$ by $\ind{z_t = i}$.
+# - Setting this to zero gives the EM M-step: $\mu_i = \sum_t r_{ti} x_t / \sum_t r_{ti}$.
+Now that we looked at general latent variable models, let us see what we need to calculate for GMMs.
+Our parameters are $\param = (\vmulti, \mu, \sigma)$.
 \[
 \nabla_\param \ln \Pr(z, x \mid \param)
 = \sum_{t=1}^T  \nabla_\param \ln \Pr(z_t, x_t \mid \param)
-= \sum_{t=1}^T  \nabla_\param \ln [\Pr(z_t \mid \param) \Pr(x_t  \mid z_t, \mu, \sigma)]
+= \sum_{t=1}^T  \nabla_\param \ln [\Pr(z_t \mid \vmulti) \Pr(x_t  \mid z_t, \mu, \sigma)]
 \]
 The individual terms are:
 \[
-\nabla_\param \ln \Pr(z_t | \param)  = \frac{1}{\Pr(z_t | \param)} \nabla_\param  \Pr(z_t | \param),
+\nabla_\param \ln \Pr(z_t | \vmulti)  = \frac{1}{\Pr(z_t | \vmulti)} \nabla_\param  \Pr(z_t | \vmulti),
 \qquad
-\frac{\partial}{\partial \param_i} =  \frac{\ind{z_t = i}}{\Pr(z_t | \param)}
+\frac{\partial}{\partial \multi_i} \ln \Pr(z_t | \vmulti)  =  \frac{\ind{z_t = i}}{\Pr(z_t | \vmulti)}
 \]
 \[
 \frac{\partial}{\partial \mu_i} \ln \Pr(x_t  \mid z_t = i, \mu, \sigma) 
 = - \frac{\partial}{\partial \mu_i}  \frac{(x_t - \mu_i)^2}{2\sigma_i^2}
 = \sigma_i^{-2} (x_t - \mu_i) 
 \]
-So the algorithm
-- Randomly assigns $z_t$ according to the current $\param$ estimate
+*** Notes.                                                           :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+The algorithm:
+- Randomly assigns or mixes $z_t$ according to the current $\vmulti$ estimate
 - Moves the centers towards the mean indicated by the $z$.
+- We must be careful with the $\vmulti$ parameters. They must sum to 1 and be in $[0,1]$. So, we either reparametrise with a softmax, or project them back to a simplex.
+- If we fully maximise when we adjust the means, we set $\mu_i$ to the empirical mean of cluster $i$ according to the current $\Pr(z_t \mid x_t, \vmulti, \vmean, \Covar)$ model. This corresponds to the EM algorithm we describe in the next section.
+  
 ** Expectation maximisation
+#+TOC: headlines [currentsection,hideothersubsections]
 *** A lower bound on the likelihood
+# SUGGEST: label the inequality step (line 903) "by the Gibbs inequality", and say the
+# notes slide that follows states it. "Not negative" (line 911) holds because $z$ is
+# discrete, so $\mathbb{H} \geq 0$.
 For any distribution $G(z)$, and specifically for
 $G(z) = \Pr(z | x, \param^{(k)})$:
 \begin{align*}
@@ -890,56 +945,87 @@ $G(z) = \Pr(z | x, \param^{(k)})$:
 \end{align*}
 where 
 \[
-\mathbb{H}(z \mid  x, \param^{(k)})
-= 
-\sum_z  \Pr(z \mid  x, \param^{(k)}) \ln \Pr(z \mid x, \param^{(k)})
+\mathbb{H}(z \mid  x, \param^{(k)}) = - \sum_z  \Pr(z \mid  x, \param^{(k)}) \ln \Pr(z \mid x, \param^{(k)})
 \]
 is the entropy of $z$ for a fixed $x, \param^{(k)}$. As this is not negative, $\ln \Pr(x | \param) \geq Q(\param \mid \param^{(k)})$.
-*** Some information theory
+*** Some information theory.                                         :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+
 Information theory notation can be a bit confusing. Sometimes we talk about random variables $\omega$, and sometimes about probability measures $P$. This is context-dependent.
 **** Entropy
 For a random variable $\omega$ under distribution $P$, we denote the entropy as
 \[
- \mathbb{H}_\Pr(\omega) \equiv \mathbb{H}(P) \equiv \mathbb{H}(\omega) =  \sum_{\omega \in \Omega} \Pr(\omega) \ln \Pr(\omega).
+ \mathbb{H}_P(\omega) \equiv \mathbb{H}(P) \equiv \mathbb{H}(\omega) = - \sum_{\omega \in \Omega} P(\omega) \ln P(\omega).
 \]
 **** KL Divergence
 For two probabilities $P, Q$ over random outcomes in the same space $\Omega$, we define
 \[
-D_{KL}(P \|Q) = \sum_{\omega \in \Omega} \Pr(\omega) \ln \frac{\Pr(\omega)}{Q(\omega)}
+D_{KL}(P \|Q) = \sum_{\omega \in \Omega} P(\omega) \ln \frac{P(\omega)}{Q(\omega)}
 \]
 **** The Gibbs Inequality
-$D_{KL}(P \|Q)  \geq 0$, or $\sum_x \ln \Pr(x) \Pr(x) \geq \sum_x \ln Q(x) \Pr(x)$.
+$D_{KL}(P \|Q)  \geq 0$, or $\sum_x \ln P(x) P(x) \geq \sum_x \ln Q(x) P(x)$.
+
+*** From Gradient Method II to Expectation Maximisation                                   
+We showed that
+ \[
+\ln \Pr(x \mid \param) \geq Q(\param \mid \param^{(k)}) + \mathbb{H}(z \mid x, \param^{(k)}),
+\quad \text{with equality at } \param = \param^{(k)}
+\]
+- Link to method II: $\nabla_\param Q(\param \mid \param^{(k)})$ at
+  $\param = \param^{(k)}$ equals the method II gradient.
+- The idea of the Expectation Maximisation algorithm is, instead of
+  maximising the log-likelihood, to maximise a lower bound on it.
+- In this case, this is achieved by fixing the latent distribution.
+- This makes the optimisation problem simpler, and we can find an exact solution (at least for some models, such as the GMM and the HMM).
+
+
+
 *** EM Algorithm (Dempster et al, 1977)
 - Initial parameter $\vparam^{(0)}$, observed data $x$
-- For $k=0, 1, \ldots$
+- For $n=0, 1, \ldots$
 -- Expectation step:
 \[
-Q(\alert{\vparam} \mid  \vparam^{(k)})
- \defn \E_{z \sim \Pr(z | x, \vparam^{(k)})} [\ln \Pr(x, z | \alert{\vparam}) ]
- = \sum_{z} [\ln \Pr(x, z | \alert{\vparam})]  \Pr(z  \mid x, \vparam^{(k)})
+Q(\alert{\vparam} \mid  \vparam^{(n)})
+ \defn \E_{z \sim \Pr(z | x, \vparam^{(n)})} [\ln \Pr(x, z | \alert{\vparam}) ]
+ = \sum_{z} [\ln \Pr(x, z | \alert{\vparam})]  \Pr(z  \mid x, \vparam^{(n)})
 \]
 -- Maximisation step:
 \[
-\vparam^{(k+1)} = \argmax_\vparam Q(\vparam, \vparam^{(k)}).
+\vparam^{(n+1)} = \argmax_\vparam Q(\vparam, \vparam^{(n)}).
+\]
+**** EM leads to monotone improvement
+\[
+\ln \Pr(x \mid \param^{(n+1)}) \geq Q(\param^{(n+1)} \mid \param^{(n)}) + \mathbb{H}
+\geq Q(\param^{(n)} \mid \param^{(n)}) + \mathbb{H} = \ln \Pr(x \mid \param^{(n)}).
 \]
 
 See /Expectation-Maximization as lower bound maximization, Minka, 1998/
 
 *** Minorise-Maximise
+# FIX (lines 968-970): the equality $f(\vparam^{(k)}) = Q(\vparam^{(k)} \mid \vparam^{(k)})$
+# is false for $Q$ as defined on the EM slide; the tight surrogate is $Q + \mathbb{H}$.
+# The constant $\mathbb{H}$ does not change the argmax. Suggested:
+# \[
+# f(\vparam) \geq Q(\vparam \mid \vparam^{(k)}) + \mathbb{H}(z \mid x, \vparam^{(k)}),
+# \qquad
+# f(\vparam^{(k)}) = Q(\vparam^{(k)} \mid \vparam^{(k)}) + \mathbb{H}(z \mid x, \vparam^{(k)}).
+# \]
 EM can be seen as a version of the minorise-maximise algorithm
 - $f(\vparam)$: Target function to *maximise*
 - $Q(\vparam | \vparam^{(k)})$: surrogate function
 **** $Q$ Minorizes $f$
 This means surrogate is always a lower bound so that
-\[
-f(\vparam) \geq Q(\vparam | \vparam^{(k)}),
-\qquad
-f(\vparam^{(k)}) = Q(\vparam^{(k)} | \vparam^{(k)}),
+ \[
+ f(\vparam) \geq Q(\vparam \mid \vparam^{(n)}) + \mathbb{H}(z \mid x, \vparam^{(n)}),
+ \qquad
+ f(\vparam^{(n)}) = Q(\vparam^{(n)} \mid \vparam^{(n)}) + \mathbb{H}(z \mid x, \vparam^{(n)}).
 \]
 
 **** Algorithm
-- Calculate: $Q(\vparam | \vparam^{(k)})$
-- Optimise: $\vparam^{(k+1)} = \argmax_\vparam Q(\vparam | \vparam^{(k)})$.
+- Calculate: $Q(\vparam | \vparam^{(n)})$
+- Optimise: $\vparam^{(n+1)} = \argmax_\vparam Q(\vparam | \vparam^{(n)})$.
 
 ** Bayesian Inference
 *** Bayesian inference for the GMM
@@ -951,9 +1037,9 @@ We saw, for the Beta-Bernoulli and Dirichlet-Multinomial models, that a *conjuga
 \begin{tikzpicture}
 \node[RV] at (0,1) (x) {$x_t$};
 \node[RV,hidden] at (0,0) (c) {$z_t$};
-\node[RV,hidden] at (0,-1) (cat) {$\param$};
+\node[RV,hidden] at (0,-1) (cat) {$\vmulti$};
 \node[RV,hidden] at (1,-1) (mean) {$\vectorsym{\mu}$};
-\node[RV,hidden] at (2,-1) (var) {$\vectorsym{\Sigma}$};
+\node[RV,hidden] at (2,-1) (var) {$\vectorsym{\Covar}$};
 \draw[->] (cat) to (c);
 \draw[->] (c) to (x);
 \draw[->] (mean) to (x);
@@ -971,10 +1057,10 @@ We saw, for the Beta-Bernoulli and Dirichlet-Multinomial models, that a *conjuga
      :END:
 \begin{align}
 \mu_i \mid \vectorsym{v} &\sim \Normal(\vectorsym{v}, I),\\
-\Sigma_i \mid \vectorsym{W} &\sim \Wish(\vectorsym{W}),\\
-\param \mid \vectorsym{\alpha} &\sim \Dir(\vectorsym{\alpha}),\\
-z_t \mid \param &\sim \Mult(\param),\\
-x_t \mid \mu, \Sigma, z_t = i & \sim \Normal(\mu_i, \Sigma_i).
+\Covar_i \mid \vectorsym{W} &\sim \Wish(\vectorsym{W}),\\
+\vmulti \mid \vectorsym{\alpha} &\sim \Dir(\vectorsym{\alpha}),\\
+z_t \mid \vmulti &\sim \Mult(\vmulti),\\
+x_t \mid \vmean, \Covar, z_t = i & \sim \Normal(\mean_i, \Covar_i).
 \end{align}
 **** Exercise :exercise:
 Which of the five lines above, if any, would have a closed-form conjugate update if all the *others* were held fixed? Compare with the Beta-Bernoulli and Dirichlet-Multinomial cases covered earlier.
@@ -998,7 +1084,17 @@ Which of the five lines above, if any, would have a closed-form conjugate update
 - /fit()/ should take X, y, arguments
 - /predict()/ should predict class labels
 - Hint: Use /predict_proba()/ and multiple GMM models
-
+*** Graphical models and model selection :exercise:
+**** Goal
+- Compare alternative graphical models.
+**** Tasks
+- Define a simpler model H0 and a more complex model H1.
+- Write down the factorisation implied by each graph.
+- Count the parameters.
+- Estimate parameters using ML and MAP.
+- Compare the hypotheses using the resulting models.
+- Investigate the effects of model complexity and dataset size.
+- Compare with regression or classification approaches.
 * Summary
 ** Summary
 *** Summary

@@ -666,11 +666,26 @@ $p(\param | \vectorsym{\alpha}) \propto \prod_i \param_i^{\alpha_i - 1}$
 Then, for any $x = x_1, \ldots, x_T$, the posterior distribution is
 - $\param \mid x \sim \Dir(\vectorsym{\alpha + \vectorsym{s}_T})$, where $s_{T,i} = \sum_{t=1}^T \ind{x_t = i}$,
 
-* Exercises
+* Exercises and assignments
 ** Probability
   # $0 = P(A \cap B) \neq P(A) P(B) > 0$. The intuition is that, if A happens then B cannot happen. So whether or nto A happens depends on B.
 *** Normal distribution
 - Find the MLE for the normal distribution. What is the sufficient statistic?
+** Exercise: Estimation and conditional independence
+*** Goal:
+- Understand how conditional independence assumptions influence estimation.
+
+*** Tasks:
+- Define a variable of interest.
+- Generate data from two hypotheses.
+- Create categories based on observed variables.
+- Estimate category parameters using: ML vs MAP
+- Study the effect of dataset size.
+- Use the estimates to distinguish between hypotheses.
+
+# - More detailed models require more parameters.
+# - More parameters require more data.
+# - Conditional independence assumptions reduce the number of parameters that must be estimated.
   
 * Summary
 ** Summary

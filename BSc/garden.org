@@ -1,0 +1,145 @@
+#+TITLE: Lab 12: The Garden of Forking Paths
+#+AUTHOR: Christos Dimitrakakis
+
+* Goal
+
+In this lab you will play the role of a researcher.
+
+Your task is simple:
+
+- Find evidence that some variables are predictive of an outcome.
+
+
+** Objective
+- *Not* to obtain the best predictive model.
+- Obtain the strongest-looking scientific *conclusion* possible, and then determine whether it survives *replication*.
+** Side-quests
+These questions relate to:
+- multiple comparisons,
+- feature selection,
+- model selection,
+- train/test contamination,
+- researcher degrees of freedom,
+- replication.
+
+
+* Activity A: Discovery
+
+Open:
+
+BSc/src/Reproducibility/discovery.py
+
+The script generates a synthetic dataset containing:
+
+- individuals,
+- binary genetic markers (SNPs),
+- a disease label.
+
+Your task is simple:
+
+Find one or more features that appear predictive of the disease.
+
+You may use any method you like:
+
+- correlation,
+- classification accuracy,
+- logistic regression,
+- feature importance,
+- visual inspection,
+- any other criterion.
+
+Questions:
+
+1. Which feature appears most predictive?
+2. What criterion did you use?
+3. How strong is the effect?
+4. Would you publish this discovery?
+
+We then pause to discuss your results.
+
+* Activity B: Replication
+
+Open:
+
+BSc/src/Reproducibility/replication.py
+
+The script generates a new cohort.
+
+Test only the features discovered in Activity A.
+
+Questions:
+
+1. Does the effect replicate?
+2. Is the effect equally strong?
+3. Would you still publish the result?
+
+
+* Activity C: Looking harder
+
+Return to discovery.py.
+
+Try changing:
+
+- the number of features,
+- the analysis method,
+
+Questions:
+
+1. Can you obtain a stronger result?
+2. How many different analyses did you try?
+3. What was your strongest discovery?
+
+* Activity D: The Garden of Forking Paths
+
+Discuss with your group.
+
+Questions:
+
+1. If you only reported your strongest result, what information would be missing?
+2. Would a reader know how many analyses you attempted?
+3. How is this related to:
+   - feature selection?
+   - model selection?
+   - hyperparameter tuning?
+
+
+Now perform as many analyses as possible, but on a *fixed* dataset.
+
+Generate the dataset only once.
+
+Your goal is to obtain the *most convincing result*. i.e. to find features that appear highly predictive of the
+outcome.
+
+(You already have the data, you now need to try and milk it for something interesting).
+
+Examples:
+
+- different feature-selection/importance criteria,
+- different models, i.e. logistic regression, decision trees, random forests,
+- different preprocessing, e.g. standardisation or balancing classes.
+
+
+Questions:
+
+1. How many analyses did you try?
+2. What was your best result?
+3. If you only reported the best result, would a reader know how many analyses were attempted?
+4. How does that reconicle with your replication experiments?
+   
+* Discussion
+
+Answer in complete sentences.
+
+1. Why did apparently predictive features appear?
+2. Why did some results fail to replicate?
+3. Why is feature selection dangerous?
+4. What is the difference between:
+   - exploring many analyses,
+   - testing a single pre-specified hypothesis?
+5. How is this related to:
+   - model selection,
+   - hyperparameter tuning,
+   - fairness metrics,
+   - scientific publication?
+
+
