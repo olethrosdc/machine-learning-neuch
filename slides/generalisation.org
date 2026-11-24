@@ -198,6 +198,12 @@ Essentially, each term in the sum gets linked to one random element, and the oth
 
 * Metrics for model quality
 
+** Metrics
+*** Metrics                                                          :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+
 In fact, we may want to simply find a good model, and do not have a specific decision problem to solve. How should we select a model?
 
 The basic accuracy metric we had for classification decision rules was just to count whether or not we classified something correctly. This made sense, as our decision was a distinct action or label. We used a utility function to modify this in a way that reflects our preferences. However, we sometimes want to instead measure the *accuracy of our model*. What is the best way to do that?
@@ -480,9 +486,7 @@ Consider $D = (x_1, \ldots, x_T)$ with $x_t \sim P$ being i.i.d samples with $\E
 **** Theorem
 The sample mean estimator $f(D) = \sum_{t} x_t / T$ is unbiased.
 **** Proof.
-\[
-\E[f] = \E\left[\sum_{t=1} x_t / T\right] = \frac{1}{T} \sum_{t=1} \E[x_t] = \frac{1}{T} \sum_{t=1}^T \theta = \theta.
-\]
+$\E[f] = \E\left[\sum_{t=1} x_t / T\right] = \frac{1}{T} \sum_{t=1} \E[x_t] = \frac{1}{T} \sum_{t=1}^T \theta = \theta$.
 
 *** Example of a biased and unbiased estimator: Training error
 #+ATTR_BEAMER: :overlay <+->
@@ -675,7 +679,7 @@ We can bound the regret by bounding each term separately.
 - The most we could do is find the best rule in $\hat{\Pi}$.
 - This still leaves a gap:
 \[
-\Delta \defn  \max_{\pi \in \Pi} U(\pi, P) -  \max_{\hat{\pi} \in \hat{\Pi}} U(\pi, P)
+\Delta \defn  \max_{\pi \in \Pi} U(\pi, P) -  \max_{\hat{\pi} \in \hat{\Pi}} U(\hat{\pi}, P)
 \]
 The gap can be characterised in some cases.
 **** Example: \(\epsilon\)-net on Lipschitz $U(\cdot, P)$.

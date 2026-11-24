@@ -3,6 +3,7 @@
 #+EMAIL:christos.dimitrakakis@unine.ch
 #+LaTeX_HEADER: \input{preamble}
 #+LaTeX_CLASS_OPTIONS: [smaller]
+#+LATEX_HEADER: \setbeameroption{show notes}
 #+LATEX_HEADER: \RequirePackage{fancyvrb}
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 #+TAGS: activity advanced definition exercise homework project example theory code
@@ -159,12 +160,26 @@ If $x \geq 0$
 & \geq  \int_u^\infty u p(x) dx\\
 & =  u \Pr(x \geq u)
 \end{align}
+*** The Markov inequality                                            :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+- While this is a relatively simple inequality, it forms the basis for more complicated and useful inequalities.
+
+- It is limited to positive-valued random variables. How can we fix that?
+
+- One way of doing that is the Chernoff bound. This transforms an arbitrary r.v. to a positive one, by exponentiating it.
+
 *** Chernoff bound
-The Chernoof bound uses the fact that if $x \geq y$ is true, then $f(x) \geq f(y)$ for any monotonic increasing function $f$. In particular:
+The Chernoff bound uses the fact that if $x \geq y$ is true, then $f(x) \geq f(y)$ for any strictly monotonic increasing function $f$. This results in:
+\[
+\Pr(x \geq y) = \Pr(f(x) \geq g(y)).
+\]
+We now consider the random variable $x - \mu$, where $\mu$ is a constant, and the event $x - \mu \geq u$, and the function $f(y) = e^{\lambda y}$:
 \[
 \Pr(x - \mu \geq u) 
 =
-\Pr(e^{\lambda(x - \mu)} \geq e^{\lambda u}) 
+\Pr\left(e^{\lambda(x - \mu)} \geq e^{\lambda u}\right)
 \leq 
 \frac{\E[e^{\lambda(x - \mu)}]}{e^{\lambda u}}
 \]
